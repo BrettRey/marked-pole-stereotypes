@@ -142,7 +142,14 @@ def make_dataset(scenario: str, size: str, rep: int) -> tuple[dict, np.ndarray]:
 
 # ------------------------------------------------------------------ models
 
-def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float, N_g: int):
+PARAMS = ("noncentered", "centered_rho", "centered_both")
+
+
+def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float, N_g: int,
+                param: str = "noncentered"):
+    """param changes only the parameterization of the latents, not the model:
+    rho ~ N(kappa v, sqrt(1 - kappa^2)) either way (added after pilot 1, whose
+    non-centered latents sampled badly even with an informative indicator)."""
     import pymc as pm
 
     v, m, f, a = d["v"], d["m"], d["f"], d["a"]
@@ -150,8 +157,14 @@ def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float,
     with pm.Model() as model:
         kappa = pm.Uniform("kappa", -1, 1)
         tau = pm.Uniform("tau", -1, 1)
-        rho = pm.Deterministic("rho", kappa * v + pm.math.sqrt(1 - kappa**2) * pm.Normal("z", 0, 1, shape=n_items))
-        s = pm.Deterministic("s", tau * v + pm.math.sqrt(1 - tau**2) * pm.Normal("xi", 0, 1, shape=n_items))
+        if param == "noncentered":
+            rho = pm.Deterministic("rho", kappa * v + pm.math.sqrt(1 - kappa**2) * pm.Normal("z", 0, 1, shape=n_items))
+        else:
+            rho = pm.Normal("rho", kappa * v, pm.math.sqrt(1 - kappa**2), shape=n_items)
+        if param == "centered_both":
+            s = pm.Normal("s", tau * v, pm.math.sqrt(1 - tau**2), shape=n_items)
+        else:
+            s = pm.Deterministic("s", tau * v + pm.math.sqrt(1 - tau**2) * pm.Normal("xi", 0, 1, shape=n_items))
         # word frequency (lam_rho > 0 fixes the sign of rho)
         lam_rho = pm.HalfNormal("lam_rho", prior_scale)
         lam = {k: pm.Normal(f"lam_{k}", 0, prior_scale) for k in ("s", "v", "m")}
@@ -207,7 +220,7 @@ def fit_job(job: dict) -> list[dict]:
     if job["model"] == "oracle":
         model, tracked = build_oracle(d, counts, job["prior_scale"], N_g), TRACKED_PROD
     else:
-        model = build_joint(d, counts, job["indicator"], job["prior_scale"], N_g)
+        model = build_joint(d, counts, job["indicator"], job["prior_scale"], N_g, job.get("param", "noncentered"))
         tracked = TRACKED_PROD + TRACKED_MARK
     fit_seed = int(seed_seq(2, SCENARIOS.index(scenario), list(SIZES).index(size), rep,
                             list(INDICATORS).index(job["indicator"]) if job["indicator"] else 9,
@@ -215,8 +228,9 @@ def fit_job(job: dict) -> list[dict]:
                             ).generate_state(1)[0])
     t0 = time.time()
     with model:
-        idata = pm.sample(draws=1000, tune=1000, chains=4, cores=4, nuts_sampler="nutpie",
-                          target_accept=0.9, random_seed=fit_seed, progressbar=False)
+        kw = {"nuts_sampler_kwargs": {"low_rank_modified_mass_matrix": True}} if job.get("low_rank") else {}
+        idata = pm.sample(draws=1000, tune=job.get("tune", 1000), chains=4, cores=4, nuts_sampler="nutpie",
+                          target_accept=0.9, random_seed=fit_seed, progressbar=False, **kw)
     elapsed = time.time() - t0
     diag_vars = list(tracked) + [x for x in ("kappa", "tau", "lam_rho", "sig_u", "phi") if x in model.named_vars]
     rhat = az.rhat(idata, var_names=diag_vars)
@@ -229,6 +243,8 @@ def fit_job(job: dict) -> list[dict]:
     for k in tracked:
         x = np.asarray(idata.posterior[k]).ravel()
         rows.append(dict(scenario=scenario, size=size, rep=rep, model=job["model"],
+                         param=job.get("param", "noncentered"), low_rank=bool(job.get("low_rank")),
+                         tune=job.get("tune", 1000),
                          indicator=job["indicator"], prior_scale=job["prior_scale"], coef=k,
                          truth=tr.get(k), mean=x.mean(), sd=x.std(ddof=1),
                          q05=np.quantile(x, 0.05), q95=np.quantile(x, 0.95),
