@@ -68,6 +68,8 @@ The split of a valence association into "direct" and "via rarity" is not identif
 
 The scenario 3 oracle uses the true z and total valence. Elsewhere in this spec, βρ and γρ should be read as βz and γz.
 
+**v2.1 and v2.2 (post-pilot, each committed before it ran).** v2.1 samples the total within-valence rarity effect on production, c_z = βz + βf·λz, and derives βz from it. Prior and model are unchanged; this was a shear reparameterization because βz and βf traded off at r = −.93. c_z is also tracked: scenario 1 truth (−.3 + .3 × .4) × .866 = −.156; scenario 2, .104. v2.2 fixes the prevalence indicator's measurement-error SD at its known value √((1−r)/r), as for a norm averaged over raters with item-level standard errors. With one strong indicator and a free error SD, the split between true rarity and error wasn't identified, and the rarity coefficients mixed slowly (ESS about 15–40) even after v2 and v2.1. **Design consequence:** the prevalence measure needs item-level standard errors, not just means.
+
 ## Fitting model, v1 (PyMC; superseded)
 
 It mirrors the generating model, minus h:

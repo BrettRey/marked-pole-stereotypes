@@ -177,10 +177,15 @@ def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float,
                   pm.HalfNormal("sig_f", 1), observed=f)
         # arousal: loading on s fixed at 1 (identifies tau)
         pm.Normal("a_obs", pm.Normal("c_a", 0, 2.5) + s, pm.HalfNormal("sig_a", 1), observed=a)
-        # prevalence indicator: free positive loading on z, free total valence term
+        # prevalence indicator: free positive loading on z, free total valence term.
+        # v2.2 (post-pilot): its measurement-error SD is known, as it would be for a
+        # norm averaged over raters (item-level standard errors). With only one
+        # strong indicator, a free error SD leaves the split between true rarity
+        # and error unidentified, and every rarity coefficient scales with it.
         if indicator != "f_only":
+            r = INDICATORS[indicator]
             pm.Normal("e_obs", pm.Normal("c_e", 0, 2.5) + pm.HalfNormal("lam_e", ps) * z
-                      + pm.Normal("c_ev", 0, ps) * v, pm.HalfNormal("sig_e", 1), observed=d["e"][indicator])
+                      + pm.Normal("c_ev", 0, ps) * v, np.sqrt((1 - r) / r), observed=d["e"][indicator])
         # marking
         g = {k: pm.Normal(k, 0, ps) for k in TRACKED_MARK}
         pm.Bernoulli("m_obs", logit_p=pm.Normal("g0", 0, 2.5) + g["g_z"] * z + g["g_vt"] * v + g["g_s"] * s,
