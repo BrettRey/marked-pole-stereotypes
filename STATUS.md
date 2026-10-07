@@ -9,9 +9,11 @@ updated: 2026-10-07
 source:
 - STATUS.md
 - notes/project-brief.md
-next_action: 'Strand A done (built from the paper, replication matches UWA). Next: design simulation
-  D1 on strand A''s engine, with the brms/PyMC choice; fetch strand B literature and data by hand
-  (notes/literature-to-fetch.md); then fix analysis_plan.md before any outcome model.'
+next_action: 'D1 grid paused (Brett, 2026-10-07): model v2.2 and sampler settings fixed and pushed,
+  pilots done; resume the 340-fit grid per scripts/d1/CLOUD.md (cloud chunks via claude --cloud,
+  or locally with d1.py chunk); canary chunk 0 partial on branch d1-grid-chunk-00. Open decisions
+  for Brett in analysis_plan.md (which rarity; consensus mapping; rarity-vs-valence routes);
+  literature still to fetch (notes/literature-to-fetch.md).'
 claim:
   argues: >-
     Stereotype content concentrates on the marked pole of evaluative oppositions, because rarity
@@ -23,7 +25,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A built from the paper and run 2026-10-07 (replication matches UWA); next is design simulation D1, then fixing the plan; strand B data and literature still to fetch · status: active · updated: 2026-10-07 -->
+<!-- SUMMARY: Strand A run 2026-10-07 (replication matches UWA); D1 design simulation built, piloted and converging (v2.2), grid paused before its full run; open plan decisions await Brett; strand B data and literature still to fetch · status: paused · updated: 2026-10-07 -->
 
 ## State
 
