@@ -92,7 +92,7 @@ It mirrors the generating model, minus h:
   - large: G = 43, N_g = 134 (Nicolas et al. Study 1: about 14,400 attributes over 43 groups).
   - Nicolas et al.'s participants gave several attributes per group; that within-participant dependence is ignored here.
 - Denominator set: I = 400 **[ours; the trait-word list isn't built]**.
-- Reps: a pilot of 1 rep per cell first (treated as a run: committed before it ran). The rep count for the full grid is set from the pilot's timing and logged as post-pilot.
+- Reps: a pilot of 1 rep per cell first (treated as a run: committed before it ran). The rep count for the full grid is set from the pilot's timing and logged as post-pilot. *Set after pilot 2:* 20 reps for cells with a prevalence indicator and for the oracle; 5 for frequency-only cells, which failed to converge in all 8 pilot fits (R-hat 1.21–1.78). With non-converged chains, coverage and bias aren't meaningful, so those reps only confirm non-identification. A cell where most fits are flagged is labelled "not identified (no convergence)". The grid has 340 fits, run as 16 cloud chunks (`scripts/d1/CLOUD.md`).
 
 ## Reported per coefficient and cell
 

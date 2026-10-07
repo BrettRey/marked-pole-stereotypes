@@ -76,6 +76,8 @@ def identified(m: pd.DataFrame) -> pd.DataFrame:
 
     def label(r):
         cov = r["coverage"] if pd.notna(r["coverage"]) else r.get("oracle_in_interval")
+        if r["flagged"] > 0.5:  # post-pilot 2: most fits failed to converge
+            return "not identified (no convergence)"
         if r["contraction"] < 0.2:
             return "not identified"
         ok = r["contraction"] >= 0.5 and pd.notna(cov) and cov >= 0.8

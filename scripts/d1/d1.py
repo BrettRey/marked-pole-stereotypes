@@ -275,10 +275,14 @@ def fit_job(job: dict) -> list[dict]:
     return rows
 
 
-def jobs_for(reps: range) -> list[dict]:
+def jobs_for(reps: range, f_only_reps: int | None = None) -> list[dict]:
+    """f_only_reps (post-pilot 2): frequency-only cells failed to converge in
+    every pilot fit, so they get fewer reps; None means the same as reps."""
     jobs = []
     for scenario, size, rep in itertools.product(SCENARIOS, SIZES, reps):
         for ind in INDICATORS:
+            if ind == "f_only" and f_only_reps is not None and rep >= f_only_reps:
+                continue
             jobs.append(dict(scenario=scenario, size=size, rep=rep, model="joint", indicator=ind, prior_scale=1.0))
             if ind == "f_only":
                 jobs.append(dict(scenario=scenario, size=size, rep=rep, model="joint", indicator=ind, prior_scale=2.5))
@@ -287,10 +291,10 @@ def jobs_for(reps: range) -> list[dict]:
     return jobs
 
 
-def chunk_jobs(reps: int, chunk: int, n_chunks: int) -> list[dict]:
+def chunk_jobs(reps: int, chunk: int, n_chunks: int, f_only_reps: int | None = None) -> list[dict]:
     """Deterministic slice of the full grid for one machine: job i goes to
     chunk i mod n_chunks, which spreads scenarios and sizes across chunks."""
-    return [j for i, j in enumerate(jobs_for(range(reps))) if i % n_chunks == chunk]
+    return [j for i, j in enumerate(jobs_for(range(reps), f_only_reps)) if i % n_chunks == chunk]
 
 
 def run(jobs: list[dict], workers: int, out_name: str, max_fits: int | None = None) -> tuple[Path, list]:
@@ -383,6 +387,7 @@ def main():
     c.add_argument("--chunk", type=int, required=True)
     c.add_argument("--of", type=int, required=True, dest="n_chunks")
     c.add_argument("--max-fits", type=int, default=None, help="stop after this many new fits")
+    c.add_argument("--f-only-reps", type=int, default=None, help="reps for frequency-only cells")
     c.add_argument("--workers", type=int, default=1)
     c.add_argument("--list", action="store_true", help="print the chunk's jobs and exit")
     fj = sub.add_parser("fits", help="run an explicit list of jobs")
@@ -396,7 +401,7 @@ def main():
         export_brms()
         return
     if args.command == "chunk":
-        jobs = chunk_jobs(args.reps, args.chunk, args.n_chunks)
+        jobs = chunk_jobs(args.reps, args.chunk, args.n_chunks, args.f_only_reps)
         if args.list:
             for j in jobs:
                 print(j)

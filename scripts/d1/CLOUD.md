@@ -11,17 +11,17 @@ Your chunk number K and the total N are given in the message that started this s
 uv venv .venv --python 3.14 || uv venv .venv
 uv pip install --python .venv/bin/python -r requirements-d1.txt \
   || uv pip install --python .venv/bin/python "pymc==6.3.2" "nutpie==0.16.11" "pytensor==3.3.3" arviz numpy pandas scipy
-.venv/bin/python scripts/d1/d1.py chunk --reps 20 --chunk K --of N --list | tail -1
+.venv/bin/python scripts/d1/d1.py chunk --reps 20 --f-only-reps 5 --chunk K --of N --list | tail -1
 ```
 
-The last line should report the chunk's job count (33 or 32 for N = 16). Record the Python and package versions (`.venv/bin/python -c "import sys, pymc, nutpie, pytensor; print(sys.version, pymc.__version__, nutpie.__version__, pytensor.__version__)"`). The run logs also record them.
+The last line should report the chunk's job count (21 or 22 for N = 16). Record the Python and package versions (`.venv/bin/python -c "import sys, pymc, nutpie, pytensor; print(sys.version, pymc.__version__, nutpie.__version__, pytensor.__version__)"`). The run logs also record them.
 
 ## 2. Run, one fit per command, pushing after each
 
 Repeat this command, **in the foreground with a 600000 ms timeout**, until its first line says `0 to run now`:
 
 ```bash
-.venv/bin/python scripts/d1/d1.py chunk --reps 20 --chunk K --of N --max-fits 1 \
+.venv/bin/python scripts/d1/d1.py chunk --reps 20 --f-only-reps 5 --chunk K --of N --max-fits 1 \
   && git add results/d1/grid logs/d1-*.json \
   && git commit -q -m "D1 grid chunk K of N: progress" \
   && git push -q origin HEAD:d1-grid-chunk-K
