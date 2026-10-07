@@ -228,7 +228,7 @@ def fit_job(job: dict) -> list[dict]:
                             ).generate_state(1)[0])
     t0 = time.time()
     with model:
-        kw = {"nuts_sampler_kwargs": {"low_rank_modified_mass_matrix": True}} if job.get("low_rank") else {}
+        kw = {"nuts_sampler_kwargs": {"adaptation": "low_rank"}} if job.get("low_rank") else {}
         idata = pm.sample(draws=1000, tune=job.get("tune", 1000), chains=4, cores=4, nuts_sampler="nutpie",
                           target_accept=0.9, random_seed=fit_seed, progressbar=False, **kw)
     elapsed = time.time() - t0
