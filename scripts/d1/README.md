@@ -72,7 +72,7 @@ It mirrors the generating model, minus h:
 - Where the truth is nonzero: sign-error rate and exaggeration ratio among intervals that exclude 0 (Gelman & Carlin 2014).
 - Where the truth is 0: false-exclusion rate.
 - Sampler diagnostics.
-- **The table Brett decides from:** for each dataset size and indicator condition, which coefficients are identified. "Identified" means posterior contraction ≥ .5, coverage ≥ .8 and a prior-sensitivity shift < .5 posterior SD; otherwise "weak" or "not identified" **[ours; thresholds fixed here before running]**.
+- **The table Brett decides from:** for each dataset size and indicator condition, which coefficients are identified. "Identified" means posterior contraction ≥ .5, coverage ≥ .8 and a prior-sensitivity shift < .5 posterior SD; otherwise "weak" or "not identified" **[ours; thresholds fixed here before running]**. *Added while the pilot ran, before any of its results were read:* "not identified" means contraction < .2, and "weak" is everything in between. For scenario 3's βρ, which has no log-linear truth, coverage is replaced by the rate at which the oracle's posterior mean falls inside the joint model's 90% interval.
 
 ## Engine check (brms)
 
