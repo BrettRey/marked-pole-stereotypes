@@ -155,7 +155,8 @@ def make_dataset(scenario: str, size: str, rep: int) -> tuple[dict, np.ndarray]:
 
 # ------------------------------------------------------------------ models
 
-def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float, N_g: int):
+def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float, N_g: int,
+                u_centered: bool = False):
     """Fitting model, v2 (post-pilot). The latent is within-valence rarity z
     (standard normal); every equation has its own total valence coefficient.
     v1 modelled rho = kappa v + ..., which left kappa, each indicator's valence
@@ -200,8 +201,11 @@ def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float,
         b_z = pm.Deterministic("b_z", c_z - b["b_f"] * lam_z)
         pm.Potential("b_z_prior", pm.logp(pm.Normal.dist(0, ps), b_z))
         sig_u = pm.HalfNormal("sig_u", 1)
-        eta = (b_z * z + b["b_m"] * m + b["b_f"] * f + b["b_vt"] * v
-               + sig_u * pm.Normal("u_raw", 0, 1, shape=n_items))
+        # Item effects: non-centered suits sparse counts; centered suits counts
+        # that inform each item well (large size). Same model either way.
+        u = (pm.Normal("u", 0, sig_u, shape=n_items) if u_centered
+             else sig_u * pm.Normal("u_raw", 0, 1, shape=n_items))
+        eta = b_z * z + b["b_m"] * m + b["b_f"] * f + b["b_vt"] * v + u
         alpha = pm.Normal("alpha", np.log(N_g / n_items), 2, shape=G)
         pm.NegativeBinomial("n_obs", mu=pm.math.exp(alpha[:, None] + eta[None, :]),
                             alpha=pm.HalfNormal("phi", 5), observed=counts)
@@ -237,7 +241,7 @@ def fit_job(job: dict) -> list[dict]:
     if job["model"] == "oracle":
         model, tracked = build_oracle(d, counts, job["prior_scale"], N_g), TRACKED_PROD
     else:
-        model = build_joint(d, counts, job["indicator"], job["prior_scale"], N_g)
+        model = build_joint(d, counts, job["indicator"], job["prior_scale"], N_g, bool(job.get("u_centered")))
         tracked = TRACKED_PROD + TRACKED_MARK
     fit_seed = int(seed_seq(2, SCENARIOS.index(scenario), list(SIZES).index(size), rep,
                             list(INDICATORS).index(job["indicator"]) if job["indicator"] else 9,
@@ -262,7 +266,8 @@ def fit_job(job: dict) -> list[dict]:
     for k in tracked:
         x = np.asarray(idata.posterior[k]).ravel()
         rows.append(dict(scenario=scenario, size=size, rep=rep, model=job["model"],
-                         param="v2_within_valence", low_rank=bool(job.get("low_rank")),
+                         param="v2_within_valence" + ("_ucentered" if job.get("u_centered") else ""),
+                         low_rank=bool(job.get("low_rank")),
                          tune=job.get("tune", 1000), target_accept=job.get("target_accept", 0.9),
                          indicator=job["indicator"], prior_scale=job["prior_scale"], coef=k,
                          truth=tr.get(k), mean=x.mean(), sd=x.std(ddof=1),
