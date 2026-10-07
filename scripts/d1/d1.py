@@ -70,14 +70,18 @@ SQ = np.sqrt(1 - KAPPA**2)
 def truths(scenario: str) -> dict:
     """True values of tracked coefficients (None = no single true value)."""
     t = dict(g_z=GAMMA["g_rho"] * SQ, g_vt=GAMMA["g_v"] + GAMMA["g_rho"] * KAPPA, g_s=GAMMA["g_s"])
+    # c_z = b_z + b_f * lam_z: total effect of within-valence rarity on production,
+    # including the path through word frequency's direct dependence on rarity
+    # (f's loading on z is LAMBDA["rho"] * SQ); excludes the small path via marking.
     if scenario == "s3_mechanism":
         # The process has no direct marking or valence term and no log-linear
         # rarity or frequency coefficient: b_z, b_f, b_vt are compared with the
         # oracle; b_m's truth is 0.
-        t.update(b_z=None, b_m=0.0, b_f=None, b_vt=None)
+        t.update(b_z=None, b_m=0.0, b_f=None, b_vt=None, c_z=None)
     else:
         b = BETA[scenario]
-        t.update(b_z=b["b_rho"] * SQ, b_m=b["b_m"], b_f=b["b_f"], b_vt=b["b_v"] + b["b_rho"] * KAPPA)
+        t.update(b_z=b["b_rho"] * SQ, b_m=b["b_m"], b_f=b["b_f"], b_vt=b["b_v"] + b["b_rho"] * KAPPA,
+                 c_z=(b["b_rho"] + b["b_f"] * LAMBDA["rho"]) * SQ)
     return t
 
 
@@ -240,6 +244,8 @@ def fit_job(job: dict) -> list[dict]:
         idata = pm.sample(draws=1000, tune=job.get("tune", 1000), chains=4, cores=4, nuts_sampler="nutpie",
                           target_accept=0.9, random_seed=fit_seed, progressbar=False, **kw)
     elapsed = time.time() - t0
+    if "c_z" in model.named_vars:  # v2.1: total within-valence rarity effect on production
+        tracked = tuple(tracked) + ("c_z",)
     diag_vars = list(tracked) + [x for x in ("tau", "lam_z", "lam_e", "sig_u", "phi") if x in model.named_vars]
     rhat = az.rhat(idata, var_names=diag_vars)
     ess = az.ess(idata, var_names=diag_vars)
