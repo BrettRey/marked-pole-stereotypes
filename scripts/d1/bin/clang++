@@ -1,0 +1,12 @@
+#!/bin/sh
+# Compiler wrapper for pytensor on macOS with Xcode 27-era toolchains.
+# pytensor (cmodule.py, compile_args) appends "-ld64" on macOS >= 15 to select
+# Apple's classic linker; that flag dates from Xcode 15 and is no longer
+# recognised (clang reads it as "-l d64"). This wrapper drops it and calls
+# clang++ with everything else unchanged. Use via PYTENSOR_FLAGS="cxx=<this file>". It is named clang++ because pytensor recognises the compiler by filename.
+for arg do
+  shift
+  [ "$arg" = "-ld64" ] && continue
+  set -- "$@" "$arg"
+done
+exec /usr/bin/clang++ "$@"
