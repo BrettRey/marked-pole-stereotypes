@@ -1,0 +1,54 @@
+26 fits requested, 26 to run now
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[1/26] s1_recovery small rep0 joint f_only prior2.5: 131.2s, rhat_max 1.242, div 24
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[2/26] s1_recovery small rep0 joint e_r50 prior1.0: 79.9s, rhat_max 1.002, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[3/26] s1_recovery small rep0 joint e_r80 prior1.0: 85.9s, rhat_max 1.002, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[4/26] s1_recovery small rep0 joint f_only prior1.0: 379.6s, rhat_max 1.348, div 53
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[5/26] s1_recovery large rep0 joint f_only prior1.0: 115.9s, rhat_max 1.590, div 729
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[6/26] s1_recovery large rep0 joint e_r50 prior1.0: 108.4s, rhat_max 1.011, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[7/26] s1_recovery large rep0 joint e_r80 prior1.0: 94.8s, rhat_max 1.004, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[8/26] s2_register small rep0 joint f_only prior1.0: 232.3s, rhat_max 1.751, div 32
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[9/26] s2_register small rep0 joint f_only prior2.5: 80.1s, rhat_max 1.213, div 35
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[10/26] s2_register small rep0 joint e_r50 prior1.0: 79.3s, rhat_max 1.003, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[11/26] s2_register small rep0 joint e_r80 prior1.0: 77.0s, rhat_max 1.002, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[12/26] s1_recovery large rep0 joint f_only prior2.5: 829.6s, rhat_max 1.705, div 6
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[13/26] s2_register large rep0 joint f_only prior1.0: 198.8s, rhat_max 1.638, div 23
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[14/26] s2_register large rep0 joint e_r50 prior1.0: 100.8s, rhat_max 1.014, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[15/26] s2_register large rep0 joint f_only prior2.5: 245.5s, rhat_max 1.389, div 2
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[16/26] s2_register large rep0 joint e_r80 prior1.0: 85.4s, rhat_max 1.005, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[17/26] s3_mechanism small rep0 joint f_only prior2.5: 166.3s, rhat_max 1.775, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[18/26] s3_mechanism small rep0 joint e_r50 prior1.0: 94.5s, rhat_max 1.015, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[19/26] s3_mechanism small rep0 joint e_r80 prior1.0: 88.7s, rhat_max 1.014, div 0
+NUTS[nutpie]: [b_z, b_m, b_f, b_vt, sig_u, u_raw, alpha, phi]
+[20/26] s3_mechanism small rep0 joint f_only prior1.0: 393.5s, rhat_max 1.526, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[21/26] s3_mechanism small rep0 oracle None prior1.0: 47.2s, rhat_max 1.005, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[22/26] s3_mechanism large rep0 joint f_only prior1.0: 295.6s, rhat_max 1.624, div 0
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[23/26] s3_mechanism large rep0 joint e_r50 prior1.0: 176.6s, rhat_max 1.047, div 388
+NUTS[nutpie]: [z, tau, xi, lam_z, lam_s, lam_vt, lam_m, c_f, sig_f, c_a, sig_a, c_e, lam_e, c_ev, g_z, g_vt, g_s, g0, b_m, b_f, b_vt, c_z, sig_u, u_raw, alpha, phi]
+[24/26] s3_mechanism large rep0 joint f_only prior2.5: 464.7s, rhat_max 1.643, div 1
+NUTS[nutpie]: [b_z, b_m, b_f, b_vt, sig_u, u_raw, alpha, phi]
+[25/26] s3_mechanism large rep0 oracle None prior1.0: 71.4s, rhat_max 1.008, div 0
+[26/26] s3_mechanism large rep0 joint e_r80 prior1.0: 120.4s, rhat_max 1.047, div 0
+log: logs/d1-20261007-161826.json

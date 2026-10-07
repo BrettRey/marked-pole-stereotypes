@@ -247,7 +247,7 @@ def fit_job(job: dict) -> list[dict]:
     with model:
         kw = {"nuts_sampler_kwargs": {"adaptation": "low_rank"}} if job.get("low_rank") else {}
         idata = pm.sample(draws=1000, tune=job.get("tune", 1000), chains=4, cores=4, nuts_sampler="nutpie",
-                          target_accept=0.9, random_seed=fit_seed, progressbar=False, **kw)
+                          target_accept=job.get("target_accept", 0.9), random_seed=fit_seed, progressbar=False, **kw)
     elapsed = time.time() - t0
     if "c_z" in model.named_vars:  # v2.1: total within-valence rarity effect on production
         tracked = tuple(tracked) + ("c_z",)
@@ -263,7 +263,7 @@ def fit_job(job: dict) -> list[dict]:
         x = np.asarray(idata.posterior[k]).ravel()
         rows.append(dict(scenario=scenario, size=size, rep=rep, model=job["model"],
                          param="v2_within_valence", low_rank=bool(job.get("low_rank")),
-                         tune=job.get("tune", 1000),
+                         tune=job.get("tune", 1000), target_accept=job.get("target_accept", 0.9),
                          indicator=job["indicator"], prior_scale=job["prior_scale"], coef=k,
                          truth=tr.get(k), mean=x.mean(), sd=x.std(ddof=1),
                          q05=np.quantile(x, 0.05), q95=np.quantile(x, 0.95),
