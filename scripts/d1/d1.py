@@ -269,9 +269,16 @@ def jobs_for(reps: range) -> list[dict]:
     return jobs
 
 
-def run(jobs: list[dict], workers: int, out_name: str) -> tuple[Path, list]:
+def chunk_jobs(reps: int, chunk: int, n_chunks: int) -> list[dict]:
+    """Deterministic slice of the full grid for one machine: job i goes to
+    chunk i mod n_chunks, which spreads scenarios and sizes across chunks."""
+    return [j for i, j in enumerate(jobs_for(range(reps))) if i % n_chunks == chunk]
+
+
+def run(jobs: list[dict], workers: int, out_name: str, max_fits: int | None = None) -> tuple[Path, list]:
     RESULTS.mkdir(parents=True, exist_ok=True)
     out = RESULTS / out_name
+    out.parent.mkdir(parents=True, exist_ok=True)
     done = set()
     if out.exists():  # resume: skip fits already written
         prev = pd.read_csv(out)
@@ -279,7 +286,9 @@ def run(jobs: list[dict], workers: int, out_name: str) -> tuple[Path, list]:
                 .astype(str).drop_duplicates().itertuples(index=False)}
     todo = [j for j in jobs if (j["scenario"], j["size"], str(j["rep"]), j["model"], str(j["indicator"]),
                                 str(j["prior_scale"])) not in done]
-    print(f"{len(jobs)} fits requested, {len(todo)} to run", flush=True)
+    if max_fits is not None:
+        todo = todo[:max_fits]
+    print(f"{len(jobs)} fits requested, {len(todo)} to run now", flush=True)
     failures = []
     with ProcessPoolExecutor(max_workers=workers) as ex:
         futs = {ex.submit(fit_job, j): j for j in todo}
@@ -351,14 +360,37 @@ def main():
     g = sub.add_parser("grid", help="full grid")
     g.add_argument("--reps", type=int, required=True)
     g.add_argument("--workers", type=int, default=2)
+    c = sub.add_parser("chunk", help="one slice of the grid (resumable)")
+    c.add_argument("--reps", type=int, required=True)
+    c.add_argument("--chunk", type=int, required=True)
+    c.add_argument("--of", type=int, required=True, dest="n_chunks")
+    c.add_argument("--max-fits", type=int, default=None, help="stop after this many new fits")
+    c.add_argument("--workers", type=int, default=1)
+    c.add_argument("--list", action="store_true", help="print the chunk's jobs and exit")
+    fj = sub.add_parser("fits", help="run an explicit list of jobs")
+    fj.add_argument("--jobs-json", required=True, help="JSON list of job dicts")
+    fj.add_argument("--out", required=True, help="CSV name under results/d1/")
+    fj.add_argument("--workers", type=int, default=2)
     sub.add_parser("export-brms")
     args = ap.parse_args()
     t0 = time.time()
     if args.command == "export-brms":
         export_brms()
         return
-    reps = range(1) if args.command == "pilot" else range(args.reps)
-    out, failures = run(jobs_for(reps), args.workers, "pilot_fits.csv" if args.command == "pilot" else "fits.csv")
+    if args.command == "chunk":
+        jobs = chunk_jobs(args.reps, args.chunk, args.n_chunks)
+        if args.list:
+            for j in jobs:
+                print(j)
+            print(len(jobs), "jobs")
+            return
+        out_name = f"grid/chunk_{args.chunk:02d}_of_{args.n_chunks:02d}.csv"
+        out, failures = run(jobs, args.workers, out_name, args.max_fits)
+    elif args.command == "fits":
+        out, failures = run(json.loads(args.jobs_json), args.workers, args.out)
+    else:
+        reps = range(1) if args.command == "pilot" else range(args.reps)
+        out, failures = run(jobs_for(reps), args.workers, "pilot_fits.csv" if args.command == "pilot" else "fits.csv")
     print("log:", write_log(args.command, vars(args), [out], failures, time.time() - t0).relative_to(ROOT))
 
 

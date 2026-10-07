@@ -13,3 +13,6 @@ NUTS[nutpie]: [kappa, tau, z, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a,
 NUTS[nutpie]: [kappa, tau, z, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, c_e, b_ev, sig_e, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
 [6/26] s1_recovery large rep0 joint e_r50 prior1.0: 129.8s, rhat_max 1.232, div 0
 NUTS[nutpie]: [kappa, tau, z, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, c_e, b_ev, sig_e, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+NUTS[nutpie]: [kappa, tau, z, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+NUTS[nutpie]: [kappa, tau, z, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+NUTS[nutpie]: [kappa, tau, z, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, c_e, b_ev, sig_e, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
