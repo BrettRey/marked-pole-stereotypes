@@ -1,0 +1,8 @@
+# Canon reconciliation stamp. See canon/README.md.
+#
+# last_reconciled: the date this project was brought up to the canon.
+#   Set it with canon_drift.py --reconcile, not by hand.
+# acknowledged: per-entry dismissals, permanent for this project.
+# manuscript: optional globs limiting the scan to the live manuscript.
+last_reconciled: 2026-10-07
+acknowledged: []
