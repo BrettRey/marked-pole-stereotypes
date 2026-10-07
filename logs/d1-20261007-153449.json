@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-10-07T15:34:49",
+  "script": "scripts/d1/d1.py",
+  "command": "fits",
+  "args": {
+    "command": "fits",
+    "jobs_json": "[{\"scenario\":\"s1_recovery\",\"size\":\"small\",\"rep\":0,\"model\":\"joint\",\"indicator\":\"e_r80\",\"prior_scale\":1.0},{\"scenario\":\"s1_recovery\",\"size\":\"large\",\"rep\":0,\"model\":\"joint\",\"indicator\":\"e_r80\",\"prior_scale\":1.0}]",
+    "out": "v21_cz_check_fits.csv",
+    "workers": 2
+  },
+  "argv": [
+    "scripts/d1/d1.py",
+    "fits",
+    "--workers",
+    "2",
+    "--out",
+    "v21_cz_check_fits.csv",
+    "--jobs-json",
+    "[{\"scenario\":\"s1_recovery\",\"size\":\"small\",\"rep\":0,\"model\":\"joint\",\"indicator\":\"e_r80\",\"prior_scale\":1.0},{\"scenario\":\"s1_recovery\",\"size\":\"large\",\"rep\":0,\"model\":\"joint\",\"indicator\":\"e_r80\",\"prior_scale\":1.0}]"
+  ],
+  "git_sha": "7ab67e47be99e863e8c83bc82b67fbb0393a9fa7",
+  "git_dirty": true,
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "pytensor_flags": "cxx=/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1/bin/clang++",
+  "packages": {
+    "pymc": "6.3.2",
+    "nutpie": "0.16.11",
+    "pytensor": "3.3.3",
+    "arviz": "1.3.0",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1"
+  },
+  "root_seed": 20261008,
+  "outputs": [
+    "results/d1/v21_cz_check_fits.csv"
+  ],
+  "failures": [],
+  "elapsed_seconds": 157.0
+}
