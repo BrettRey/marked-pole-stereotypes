@@ -25,6 +25,15 @@ def table(df: pd.DataFrame, digits: int = 3) -> str:
     return md(df.round(digits))
 
 
+def null_lr1(pi, n1=100, n0=900):
+    """Exact E[LR1] with no group difference: a ~ Bin(n1, pi), b ~ Bin(n0, pi)."""
+    import numpy as np
+    from scipy.stats import binom
+    a, b = np.arange(n1 + 1), np.arange(n0 + 1)
+    return float(np.sum(binom.pmf(a, n1, pi) * (a + .5) / (n1 + 1)) *
+                 np.sum(binom.pmf(b, n0, pi) * (n0 + 1) / (b + .5)))
+
+
 def pivot(df, metric, index="pi_neg", columns=None, value="mean"):
     sub = df[df.metric == metric]
     if columns is None:
@@ -68,7 +77,11 @@ def main():
             "The top-5 attributes chosen in one sample, re-measured in an independent sample from the same "
             "population (no true group differences). Expected: PPV at p(G1) = .10, p(A|G1) at the base rate, "
             "LR near 1 (Jeffreys smoothing biases it slightly upward at small counts).", "",
-            table(fr.pivot_table(index="pi_neg", columns="metric", values="mean")[fcols]), ""]
+            table(fr.pivot_table(index="pi_neg", columns="metric", values="mean")[fcols]
+                  .assign(null_LR1_unselected=lambda d: [null_lr1(p) for p in d.index])), "",
+            "`null_LR1_unselected` is the exact expected smoothed LR for an attribute with no group difference "
+            "and no selection step, i.e. the bias Jeffreys smoothing alone produces at that base rate. "
+            "The fresh LRs match it, so the selected attributes carry no leftover signal.", ""]
 
     dv = pd.read_csv(R / "diversity.csv")
     out += ["## 3. Negativity diversity (50 positive, 100 negative)", "",
@@ -78,7 +91,12 @@ def main():
             ], axis=1).sort_index(axis=1)), ""]
 
     gs = pd.read_csv(R / "groupsize.csv")
-    out += ["## 4. A5: unequal group sizes (total N = 1,000; target size varied)", ""]
+    out += ["## 4. A5: unequal group sizes (total N = 1,000; target size varied)", "",
+            "Reading: the share negative barely moves with target size, but chance stereotypes of small groups "
+            "look more diagnostic (higher LR) and more descriptive (higher p(A|G1)) in-sample, because the "
+            "sampling noise in p(A|G1) scales as 1/sqrt(n1). The fresh PPV equals p(G1) at every size: "
+            "none of it replicates. A modulation of UWA's no-minority-assumption claim, from sample size, "
+            "not a finding about minorities as such.", ""]
     for m in ("share_negative_top5", "mean_p_A_given_G1_top5", "LR1_neg_rank1", "original_ppv_top5", "fresh_ppv_top5"):
         out += [f"**{m}** (rows: target size; columns: π_neg)", "",
                 table(gs[gs.metric == m].pivot_table(index="n_target", columns="pi_neg", values="mean")), ""]
@@ -105,13 +123,19 @@ def main():
             if len(sub):
                 out += [f"**{m}, no true differences (δ = 0)** (rows: version, society size M, n per group; columns: π_neg)", "",
                         table(sub.pivot_table(index=["version", "society_M", "n_per_group"], columns="pi_neg", values="mean")), ""]
+        out += ["Reading the δ tables: \"negative\" and \"positive\" here are labels on two base rates "
+                "(π = .30 and .70 at .70/.30). True differences on the rare attributes are picked up far more "
+                "readily than on the common ones, because rarity raises the PPV ceiling (UWA's Equation 3). "
+                "In UWA's ecology rare means negative; the design can't separate valence from rarity.", ""]
         for m in ("jaccard_mean_pairwise", "hit_rate_true_differences"):
             sub = cs[(cs.metric == m) & (cs.pi_neg == 0.3)]
             out += [f"**{m} at .70/.30 by true difference δ** (rows: version, M, n, valence of the differing attributes; columns: δ)", "",
                     table(sub.pivot_table(index=["version", "society_M", "n_per_group", "diff_valence"], columns="delta", values="mean")), ""]
     if (R / "consensus_equal_shift.csv").exists():
         es = pd.read_csv(R / "consensus_equal_shift.csv")
-        out += ["**Post hoc, exploratory: equal absolute shift** (.70/.30, independent version, n = 100; "
+        out += ["**Post hoc, exploratory: equal absolute shift.** Added 2026-10-07 after the consensus run, to test "
+                "whether the asymmetry depended on the logit scale, which moves rates near .30 more than rates near .70. "
+                "(.70/.30, independent version, n = 100; "
                 "rows: valence of the differing attributes; columns: shift added to the target group's rate)", ""]
         for m in ("jaccard_mean_pairwise", "hit_rate_true_differences"):
             out += [f"*{m}*", "", table(es[es.metric == m].pivot_table(index="diff_valence", columns="abs_shift", values="mean")), ""]

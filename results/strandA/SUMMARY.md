@@ -91,13 +91,15 @@ Tie rules on the same draws: largest absolute difference from random tie-breakin
 
 The top-5 attributes chosen in one sample, re-measured in an independent sample from the same population (no true group differences). Expected: PPV at p(G1) = .10, p(A|G1) at the base rate, LR near 1 (Jeffreys smoothing biases it slightly upward at small counts).
 
-| pi_neg | original_ppv_top5 | fresh_ppv_top5 | mean_p_A_given_G1_top5 | fresh_p_A_given_G1_top5 | mean_pi_top5 | fresh_LR1_top5 |
-|---|---|---|---|---|---|---|
-| 0.100 | 0.151 | 0.100 | 0.149 | 0.100 | 0.100 | 1.047 |
-| 0.200 | 0.133 | 0.100 | 0.265 | 0.201 | 0.200 | 1.021 |
-| 0.300 | 0.125 | 0.100 | 0.385 | 0.309 | 0.309 | 1.007 |
-| 0.400 | 0.121 | 0.100 | 0.525 | 0.439 | 0.437 | 1.007 |
-| 0.500 | 0.119 | 0.100 | 0.593 | 0.500 | 0.500 | 1.001 |
+| pi_neg | original_ppv_top5 | fresh_ppv_top5 | mean_p_A_given_G1_top5 | fresh_p_A_given_G1_top5 | mean_pi_top5 | fresh_LR1_top5 | null_LR1_unselected |
+|---|---|---|---|---|---|---|---|
+| 0.100 | 0.151 | 0.100 | 0.149 | 0.100 | 0.100 | 1.047 | 1.045 |
+| 0.200 | 0.133 | 0.100 | 0.265 | 0.201 | 0.200 | 1.021 | 1.018 |
+| 0.300 | 0.125 | 0.100 | 0.385 | 0.309 | 0.309 | 1.007 | 1.008 |
+| 0.400 | 0.121 | 0.100 | 0.525 | 0.439 | 0.437 | 1.007 | 1.004 |
+| 0.500 | 0.119 | 0.100 | 0.593 | 0.500 | 0.500 | 1.001 | 1.001 |
+
+`null_LR1_unselected` is the exact expected smoothed LR for an attribute with no group difference and no selection step, i.e. the bias Jeffreys smoothing alone produces at that base rate. The fresh LRs match it, so the selected attributes carry no leftover signal.
 
 ## 3. Negativity diversity (50 positive, 100 negative)
 
@@ -110,6 +112,8 @@ The top-5 attributes chosen in one sample, re-measured in an independent sample 
 | 0.500 | 1.269 | 1.241 | 1.243 | 1.240 | 0.601 | 0.594 | 0.660 | 0.498 |
 
 ## 4. A5: unequal group sizes (total N = 1,000; target size varied)
+
+Reading: the share negative barely moves with target size, but chance stereotypes of small groups look more diagnostic (higher LR) and more descriptive (higher p(A|G1)) in-sample, because the sampling noise in p(A|G1) scales as 1/sqrt(n1). The fresh PPV equals p(G1) at every size: none of it replicates. A modulation of UWA's no-minority-assumption claim, from sample size, not a finding about minorities as such.
 
 **share_negative_top5** (rows: target size; columns: π_neg)
 
@@ -230,6 +234,8 @@ Chance Jaccard for two random 5-of-100 sets: 0.0283; for two random 5-of-50 sets
 | shared | 1000 | 30 | 0.097 | 0.096 | 0.091 | 0.069 | 0.054 |
 | shared | 1000 | 100 | 0.137 | 0.135 | 0.128 | 0.104 | 0.087 |
 
+Reading the δ tables: "negative" and "positive" here are labels on two base rates (π = .30 and .70 at .70/.30). True differences on the rare attributes are picked up far more readily than on the common ones, because rarity raises the PPV ceiling (UWA's Equation 3). In UWA's ecology rare means negative; the design can't separate valence from rarity.
+
 **jaccard_mean_pairwise at .70/.30 by true difference δ** (rows: version, M, n, valence of the differing attributes; columns: δ)
 
 | version | society_M | n_per_group | diff_valence | 0.0 | 0.25 | 0.5 | 1.0 | 2.0 |
@@ -303,7 +309,7 @@ Chance Jaccard for two random 5-of-100 sets: 0.0283; for two random 5-of-50 sets
 | shared | 1000 | 100 | negative | 0.354 | 0.669 | 0.981 | 1.000 |
 | shared | 1000 | 100 | positive | 0.024 | 0.096 | 0.371 | 0.737 |
 
-**Post hoc, exploratory: equal absolute shift** (.70/.30, independent version, n = 100; rows: valence of the differing attributes; columns: shift added to the target group's rate)
+**Post hoc, exploratory: equal absolute shift.** Added 2026-10-07 after the consensus run, to test whether the asymmetry depended on the logit scale, which moves rates near .30 more than rates near .70. (.70/.30, independent version, n = 100; rows: valence of the differing attributes; columns: shift added to the target group's rate)
 
 *jaccard_mean_pairwise*
 
