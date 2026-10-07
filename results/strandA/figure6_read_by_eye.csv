@@ -1,0 +1,24 @@
+# Values read from UWA (2026) Figure 6 (journal p. 14) by eye from the rendered PDF page, 2026-10-07. Approximate; not source data. Secondary check only.
+panel,series,pi_neg,value
+top,share_negative_top5,0.1,1.00
+top,share_negative_top5,0.2,1.00
+top,share_negative_top5,0.3,0.97
+top,share_negative_top5,0.4,0.81
+top,share_negative_top5,0.5,0.50
+middle,LR_neg_rank1,0.1,1.88
+middle,LR_neg_rank1,0.2,1.53
+middle,LR_neg_rank1,0.3,1.38
+middle,LR_neg_rank1,0.4,1.30
+middle,LR_neg_rank1,0.5,1.24
+middle,LR_neg_rank5,0.1,1.48
+middle,LR_neg_rank5,0.2,1.31
+middle,LR_neg_rank5,0.3,1.23
+middle,LR_neg_rank5,0.4,1.18
+middle,LR_neg_rank5,0.5,1.14
+middle,LR_pos_rank1,0.1,1.07
+middle,LR_pos_rank1,0.5,1.20
+bottom,mean_p_A_given_G1_top5,0.1,0.15
+bottom,mean_p_A_given_G1_top5,0.2,0.27
+bottom,mean_p_A_given_G1_top5,0.3,0.39
+bottom,mean_p_A_given_G1_top5,0.4,0.52
+bottom,mean_p_A_given_G1_top5,0.5,0.59
