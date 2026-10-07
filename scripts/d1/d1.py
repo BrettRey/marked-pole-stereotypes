@@ -181,10 +181,17 @@ def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float,
         g = {k: pm.Normal(k, 0, ps) for k in TRACKED_MARK}
         pm.Bernoulli("m_obs", logit_p=pm.Normal("g0", 0, 2.5) + g["g_z"] * z + g["g_vt"] * v + g["g_s"] * s,
                      observed=m)
-        # production
-        b = {k: pm.Normal(k, 0, ps) for k in TRACKED_PROD}
+        # production. Shear reparameterization (v2.1, post-pilot): f is both an
+        # indicator of z and a predictor here, so b_z and b_f trade off through
+        # lam_z (posterior r = -.93). Sample c_z = b_z + b_f * lam_z (the total
+        # z effect) and derive b_z; the prior stays N(0, ps) on b_z via a
+        # Potential, and the map has Jacobian 1, so the model is unchanged.
+        b = {k: pm.Normal(k, 0, ps) for k in ("b_m", "b_f", "b_vt")}
+        c_z = pm.Flat("c_z")
+        b_z = pm.Deterministic("b_z", c_z - b["b_f"] * lam_z)
+        pm.Potential("b_z_prior", pm.logp(pm.Normal.dist(0, ps), b_z))
         sig_u = pm.HalfNormal("sig_u", 1)
-        eta = (b["b_z"] * z + b["b_m"] * m + b["b_f"] * f + b["b_vt"] * v
+        eta = (b_z * z + b["b_m"] * m + b["b_f"] * f + b["b_vt"] * v
                + sig_u * pm.Normal("u_raw", 0, 1, shape=n_items))
         alpha = pm.Normal("alpha", np.log(N_g / n_items), 2, shape=G)
         pm.NegativeBinomial("n_obs", mu=pm.math.exp(alpha[:, None] + eta[None, :]),
