@@ -13,3 +13,17 @@
 
 # macOS
 .DS_Store
+
+# Data: raw downloads never committed (licences vary); provenance lives in data/manifests/
+data/raw/
+# Third-party PDFs live in the portfolio literature/ (symlinked), never in git
+literature
+*.pdf
+!figures/*.pdf
+# Model fits and caches can be regenerated from scripts
+results/fits/
+*.rds
+*.nc
+.ipynb_checkpoints/
+__pycache__/
+.venv/
