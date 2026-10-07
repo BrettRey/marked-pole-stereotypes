@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Post-pilot computational check (added after pilot 1): which parameterization
+"""SUPERSEDED by the v2 fitting model (build_joint no longer takes a
+parameterization argument); kept as the record of the check that was run.
+
+Post-pilot computational check (added after pilot 1): which parameterization
 of the latents samples cleanly? Same model and priors in every variant; one
 scenario-1 dataset (small, rep 0) at each indicator condition. Pilot 1 already
 has the non-centered baseline for this dataset (results/d1/pilot1_fits_stopped.csv).

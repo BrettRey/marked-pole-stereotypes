@@ -1,0 +1,24 @@
+NUTS[nutpie]: [kappa, tau, rho, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+NUTS[nutpie]: [kappa, tau, rho, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, c_e, b_ev, sig_e, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+centered_rho   low_rank=False e_r50 : 166.6s rhat_max 1.519 ess_min 8 div 3
+NUTS[nutpie]: [kappa, tau, rho, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, c_e, b_ev, sig_e, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+centered_rho   low_rank=False f_only: 232.6s rhat_max 1.678 ess_min 7 div 6
+NUTS[nutpie]: [kappa, tau, rho, s, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+centered_rho   low_rank=False e_r80 : 131.2s rhat_max 1.119 ess_min 35 div 0
+NUTS[nutpie]: [kappa, tau, rho, s, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, c_e, b_ev, sig_e, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+centered_both  low_rank=False f_only: 134.0s rhat_max 1.421 ess_min 9 div 44
+NUTS[nutpie]: [kappa, tau, rho, s, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, c_e, b_ev, sig_e, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+centered_both  low_rank=False e_r50 : 128.6s rhat_max 1.123 ess_min 32 div 0
+/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1/d1.py:232: FutureWarning: `nuts_sampler_kwargs` is deprecated. Pass NUTS keyword arguments via the `nuts={...}` argument to `pm.sample`.
+  idata = pm.sample(draws=1000, tune=job.get("tune", 1000), chains=4, cores=4, nuts_sampler="nutpie",
+NUTS[nutpie]: [kappa, tau, rho, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+centered_both  low_rank=False e_r80 : 126.8s rhat_max 1.120 ess_min 23 div 0
+/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1/d1.py:232: FutureWarning: `nuts_sampler_kwargs` is deprecated. Pass NUTS keyword arguments via the `nuts={...}` argument to `pm.sample`.
+  idata = pm.sample(draws=1000, tune=job.get("tune", 1000), chains=4, cores=4, nuts_sampler="nutpie",
+NUTS[nutpie]: [kappa, tau, rho, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, c_e, b_ev, sig_e, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+centered_rho   low_rank=True  e_r50 : 434.0s rhat_max 1.155 ess_min 21 div 0
+/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1/d1.py:232: FutureWarning: `nuts_sampler_kwargs` is deprecated. Pass NUTS keyword arguments via the `nuts={...}` argument to `pm.sample`.
+  idata = pm.sample(draws=1000, tune=job.get("tune", 1000), chains=4, cores=4, nuts_sampler="nutpie",
+NUTS[nutpie]: [kappa, tau, rho, xi, lam_rho, lam_s, lam_v, lam_m, c_f, sig_f, c_a, sig_a, c_e, b_ev, sig_e, g_rho, g_v, g_s, g0, b_rho, b_m, b_f, b_v, sig_u, u_raw, alpha, phi]
+centered_rho   low_rank=True  f_only: 517.1s rhat_max 1.711 ess_min 6 div 54
+centered_rho   low_rank=True  e_r80 : 264.4s rhat_max 1.331 ess_min 10 div 0

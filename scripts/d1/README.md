@@ -42,7 +42,33 @@ A stylized UWA-type process generates production, and the joint model is fitted 
 - **Oracle:** the same production model fitted with the true ρ as data.
 - **Recovery criterion:** the joint model's posterior mean for βρ has the oracle's sign, and the oracle's posterior mean lies inside the joint model's 90% interval. For βm, the false-exclusion rate (truth 0).
 
-## Fitting model (PyMC)
+## Fitting model, v2 (post-pilot; supersedes v1 below)
+
+*Changed after pilot 1, before the grid.* v1 modelled ρ = κ v + √(1−κ²) z with a free valence term in every equation, including the prevalence indicator's. Then κ (how far prevalence tracks valence) trades off against each equation's own valence coefficient. Only the sum is identified, and the sign of κ isn't. Pilot 1 and `scripts/d1/diag_corr.py` showed the ridge: effective sample sizes around 7 for κ, βv, λv and the indicator's valence bias, with correlations up to .92.
+
+v2 fits what the data can identify:
+
+- The latent is within-valence rarity z ~ N(0, 1), the standardized residual of ρ given valence. Every equation has its own **total** valence coefficient (direct plus via rarity).
+- The prevalence indicator gets a free positive loading on z and a free total valence term.
+- Stakes are unchanged (τ is identified by arousal, whose valence term is fixed at 0 by construction).
+
+The split of a valence association into "direct" and "via rarity" is not identified without an assumption about the indicator's own valence bias, so D1 doesn't track it.
+
+**Tracked coefficients, v2** (true values from the generating model, with √(1−κ²) = .866):
+
+| v2 | meaning | scenario 1 | scenario 2 | scenario 3 |
+|---|---|---|---|---|
+| βz | within-valence rarity → production (H2) | −.3 × .866 = −.260 | 0 | oracle |
+| βm | marking beyond rarity → production (H1) | 0 | 0 | 0 |
+| βf | accessibility | .3 | .3 | oracle |
+| βvt | total valence → production | −.5 + (−.3)(.5) = −.65 | −.5 | oracle |
+| γz | within-valence rarity → marking (L1) | −.5 × .866 = −.433 | same | same |
+| γvt | total valence → marking | −1 + (−.5)(.5) = −1.25 | same | same |
+| γs | stakes → marking (L2) | −.3 | same | same |
+
+The scenario 3 oracle uses the true z and total valence. Elsewhere in this spec, βρ and γρ should be read as βz and γz.
+
+## Fitting model, v1 (PyMC; superseded)
 
 It mirrors the generating model, minus h:
 

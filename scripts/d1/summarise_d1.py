@@ -70,7 +70,7 @@ def metrics(fits: pd.DataFrame) -> pd.DataFrame:
 
 def identified(m: pd.DataFrame) -> pd.DataFrame:
     """README criteria: identified = contraction >= .5, coverage (or, for
-    scenario-3 rho and f, oracle-in-interval) >= .8, and, for f-only, prior
+    scenario-3 b_z, b_f and b_vt, oracle-in-interval) >= .8, and, for f-only, prior
     shift < .5 posterior SD. Not identified = contraction < .2. Otherwise weak."""
     j = m[(m["model"] == "joint") & (m["prior_scale"] == 1.0)].copy()
 
@@ -104,15 +104,15 @@ def main():
            "With few reps, coverage and rates are coarse; the pilot exists to time fits and catch failures.", "",
            "## What each design can identify (prior scale 1)", "", md(ident), ""]
     s2 = m[(m["scenario"] == "s2_register") & (m["model"] == "joint") & (m["prior_scale"] == 1.0)
-           & m["coef"].isin(["b_rho", "b_m"])]
-    out += ["## Scenario 2: false exclusion of zero for βρ and βm (register confound)", "",
+           & m["coef"].isin(["b_z", "b_m"])]
+    out += ["## Scenario 2: false exclusion of zero for βz and βm (register confound)", "",
             md(s2.pivot_table(index=["size", "indicator"], columns="coef", values="false_exclusion")), "",
             "Posterior means:", "", md(s2.pivot_table(index=["size", "indicator"], columns="coef", values="mean")), ""]
-    s3 = m[(m["scenario"] == "s3_mechanism") & (m["coef"].isin(["b_rho", "b_m", "b_v"]))]
-    out += ["## Scenario 3: joint model against the oracle (true ρ as data)", "",
+    s3 = m[(m["scenario"] == "s3_mechanism") & (m["coef"].isin(["b_z", "b_m", "b_vt"]))]
+    out += ["## Scenario 3: joint model against the oracle (true z as data)", "",
             md(s3.pivot_table(index=["size", "model", "indicator", "prior_scale"], columns="coef", values="mean")), "",
-            "Oracle in the joint model's 90% interval (βρ):", "",
-            md(s3[s3["coef"] == "b_rho"].pivot_table(index=["size", "indicator", "prior_scale"], values="oracle_in_interval")), ""]
+            "Oracle in the joint model's 90% interval (βz):", "",
+            md(s3[s3["coef"] == "b_z"].pivot_table(index=["size", "indicator", "prior_scale"], values="oracle_in_interval")), ""]
     cols = ["fits", "truth", "mean", "coverage", "bias", "width", "contraction", "sign_error", "exaggeration",
             "false_exclusion", "prior_shift", "flagged", "seconds"]
     out += ["## All metrics", "", md(m.set_index(CELL + ["coef"])[cols]), ""]

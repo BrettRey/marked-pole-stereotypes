@@ -11,19 +11,20 @@ Run in the project venv, e.g.
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 # pytensor appends "-ld64" on macOS >= 15; the wrapper drops it (README, Environment).
 # Must be set before pytensor is imported.
-os.environ.setdefault("PYTENSOR_FLAGS", f"cxx={ROOT / 'scripts' / 'd1' / 'bin' / 'clang++'}")
+if sys.platform == "darwin":
+    os.environ.setdefault("PYTENSOR_FLAGS", f"cxx={ROOT / 'scripts' / 'd1' / 'bin' / 'clang++'}")
 
 import argparse  # noqa: E402
 import itertools  # noqa: E402
 import json  # noqa: E402
 import platform  # noqa: E402
 import subprocess  # noqa: E402
-import sys  # noqa: E402
 import time  # noqa: E402
 from concurrent.futures import ProcessPoolExecutor, as_completed  # noqa: E402
 from datetime import datetime  # noqa: E402
@@ -57,19 +58,26 @@ BETA = {
 }
 MECH = dict(base_logit=np.log(0.25 / 0.75), society_M=100, sample_n=30, sel=5.0, acc=0.3)
 
-TRACKED_PROD = ("b_rho", "b_m", "b_f", "b_v")
-TRACKED_MARK = ("g_rho", "g_v", "g_s")
+# Tracked coefficients (post-pilot reparameterization, README "Fitting model, v2"):
+# z = within-valence rarity (standardized residual of rho given valence);
+# *_vt = total valence association (direct + via rarity). The split of the
+# valence association into direct and via-rarity parts is not identified.
+TRACKED_PROD = ("b_z", "b_m", "b_f", "b_vt")
+TRACKED_MARK = ("g_z", "g_vt", "g_s")
+SQ = np.sqrt(1 - KAPPA**2)
 
 
 def truths(scenario: str) -> dict:
     """True values of tracked coefficients (None = no single true value)."""
-    t = dict(GAMMA)
+    t = dict(g_z=GAMMA["g_rho"] * SQ, g_vt=GAMMA["g_v"] + GAMMA["g_rho"] * KAPPA, g_s=GAMMA["g_s"])
     if scenario == "s3_mechanism":
-        # No direct marking or valence term in the process; b_rho and b_f have
-        # no log-linear truth (compared with the oracle instead).
-        t.update(b_rho=None, b_m=0.0, b_f=None, b_v=0.0)
+        # The process has no direct marking or valence term and no log-linear
+        # rarity or frequency coefficient: b_z, b_f, b_vt are compared with the
+        # oracle; b_m's truth is 0.
+        t.update(b_z=None, b_m=0.0, b_f=None, b_vt=None)
     else:
-        t.update(BETA[scenario])
+        b = BETA[scenario]
+        t.update(b_z=b["b_rho"] * SQ, b_m=b["b_m"], b_f=b["b_f"], b_vt=b["b_v"] + b["b_rho"] * KAPPA)
     return t
 
 
@@ -82,7 +90,8 @@ def seed_seq(*key: int) -> np.random.SeedSequence:
 def gen_items(rng, scenario: str) -> dict:
     n = I_ITEMS
     v = rng.normal(size=n)
-    rho = KAPPA * v + np.sqrt(1 - KAPPA**2) * rng.normal(size=n)
+    zres = rng.normal(size=n)  # within-valence rarity, standardized
+    rho = KAPPA * v + np.sqrt(1 - KAPPA**2) * zres
     s = TAU * v + np.sqrt(1 - TAU**2) * rng.normal(size=n)
     h = rng.normal(size=n) if scenario == "s2_register" else np.zeros(n)
     lin_m = GAMMA["g_rho"] * rho + GAMMA["g_v"] * v + GAMMA["g_s"] * s + H_LOADINGS["m"] * h
@@ -95,7 +104,7 @@ def gen_items(rng, scenario: str) -> dict:
     e = {k: rho + E_VALENCE_BIAS * v + np.sqrt((1 - r) / r) * eps_e
          for k, r in INDICATORS.items() if r is not None}
     u = rng.normal(size=n)
-    return dict(v=v, rho=rho, s=s, h=h, m=m, f=f, a=a, e=e, u=u, g0=g0)
+    return dict(v=v, rho=rho, z=zres, s=s, h=h, m=m, f=f, a=a, e=e, u=u, g0=g0)
 
 
 def gen_counts_nb(rng, d: dict, G: int, N_g: int, scenario: str) -> np.ndarray:
@@ -142,48 +151,40 @@ def make_dataset(scenario: str, size: str, rep: int) -> tuple[dict, np.ndarray]:
 
 # ------------------------------------------------------------------ models
 
-PARAMS = ("noncentered", "centered_rho", "centered_both")
-
-
-def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float, N_g: int,
-                param: str = "noncentered"):
-    """param changes only the parameterization of the latents, not the model:
-    rho ~ N(kappa v, sqrt(1 - kappa^2)) either way (added after pilot 1, whose
-    non-centered latents sampled badly even with an informative indicator)."""
+def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float, N_g: int):
+    """Fitting model, v2 (post-pilot). The latent is within-valence rarity z
+    (standard normal); every equation has its own total valence coefficient.
+    v1 modelled rho = kappa v + ..., which left kappa, each indicator's valence
+    bias and the valence coefficients trading off along a ridge (pilot 1 and
+    scripts/d1/diag_corr.py)."""
     import pymc as pm
 
     v, m, f, a = d["v"], d["m"], d["f"], d["a"]
     G, n_items = counts.shape
+    ps = prior_scale
     with pm.Model() as model:
-        kappa = pm.Uniform("kappa", -1, 1)
+        z = pm.Normal("z", 0, 1, shape=n_items)
         tau = pm.Uniform("tau", -1, 1)
-        if param == "noncentered":
-            rho = pm.Deterministic("rho", kappa * v + pm.math.sqrt(1 - kappa**2) * pm.Normal("z", 0, 1, shape=n_items))
-        else:
-            rho = pm.Normal("rho", kappa * v, pm.math.sqrt(1 - kappa**2), shape=n_items)
-        if param == "centered_both":
-            s = pm.Normal("s", tau * v, pm.math.sqrt(1 - tau**2), shape=n_items)
-        else:
-            s = pm.Deterministic("s", tau * v + pm.math.sqrt(1 - tau**2) * pm.Normal("xi", 0, 1, shape=n_items))
-        # word frequency (lam_rho > 0 fixes the sign of rho)
-        lam_rho = pm.HalfNormal("lam_rho", prior_scale)
-        lam = {k: pm.Normal(f"lam_{k}", 0, prior_scale) for k in ("s", "v", "m")}
-        pm.Normal("f_obs", pm.Normal("c_f", 0, 2.5) + lam_rho * rho + lam["s"] * s + lam["v"] * v + lam["m"] * m,
+        s = pm.Deterministic("s", tau * v + pm.math.sqrt(1 - tau**2) * pm.Normal("xi", 0, 1, shape=n_items))
+        # word frequency (lam_z > 0 fixes the sign of z)
+        lam_z = pm.HalfNormal("lam_z", ps)
+        lam = {k: pm.Normal(f"lam_{k}", 0, ps) for k in ("s", "vt", "m")}
+        pm.Normal("f_obs", pm.Normal("c_f", 0, 2.5) + lam_z * z + lam["s"] * s + lam["vt"] * v + lam["m"] * m,
                   pm.HalfNormal("sig_f", 1), observed=f)
-        # arousal: loading on s fixed at 1
+        # arousal: loading on s fixed at 1 (identifies tau)
         pm.Normal("a_obs", pm.Normal("c_a", 0, 2.5) + s, pm.HalfNormal("sig_a", 1), observed=a)
-        # prevalence indicator: loading on rho fixed at 1
+        # prevalence indicator: free positive loading on z, free total valence term
         if indicator != "f_only":
-            pm.Normal("e_obs", pm.Normal("c_e", 0, 2.5) + rho + pm.Normal("b_ev", 0, prior_scale) * v,
-                      pm.HalfNormal("sig_e", 1), observed=d["e"][indicator])
+            pm.Normal("e_obs", pm.Normal("c_e", 0, 2.5) + pm.HalfNormal("lam_e", ps) * z
+                      + pm.Normal("c_ev", 0, ps) * v, pm.HalfNormal("sig_e", 1), observed=d["e"][indicator])
         # marking
-        g = {k: pm.Normal(k, 0, prior_scale) for k in TRACKED_MARK}
-        pm.Bernoulli("m_obs", logit_p=pm.Normal("g0", 0, 2.5) + g["g_rho"] * rho + g["g_v"] * v + g["g_s"] * s,
+        g = {k: pm.Normal(k, 0, ps) for k in TRACKED_MARK}
+        pm.Bernoulli("m_obs", logit_p=pm.Normal("g0", 0, 2.5) + g["g_z"] * z + g["g_vt"] * v + g["g_s"] * s,
                      observed=m)
         # production
-        b = {k: pm.Normal(k, 0, prior_scale) for k in TRACKED_PROD}
+        b = {k: pm.Normal(k, 0, ps) for k in TRACKED_PROD}
         sig_u = pm.HalfNormal("sig_u", 1)
-        eta = (b["b_rho"] * rho + b["b_m"] * m + b["b_f"] * f + b["b_v"] * v
+        eta = (b["b_z"] * z + b["b_m"] * m + b["b_f"] * f + b["b_vt"] * v
                + sig_u * pm.Normal("u_raw", 0, 1, shape=n_items))
         alpha = pm.Normal("alpha", np.log(N_g / n_items), 2, shape=G)
         pm.NegativeBinomial("n_obs", mu=pm.math.exp(alpha[:, None] + eta[None, :]),
@@ -192,14 +193,14 @@ def build_joint(d: dict, counts: np.ndarray, indicator: str, prior_scale: float,
 
 
 def build_oracle(d: dict, counts: np.ndarray, prior_scale: float, N_g: int):
-    """Production submodel with the true rho as data (scenario 3 reference)."""
+    """Production submodel with the true within-valence rarity z as data (scenario 3 reference)."""
     import pymc as pm
 
     G, n_items = counts.shape
     with pm.Model() as model:
         b = {k: pm.Normal(k, 0, prior_scale) for k in TRACKED_PROD}
         sig_u = pm.HalfNormal("sig_u", 1)
-        eta = (b["b_rho"] * d["rho"] + b["b_m"] * d["m"] + b["b_f"] * d["f"] + b["b_v"] * d["v"]
+        eta = (b["b_z"] * d["z"] + b["b_m"] * d["m"] + b["b_f"] * d["f"] + b["b_vt"] * d["v"]
                + sig_u * pm.Normal("u_raw", 0, 1, shape=n_items))
         alpha = pm.Normal("alpha", np.log(N_g / n_items), 2, shape=G)
         pm.NegativeBinomial("n_obs", mu=pm.math.exp(alpha[:, None] + eta[None, :]),
@@ -220,7 +221,7 @@ def fit_job(job: dict) -> list[dict]:
     if job["model"] == "oracle":
         model, tracked = build_oracle(d, counts, job["prior_scale"], N_g), TRACKED_PROD
     else:
-        model = build_joint(d, counts, job["indicator"], job["prior_scale"], N_g, job.get("param", "noncentered"))
+        model = build_joint(d, counts, job["indicator"], job["prior_scale"], N_g)
         tracked = TRACKED_PROD + TRACKED_MARK
     fit_seed = int(seed_seq(2, SCENARIOS.index(scenario), list(SIZES).index(size), rep,
                             list(INDICATORS).index(job["indicator"]) if job["indicator"] else 9,
@@ -232,7 +233,7 @@ def fit_job(job: dict) -> list[dict]:
         idata = pm.sample(draws=1000, tune=job.get("tune", 1000), chains=4, cores=4, nuts_sampler="nutpie",
                           target_accept=0.9, random_seed=fit_seed, progressbar=False, **kw)
     elapsed = time.time() - t0
-    diag_vars = list(tracked) + [x for x in ("kappa", "tau", "lam_rho", "sig_u", "phi") if x in model.named_vars]
+    diag_vars = list(tracked) + [x for x in ("tau", "lam_z", "lam_e", "sig_u", "phi") if x in model.named_vars]
     rhat = az.rhat(idata, var_names=diag_vars)
     ess = az.ess(idata, var_names=diag_vars)
     rhat_max = max(float(np.max(rhat[x].values)) for x in diag_vars)
@@ -243,7 +244,7 @@ def fit_job(job: dict) -> list[dict]:
     for k in tracked:
         x = np.asarray(idata.posterior[k]).ravel()
         rows.append(dict(scenario=scenario, size=size, rep=rep, model=job["model"],
-                         param=job.get("param", "noncentered"), low_rank=bool(job.get("low_rank")),
+                         param="v2_within_valence", low_rank=bool(job.get("low_rank")),
                          tune=job.get("tune", 1000),
                          indicator=job["indicator"], prior_scale=job["prior_scale"], coef=k,
                          truth=tr.get(k), mean=x.mean(), sd=x.std(ddof=1),
