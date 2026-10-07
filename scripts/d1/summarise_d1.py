@@ -33,7 +33,11 @@ def metrics(fits: pd.DataFrame) -> pd.DataFrame:
     f["excl0"] = (f["q05"] > 0) | (f["q95"] < 0)
     f["width"] = f["q95"] - f["q05"]
     f["contraction"] = 1 - f["sd"] ** 2 / f["prior_sd"] ** 2
-    f["flagged"] = (f["rhat_max"] > 1.01) | (f["divergences"] > 0)
+    # Two tiers (post-pilot 2, fixed before the grid): severe = R-hat > 1.05 or
+    # more than 10 divergences (of 4,000 draws); mild = 1.01 < R-hat <= 1.05.
+    f["severe"] = (f["rhat_max"] > 1.05) | (f["divergences"] > 10)
+    f["flagged"] = f["severe"]
+    f["mild"] = ~f["severe"] & ((f["rhat_max"] > 1.01) | (f["divergences"] > 0))
     has_t = f["truth"].notna()
     f["covered"] = np.where(has_t, (f["q05"] <= f["truth"]) & (f["truth"] <= f["q95"]), np.nan)
     f["err"] = f["mean"] - f["truth"]
@@ -46,7 +50,7 @@ def metrics(fits: pd.DataFrame) -> pd.DataFrame:
                 coverage=("covered", "mean"), bias=("err", "mean"), width=("width", "mean"),
                 contraction=("contraction", "mean"), sign_error=("sign_err", "mean"),
                 exaggeration=("exagg", "mean"), false_exclusion=("false_excl", "mean"),
-                flagged=("flagged", "mean"), seconds=("seconds", "median")).reset_index()
+                flagged=("flagged", "mean"), mild=("mild", "mean"), seconds=("seconds", "median")).reset_index()
     # prior sensitivity, f-only cells: paired by rep, shift in units of the prior-1 posterior SD
     fo = f[(f["indicator"] == "f_only")]
     p1 = fo[fo["prior_scale"] == 1.0].set_index(["scenario", "size", "rep", "coef"])
@@ -76,7 +80,7 @@ def identified(m: pd.DataFrame) -> pd.DataFrame:
 
     def label(r):
         cov = r["coverage"] if pd.notna(r["coverage"]) else r.get("oracle_in_interval")
-        if r["flagged"] > 0.5:  # post-pilot 2: most fits failed to converge
+        if r["flagged"] > 0.5:  # post-pilot 2: most fits severely failed to converge
             return "not identified (no convergence)"
         if r["contraction"] < 0.2:
             return "not identified"
@@ -116,7 +120,7 @@ def main():
             "Oracle in the joint model's 90% interval (βz):", "",
             md(s3[s3["coef"] == "b_z"].pivot_table(index=["size", "indicator", "prior_scale"], values="oracle_in_interval")), ""]
     cols = ["fits", "truth", "mean", "coverage", "bias", "width", "contraction", "sign_error", "exaggeration",
-            "false_exclusion", "prior_shift", "flagged", "seconds"]
+            "false_exclusion", "prior_shift", "flagged", "mild", "seconds"]
     out += ["## All metrics", "", md(m.set_index(CELL + ["coef"])[cols]), ""]
     diag = fits.drop_duplicates(["scenario", "size", "rep", "model", "indicator", "prior_scale"])
     out += ["## Sampler diagnostics per fit", "",

@@ -82,7 +82,7 @@ It mirrors the generating model, minus h:
 - Production: negative binomial with group intercepts α_g and item effects u*ᵢ*.
 - Priors: N(0, 1) on coefficients; N(0, 2.5) on intercepts; group intercepts α_g ~ N(log(N_g/I), 2); HalfNormal(1) on SDs; HalfNormal(5) on φ **[ours]**.
 - **Prior sensitivity:** f-only cells are refitted with N(0, 2.5) on the coefficients.
-- Sampler: nutpie, 4 chains × 1,000 draws after 1,000 tuning, target accept .9. Each fit records R-hat, bulk ESS and divergences. A fit with R-hat > 1.01 or any divergence is flagged and reported, not dropped.
+- Sampler: nutpie, 4 chains × 1,000 draws after 1,000 tuning, target accept .9. Each fit records R-hat, bulk ESS and divergences. A fit with R-hat > 1.01 or any divergence is flagged and reported, not dropped. *Changed after pilot 2, before the grid:* 2,000 tuning steps and target accept .95 (this removed divergences in the large scenario-3 cells). Item effects are centered when fewer than 10% of items have zero total count, otherwise non-centered: centered fixed the large scenario-1 cells (R-hat 1.008) but failed where most items are never produced (scenario 3, R-hat 1.88). Flags have two tiers: **severe** (R-hat > 1.05 or more than 10 divergences) and **mild** (1.01 < R-hat ≤ 1.05). "Not identified (no convergence)" requires most fits in a cell to be severe.
 
 ## Conditions
 
