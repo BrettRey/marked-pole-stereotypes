@@ -4,7 +4,7 @@ published design, with the extensions specified in scripts/simulation/README.md.
 
 The spec in README.md was written before this code ran; read it first.
 
-Usage: python3 scripts/simulation/strand_a.py <replicate|ties|fresh|diversity|groupsize|consensus|consensus_check|all>
+Usage: python3 scripts/simulation/strand_a.py <replicate|replicate_seeds|ties|fresh|diversity|groupsize|consensus|consensus_check|consensus_equal_shift|all>
 """
 from __future__ import annotations
 
@@ -29,7 +29,8 @@ ROOT_SEED = 20261007
 
 BASE_RATE_PAIRS = [(0.5, 0.5), (0.6, 0.4), (0.7, 0.3), (0.8, 0.2), (0.9, 0.1)]
 EXPERIMENT_IDS = {"replicate": 1, "ties": 2, "fresh": 3, "diversity": 4,
-                  "groupsize": 5, "consensus": 6, "consensus_check": 7}
+                  "groupsize": 5, "consensus": 6, "consensus_check": 7,
+                  "replicate_seeds": 8, "consensus_equal_shift": 9}
 
 
 # ---------------------------------------------------------------- helpers
@@ -165,12 +166,35 @@ def exp_replicate(reps=1000, ties="random", experiment="replicate"):
 
 
 def exp_ties(reps=1000):
+    """Same seeds as 'replicate', so only the tie rule differs. (The first
+    version gave the variants their own seeds, which confounded tie-breaking
+    with Monte Carlo variation; fixed after the first run.)"""
     frames, seeds = [], []
     for j, mode in enumerate(("pos_first", "neg_first")):
-        df, s = exp_replicate(reps, ties=mode, experiment="ties")
+        df, s = exp_replicate(reps, ties=mode, experiment="replicate")
         frames.append(df)
         seeds += s
     return pd.concat(frames), seeds
+
+
+def exp_replicate_seeds(reps=1000, n_seeds=50):
+    """Across-seed spread of the replication's outcomes, so the pre-committed
+    seed's values can be read against Monte Carlo variation between seeds."""
+    rows, seeds = [], []
+    sizes = np.full(10, 100)
+    for i, (pp, pn) in enumerate(BASE_RATE_PAIRS):
+        pis, is_neg = attribute_rates(50, 50, pp, pn)
+        per_seed = []
+        for k in range(n_seeds):
+            out = run_core(rng_for("replicate_seeds", i, k), sizes, pis, is_neg, reps)
+            per_seed.append({m: v.mean() for m, v in out.items()})
+            seeds.append(seed_record("replicate_seeds", i, k))
+        ps = pd.DataFrame(per_seed)
+        for m in ps.columns:
+            rows.append({"pi_pos": pp, "pi_neg": pn, "metric": m, "mean_across_seeds": ps[m].mean(),
+                         "sd_across_seeds": ps[m].std(ddof=1), "min": ps[m].min(), "max": ps[m].max(),
+                         "n_seeds": n_seeds, "runs_per_seed": reps})
+    return pd.DataFrame(rows), seeds
 
 
 def exp_fresh(reps=1000):
@@ -312,6 +336,38 @@ def exp_consensus(worlds=300, perceivers=20, k_diff=5):
     return df, seeds
 
 
+def exp_consensus_equal_shift(worlds=300, perceivers=20, n=100, k_diff=5, pp=0.7, pn=0.3):
+    """POST HOC, exploratory (added after the consensus run): the main design
+    shifts the target group on the logit scale, which moves rates near .3 more
+    on the probability scale than rates near .7. Here the shift is an equal
+    absolute amount for both valences, to check that the valence asymmetry
+    in content agreement isn't a scale artefact. Independent version only."""
+    rows, seeds = [], []
+    pis, is_neg = attribute_rates(50, 50, pp, pn)
+    n_attr = len(pis)
+    iu = np.triu_indices(perceivers, 1)
+    for (d, dp), (v, val) in itertools.product(enumerate((0.05, 0.10, 0.15, 0.20)),
+                                             enumerate(("negative", "positive"))):
+        rng = rng_for("consensus_equal_shift", d, v)
+        seeds.append(seed_record("consensus_equal_shift", d, v))
+        pool = np.flatnonzero(is_neg) if val == "negative" else np.flatnonzero(~is_neg)
+        diff = np.stack([rng.choice(pool, k_diff, replace=False) for _ in range(worlds)])
+        theta = np.broadcast_to(pis, (worlds, 10, n_attr)).copy()
+        theta[np.repeat(np.arange(worlds), k_diff), 0, diff.ravel()] += dp
+        counts = rng.binomial(n, theta[:, None], size=(worlds, perceivers, 10, n_attr))
+        top5 = top5_sets(ppv_from_counts(counts), rng)
+        ind = indicator(top5, n_attr)
+        inter = np.einsum("wpa,wqa->wpq", ind, ind)
+        jac = (inter / (10 - inter))[:, iu[0], iu[1]].mean(axis=1)
+        is_diff = indicator(diff, n_attr).astype(bool)
+        hit = np.take_along_axis(np.repeat(is_diff[:, None, :], perceivers, 1), top5, axis=2).mean(axis=2)
+        cond = dict(version="independent", pi_pos=pp, pi_neg=pn, n_per_group=n,
+                    abs_shift=dp, diff_valence=val, k_diff=k_diff, post_hoc=True)
+        summarise(rows, "jaccard_mean_pairwise", jac, **cond)
+        summarise(rows, "hit_rate_true_differences", hit.mean(axis=1), **cond)
+    return pd.DataFrame(rows), seeds
+
+
 def exp_consensus_exact_check(worlds=100, perceivers=20, m_soc=1000, n=30, pp=0.7, pn=0.3):
     """Exact individual-level shared society for one cell (delta = 0), to check
     the per-attribute hypergeometric approximation used in exp_consensus."""
@@ -350,14 +406,16 @@ def check_against_paper(rep: pd.DataFrame) -> pd.DataFrame:
     pa = {p: m[(p, "mean_p_A_given_G1_top5")] for p in pn}
     pos_lr = [np.mean([m[(p, f"LR1_pos_rank{r}")] for r in range(1, 6)]) for p in pn]
     rows = [
-        {"check": "T1 share negative rises as pi_neg falls; >= .95 at .10",
-         "value": f"{dict(zip(pn, np.round(sh, 3)))}",
-         "pass": bool(all(np.diff(sh) < 0) and m[(0.1, "share_negative_top5")] >= 0.95)},
+        # Weak monotonicity: amended after the first run, where the share was
+        # 1.000 at both .10 and .20 (a ceiling) and a strict check failed.
+        {"check": "T1 share negative never falls as pi_neg falls; >= .95 at .10",
+         "value": "; ".join(f"{p}: {v:.3f}" for p, v in zip(pn, sh)),
+         "pass": bool(all(np.diff(sh) <= 1e-9) and m[(0.1, "share_negative_top5")] >= 0.95)},
         {"check": "T2 share negative ~ .50 at .50/.50",
          "value": f"{m[(0.5, 'share_negative_top5')]:.3f} (MC SE {se[(0.5, 'share_negative_top5')]:.3f})",
          "pass": bool(abs(m[(0.5, "share_negative_top5")] - 0.5) < 3 * se[(0.5, "share_negative_top5")] + 0.01)},
         {"check": "T3 mean LR1 of top-5 positives close to 1, changes modestly",
-         "value": f"{dict(zip(pn, np.round(pos_lr, 3)))}",
+         "value": "; ".join(f"{p}: {v:.3f}" for p, v in zip(pn, pos_lr)),
          "pass": bool(max(pos_lr) < 1.3)},
         {"check": "T4 mean p(A|G1) about .60 at .50/.50",
          "value": f"{pa[0.5]:.3f}", "pass": bool(abs(pa[0.5] - 0.60) < 0.03)},
@@ -418,7 +476,9 @@ def main():
         df, s = {"replicate": exp_replicate, "ties": exp_ties, "fresh": exp_fresh,
                  "diversity": exp_diversity, "groupsize": exp_groupsize,
                  "consensus": exp_consensus,
-                 "consensus_check": exp_consensus_exact_check}[e]()
+                 "consensus_check": exp_consensus_exact_check,
+                 "replicate_seeds": exp_replicate_seeds,
+                 "consensus_equal_shift": exp_consensus_equal_shift}[e]()
         seeds[e] = s
         outputs.append(write(df, f"{e}.csv"))
         if e == "replicate":

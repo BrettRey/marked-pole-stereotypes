@@ -1,0 +1,17 @@
+version,pi_pos,pi_neg,n_per_group,abs_shift,diff_valence,k_diff,post_hoc,metric,mean,mc_se,runs
+independent,0.7,0.3,100,0.05,negative,5,True,jaccard_mean_pairwise,0.09333869395711489,0.0008476673685494968,300
+independent,0.7,0.3,100,0.05,negative,5,True,hit_rate_true_differences,0.33080000000000004,0.0023736945599615545,300
+independent,0.7,0.3,100,0.05,positive,5,True,jaccard_mean_pairwise,0.05341019214703418,0.00030693074392752735,300
+independent,0.7,0.3,100,0.05,positive,5,True,hit_rate_true_differences,0.021666666666666667,0.000825773963275894,300
+independent,0.7,0.3,100,0.1,negative,5,True,jaccard_mean_pairwise,0.2534015594541913,0.002323670135198321,300
+independent,0.7,0.3,100,0.1,negative,5,True,hit_rate_true_differences,0.6035666666666667,0.0025032502097839427,300
+independent,0.7,0.3,100,0.1,positive,5,True,jaccard_mean_pairwise,0.0521454330270119,0.00032005589674371707,300
+independent,0.7,0.3,100,0.1,positive,5,True,hit_rate_true_differences,0.11099999999999999,0.001908439275488593,300
+independent,0.7,0.3,100,0.15,negative,5,True,jaccard_mean_pairwise,0.527531537176275,0.003104029183037749,300
+independent,0.7,0.3,100,0.15,negative,5,True,hit_rate_true_differences,0.8145,0.0016986616805640617,300
+independent,0.7,0.3,100,0.15,positive,5,True,jaccard_mean_pairwise,0.08419395711500964,0.0008941061068356857,300
+independent,0.7,0.3,100,0.15,positive,5,True,hit_rate_true_differences,0.30970000000000003,0.002633022856822267,300
+independent,0.7,0.3,100,0.2,negative,5,True,jaccard_mean_pairwise,0.8141002506265664,0.00368729864841486,300
+independent,0.7,0.3,100,0.2,negative,5,True,hit_rate_true_differences,0.9394000000000001,0.0013242107091507949,300
+independent,0.7,0.3,100,0.2,positive,5,True,jaccard_mean_pairwise,0.2047087162350321,0.0020205137541950092,300
+independent,0.7,0.3,100,0.2,positive,5,True,hit_rate_true_differences,0.5436333333333333,0.002649203550129469,300

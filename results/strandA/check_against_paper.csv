@@ -1,0 +1,40 @@
+check,value,pass
+T1 share negative never falls as pi_neg falls; >= .95 at .10,0.1: 1.000; 0.2: 1.000; 0.3: 0.975; 0.4: 0.809; 0.5: 0.498,True
+T2 share negative ~ .50 at .50/.50,0.498 (MC SE 0.007),True
+"T3 mean LR1 of top-5 positives close to 1, changes modestly",0.1: 1.053; 0.2: 1.085; 0.3: 1.114; 0.4: 1.146; 0.5: 1.181,True
+T4 mean p(A|G1) about .60 at .50/.50,0.594,True
+"T5 mean p(A|G1) < .50 at pi_neg .30, > .50 at .40",.30: 0.386; .40: 0.526,True
+Fig6 share_negative_top5 at pi_neg 0.1,sim 1.000 vs read 1.00,True
+Fig6 share_negative_top5 at pi_neg 0.2,sim 1.000 vs read 1.00,True
+Fig6 share_negative_top5 at pi_neg 0.3,sim 0.975 vs read 0.97,True
+Fig6 share_negative_top5 at pi_neg 0.4,sim 0.809 vs read 0.81,True
+Fig6 share_negative_top5 at pi_neg 0.5,sim 0.498 vs read 0.50,True
+Fig6 LR1_neg_rank1 at pi_neg 0.1,sim 1.837 vs read 1.88,True
+Fig6 LR2_neg_rank1 at pi_neg 0.1,sim 1.705 vs read 1.88,False
+Fig6 LR1_neg_rank1 at pi_neg 0.2,sim 1.532 vs read 1.53,True
+Fig6 LR2_neg_rank1 at pi_neg 0.2,sim 1.464 vs read 1.53,True
+Fig6 LR1_neg_rank1 at pi_neg 0.3,sim 1.389 vs read 1.38,True
+Fig6 LR2_neg_rank1 at pi_neg 0.3,sim 1.347 vs read 1.38,True
+Fig6 LR1_neg_rank1 at pi_neg 0.4,sim 1.301 vs read 1.30,True
+Fig6 LR2_neg_rank1 at pi_neg 0.4,sim 1.273 vs read 1.30,True
+Fig6 LR1_neg_rank1 at pi_neg 0.5,sim 1.241 vs read 1.24,True
+Fig6 LR2_neg_rank1 at pi_neg 0.5,sim 1.221 vs read 1.24,True
+Fig6 LR1_neg_rank5 at pi_neg 0.1,sim 1.481 vs read 1.48,True
+Fig6 LR2_neg_rank5 at pi_neg 0.1,sim 1.423 vs read 1.48,True
+Fig6 LR1_neg_rank5 at pi_neg 0.2,sim 1.305 vs read 1.31,True
+Fig6 LR2_neg_rank5 at pi_neg 0.2,sim 1.276 vs read 1.31,True
+Fig6 LR1_neg_rank5 at pi_neg 0.3,sim 1.225 vs read 1.23,True
+Fig6 LR2_neg_rank5 at pi_neg 0.3,sim 1.207 vs read 1.23,True
+Fig6 LR1_neg_rank5 at pi_neg 0.4,sim 1.178 vs read 1.18,True
+Fig6 LR2_neg_rank5 at pi_neg 0.4,sim 1.166 vs read 1.18,True
+Fig6 LR1_neg_rank5 at pi_neg 0.5,sim 1.141 vs read 1.14,True
+Fig6 LR2_neg_rank5 at pi_neg 0.5,sim 1.134 vs read 1.14,True
+Fig6 LR1_pos_rank1 at pi_neg 0.1,sim 1.069 vs read 1.07,True
+Fig6 LR2_pos_rank1 at pi_neg 0.1,sim 1.070 vs read 1.07,True
+Fig6 LR1_pos_rank1 at pi_neg 0.5,sim 1.240 vs read 1.20,True
+Fig6 LR2_pos_rank1 at pi_neg 0.5,sim 1.220 vs read 1.20,True
+Fig6 mean_p_A_given_G1_top5 at pi_neg 0.1,sim 0.149 vs read 0.15,True
+Fig6 mean_p_A_given_G1_top5 at pi_neg 0.2,sim 0.265 vs read 0.27,True
+Fig6 mean_p_A_given_G1_top5 at pi_neg 0.3,sim 0.386 vs read 0.39,True
+Fig6 mean_p_A_given_G1_top5 at pi_neg 0.4,sim 0.526 vs read 0.52,True
+Fig6 mean_p_A_given_G1_top5 at pi_neg 0.5,sim 0.594 vs read 0.59,True

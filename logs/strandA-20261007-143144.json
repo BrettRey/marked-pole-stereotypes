@@ -1,0 +1,92 @@
+{
+  "timestamp": "2026-10-07T14:31:44",
+  "script": "scripts/simulation/strand_a.py",
+  "experiments": [
+    "consensus_equal_shift"
+  ],
+  "argv": [
+    "scripts/simulation/strand_a.py",
+    "consensus_equal_shift"
+  ],
+  "git_sha": "b109d6349dde74c55d21b899462ec7788985b953",
+  "git_dirty": true,
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "numpy": "2.4.2",
+    "pandas": "3.0.1",
+    "scipy": "1.17.0"
+  },
+  "seeds": {
+    "consensus_equal_shift": [
+      {
+        "root": 20261007,
+        "spawn_key": [
+          9,
+          0,
+          0
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          9,
+          0,
+          1
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          9,
+          1,
+          0
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          9,
+          1,
+          1
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          9,
+          2,
+          0
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          9,
+          2,
+          1
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          9,
+          3,
+          0
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          9,
+          3,
+          1
+        ]
+      }
+    ]
+  },
+  "outputs": [
+    "results/strandA/consensus_equal_shift.csv"
+  ],
+  "elapsed_seconds": 4.2
+}

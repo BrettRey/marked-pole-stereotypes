@@ -23,13 +23,15 @@ With a = target-group members with A, b = others with A, n₁ = target size, n�
    - LR₂ = [(a + .5)/(a + b + 1)] / (n₁/N), i.e. PPV over the prior p(G₁).
 3. **Mean p(A|G₁)** = a/n₁ across the overall top-5 PPV attributes.
 
-**Ties [ours].** Broken at random. UWA's R code may break them by index order, so the replication is rerun once with positives-first and once with negatives-first index order, to confirm the outcomes move only within Monte Carlo noise.
+**Ties [ours].** Broken at random. UWA's R code may break them by index order, so the replication is rerun once with positives-first and once with negatives-first index order, to confirm the outcomes move only within Monte Carlo noise. *After the first run:* the reruns use the replication's own seeds, so that only the tie rule differs.
+
+**Variation between seeds (added after the first run).** `replicate_seeds` reruns the replication under 50 seeds per condition, so the committed seed's values can be read against Monte Carlo variation between seeds.
 
 ## Acceptance check against the paper
 
 Primary, from the paper's text:
 
-- T1. The share negative among the top 5 rises monotonically as πneg falls and "approached 100%" (≥ .95 at πneg = .10).
+- T1. The share negative among the top 5 rises monotonically as πneg falls and "approached 100%" (≥ .95 at πneg = .10). *Amended after the first run:* "monotonically" is checked as never falling, because the share sits at a ceiling of 1.000 at both .10 and .20 (as in Figure 6) and the first implementation demanded a strict rise.
 - T2. At .50/.50, positive and negative "did not differ anymore" (share negative within MC error of .50).
 - T3. The mean LR of the top-5 positive attributes stays "comparatively close to 1" and changes "only modestly" across conditions.
 - T4. At .50/.50, mean p(A|G₁) is "about 60%".
@@ -57,7 +59,7 @@ Secondary: values read from Figure 6 by eye (`results/strandA/figure6_read_by_ey
 - n ∈ {10, 30, 100} members per group per perceiver (n ≤ M).
 - Base-rate pairs: all five. 300 worlds per cell.
 - Shared version only: each perceiver's agreement with the society's own full-information top 5 (Jaccard), which separates "perceivers agree because the society has realized differences" from "perceivers agree with the generating process".
-- Content agreement: mean pairwise Jaccard of top-5 sets across perceivers. Chance baseline for random 5-of-100 sets: expected overlap .25, Jaccard about .026 (computed exactly in the script). Also reported: the share of each perceiver's top 5 that are truly differing attributes.
+- Content agreement: mean pairwise Jaccard of top-5 sets across perceivers. Chance baseline for random 5-of-100 sets: expected overlap .25, Jaccard .028 (computed exactly in the script; the "about .026" first written here was an approximation). *Added after the run:* when every top 5 is negative, the right baseline is random 5-of-50 sets, Jaccard .058. Also reported: the share of each perceiver's top 5 that are truly differing attributes.
 - Valence agreement: mean top-5 negative share, its SD across perceivers, and the proportion of perceivers whose top 5 is majority negative (≥ 3 of 5).
 - Mapping these onto observed stereotype consensus waits for real data and the fixed plan.
 

@@ -1,0 +1,2 @@
+consensus: done (204.1s)
+log: logs/strandA-20261007-143018.json

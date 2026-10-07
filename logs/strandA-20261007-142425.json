@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-10-07T14:24:25",
+  "script": "scripts/simulation/strand_a.py",
+  "experiments": [
+    "diversity"
+  ],
+  "argv": [
+    "scripts/simulation/strand_a.py",
+    "diversity"
+  ],
+  "git_sha": "b109d6349dde74c55d21b899462ec7788985b953",
+  "git_dirty": true,
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "numpy": "2.4.2",
+    "pandas": "3.0.1",
+    "scipy": "1.17.0"
+  },
+  "seeds": {
+    "diversity": [
+      {
+        "root": 20261007,
+        "spawn_key": [
+          4,
+          0
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          4,
+          1
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          4,
+          2
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          4,
+          3
+        ]
+      },
+      {
+        "root": 20261007,
+        "spawn_key": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "outputs": [
+    "results/strandA/diversity.csv"
+  ],
+  "elapsed_seconds": 1.0
+}
