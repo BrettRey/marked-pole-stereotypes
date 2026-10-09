@@ -1,0 +1,652 @@
+OpenAI Codex v0.160.0
+--------
+workdir: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: none
+reasoning summaries: none
+session id: 01a121f7-67f8-7321-99bb-061008811eb6
+--------
+user
+You are an independent methodological reviewer, in the project repository, read-only. Do not edit anything. Gelman-style lens, but disagree where it misleads.
+
+Read `scripts/d2/README.md` (the D2 spec, not yet coded or run) and, in `analysis_plan.md`, "D2", "L1" and "L2". D2 is a fake-data check of the lexical models; its placeholder values are marked [ours]. D1 (`scripts/d1/README.md`) is the precedent for the joint model.
+
+Critique the spec before it is coded, briefly (at most about 450 words):
+1. Is the L1 estimand coherent: Δ = −γ/√(σ_u² + σ_uw² + π²/3) from an ordered logit with pair (and pair-wording) effects, against a truth computed as a standardized latent difference for an ideal blind coder? Will the human design (one response per pair, a second judge on a subset) identify σ_u well enough for Δ to be calibrated, or should the truth or the estimand change?
+2. Does the design answer the practical question (is one blind human comparison per pair informative at N = 40–160 and 10–30% off-diagonal pairs, compared with model judges alone)?
+3. L2: is the latent-variable model (one commonness indicator with known SE, two stakes indicators, free z–s correlation, categorical outcome) identified, and are the average-predictive-comparison truths under stories A and B right?
+4. Which items in the plan's D2 paragraph does the spec miss or handle badly (root availability, separation, uncertain valence orientation, sparse classes, floor compression)? Is anything in the grid wasted or missing?
+5. Anything that would make D2's results misleading.
+Cite file and section. Mark memory claims "(memory)".
+
+codex
+I’ll read the D2 spec, the relevant plan sections, and D1’s joint-model precedent, then give a brief methodological critique grounded in those files.
+exec
+/bin/zsh -lc 'cat scripts/d2/README.md; cat scripts/d1/README.md; cat analysis_plan.md' in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+# D2: fake-data check of the lexical models (L1, L2)
+<!-- SUMMARY: D2 spec, written before any D2 code ran: fake-data simulation of L1's pair-level comparison model and L2's word-level marking model, at placeholder sizes until the frame is frozen; reports calibration, Type S/M and false-support rates under systematic bias · status: spec draft 2026-10-09 · updated: 2026-10-09 -->
+
+Fake-data simulation in the sense of Gelman et al. (2020, *Bayesian Workflow*, §4.1), for L1 and L2 in `analysis_plan.md` ("L1", "L2", "D2"). Simulated data is used only to evaluate the design. It is never analysed as evidence and never stands in for a dataset that should come from a source. Every number marked **[ours]** is a placeholder chosen for plausibility, not taken from a source. Sizes are placeholders until the frame is frozen; D2 is then rerun at the realized sizes (D2b).
+
+## What D2 decides
+
+1. Whether L1's primary design (one blind human comparison per pair, a second blind judge on a subset) is informative at plausible frame sizes, and how that compares with model judges alone. This bears on whether the blind coder's comparisons are worth their time.
+2. How far a bias that tracks the negated pole (description bias in the primary design, morphological bias in the word-based one) produces false support, and the size at which it does (the tipping point).
+3. Whether L2's rarity coefficient is identified next to stakes when the two are correlated among negative words, and what adjusting for act type does under the two causal stories.
+4. Whether the planned estimands and priors are calibrated (interval coverage), and what the sign-error and exaggeration rates are.
+
+## D2-L1: which pole carries the negator
+
+**Units.** Pairs *i* = 1..N in the frozen frame: a positive pole P and a negative pole Q, one of them negated.
+
+**Generating model.**
+
+- Pole prevalences on the logit scale: ρ_Q ~ N(−1.5, 1); relative prevalence r = ρ_P − ρ_Q ~ N(1.0, 1.2), so positive poles are usually the more common (positivity prevalence) **[ours]**.
+- Which pole is negated: Y = 1 if the positive pole is negated. Y ~ Bernoulli(logistic(α − β·r_std + β_x·x)), r_std = (r − 1.0)/1.2. β is the rarity-to-marking link. α is set per cell so the frame's share of Y = 1 pairs equals s_off.
+- Sizing (computed before any D2 code, by simulation of this model with an ideal judge): β = .5, 1, 2 give a standardized latent difference (below) of about .34, .62 and 1.0. Even at β = 1, the positive pole is the rarer one in only about 40–50% of Y = 1 pairs, so the test is the contrast between pair types, never "the negated pole is usually rarer".
+- Confound outside the fitted model (stress): x = −.5 r_std + √.75 ξ, a salience variable (a named negative behaviour invites a negated positive) that pushes Y = 1 where the positive pole is rarer, with β = 0 and β_x = 1 **[ours]**.
+- Valence orientation: the poles' valence difference Δv ~ N(1.5, .6), observed with error N(0, .3); where the observed difference has the wrong sign, P and Q swap in the analysis (Y and the response coding both flip) **[ours]**.
+- Selection (stress): a pool of 6N pairs; P(eligible) = logistic(−.5 + .8 ρ̃ − .5 Y), with ρ̃ the standardized prevalence of the negated pole (familiar words pass eligibility more often; negated positives are less familiar) **[ours]**. N pairs are drawn from the eligible ones.
+- Shared roots (stress): 15% of pairs share their root pole, its prevalence and its wording effects with another pair **[ours]**.
+
+**Judgments.** Each comparison shows one wording set (a description of P and one of Q; two sets per pair). The judge's latent is
+
+d = r + ω_w + b_j + η_i(models only) + φ_ij(models only) − δ(2Y − 1) + ε,
+
+with ω_w ~ N(0, .5) the wording-set effect, b_j the judge's tilt toward positive poles, ε ~ Logistic(0, s_j), and δ a bias that tracks the negated pole (a description of the negated concept that reads as more extreme; in the word-based specification, morphological bias). Responses: P more common if d > .4, Q more common if d < −.4, otherwise about equal; "can't say" with probability .05 at random (stress: .05 for Y = 0 and .20 for Y = 1) **[ours]**.
+
+- Blind coder: every pair once, wording set at random; b = .3, s = .6 **[ours]**.
+- Second blind judge: every Y = 1 pair plus random Y = 0 pairs up to 30, with the other wording set; b = .1, s = .7 **[ours]**.
+- Model judges: three families, both wording sets; shared pair error η ~ N(0, .4), family error φ ~ N(0, .25), b = .5, s = .3; stress: an extra availability bias a_m(2Y − 1), a_m = .3 **[ours]**.
+
+**Analysis model (as planned for L1).** Ordered logit on the three response categories, "can't say" dropped: latent = γY_obs + judge offset (the coder's fixed at 0) + u_i (+ u_iw when one pair-wording is judged more than once), u ~ N(0, σ_u), u_iw ~ N(0, σ_uw), two ordered cutpoints. Priors: γ ~ N(0, 1.5); offsets ~ N(0, 1); σ_u, σ_uw ~ HalfNormal(1); cutpoints N(0, 2), ordered **[ours]**. PyMC, nutpie, four chains, 1000 draws after 1000 tuning steps.
+
+**Estimand.** The standardized latent difference Δ = −γ / √(σ_u² + σ_uw² + π²/3): how much lower the judged relative prevalence of the positive pole is in pairs where it's negated, in within-pair-type SD units. Positive under the rarity account. It's comparable across judge designs, which the conditional log odds ratio γ isn't (its scale depends on which random effects are in the model). γ is reported too. **Truth:** Δ computed from a large simulated population (400,000 pairs) of the cell's generating model, judged by an ideal blind coder (wording and noise, no δ, no availability bias), for the frame population; under selection, the pool's value is reported beside it.
+
+**Designs fitted to each dataset.** (a) Humans: coder plus second judge. (b) Model judges only. (c) Humans plus model judges.
+
+**Grid.** Core: N ∈ {40, 80, 160} × s_off ∈ {.1, .2, .3} × β ∈ {0, .5, 1}, 30 replicates per cell. Stress, at N = 80 and s_off = .2, with β ∈ {0, 1}: δ = +.4; δ = −.4; confound (β = 0 only, β_x = 1); selection; shared roots; informative "can't say"; model availability bias. Seeds fixed per cell and replicate.
+
+**Word-based specification (secondary).** At N = 80 and s_off = .2: each pole also gets a commonness rating from its word, e = ρ + δ_m·[negated] + N(0, .5) (known SE), δ_m ∈ {−.4, 0, .4}; the slope of Y on the rating difference is fitted (logistic, with the valence difference) and its tipping point recorded.
+
+## D2-L2: which negative concepts get negated forms
+
+**Units.** Negative person-descriptive words *k* = 1..K.
+
+**Generating model.**
+
+- Within-valence prevalence z ~ N(0, 1) (higher = more common); stakes s = ρ_zs z + √(1 − ρ_zs²) ξ, ρ_zs ∈ {0, −.5, −.8} (rarer negative traits carry higher stakes); valence within negatives v = −.4 s + √.84 ζ **[ours]**.
+- Outcome, three categories: simple (reference), prefixed (contrary prefixes and *non-*), *-less*. η_prefix = α_p + β_z z + β_s s − .3 v + β_a a; η_less = α_l + .5 β_z z + β_s s + β_a a. β_z ∈ {0, −.4} (rarer, more often negated, under the rarity account), β_s = −.5 (the L2 conjecture: high stakes, simple forms), shares about .70, .25 and .05 **[ours]**.
+- Act type, two causal stories. **A:** act type a ~ Bernoulli(.4) comes first and enters the outcome with β_a = .8. **B:** the outcome is generated without a, then a ~ Bernoulli(logistic(−1.2 + 1.8·[negated])), so negation produces omission meaning **[ours]**.
+- Register confound outside the fitted model (stress): h with corr(h, z) = −.4 adds .6h to η_prefix, with β_z = 0 **[ours]**.
+
+**Measurements.** Description-based commonness e_d = z + δ_d·[negated] + N(0, .6), known SE; word-based commonness e_w = z + δ_m·[negated] + N(0, .5), known SE; arousal = .6 s + N(0, .8); valence extremity = .5 s + .3 v + N(0, .8); act type coded from descriptions with sensitivity and specificity .85; word-coded act type (stress): omission coded .15 more often for negated words **[ours]**. Core cells set δ_d = δ_m = 0; stress cells set δ_d = .3 (description indicator) and δ_m = .4 (word-based indicator).
+
+**Analysis model (as planned for L2).** Latent z ~ N(0, 1) with e ~ N(c + λ_e z, known SE), λ_e > 0; latent s with the two stakes indicators (loadings positive, residual SDs free) and a free correlation with z; categorical outcome by softmax on z, s, v, with observed act type (adjusted) or without (unadjusted). Priors N(0, 1.5) on coefficients **[ours]**. PyMC, nutpie.
+
+**Estimands.** The average predictive comparison of z and of s on P(prefixed) per SD (Gelman & Pardoe 2007, *Sociological Methodology* 37, 23–51, doi:10.1111/j.1467-9531.2007.00181.x), computed from the posterior predictive, and β_z on the log-odds scale. **Truth:** the causal average predictive comparison in the generating model (story A: act type held at its distribution; story B: act type absent from the outcome), computed from a large simulated population.
+
+**Grid.** Core: K = 300, ρ_zs ∈ {0, −.5, −.8} × β_z ∈ {0, −.4} × story {A, B}, each dataset fitted adjusted and unadjusted; K = 150 at ρ_zs = −.5. Stress, at K = 300 and ρ_zs = −.5, β_z ∈ {0, −.4}: description bias; word-based indicator with morphological bias; word-coded act type; register confound (β_z = 0 only). 20 replicates per cell.
+
+## Reported, per estimand and cell
+
+Coverage of 50% and 90% intervals; bias and RMSE of the posterior mean; median 90% interval width; sign-error rate (Type S) and exaggeration ratio (Type M) among fits whose interval excludes 0, for non-null truths only (Gelman & Carlin 2014); the share of fits in each H2-style decision (90% interval wholly above the threshold, wholly below it, or neither), at the placeholder thresholds Δ = .3 (L1) and an average predictive comparison of .05 (L2), plus .2 and .5 for L1 to show sensitivity **[ours]**; convergence (R̂ > 1.01, divergences), with failed fits shown, not dropped.
+
+## What's deliberately absent
+
+Floor compression of absolute commonness ratings matters for the word-based specification only, and enters there through the rating noise; the primary L1 design uses comparisons. Domain effects aren't simulated (the plan keeps them as varying intercepts only). Sizes, shares and effect values are placeholders; D2b reruns at the realized frame.
+# D1: design simulation for strand B
+<!-- SUMMARY: D1 spec, written before any D1 code ran: fake-data simulation of the strand B joint model (latent rarity), three scenarios, two indicator conditions plus f-only, two dataset sizes; decides whether a prevalence indicator is essential per coefficient and which engine to use · status: spec fixed 2026-10-07 · updated: 2026-10-07 -->
+
+Fake-data simulation in the sense of Gelman et al. (2020, *Bayesian Workflow*, §4.1), for the joint model in `analysis_plan.md` ("Strand B as one generative model"). Simulated data is used only to evaluate the design. It is never analysed as evidence and never stands in for a dataset that should come from a source. Choices marked **[ours]** aren't in the plan or the brief.
+
+## What D1 decides
+
+1. For each coefficient, whether it is identified at all without an independent prevalence indicator, and how reliable that indicator must be.
+2. What each dataset size can identify.
+3. Whether an unmeasured factor shared by word frequency, marking and production can pass for rarity (scenario 2).
+4. The engine (brms or PyMC), with a reason.
+
+## Coefficients tracked
+
+- Production: βρ (H2, rarity), βm (H1, marking beyond rarity), βf (accessibility), βv (valence).
+- Marking: γρ, γv, γs (L1, L2).
+
+## Generating model (scenarios 1 and 2)
+
+Items *i* = 1..I are candidate trait words, and *g* = 1..G are groups. Everything is on standardized scales.
+
+- Valence v*ᵢ* ~ N(0, 1), observed exactly **[ours: Warriner means are precise; measurement error ignored]**.
+- Latent prevalence ρ*ᵢ* = κ v*ᵢ* + √(1−κ²) z*ᵢ*, κ = .5 (common traits tend to be positive) **[ours]**.
+- Latent stakes s*ᵢ* = τ v*ᵢ* + √(1−τ²) ξ*ᵢ*, τ = −.3 (negative traits tend to carry higher stakes) **[ours]**.
+- Formal negation m*ᵢ* ~ Bernoulli(logistic(γ₀ + γρ ρ + γv v + γs s)), with γρ = −.5, γv = −1.0, γs = −.3, and γ₀ set so P(m) ≈ .15 **[ours]**.
+- Log word frequency f*ᵢ* = λρ ρ + λs s + λv v + λm m + ε, with λρ = .4, λs = .3, λv = .3, λm = −.3 and residual SD .7 **[ours]**. The λm path is form–frequency correspondence. It is exactly what makes word frequency circular as a rarity measure for L1 and L2, so the fitting model keeps it.
+- Prevalence indicator, when present: e*ᵢ* = ρ + .2 v + ε_e (the .2 is desirability inflation, as in self-endorsement), with reliability r ∈ {.5, .8}, i.e. ε_e SD √((1−r)/r) **[ours]**.
+- Stakes indicator (arousal): a*ᵢ* = s + ε_a, SD 1 (reliability .5) **[ours]**.
+- Production: n_gi ~ NegBin(mean exp(α_g + η*ᵢ*), dispersion φ = 2), with η*ᵢ* = βρ ρ + βm m + βf f + βv v + u*ᵢ*, u*ᵢ* ~ N(0, .5). α_g is set so each group's expected total equals N_g **[ours]**.
+
+**Scenario 1, recovery (the model is true):** βρ = −.3, βm = 0, βf = .3, βv = −.5.
+
+**Scenario 2, register confound (βρ = 0, βm = 0):** an unmeasured item factor h*ᵢ* ~ N(0, 1), independent of valence, loads on frequency (−.5), marking (+.8 on the logit scale) and production (+.4), and is absent from the fitting model. The story is learned or Latinate register: words like *intolerant* and *irresponsible* are less frequent, more often prefixed, and plausibly more often produced when people are asked for "stereotypes". Its pattern mimics rarity (low frequency, more marking, more production). **Criterion:** false-exclusion rate of the 90% intervals for βρ and βm, f-only against e present. One thing is expected in advance: h confounds marking and production directly, so βm may stay biased even with a good prevalence indicator. If so, the fix is a register covariate (etymology), not a better prevalence measure.
+
+## Scenario 3, mechanism check
+
+A stylized UWA-type process generates production, and the joint model is fitted to the result. This tests whether the statistical model picks up a UWA-type rarity signature. It does **not** claim that participants behave this way: UWA's participants reported stereotypes they know society holds, not ones formed from their own sampling.
+
+- Item prevalence π*ᵢ* = logistic(logit(.25) + ρ*ᵢ*), with ρ, v, s, m, f, e and a generated as above. Production doesn't depend on m: the true direct marking effect is 0.
+- Each group has a finite society of 100 members, with attributes independent Bernoulli(π*ᵢ*). There are no true group differences, so any differences are the society's chance ones (the strand A shared-society setting).
+- Each simulated participant samples 30 members of every group without replacement and computes each item's PPV for each group. For each group they give one response, item *i* with probability ∝ exp(5 · z(PPV_gi) + .3 · f*ᵢ*), where z standardizes PPV within the group: diagnosticity plus accessibility **[ours]**.
+- **Oracle:** the same production model fitted with the true ρ as data.
+- **Recovery criterion:** the joint model's posterior mean for βρ has the oracle's sign, and the oracle's posterior mean lies inside the joint model's 90% interval. For βm, the false-exclusion rate (truth 0).
+
+## Fitting model, v2 (post-pilot; supersedes v1 below)
+
+*Changed after pilot 1, before the grid.* v1 modelled ρ = κ v + √(1−κ²) z with a free valence term in every equation, including the prevalence indicator's. Then κ (how far prevalence tracks valence) trades off against each equation's own valence coefficient. Only the sum is identified, and the sign of κ isn't. Pilot 1 and `scripts/d1/diag_corr.py` showed the ridge: effective sample sizes around 7 for κ, βv, λv and the indicator's valence bias, with correlations up to .92.
+
+v2 fits what the data can identify:
+
+- The latent is within-valence rarity z ~ N(0, 1), the standardized residual of ρ given valence. Every equation has its own **total** valence coefficient (direct plus via rarity).
+- The prevalence indicator gets a free positive loading on z and a free total valence term.
+- Stakes are unchanged (τ is identified by arousal, whose valence term is fixed at 0 by construction).
+
+The split of a valence association into "direct" and "via rarity" is not identified without an assumption about the indicator's own valence bias, so D1 doesn't track it.
+
+**Tracked coefficients, v2** (true values from the generating model, with √(1−κ²) = .866):
+
+| v2 | meaning | scenario 1 | scenario 2 | scenario 3 |
+|---|---|---|---|---|
+| βz | within-valence rarity → production (H2) | −.3 × .866 = −.260 | 0 | oracle |
+| βm | marking beyond rarity → production (H1) | 0 | 0 | 0 |
+| βf | accessibility | .3 | .3 | oracle |
+| βvt | total valence → production | −.5 + (−.3)(.5) = −.65 | −.5 | oracle |
+| γz | within-valence rarity → marking (L1) | −.5 × .866 = −.433 | same | same |
+| γvt | total valence → marking | −1 + (−.5)(.5) = −1.25 | same | same |
+| γs | stakes → marking (L2) | −.3 | same | same |
+
+The scenario 3 oracle uses the true z and total valence. Elsewhere in this spec, βρ and γρ should be read as βz and γz.
+
+**v2.1 and v2.2 (post-pilot, each committed before it ran).** v2.1 samples the total within-valence rarity effect on production, c_z = βz + βf·λz, and derives βz from it. Prior and model are unchanged; this was a shear reparameterization because βz and βf traded off at r = −.93. c_z is also tracked: scenario 1 truth (−.3 + .3 × .4) × .866 = −.156; scenario 2, .104. v2.2 fixes the prevalence indicator's measurement-error SD at its known value √((1−r)/r), as for a norm averaged over raters with item-level standard errors. With one strong indicator and a free error SD, the split between true rarity and error wasn't identified, and the rarity coefficients mixed slowly (ESS about 15–40) even after v2 and v2.1. **Design consequence:** the prevalence measure needs item-level standard errors, not just means.
+
+## Fitting model, v1 (PyMC; superseded)
+
+It mirrors the generating model, minus h:
+
+- ρ*ᵢ* = κ v + √(1−κ²) z, and s*ᵢ* = τ v + √(1−τ²) ξ, with κ, τ ~ Uniform(−1, 1).
+- f: Normal, all four loadings plus an intercept; λρ > 0 identifies the sign.
+- m: Bernoulli-logit.
+- a: loading on s fixed at 1.
+- e (when present): loading on ρ fixed at 1, plus a valence bias term.
+- Production: negative binomial with group intercepts α_g and item effects u*ᵢ*.
+- Priors: N(0, 1) on coefficients; N(0, 2.5) on intercepts; group intercepts α_g ~ N(log(N_g/I), 2); HalfNormal(1) on SDs; HalfNormal(5) on φ **[ours]**.
+- **Prior sensitivity:** f-only cells are refitted with N(0, 2.5) on the coefficients.
+- Sampler: nutpie, 4 chains × 1,000 draws after 1,000 tuning, target accept .9. Each fit records R-hat, bulk ESS and divergences. A fit with R-hat > 1.01 or any divergence is flagged and reported, not dropped. *Changed after pilot 2, before the grid:* 2,000 tuning steps and target accept .95 (this removed divergences in the large scenario-3 cells). Item effects are centered when fewer than 10% of items have zero total count, otherwise non-centered: centered fixed the large scenario-1 cells (R-hat 1.008) but failed where most items are never produced (scenario 3, R-hat 1.88). Flags have two tiers: **severe** (R-hat > 1.05 or more than 10 divergences) and **mild** (1.01 < R-hat ≤ 1.05). "Not identified (no convergence)" requires most fits in a cell to be severe.
+
+## Conditions
+
+- Indicators: f only; f + e at r = .5; f + e at r = .8.
+- Dataset sizes, from the counts UWA report (journal pp. 5–6) times an assumed coverage of .4, the share of responses that normalize to a single adjective in the denominator set **[ours; the normalization hasn't run]**:
+  - small: G = 40, N_g = 18 (UWA Study 2: 1,783 responses over 40 groups);
+  - large: G = 43, N_g = 134 (Nicolas et al. Study 1: about 14,400 attributes over 43 groups).
+  - Nicolas et al.'s participants gave several attributes per group; that within-participant dependence is ignored here.
+- Denominator set: I = 400 **[ours; the trait-word list isn't built]**.
+- Reps: a pilot of 1 rep per cell first (treated as a run: committed before it ran). The rep count for the full grid is set from the pilot's timing and logged as post-pilot. *Set after pilot 2:* 20 reps for cells with a prevalence indicator and for the oracle; 5 for frequency-only cells, which failed to converge in all 8 pilot fits (R-hat 1.21–1.78). With non-converged chains, coverage and bias aren't meaningful, so those reps only confirm non-identification. A cell where most fits are flagged is labelled "not identified (no convergence)". The grid has 340 fits, run as 16 cloud chunks (`scripts/d1/CLOUD.md`).
+
+## Reported per coefficient and cell
+
+- Coverage of 90% intervals, bias, interval width and posterior contraction (1 − posterior variance/prior variance).
+- Where the truth is nonzero: sign-error rate and exaggeration ratio among intervals that exclude 0 (Gelman & Carlin 2014).
+- Where the truth is 0: false-exclusion rate.
+- Sampler diagnostics.
+- **The table Brett decides from:** for each dataset size and indicator condition, which coefficients are identified. "Identified" means posterior contraction ≥ .5, coverage ≥ .8 and a prior-sensitivity shift < .5 posterior SD; otherwise "weak" or "not identified" **[ours; thresholds fixed here before running]**. *Added while the pilot ran, before any of its results were read:* "not identified" means contraction < .2, and "weak" is everything in between. For scenario 3's βρ, which has no log-linear truth, coverage is replaced by the rate at which the oracle's posterior mean falls inside the joint model's 90% interval.
+
+## Engine check (brms)
+
+There is one brms attempt on one scenario-1 dataset (small, e at r = .8), using `mi()` latent variables with `subset()` and `mi(rho, idx = ...)` across item-level and count-level rows, and `constant()` priors for the fixed loadings, time-boxed to one hour. Reported: whether it expresses the shared latents, its sampling time and diagnostics, against PyMC on the same data. Either outcome supplies the plan's engine justification.
+
+## Environment
+
+- Project venv `.venv` (Python 3.14.8; pinned in `requirements-d1.txt`: PyMC 6.3.2, nutpie 0.16.11, pytensor 3.3.3, ArviZ 1.3.0).
+- pytensor appends `-ld64` on macOS ≥ 15, which this toolchain (ld-27037) doesn't recognise. `scripts/d1/bin/clang++` drops that flag, and every D1 run sets `PYTENSOR_FLAGS=cxx=<repo>/scripts/d1/bin/clang++`.
+- Seeds come from one `SeedSequence` (root 20261008) spawned per scenario, condition and rep. Logs go to `logs/d1-<timestamp>.json`, results to `results/d1/`, and `results/d1/SUMMARY.md` is generated from the CSVs.
+# Analysis plan
+<!-- SUMMARY: SKELETON: H2, H1, multiverse, commonness judges and engine settled 2026-10-09; L1/L2 revised and proposed (pending Brett: human workload, what counts against the marking claim); D1 running; D1b, D1c and D2 to run before FIXED · status: skeleton · updated: 2026-10-09 -->
+
+**Status: skeleton.** Nothing below is decided unless marked as settled. The plan of record is the commit that fills these sections and changes the status line to **FIXED**, made before any outcome model is fitted (brief, ground rules). Anything done with outcome data before that commit is post hoc and goes in `DECISIONS.md` as such.
+
+## Hypotheses
+
+- H1 (exploratory, predictive; settled 2026-10-09, see "H1 details"): does formal negation improve prediction of which words are produced as stereotypes, beyond within-valence rarity, valence, word frequency and measured word properties (register, act type)? Not a test of the common-cause account; L1 and L2 test the rarity-to-marking link directly.
+- H2: within valence, rarer attributes are more often stereotypic.
+- **Open decision (raised 2026-10-07, Brett to settle before FIXED): what H1 estimates.** The hypothesis has trait rarity as a common cause of stereotypicality and of overt marking. Log word frequency is another rarity signal, and so is valence (UWA's positivity prevalence). Conditioning on both may absorb the shared path, so a pure common-cause account predicts a near-null conditional markedness effect, and a positive one would point to a further channel (the marking itself). Frequency may also be partly downstream of stereotyping, which makes it a poor control. Candidate structure: (a) markedness without the frequency control, as the common-cause test; (b) the change when log frequency is added, read as how much of (a) frequency accounts for; (c) positive words containing a negator (*flawless*, *blameless*), where the marked-pole and valence accounts predict differently. Caveat: *flawless* is privative *-less* on a noun, and its antonym *flawed* is also derived, so it isn't clearly the marked member of its pair.
+- Strand A predictions (from the brief): fresh-sample PPV at chance (1/K) with no true differences; high valence agreement and low content agreement across perceivers with no true differences, content agreement rising with true differences.
+- **Open decision (raised 2026-10-07 by a reviewing agent; Brett to settle before FIXED): the brief's last strand A step, mapping how large true differences must be for simulated content agreement to reach observed stereotype consensus.** The observed data don't measure what the simulation's perceivers do. UWA asked for stereotypes "you know that exist in society", and Ingendahl et al. for what "society attributes"; agreement in such answers mostly reflects shared cultural knowledge, which the consensus split leaves out. Matching the two would put all observed agreement down to true group differences. Adding a transmission parameter doesn't rescue the mapping, because one agreement statistic can't separate true differences from transmission. Recommended: drop the quantitative mapping and keep the qualitative result (sampling alone yields consensus on valence but not on content, so observed content consensus needs true differences, cultural transmission, or both). Reframe only if a dataset turns up that elicits perceivers' own beliefs.
+
+**H2 details: settled (Brett, 2026-10-09, after an independent review by Codex, `reviews/codex-h2-2026-10-09/`).**
+
+- *Estimand.* The primary quantity is a model-based marginal association: the posterior-predictive change in production for a 1 SD difference in within-valence rarity, averaging over word frequency **and marking** under the joint model. It is labelled an association, not a causal total effect, because frequency's causal position is uncertain and modelling it jointly doesn't establish mediation. Conditional coefficients (holding frequency and marking) are reported second. Orientation: z measures prevalence (higher = more common), so H2 predicts negative values.
+- *Datasets.* UWA Study 1 for calibration only (response normalization; it informs neither the word list nor model selection). UWA Study 2 and Nicolas et al. are separate confirmatory tests with dataset-specific effects, not one pooled estimate. Ingendahl et al.: the Irish (English) subsample only. Participant dependence is modelled in both confirmatory datasets (UWA participants also answer several groups).
+- *The word list (denominator).* Anderson's 555 plus person-descriptive adjectives from the Warriner norms. Eligibility rules (senses, participles, ambiguous adjectives) are frozen and coded independently of which words have prevalence norms, so that norm coverage can't select on familiarity or rarity. Pre-specified sensitivity analyses: Anderson only; the expanded list; norm-covered words only.
+- *Response normalization.* Rules frozen after Study 1. Ambiguous responses are adjudicated blind to rarity and to the hypotheses. Syntactic negation, intensifiers and compounds are preserved, not mapped to affixal forms (*not friendly* is not *unfriendly*; cf. Beukeboom et al. 2010). Exclusions are reported by dataset, group and valence. Responses outside the eligible vocabulary are an explicit outcome category.
+- *What counts against H2.* Report the interval, P(effect < 0) and P(effect < −.10). Meaningful support: the 90% interval lies wholly below −.10. Evidence against an effect that large: it lies wholly above −.10. Otherwise inconclusive. The .10 (per SD of within-valence rarity, log scale) must be justified substantively and translated into predicted response probabilities before the plan is FIXED.
+- *Likelihood.* Production is modelled as a categorical choice among eligible words plus an outside option, matching fixed response budgets and competition among words, not as independent negative-binomial cells. The model includes group-specific content (group-by-item variation) and partially pooled group slopes; participant variation enters through slopes (a participant intercept common to all words cancels in a choice model). Posterior predictive checks: concentration, zeros, between-group overlap.
+- *Design check before FIXED (D1c).* D1's production submodel is re-simulated with the categorical likelihood, with null and threshold-sized effects, indicator bias and prior sensitivity, and with the word-list size, coverage and Nicolas et al.'s clustering updated once the word list is frozen (D1 used placeholders: 400 items, 40% coverage, independent responses). D1's measurement-side conclusions are expected to carry over but are rechecked.
+
+## Proposed revisions (2026-10-07; written in at Brett's request, open until FIXED)
+
+**Order of work.** (1) Strand A, with the group-size extension; (2) design simulation D1, built on strand A's engine; (3) the marking submodel on lexical data (L1, L2); (4) the joint model on stereotype responses (H2, H1). Steps 1–3 touch no outcome data, so they settle what the design can identify, and whether the hypothesis's "because" survives, before any stereotype responses are opened.
+
+**The measurement problem.** H2, L1 and L2 concern how common a trait or state is among people (UWA's π), not how often its word is used. Word frequency measures how much a trait is talked about. That mixes prevalence with stakes (O'Connor 2019, *Games and Kinds*, fn. 10: each term covers an area "about equally important from a payoff point of view"), and in free response it also has a direct accessibility effect. So rarity is treated as a latent variable, not read off a single proxy, and no prevalence measure is chosen by fiat. Wanted, and still being looked for: perceived-prevalence or endorsement norms for trait adjectives, and a baseline production task (UWA's Corollary 3 contrast). *Revised 2026-10-09 (Brett):* no research funding, so no paid participant study; and what the measurement model needs is a **judge** of commonness (an instrument, human or model, validated for this use against human data), not a participant sample. Model-judged commonness is therefore admissible as an instrument whose measurements are labelled as such and calibrated against the human panel in Ziano et al. (149 traits, about 80 raters each); it is never presented as human norms (that would be stand-in data). The earlier blanket exclusion of LLM ratings conflated an instrument with fabricated data.
+
+**Strand B as one generative model (replaces the separate tests and the earlier "reported as not run" rule).** Items are candidate trait words *i*; groups *g*; participants *p*.
+
+- *Latent per item:* prevalence ρ*ᵢ* (logit scale) and stakes s*ᵢ*. Valence v*ᵢ* is observed (Warriner mean, with the standard error of the mean, SD/√n, as measurement error).
+- *Measurement submodels:* log word frequency depends on ρ, s and v; each prevalence indicator that exists depends on ρ, with a desirability bias term (self-endorsement inflates desirable traits); stakes indicators (Warriner arousal, valence extremity) depend on s.
+- *Marking submodel (lexical, word level):* formal negation, by affix type, depends on within-valence rarity, total valence and stakes, with terms for morphological process (participial *un-*, adjectival *un-*, *-less* on nouns, opaque Latinate *in-*). It asks whether, at the same valence, rarer words are more often negated, among positive words and among negative words (L2, where stakes and act type also enter). Which pole of an opposition carries the negator is a pair-level question, L1's, modelled separately (see L1).
+- *Production submodel (H2, H1):* whether participant *p* produces word *i* for group *g*, against the denominator set, depends on ρ (H2), on marking beyond rarity (H1), on word frequency as accessibility, and on v, with varying intercepts for group, participant and item.
+
+Where the indicators are weak, the posteriors for these coefficients will be wide, and that is reported along with prior sensitivity. Nothing is dropped as "not run". D1 says in advance how wide they're likely to be. Fitting latent variables across submodels bears on the engine choice (brms or PyMC; still open).
+
+**What the model can and can't identify (settled by D1's pilot, 2026-10-07).** Any prevalence measure partly lines up with valence, and the data can't tell whether that overlap is real (common traits tend to be desirable) or the measure's own bias (people say desirable traits fit them). So the latent is *within-valence* rarity, and each equation carries a *total* valence term. Identifiable: at the same valence, are rarer traits more often marked (L1, L2) or more often produced as stereotypes (H2)? Is marking associated with production beyond rarity (H1)? **Not identifiable without an extra assumption:** does valence matter once rarity is known? That is the "rarity rather than valence" half of the marked-pole claim, and close to UWA's own argument. The plan therefore claims no rarity-versus-valence contrast. **Settled (Brett, 2026-10-09):** route (b), two prevalence measures whose valence biases differ in a known direction (self-endorsement inflates desirable traits; judged prevalence in others should do so less), where such measures exist; otherwise route (a), one measure with a sensitivity analysis over a stated range of its valence bias. The contrast is claimed only as strongly as the route supports; under (a), as a conditional ("if the measure's valence bias lies between X and Y, valence does or doesn't matter once rarity is known").
+
+**Which rarity: settled (Brett, 2026-10-09): both perceived and actual prevalence, as far as the data allow.** Approach, in Gelman's spirit (model the measurement rather than choose a construct; where a bias can't be estimated, show how conclusions depend on it):
+
+1. *Target:* actual prevalence as a latent variable. Effects are also reported for perceived prevalence, which needs fewer assumptions.
+2. *Indicators,* each with its own item-level standard errors, its own valence term, and an informative prior on a shared (between-rater) bias: judged prevalence in others (likely bias: availability, i.e. tracking word familiarity or marking, modelled as a dependence on word frequency); self-endorsement norms (likely bias: desirability); behavioural or act-frequency data where they exist.
+3. *Identification by what exists.* With two or more indicators whose biases differ, the plausible range for actual prevalence narrows, but actual-prevalence effects stay sensitivity-based: differing biases don't identify actual prevalence without anchors or restrictions on shared bias, and priors supply assumptions, not identification (Codex review, 2026-10-09). With one indicator, perceived prevalence is estimated directly, and actual-prevalence effects appear only as a sensitivity analysis over a stated range of the shared bias.
+4. *Simulate first (D1b, before FIXED):* a fake-data check of the multi-indicator design. Recovery is possible only under explicit identifying restrictions, which D1b must state algebraically (a shared bias, e.g. from familiarity, can be absorbed into the latent without changing the data); it reports conclusions across pre-specified bias, transport and feedback assumptions rather than a single recovery (corrected 2026-10-09 after the Codex review of the prevalence indicators, `reviews/codex-prevalence-2026-10-09/`). Known item-level standard errors constrain sampling error, not unknown systematic measurement error.
+
+Background: D1 converges only when the indicator's noise is known, from item-level standard errors, which capture rater disagreement only; a misjudgment raters share is absorbed into the latent. So a single indicator yields perceived prevalence, and D1's results are a best case. This settlement also serves the availability guard (two indicators with different biases) and reopens the rarity-versus-valence contrast (route (b) above) when the indicators' valence biases differ in a known direction. What can be done depends on the prevalence-norm search (running 2026-10-09).
+
+**Act type (raised 2026-10-09 by the side session's handover; L2 and H1 settled, see "H1 details").** In French (Google Books 1950–2019), whether a bad trait word defers to its antonym in comparatives (*moins honnête que* rather than *plus malhonnête que*) follows act type: failing to do an expected act against doing acts, net of word frequency, logit 1.06 [0.51, 1.56] over 128 concepts. With act type in the model, formal negation has no detectable effect among traits (−0.13 [−0.67, 0.54], 21 prefixed traits), though across all adjectives negated words do defer more (`Project-Management/notes/2026-10-09-marked-pole-brief-for-main-session.md`; numbers checked against `2026-10-08-marked-pole-french-v2/results.md` and `results_1b.md`). Limits: model-coded act type (eight families, no human check), French, comparatives rather than stereotypes. It bears on two things here. (1) H1 measures markedness by formal negation; if the marked pole means the dependent pole, act type may be the better trait-level variable. (2) L2's illustrations confound stakes with act type (*cruel*, *violent* coded 'doing'; *désordonné* 'not doing'). **Settled for L2 (Brett, 2026-10-09): act type is adopted in L2** (see L2 below). Still open, for H1: keep formal negation and say the hypothesis concerns overt coding; add act type (commission against omission) as an observed item-level covariate in the marking and production submodels; or add the comparative measure itself as a functional markedness variable where English counts exist. Act type is close to the "feature absence" sense kept separate in Variables; the French result supports keeping it distinct from formal negation.
+
+**H1 details: settled (Brett, 2026-10-09, after a Gelman pass and an independent Codex review, `reviews/codex-h1-2026-10-09/`).**
+
+- *What H1 asks.* An exploratory, predictive question: does formal negation improve held-out prediction of word choice beyond within-valence rarity, valence, word frequency and measured word properties? Prediction is evaluated by holding out **words or morphological families**, not participants (participant holdouts leave the word-level problem untouched). The conditional association is also reported as a posterior-predictive comparison averaged over a common-support population of words and groups, with the competing vocabulary fixed and the treatment of frequency (held fixed or integrated over) stated. Predictive improvement remains compatible with confounding, so H1 isn't read as evidence for or against the common-cause account.
+- *Why not a test.* D1 scenario 2: an unmeasured register factor produced a marking coefficient of about +.20, with 90% intervals excluding 0 at the large size, where the truth was 0, under both prevalence measures (`results/d1/pilot2_fits.csv`). Only measuring the confounder helps, and adjustment can't rule out unmeasured ones.
+- *Causal structures.* Alternative causal diagrams for marking, act type, register, frequency and production are written down before FIXED. Act type may partly reflect meaning created by negation, and register reflects lexical history and use, so neither is assumed to precede marking without argument.
+- *Negation and act type.* Separate coefficients for contrary prefixes (*un-*, *in-/im-/il-/ir-*, *dis-*), *non-* and privative *-less*; affixes are pooled only within the contrary-prefix class. A sceptical prior on a pre-specified negation × act-type interaction, with a recovery check under sparse overlap. Act type enters through a calibrated measurement model allowing correlated errors across coder families and genuinely ambiguous items, not as a thresholded code or a raw vote share.
+- *Human calibration of act type.* Brett and a second human coder code a stratified random sample of concepts (strata: the word's affix class, valence, coder-family disagreement, rare act-type categories), blind to the model codes. The second coder is also blind to the hypotheses and Brett can't be, so the second coder's codes are primary and Brett's are a sensitivity check (corrected 2026-10-09). Disagreements are adjudicated.
+- *Coding source (revised 2026-10-09, see L2).* Act type is coded, by model families and human coders alike, from the morphology-free descriptions written for L1, for every use (H1 and L2), since coding from the word invites "prefixed" to stand in for "omission". Word-coded act type, with instructions that guard against that shortcut, is a secondary specification showing how far lexical cueing moves the codes. Sample size is set from the precision wanted for the misclassification rates (roughly 150–300 words), fixed before coding.
+- *Register.* Three distinct measures, not one: etymological origin (Latinate against native), present-day register (learnedness or formality), and familiarity (for example Condon, Coughlin & Weston 2022, CC0). Sources still to choose and verify. D1c simulates how much bias survives across control reliabilities, correlations with valence and act type, and differential coding errors.
+- *Reporting.* A pre-specified set of specifications (no word-level controls; register; act type; both), which isn't nested, each reported as standardized predictive contrasts on the same target population, with overlap diagnostics and prior sensitivity. No "interpret only if it survives" rule; coefficient movement isn't read as confounding removed. D1 shows bias is possible; it doesn't give false-positive rates.
+- *Morphological bias.* A morphology-dependent bias in word-based commonness falls exactly on the negated words, so H1's marking coefficient is stated conditional on bounds on that bias, with description-based commonness as a separate indicator (see L2).
+- *Overlap check.* Unprefixed negative words are informative contrasts too; check the overlap of negation and valence on the frozen word list before relying on the claim that the estimate rests on a small off-diagonal set.
+
+**Multiverse (settled, Brett, 2026-10-09: "Gelman would usually say use them all. We take a multiverse approach"; design revised the same day after a Codex review, `reviews/codex-multiverse-2026-10-09/`).** Where several analytic options are defensible, all are run as a pre-specified multiverse (Steegen, Tuerlinckx, Gelman & Vanpaemel 2016) and reported across, instead of one being chosen. Pre-specification constrains the fitting choices; the rules for ordering and emphasis in reporting are fixed in advance too, since otherwise emphasis after the fact would be its own forking path.
+
+*What varies, and how it is reported, in three kinds:*
+
+- **Alternative models of one estimand** (the multiverse proper): prevalence indicators (Ziano et al.'s commonness alone; with Ziano self- and other-ratings as separate auxiliary constructs; with the ESCS self-ratings as auxiliary endorsement data, never as a prevalence indicator; with the new ratings, adjective, behavioural or both, if collected); availability (a grid of shared familiarity bias and of direct morphological bias in the prevalence ratings; familiarity from Condon, Coughlin & Weston 2022); valence bias of the prevalence measure (a grid, for the rarity-versus-valence contrast); valence adjustment (linear and flexible); measurement-invariance and transport restrictions (with and without); feedback from outcomes to inferred rarity (joint, and restricted, "cut"); H1 controls (none, register, act type, both); response normalization (strict and lenient, both frozen after UWA Study 1); priors (reference, and substantively calibrated identifying priors, not merely widened ones).
+- **Different estimands, reported side by side, never tallied together:** frequency held fixed and frequency integrated over, computed from the same posterior where possible.
+- **Different target populations, reported as separate strata:** word sets (Ziano's 149; ESCS-covered; all eligible; Anderson only; the expanded list) and datasets (UWA Study 2, Nicolas et al., Ingendahl et al.'s Irish subsample). Each word set changes the population and the competing vocabulary, so it isn't a robustness check of another.
+
+The categorical choice likelihood is fixed, not varied: independent negative-binomial counts contradict fixed response budgets and competition among words (see "H2 details"), and no sampling rationale supports them. Only admissible combinations are run; unavailable indicators and unsupported scale bridges aren't alternatives. For the lexical models (L1, L2), which are cheap, the relevant dimensions are crossed in full. For the joint production model, a fixed fractional-factorial or space-filling design covering the coupled assumptions (indicators × word sets × availability; availability × valence bias; H1 controls × measurement reliability and feedback) and the plausible bias extremes is chosen by simulation (D1b, D1c) before any stereotype outcomes are opened. Convergence criteria, retry rules, and the display of failed fits are registered; robustness is claimed only over the evaluated design.
+
+*Model expansion where uncertainty is measured; separate fits where it isn't.* Measured uncertainties go inside one expanded model: respondent-level measurement with rater effects, instrument-specific loadings, uncertain act-type codes, partially pooled affix effects within the contrary-prefix class, and regularized nonlinearities. Assumptions the data can't adjudicate (shared bias restrictions, feedback policies) stay as separate sensitivity fits; averaging over them would hide the identifying assumptions inside prior weights.
+
+*Reporting.* Every specification's estimate and interval, in a fixed pre-registered order, stratified by dataset, estimand and word set, on a common contrast scale (the reference scaling of "1 SD of rarity" is frozen across word sets where comparable, not re-standardized within each subset). The H2 evidence rule is applied to each admissible specification separately. Overall labels, fixed in advance: *uniform meaningful support* if every specification qualifies; *uniform evidence against an effect that large* if every one qualifies against; otherwise *specification-dependent*, with the inconclusive and conflicting branches shown. The share of specifications meeting a criterion is descriptive only, not a probability (duplicating grid points would change it). Direction is reported separately from magnitude. Datasets aren't pooled into any tally.
+
+**Commonness judges (replacing the paid rating study, which isn't funded; design settled 2026-10-09 after a Gelman pass and a Codex review, `reviews/codex-judges-2026-10-09/`; engine amendment pending Brett).**
+
+- *The human anchor.* Ziano et al.'s raw commonness ratings (149 traits, about 80 raters each), modelled at the respondent level, ordinal, with rater effects and posterior predictive checks of category use and item disagreement. The OSF data structure and instructions are verified first. The anchor measures this panel's perceived commonness, not actual prevalence; Ziano's wording also mixes "how many people have it" with "how often it's displayed".
+- *Judges.* Several model families, local first, versions and prompts frozen (population, timeframe, trait interpretation, scale). Logprob-based expected ratings and chat ratings are distinct instruments; excluded probability mass and tokenization are checked; repeated chats measure stochastic variation, not independent evidence. Correlated errors across families and prompt effects are modelled, since several families can share one systematic error. A small pilot comes before the full vocabulary.
+- *Calibration and transport.* Judges are linked to the human latent on the 149 with partially pooled discrepancies, regularized nonlinearities, correlated instrument errors and a systematic-error floor. Carrying calibration to the other words isn't automatic, since the 149 are a selected subset: joint support is checked (especially rare positive negations and morphology–valence combinations), and words outside warranted support get descriptive-only status. Calibration is frozen independently of marking and stereotype outcomes, and restricted ("cut") feedback is primary.
+- *Does a judge add anything beyond word frequency?* Test: held-out prediction of human commonness from frequency, familiarity, valence and morphology alone against the same predictors plus judges, with every calibration step fitted inside each fold. Improvement is required overall and within valence and morphological strata. Passing shows incremental prediction of *human perceived* commonness, not information about actual prevalence.
+- *Warrant, specific to each use.* Holdouts by morphological family, semantic domain and support boundary, not only random items. Leave-one-family-out tests instrument dependence, not vocabulary transport. Possible memorization of published tables (Anderson, Ziano) compromises item holdouts and can't be ruled out by paraphrase. Before use in H2, L1 or L2, the plan fixes acceptable calibration error, interval coverage, residual bias by frequency, valence and morphology, and propagated downstream bias, and simulates null and meaningful effects, selected anchors, shared availability errors and failed transport. L1's primary estimand uses morphology-free comparisons instead (see L1); L2 needs morphology, stakes and act-type support.
+- *Framings.* Adjective, behavioural descriptions (frozen, checked for equivalence blind to ratings, wording variation estimated) and an identical-wording accessibility manipulation are **instrument diagnostics**: they show a judge's susceptibility to framing and access, not humans'. Behavioural outputs stay auxiliary until a bridge to the human scale is validated. Exception (proposed 2026-10-09, see L1): for L1's ordinal within-pair estimand, description-based comparisons are primary data, since that estimand needs no bridge to the absolute scale.
+- *Circularity.* Judges can reintroduce it: textual prevalence and textual stereotypes may drive both judged commonness and production. Calibration to humans keeps any availability bias humans share. Neither consensus nor hierarchy removes it, so the shared-bias sensitivity analyses stay.
+- *In the multiverse.* Measurement alternatives (human only; human plus judges) are compared first on the same 149 words; expanded word sets are admitted only within warranted support, as separate populations.
+- *Engine (settled, Brett, 2026-10-09: "reuse acceptometer's Stan measurement model").* The commonness measurement module reuses the acceptometer's Stan model and validation machinery (`tools/llm-acceptability-judgments/`), after checking its construct-specific assumptions for commonness; this amends the brief's "brms or PyMC" for that module. Its posterior draws feed the PyMC joint model, which also implements restricted ("cut") feedback. The joint model stays in PyMC.
+- *Human judges for the region the panel doesn't cover (settled 2026-10-09 after a Codex review, `reviews/codex-extreme-anchor-2026-10-09/`).* Ziano et al.'s 149 come from Anderson's list, which excluded "extreme words, such as ferocious", so extreme traits (*violent*, *cruel*) lie outside the anchor. The second human coder (blind to the hypotheses and to model outputs) is the primary human judge there; Brett, who can't be blind, contributes a pre-specified sensitivity row; two or three further blind volunteer judges are added if they can be found. Each judge rates commonness, with Ziano's wording and scale, for (a) a linking set of about 60–80 of Ziano's traits spanning panel commonness, valence, morphology, semantic domain and boundary items, and (b) an extension set of about 100–150 traits drawn at random from the frozen eligible list, oversampling extreme negatives while keeping near-boundary negatives, positive extremes and other unsupported combinations, with morphology and provisional act type balanced and inclusion probabilities recorded; nothing is selected on stereotype outcomes or model commonness. Final sizes are set by simulating calibration precision and downstream H2 bias. Linking and extension items are intermixed in a fresh random order per judge with strata hidden; commonness is collected before act-type coding, in separate sessions; commonness ratings are kept independent, not adjudicated. Each human judge is modelled separately, with judge-specific thresholds and discrepancies estimated on the overlap. Linking places a judge on the panel's scale within the panel's support; it can't identify a discrepancy that all judges share in the extreme region. So expanded-vocabulary H2 estimates carry a qualified warrant: "conditional on transport of judge-to-panel calibration and stated bounds on extreme-region shared bias", distinct from validated panel support, and reported separately. Floor compression is checked (if extreme traits all get minimum ratings, more ratings won't recover their order).
+
+**H1 and the frequency control.** Gelman & Hill (2007, §9.7, p. 188): "it is generally not a good idea to control for variables measured after the treatment." If word frequency is partly a consequence of trait rarity, it's an intermediate outcome, and §9.8 cautions against regressing on intermediate outcomes to estimate mediation. Frequency is modelled jointly as a path, but the production equation still conditions on it, so modelling it jointly doesn't by itself avoid the problem: what an estimate means depends on the predictive averaging, either holding frequency fixed or integrating over its rarity- and marking-dependent distribution, and each estimand must say which (see "H2 details"; corrected 2026-10-09 after the Codex review of H1, `reviews/codex-h1-2026-10-09/`). This supersedes the "(b) the change when log frequency is added" reading in the open decision above.
+
+**D1: design simulation (no outcome data).** Fake-data simulation in the sense of the *Bayesian Workflow* paper (Gelman et al. 2020, §4.1, p. 16). Two checks:
+
+1. *Parameter recovery:* simulate from the joint model with known coefficients, fit it, and compare.
+2. *Mechanism check:* simulate stereotype production from strand A's process (perceivers selecting high-PPV attributes from finite samples), add a word-frequency channel with accessibility and stakes effects, and fit the joint model. Does it recover the rarity signature from a process it doesn't share?
+
+Conditions: word frequency as the only rarity indicator; word frequency plus one prevalence indicator at several reliabilities; plausible effect sizes; item, group and participant counts matching the real datasets once verified. D1's contraction and convergence criteria describe how the design performs under the assumed models; they don't establish structural identification (Codex review, 2026-10-09). Reported per coefficient: interval coverage, bias, interval width, and sign-error rate and exaggeration ratio (Gelman & Carlin 2014). The results decide whether a prevalence indicator is essential for each coefficient. Brett makes that call with D1's output in hand, before the plan is FIXED. Simulated data is used only to evaluate the design. It's never analysed as evidence and never stands in for a dataset that should come from a source.
+
+**D2: fake-data check of the lexical models (added 2026-10-09 at Brett's prompt, "we should do fake data before actually running right?"; scope from the Codex review, `reviews/codex-lexical-2026-10-09/`).** Before the plan is FIXED, and before any comparison or commonness is joined to morphology, L1's pair model and the word-level marking model (L2) are fitted to simulated data, with sizes taken from the frozen frame (placeholders before then: a range of pair counts and of the share of pairs whose negated member is positive). The simulations include eligibility-dependent selection, root availability, shared roots, near-equal poles, uncertain valence orientation, separation and sparse affix classes; judge effects, wording effects correlated within a concept, and morphological bias of either sign; 'about equal' and 'can't say' responses and floor compression; correlated rarity and stakes among negative words; and act-type misclassification, including dependence on negation. Some generating mechanisms lie outside the fitted model (negation driven by valence and event salience with no rarity link; usage frequency driven by stakes), and false meaningful-support decisions under systematic bias are reported. Reported per estimand: coverage, bias, interval width, sign-error rate, and the exaggeration ratio for non-null truths (Gelman & Carlin 2014; it's undefined at zero), on standardized contrasts with the scaling fixed across specifications. Spec and code are committed before running.
+
+**Strand A, extension A5: unequal group sizes.** UWA say their account "does not require assumptions about minority status or group size" (Cognitive Principle section), but their simulation fixes 10 groups of 100. Vary the target group's share at fixed total N and report UWA's three outcomes by share. Comparison point, not a shared mechanism: the cultural Red King effect (O'Connor 2019, *Origins of Unfairness*, ch. 6), where minority disadvantage comes from learning speed in strategic games. Optional A6: three-valued attributes (positive, neither, negative), per Variables.
+
+**L1: which pole of an opposition carries the negator (pair level; lexical; proposed 2026-10-09 after a Gelman pass and a Codex review, `reviews/codex-lexical-2026-10-09/`; the human workload is pending Brett).** The hypothesis concerns "the marked pole of evaluative oppositions" (brief, lines 14–15), so its marking claim is first a pair-level one: in a root/negation opposition (*selfish/unselfish*, *kind/unkind*), the negated member names the rarer pole. The form-frequency principle concerns usage frequency within an opposition (Haspelmath & Karjus 2017, principle (3)), not prevalence among people, so L1 tests a reduced form that needs an auxiliary bridge: prevalence asymmetries must produce usage asymmetries, and stakes can break that bridge. If L1 fails, the bridge or the coding link may be at fault, and L1 can't say which. Haspelmath & Karjus call the effect "relatively weak" and place it in diachronic change (section 8), which gives no expected effect size for English, so the threshold is justified separately.
+
+- *Frame.* All root/negation pairs (contrary prefixes and *non-*) whose members are both eligible person-descriptive adjectives, detected by rule and hand-checked, with sense-level eligibility and exclusions frozen before any commonness is collected or joined to morphology; pairs that can't be interpreted stay in a reported table. Pairs whose root isn't eligible are described, not used for the estimand. Participial pairs (*shaken/unshaken*) follow the word list's eligibility rules, carry a participial indicator, and are also reported separately, since participial *un-* attaches freely. The list assembled from intuition is dropped: *unbeaten* and *undefeated* describe records, not person traits (UWA's own example of rare positive ability information is "winning a competition"). Hampson, Goldberg & John (1987) supply a second, probably overlapping frame once obtained; Hofstee (1995), a direct precedent reported by the prevalence search, is adjudicated once read.
+- *Why word-based commonness can't carry L1.* If judges rate negated words as rarer by δ, the predictor shifts by +δ exactly when the negated member is positive and by −δ when it's negative, so the bias produces L1's predicted association under a null. Valence adjustment doesn't remove it, and a sensitivity grid makes conclusions conditional without identifying them. The bias can run either way: a marked form may seem rarer, or a judge may read *un-X* as 'not X' and rate it as the complement of a rare *X*.
+- *Primary estimand: morphology-free and ordinal.* For each pair, which concept is judged more common in the population the commonness prompts fix, when both poles are given as behavioural descriptions that avoid the words and their roots (responses: either pole, about equal, can't say). The test is the association, across pairs, between which pole is negated and which is judged rarer, as a log odds ratio with judge, wording and pair effects. The rarity account predicts a positive association, and pairs whose negated member is positive are the ones that separate it from a valence account. Ordinal comparisons can't recover a slope on logit commonness, and none is claimed. This amends "Framings": for this estimand, description-based judgments are primary data.
+- *Descriptions and judges.* Two independent wordings per pole, written from the frozen dictionary sense (source fixed with the plan) by frozen prompts in two model families, checked for equivalence by model checks (all) and the blind second coder (a random sample), so wording effects can be separated from concept differences. Each description characterizes the trait at its pole by what the person does or is like, in the contrary sense fixed under Variables; "not X" and "lacks X" paraphrases are excluded, because a complement makes the negated concept common whenever its root is rare, and negation is allowed only where failing to act is itself the trait. The blind second coder compares every pair once, with wording, order and side randomized, intermixed with filler oppositions (semantic antonym pairs among eligible adjectives, from WordNet's antonym relation, version fixed with the plan; they also give a reference set) so the stratum is hidden. The coder's tasks run in separate sessions in this order: description comparisons, word-based commonness, act-type coding, and last the equivalence spot-check, which shows descriptions beside their words. A second blind judge, if one can be found, compares a stratified subset that includes every pair with a positive negated member; the subset's size is fixed from the precision wanted on disagreement and wording effects. Brett's comparisons, if any, are a sensitivity row. Model judges compare every pair under both wordings, as instruments. The result is limited reproducibility of perceived relative commonness, not accuracy about actual prevalence.
+- *Secondary, conditional specification.* The word-based slope on the poles' logit commonness difference, with the valence difference and morphological-process terms (valence adjustment linear and flexible), reported across the morphological-bias grid with its tipping point (the δ at which the interval reaches 0).
+- *Model size.* The frame will be small, so domains enter as varying intercepts only; domain-varying slopes and many process terms would mostly reflect their priors.
+- *What counts against.* As for H2: meaningful support if the 90% interval for the log odds ratio lies wholly above a threshold, evidence against an effect that large if it lies wholly below, otherwise inconclusive. The threshold is justified and translated into probabilities before any comparison is collected. Evidence against a meaningful effect isn't evidence of absence.
+
+**L2: which negative concepts get negated forms (word level; lexical; a conjecture; revised 2026-10-09 after the Codex review, `reviews/codex-lexical-2026-10-09/`).** If lexicalization follows payoff importance and short forms follow frequency of use (form-frequency correspondence; Haspelmath & Karjus 2017), then among negative person-descriptive adjectives, formal negation should cluster among low-stakes words (*impolite*, *untidy*, *unpunctual*) and simple forms among high-stakes ones (*cruel*, *violent*). The examples are illustrations, not data. Extremity, rarity and stakes probably move together among negative traits, so the rarity coefficient given stakes may be weakly identified; overlap is checked and reported before any coefficient is interpreted. Stakes indicators (Warriner arousal, valence extremity) need construct validation before they support a stakes claim.
+
+- *Morphological bias.* The bias that blocks word-based L1 contaminates every word-level coefficient linking commonness and negation (L2, the joint model's marking equation, H1's marking coefficient), since the shift falls exactly on the negated words. So word-level analyses add description-based commonness from the model judges (both wordings) as a separate indicator beside word-based commonness, and their conclusions are stated conditional on bounds on δ.
+- *Act type (adopted for L2, Brett, 2026-10-09).* Each word is coded for act type, naming acts done (commission) or an expected act not done (omission), and act type enters the L2 model as an item-level covariate. In the side session's French coding, the L2 illustrations split along it (*cruel* and *violent* coded 'doing', *désordonné* 'not doing'; per its brief), so without it a stakes effect could be an act-type effect. Omission may be constitutive of a derived concept (*un-X* often names failing to do X-acts), so act type may be partly a consequence of the negation. It's coded from the morphology-free descriptions (as for H1; see "H1 details"), which reduces lexical cueing without making it causally prior; adjusted and unadjusted contrasts are reported on the same population under the alternative causal diagrams required for H1, and coefficient movement isn't read as bias removed. The coding source (the side session's multi-family instrument, `Project-Management/notes/2026-10-08-marked-pole-french-v2/prompts/code.txt`, or human coders) is fixed with the plan.
+- *Model.* Categorical outcome (simple; contrary prefix; *non-*; *-less*), affixes partially pooled within the contrary class, varying intercepts for morphological family and semantic domain; prior and posterior predictive checks (negation share by valence bin, affix counts, off-diagonal counts).
+- **Open decision (Brett): what counts against the marking claim.** The earlier wording ("If marking follows stakes and not prevalence, the hypothesis's single-rarity claim fails") can't stand: a stakes association alone doesn't establish it, since a rarity effect may coexist, be poorly measured, or lack overlap (Codex review). Recommended: the hypothesis commits to both levels, each with a falsifier fixed now. Pair level: L1's log odds ratio (above). Word level, for the common-cause account behind H1: a well-identified rarity coefficient for negation (adequate overlap, description-based commonness, bounds on δ stated) whose interval lies wholly below the threshold. Fixing both in advance stops a failure at one level being reassigned to the other after the fact.
+
+**H1: exploratory (superseded in detail by "H1 details" above).** Formal negation of evaluative adjectives is strongly tied to valence (*un-* attaches mainly to positive bases and yields negatives), so the conditional estimate depends on the off-diagonal words, whose overlap is to be checked. The one item-level test of frequency against markedness (Ingram et al. 2016) found nothing beyond valence.
+
+## Data and exclusions
+
+To write: each dataset (once verified), the unit of analysis, the denominator set of candidate adjectives, lemma normalization and what it loses, exclusions.
+
+## Variables
+
+**Senses of "negative" (settled 2026-10-07; see `DECISIONS.md`).** Four senses stay separate, each with its own variable or none:
+
+- **Valence**: the attribute is evaluated as bad. Warriner rating. In this plan, "negative attribute" and "positive attribute" mean valence and nothing else.
+- **Formal negation**: the word contains a negator. Coded by type, because the types differ in meaning: contrary prefixes (*un-*, *in-/im-/il-/ir-*, *dis-*), *non-*, and privative *-less*. Record the base's valence too (*flawless* negates a negative base, *flaw*, and yields a positive word). Hand-check detections (*uniform*, *discuss*).
+- **Order markedness**: Ingram, Hand & Maciejewski's (2016) markedness probability, where their 154 pairs cover the word. A behavioural measure, not a morphological one.
+- **Scalar polarity**: the less-of pole of a dimension (*short*, *few*). Valence-neutral; not used as a markedness measure for H1.
+
+**Feature absence** (UWA's presence/absence coding, πneg = 1 − πpos) is a modelling choice in strand A, not a property of words. Affixal negation isn't treated as absence: *un-* on an evaluative adjective usually gives a contrary (someone can be neither friendly nor unfriendly). If strand A is extended to carry marking, an attribute needs three values (positive, neither, negative), closer to UWA's range principle than to their binary coding.
+
+Avoid "negative pole" and bare "marked" in the plan and report; name the sense.
+
+To write: outcome coding; formal-negation detection; order markedness coverage; valence (Warriner); log frequency; the valence–negation collinearity and how it's estimated and reported; the informative off-diagonal cases (positive words containing a negator, unnegated negative words).
+
+## Models
+
+To write: engine (brms or PyMC) and why; likelihood; group, participant and item effects as the data allow; priors; posterior predictive checks; the effect sizes to report, with intervals.
+
+## What would count against each hypothesis
+
+To write, before fitting: for H1, H2 and each strand A prediction.
+
+## Seeds and environment
+
+To write: seeds, package versions, how runs are logged in `logs/`.
+
+exec
+/bin/zsh -lc "cat /Users/brettreynolds/.codex/skills/review-board/SKILL.md; rg -n '"'^##|'"\\*\\*D2|\\*\\*L1|\\*\\*L2|v2.2|Estimand|Floor|Second blind|Valence orientation|Analysis model|Grid' scripts/d2/README.md scripts/d1/README.md analysis_plan.md" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+---
+name: review-board
+description: Simulate expert reviewers critiquing a paper or chapter, including optional redundant Opus/Codex boards. Use when user says "review", "critique", "what would reviewers say", asks for a review board, asks for redundant reviewers, or before submission.
+---
+
+# Review Board
+
+Simulate a panel of 3-6 expert reviewers providing structured critique of a paper or chapter. Each reviewer runs as an independent subagent to avoid cross-contamination.
+
+Use this skill for failure analysis and presentation quality. Do not let simulated reviewers decide whether Brett's central idea is worth pursuing: unanimous resistance to a strange, cross-paradigm move can be a novelty signal. Separate "is this argued well?" from "is this worth arguing?"
+
+## Context
+
+- Current directory: !`pwd`
+- Project CLAUDE.md: !`cat CLAUDE.md 2>/dev/null | head -30 || echo "No project CLAUDE.md"`
+
+## Setup
+
+### 1. Read the target file
+
+Read the file specified in the argument (or `main.tex` if none given). Read it fully -- the reviewers need the complete text to give useful feedback.
+
+### 2. Find or compose the panel
+
+**First, look for a named board.** Check these locations in order:
+
+1. `advisory-board.md` (project root)
+2. `notes/advisory-board.md`
+3. `docs/advisory-board.md`
+
+If Brett asks for named researchers, use real scholars whose expertise matches the paper's venue and contribution. Do not substitute generic roles when named researchers are requested.
+
+If a board file exists, use its personas. The file should define reviewer names, expertise areas, and any specific concerns each reviewer should focus on.
+
+**If no board file exists,** compose a panel of 3-6 reviewers based on the paper's topic. For a typical HPC/linguistics paper, a good panel might include:
+
+- **Philosopher of science** (natural kinds, HPC theory, scientific realism)
+- **Formal linguist** (generative syntax, category theory)
+- **Usage-based/functional linguist** (construction grammar, typology)
+- **Methodologist** (experimental design, corpus methods, statistics)
+- **Domain specialist** (whatever the paper's empirical focus is)
+- **Hostile reviewer** (someone predisposed to reject the framework)
+
+Adjust the panel composition to match the paper. A metaphor paper needs a cognitive linguist. A grammaticality paper needs a philosopher of language. Use judgment.
+
+**Mandatory for any paper using HPC theory:** One reviewer must be the **Projectibility Reviewer**. This reviewer's sole concern is whether the paper treats projectibility as the epistemic payoff of the framework or buries it as a footnote. Specifically:
+
+- Does the paper frame the contribution as "here are mechanisms" (wrong) or "the category is projectible -- it generates predictions -- and here's why" (right)?
+- Are mechanisms presented as *explaining* the projectibility, or as *being* the point?
+- Does the conclusion cash out in what the category lets you *predict, explain, or inductively generalize*, not just what holds it together?
+- Boyd's insight: natural kinds are projectible for a purpose. The slogan is "a profile, stabilised by mechanisms, projectible for a purpose." If the third clause is missing or decorative, this reviewer flags it as a major structural problem.
+
+This reviewer exists because LLMs (including the one generating these reviews) have a deep training-data bias toward the mechanism/clustering side of HPC and systematically underplay projection. The bias is so strong that explicit instructions in CLAUDE.md files are routinely ignored. This reviewer is the structural countermeasure.
+
+**For papers that model human or expert positions as ground truth:** Add a **Target-Heterogeneity Check** to at least one relevant reviewer, usually the methodologist or hostile reviewer. This reviewer asks whether the paper distinguishes stable disagreement from other sources of variance: diachronic change, context-sensitive answering, internal contradiction, terminological drift, survey-item mismatch, ambiguity, and plain confusion. Do not let the review treat all heterogeneity as signal or all smoothing as failure. Ask what kind of heterogeneity the method is supposed to preserve.
+
+**Review-board self-check:** The review board is itself a synthetic expert panel and is vulnerable to the same smoothing problem. Do not treat simulated reviewer agreement as evidence of real field consensus. Watch for over-neat convergence, stereotyped reviewer roles, or reviewers whose criticisms follow too predictably from their labels. Preserve contradictions between reviewers, and in the synthesis flag when the board may be collapsing messy expert heterogeneity into a clean centroid.
+
+**The clean-room lane (use whenever convergence drives a decision).** The self-check above says be suspicious of agreement. This is what to do about it.
+
+If the shared prompt states a frame, a diagnosis, or a hypothesis, then later agreement *about that frame* carries no information: the reviewers correctly perform the analysis they were told to perform, then promote it into a recommendation, and the synthesis counts heads. Model diversity does not fix this. A board spanning Fable, Opus, and Codex still shares one prompt author.
+
+Add two reviewers who receive **the artifact, the goal, and the audience, and nothing else**. No diagnosis, no rationale, no prior findings, no description of what the work was trying to achieve. Ask them what is wrong with it and what they would change.
+
+- If they independently rediscover the main findings, those findings are properties of the artifact. Report them as such.
+- If they surface different things, the board was measuring the prompt. Say so in the synthesis and re-weight accordingly.
+
+In the synthesis, separate **convergence on recomputed facts** (specificity, counts, dates, statuses, anything each reviewer derived independently) from **convergence on taste**. Only the first survives a shared prompt.
+
+**The audience-proxy lane (for artifacts with real readers).** Add one or two reviewers told explicitly *not* to critique the artifact, and instead to arrive as a specific reader with a task: a journal editor deciding whether to desk-handle, a search chair assessing a candidate, a researcher deciding whether to cite. Give them a timed procedure (ten-second impression, then sixty-second read), require them to mark each question ANSWERED / PARTLY / NOT ANSWERED, and ask for a friction log of everything they wanted and could not get. These reviewers routinely produce findings no number of domain experts can, because they are answering "what does this cost me with a real reader" rather than "is this well made."
+
+**Do not let the board critique a remedy you proposed yourself.** An analysis and its fix authored in the same sitting share a blind spot. Ask the board to *generate alternatives* instead, then choose among them.
+
+**Origin (2026-07-29):** two unrelated sessions on the same day, a legal-letter review and a website design review, independently found prompt-induced convergence. In the second, a clean-room pair recomputed a CSS specificity bug, a missing affiliation, broken staging links, and an oversized asset without being told any of them, converting "seven models agreed with me" into a defensible result for the price of two agents. Full note: `Project-Management/notes/2026-07-29-review-board-convergence-is-worthless-if-the-prompt-supplied-the-frame-lessons.md`.
+
+### 3. Dispatch reviewers as subagents
+
+**Each reviewer must run as an independent subagent** via the Agent tool. This prevents cross-contamination between reviews -- each reviewer sees only the paper, not the other reviews.
+
+**Model default: Opus at max effort.** Every reviewer agent should use `model: "opus"`. Before dispatching, briefly offer Brett the option to downgrade: "Running N reviewers on Opus. Want to use Sonnet instead to save tokens?" If he doesn't respond or says Opus is fine, proceed with Opus. Do not ask every time in the same session -- once per review-board invocation is enough.
+
+Dispatch all reviewers in parallel. Each subagent prompt should include:
+
+1. The full text of the paper (or the file path to read)
+2. The reviewer's persona and expertise
+3. The review format (see below)
+4. The source grounding and Rapoport's Rules reminders
+5. For HPC papers: the projectibility reviewer instructions (verbatim from Step 2)
+6. For papers that model human or expert positions as ground truth: the target-heterogeneity check (verbatim from Step 2)
+
+**Subagent prompt template:**
+
+```
+You are [REVIEWER NAME/ROLE], reviewing a paper for [VENUE/CONTEXT].
+
+Your expertise: [DESCRIPTION]
+
+Read [FILE_PATH] and provide a structured review:
+
+1. **One-sentence summary** of the paper's main claim
+2. **Strengths** (2-3 bullet points, specific)
+3. **Weaknesses** (2-3 bullet points, specific and actionable)
+4. **Key question** you would ask at Q&A
+5. **Verdict**: Accept / Revise & Resubmit / Reject (with one-line justification)
+
+Rules:
+- Source grounding: if you cite a specific paper or finding, flag it as
+  needing verification unless you've read the source.
+- Rapoport's Rules: demonstrate understanding of the argument before
+  criticizing. Be charitable, then be sharp.
+- Be specific. "The argument in section 3 is weak" is useless.
+  "The inference from X to Y in section 3.2 relies on an unstated
+  premise about Z" is useful.
+- Don't pull punches. The point is to find problems before a real
+  reviewer does.
+```
+
+When calling the Agent tool for each reviewer, set `model: "opus"` (or `"sonnet"` if Brett opted to downgrade).
+
+**Do NOT generate reviews in the main agent.** The whole point of subagents is independence. If subagents fail or Brett prefers in-process reviews, fall back to generating them in-process but note that cross-contamination is a risk.
+
+### 3a. Preserve the review object and lineage
+
+Before dispatch, create one durable run directory such as
+`reviews/review-board-YYYYMMDD-HHMMSS/`. Save the exact shared prompt or task
+specification there. Record the target's Git commit and source SHA-256 before
+the reviewers run.
+
+After each reviewer returns, copy its complete raw output from temporary agent
+storage into the run directory before any cleanup. Do not preserve only the
+2-3-line return summary. Create `manifest.yaml` with one entry per reviewer:
+
+- reviewer/persona, model, and provider;
+- prompt path and SHA-256;
+- raw-output path and SHA-256;
+- inspected source path, Git commit, and SHA-256; and
+- a dependence-cluster label for reviewers sharing a prompt, provider, model
+  family, or other relevant upstream input.
+
+Sensitive review runs may remain gitignored or use durable private storage. If
+a later paper-assurance record cites such a run, record the private absolute
+path and its hash there. Never delete raw review inputs merely because a
+synthesis has been written.
+
+### 3b. Redundant Codex board
+
+If Brett asks for a "fully redundant" board, "Opus and Codex side by side," or a Codex reviewer set, run a separate Codex CLI board in addition to the Agent/Opus board. Use one Codex process per reviewer persona; do not run one aggregate Codex review.
+
+For interrupted runs, inspect the existing run directory first. Keep successful Opus or Codex outputs, relaunch only missing or failed reviewer files, and preserve the original run ID in the synthesis.
+
+Use the current Codex CLI form:
+
+```bash
+RUN_DIR="reviews/review-board-$(date +%Y%m%d-%H%M%S)"
+PROJECT_DIR="$(pwd)"
+slug="reviewer-slug"
+mkdir -p "$RUN_DIR"
+
+PROMPT_FILE="$RUN_DIR/prompt-${slug}.md"
+# Write the complete reviewer prompt to PROMPT_FILE before launch.
+
+codex exec -C "$PROJECT_DIR" --sandbox read-only \
+  -o "$RUN_DIR/codex-${slug}.md" - < "$PROMPT_FILE" &
+```
+
+Rules for Codex launches:
+
+- Do not use `codex -p`; `-p` is now a profile flag, not a prompt flag.
+- Do not use `codex exec --full-auto`; that flag is obsolete. For review-only work, use `--sandbox read-only`.
+- Use `-C/--cd` to set the project directory. Do not rely on the shell's current directory after backgrounding.
+- Use `-o/--output-last-message` for the reviewer output file instead of shell redirection.
+- Use `--model` only if Brett specifies a Codex model; otherwise use the configured Codex default.
+- Record the launched PIDs, `wait` for them, and check that each expected output file exists and is non-empty before synthesis.
+- Hash the prompt, source, and every complete output and add them to the shared run manifest before synthesis.
+
+When synthesizing a redundant board, keep Opus and Codex distinct first: summarize Opus consensus, Codex consensus, cross-model consensus, and cross-model contradictions. Do not collapse the two boards into one artificial majority.
+
+### 4. Synthesize
+
+After all subagent reviews return, the **main agent** synthesizes:
+
+- **Consensus strengths** (what multiple reviewers agreed on)
+- **Consensus weaknesses** (what multiple reviewers flagged)
+- **Contradictions** (where reviewers disagreed -- these are the most interesting)
+- **Prioritized revision list** (ordered by impact, top 5)
+
+Before finalizing, apply the **review-board self-check**: if the reviewers converge too cleanly, say so. Distinguish "multiple simulated reviewers flagged this" from "the field would agree." Treat the board as a stress test for possible reviewer reactions, not as a silicon sample of actual expert opinion.
+
+Write the synthesis into the same durable run directory and cite the raw
+reviewer files it summarizes. Preserve contradictions rather than overwriting
+the raw lineage with a single consensus verdict.
+
+## Creating a project board
+
+To set up a named board for a project, create `advisory-board.md` in the project root with this format:
+
+```markdown
+# Advisory Board
+
+## Reviewers
+
+### [Name or Role]
+- **Expertise:** [area]
+- **Persona:** [brief description of perspective and priorities]
+- **Watch for:** [specific concerns this reviewer should focus on]
+
+### [Name or Role]
+...
+```
+
+Named boards are useful when a project needs the same reviewers across multiple rounds (consistency) or when specific expertise is required that generic panel composition would miss.
+
+## Important
+
+- **Source grounding applies.** If a reviewer cites a specific paper or finding, flag it as needing verification unless you've read the source.
+- **Rapoport's Rules apply.** Even the hostile reviewer should demonstrate understanding before criticizing.
+- **Be specific.** "The argument in section 3 is weak" is useless. "The inference from property clustering to projectibility in section 3.2 relies on an unstated premise about mechanism sufficiency" is useful.
+- **Don't pull punches.** The point is to find problems before a real reviewer does.
+analysis_plan.md:6:## Hypotheses
+analysis_plan.md:16:- *Estimand.* The primary quantity is a model-based marginal association: the posterior-predictive change in production for a 1 SD difference in within-valence rarity, averaging over word frequency **and marking** under the joint model. It is labelled an association, not a causal total effect, because frequency's causal position is uncertain and modelling it jointly doesn't establish mediation. Conditional coefficients (holding frequency and marking) are reported second. Orientation: z measures prevalence (higher = more common), so H2 predicts negative values.
+analysis_plan.md:24:## Proposed revisions (2026-10-07; written in at Brett's request, open until FIXED)
+analysis_plan.md:90:- *Human judges for the region the panel doesn't cover (settled 2026-10-09 after a Codex review, `reviews/codex-extreme-anchor-2026-10-09/`).* Ziano et al.'s 149 come from Anderson's list, which excluded "extreme words, such as ferocious", so extreme traits (*violent*, *cruel*) lie outside the anchor. The second human coder (blind to the hypotheses and to model outputs) is the primary human judge there; Brett, who can't be blind, contributes a pre-specified sensitivity row; two or three further blind volunteer judges are added if they can be found. Each judge rates commonness, with Ziano's wording and scale, for (a) a linking set of about 60–80 of Ziano's traits spanning panel commonness, valence, morphology, semantic domain and boundary items, and (b) an extension set of about 100–150 traits drawn at random from the frozen eligible list, oversampling extreme negatives while keeping near-boundary negatives, positive extremes and other unsupported combinations, with morphology and provisional act type balanced and inclusion probabilities recorded; nothing is selected on stereotype outcomes or model commonness. Final sizes are set by simulating calibration precision and downstream H2 bias. Linking and extension items are intermixed in a fresh random order per judge with strata hidden; commonness is collected before act-type coding, in separate sessions; commonness ratings are kept independent, not adjudicated. Each human judge is modelled separately, with judge-specific thresholds and discrepancies estimated on the overlap. Linking places a judge on the panel's scale within the panel's support; it can't identify a discrepancy that all judges share in the extreme region. So expanded-vocabulary H2 estimates carry a qualified warrant: "conditional on transport of judge-to-panel calibration and stated bounds on extreme-region shared bias", distinct from validated panel support, and reported separately. Floor compression is checked (if extreme traits all get minimum ratings, more ratings won't recover their order).
+analysis_plan.md:101:**D2: fake-data check of the lexical models (added 2026-10-09 at Brett's prompt, "we should do fake data before actually running right?"; scope from the Codex review, `reviews/codex-lexical-2026-10-09/`).** Before the plan is FIXED, and before any comparison or commonness is joined to morphology, L1's pair model and the word-level marking model (L2) are fitted to simulated data, with sizes taken from the frozen frame (placeholders before then: a range of pair counts and of the share of pairs whose negated member is positive). The simulations include eligibility-dependent selection, root availability, shared roots, near-equal poles, uncertain valence orientation, separation and sparse affix classes; judge effects, wording effects correlated within a concept, and morphological bias of either sign; 'about equal' and 'can't say' responses and floor compression; correlated rarity and stakes among negative words; and act-type misclassification, including dependence on negation. Some generating mechanisms lie outside the fitted model (negation driven by valence and event salience with no rarity link; usage frequency driven by stakes), and false meaningful-support decisions under systematic bias are reported. Reported per estimand: coverage, bias, interval width, sign-error rate, and the exaggeration ratio for non-null truths (Gelman & Carlin 2014; it's undefined at zero), on standardized contrasts with the scaling fixed across specifications. Spec and code are committed before running.
+analysis_plan.md:105:**L1: which pole of an opposition carries the negator (pair level; lexical; proposed 2026-10-09 after a Gelman pass and a Codex review, `reviews/codex-lexical-2026-10-09/`; the human workload is pending Brett).** The hypothesis concerns "the marked pole of evaluative oppositions" (brief, lines 14–15), so its marking claim is first a pair-level one: in a root/negation opposition (*selfish/unselfish*, *kind/unkind*), the negated member names the rarer pole. The form-frequency principle concerns usage frequency within an opposition (Haspelmath & Karjus 2017, principle (3)), not prevalence among people, so L1 tests a reduced form that needs an auxiliary bridge: prevalence asymmetries must produce usage asymmetries, and stakes can break that bridge. If L1 fails, the bridge or the coding link may be at fault, and L1 can't say which. Haspelmath & Karjus call the effect "relatively weak" and place it in diachronic change (section 8), which gives no expected effect size for English, so the threshold is justified separately.
+analysis_plan.md:115:**L2: which negative concepts get negated forms (word level; lexical; a conjecture; revised 2026-10-09 after the Codex review, `reviews/codex-lexical-2026-10-09/`).** If lexicalization follows payoff importance and short forms follow frequency of use (form-frequency correspondence; Haspelmath & Karjus 2017), then among negative person-descriptive adjectives, formal negation should cluster among low-stakes words (*impolite*, *untidy*, *unpunctual*) and simple forms among high-stakes ones (*cruel*, *violent*). The examples are illustrations, not data. Extremity, rarity and stakes probably move together among negative traits, so the rarity coefficient given stakes may be weakly identified; overlap is checked and reported before any coefficient is interpreted. Stakes indicators (Warriner arousal, valence extremity) need construct validation before they support a stakes claim.
+analysis_plan.md:124:## Data and exclusions
+analysis_plan.md:128:## Variables
+analysis_plan.md:143:## Models
+analysis_plan.md:147:## What would count against each hypothesis
+analysis_plan.md:151:## Seeds and environment
+scripts/d1/README.md:6:## What D1 decides
+scripts/d1/README.md:13:## Coefficients tracked
+scripts/d1/README.md:18:## Generating model (scenarios 1 and 2)
+scripts/d1/README.md:35:## Scenario 3, mechanism check
+scripts/d1/README.md:45:## Fitting model, v2 (post-pilot; supersedes v1 below)
+scripts/d1/README.md:71:**v2.1 and v2.2 (post-pilot, each committed before it ran).** v2.1 samples the total within-valence rarity effect on production, c_z = βz + βf·λz, and derives βz from it. Prior and model are unchanged; this was a shear reparameterization because βz and βf traded off at r = −.93. c_z is also tracked: scenario 1 truth (−.3 + .3 × .4) × .866 = −.156; scenario 2, .104. v2.2 fixes the prevalence indicator's measurement-error SD at its known value √((1−r)/r), as for a norm averaged over raters with item-level standard errors. With one strong indicator and a free error SD, the split between true rarity and error wasn't identified, and the rarity coefficients mixed slowly (ESS about 15–40) even after v2 and v2.1. **Design consequence:** the prevalence measure needs item-level standard errors, not just means.
+scripts/d1/README.md:73:## Fitting model, v1 (PyMC; superseded)
+scripts/d1/README.md:87:## Conditions
+scripts/d1/README.md:97:## Reported per coefficient and cell
+scripts/d1/README.md:105:## Engine check (brms)
+scripts/d1/README.md:109:## Environment
+scripts/d2/README.md:6:## What D2 decides
+scripts/d2/README.md:13:## D2-L1: which pole carries the negator
+scripts/d2/README.md:23:- Valence orientation: the poles' valence difference Δv ~ N(1.5, .6), observed with error N(0, .3); where the observed difference has the wrong sign, P and Q swap in the analysis (Y and the response coding both flip) **[ours]**.
+scripts/d2/README.md:34:- Second blind judge: every Y = 1 pair plus random Y = 0 pairs up to 30, with the other wording set; b = .1, s = .7 **[ours]**.
+scripts/d2/README.md:37:**Analysis model (as planned for L1).** Ordered logit on the three response categories, "can't say" dropped: latent = γY_obs + judge offset (the coder's fixed at 0) + u_i (+ u_iw when one pair-wording is judged more than once), u ~ N(0, σ_u), u_iw ~ N(0, σ_uw), two ordered cutpoints. Priors: γ ~ N(0, 1.5); offsets ~ N(0, 1); σ_u, σ_uw ~ HalfNormal(1); cutpoints N(0, 2), ordered **[ours]**. PyMC, nutpie, four chains, 1000 draws after 1000 tuning steps.
+scripts/d2/README.md:39:**Estimand.** The standardized latent difference Δ = −γ / √(σ_u² + σ_uw² + π²/3): how much lower the judged relative prevalence of the positive pole is in pairs where it's negated, in within-pair-type SD units. Positive under the rarity account. It's comparable across judge designs, which the conditional log odds ratio γ isn't (its scale depends on which random effects are in the model). γ is reported too. **Truth:** Δ computed from a large simulated population (400,000 pairs) of the cell's generating model, judged by an ideal blind coder (wording and noise, no δ, no availability bias), for the frame population; under selection, the pool's value is reported beside it.
+scripts/d2/README.md:43:**Grid.** Core: N ∈ {40, 80, 160} × s_off ∈ {.1, .2, .3} × β ∈ {0, .5, 1}, 30 replicates per cell. Stress, at N = 80 and s_off = .2, with β ∈ {0, 1}: δ = +.4; δ = −.4; confound (β = 0 only, β_x = 1); selection; shared roots; informative "can't say"; model availability bias. Seeds fixed per cell and replicate.
+scripts/d2/README.md:47:## D2-L2: which negative concepts get negated forms
+scripts/d2/README.md:60:**Analysis model (as planned for L2).** Latent z ~ N(0, 1) with e ~ N(c + λ_e z, known SE), λ_e > 0; latent s with the two stakes indicators (loadings positive, residual SDs free) and a free correlation with z; categorical outcome by softmax on z, s, v, with observed act type (adjusted) or without (unadjusted). Priors N(0, 1.5) on coefficients **[ours]**. PyMC, nutpie.
+scripts/d2/README.md:62:**Estimands.** The average predictive comparison of z and of s on P(prefixed) per SD (Gelman & Pardoe 2007, *Sociological Methodology* 37, 23–51, doi:10.1111/j.1467-9531.2007.00181.x), computed from the posterior predictive, and β_z on the log-odds scale. **Truth:** the causal average predictive comparison in the generating model (story A: act type held at its distribution; story B: act type absent from the outcome), computed from a large simulated population.
+scripts/d2/README.md:64:**Grid.** Core: K = 300, ρ_zs ∈ {0, −.5, −.8} × β_z ∈ {0, −.4} × story {A, B}, each dataset fitted adjusted and unadjusted; K = 150 at ρ_zs = −.5. Stress, at K = 300 and ρ_zs = −.5, β_z ∈ {0, −.4}: description bias; word-based indicator with morphological bias; word-coded act type; register confound (β_z = 0 only). 20 replicates per cell.
+scripts/d2/README.md:66:## Reported, per estimand and cell
+scripts/d2/README.md:70:## What's deliberately absent
+scripts/d2/README.md:72:Floor compression of absolute commonness ratings matters for the word-based specification only, and enters there through the rating noise; the primary L1 design uses comparisons. Domain effects aren't simulated (the plan keeps them as varying intercepts only). Sizes, shares and effect values are placeholders; D2b reruns at the realized frame.
+
+codex
+**Revise before coding.** D2 can assess practical information, but its current calibration targets don’t consistently match its fitted estimands.
+
+1. **L1’s Δ is coherent only within a specified latent measurement model.** It isn’t automatically comparable across judge designs: changing judges changes residual scale, thresholds and variance components. The generator has judge-specific noise scales, while the fit allows only offsets; moreover, conditioning on Y produces latent distributions that needn’t match Gaussian, equal-variance random effects. One response per pair supplies little separation of pair variance from response noise; the second judge supplies some replication, but changing wording simultaneously confounds disagreement with wording variation. Human-only fits omit σ_uw and absorb wording variability elsewhere. Prefer a marginal response-probability contrast standardized to one fixed blind-human protocol, with truth computed under that protocol. Retaining Δ requires explicit variance anchors and sensitivity to their priors. This also changes the plan’s primary log-odds estimand. ([D2, “D2-L1”: Analysis model/Estimand](scripts/d2/README.md); [plan, “L1”](analysis_plan.md))
+
+2. **The practical comparison is promising but incomplete.** At N=40 and 10% off-diagonal, only about four informative pairs exist. Define “informative” through interval width and decision probabilities, and compare one coder alone against coder-plus-subset and models alone. The subset rule “up to 30” conflicts with including every off-diagonal pair when there are 48. Cross judge and wording on some pairs, and vary subset size and judge reliability. ([D2, “Judgments”, “Designs”, “Grid”](scripts/d2/README.md))
+
+3. **L2 identification isn’t established.** Known commonness SE plus unit-variance z identifies its positive loading, following D1’s useful precedent. Stakes needs an explicit scale constraint; two indicators with free errors don’t independently identify their loadings, especially at zero z–s correlation. Identification borrowed from the categorical outcome needs demonstration, not merely converged sampling. Extremity also has a direct .3v term that the measurement specification doesn’t address. Define the predictive comparison exactly: finite shift or derivative, averaging population, and variables held fixed. A’s truth is appropriate for marginal intervention contrasts; B’s adjusted contrast conditions on a descendant and cannot generally recover that truth. Misclassified act type further defeats “adjustment.” ([D2, “D2-L2”](scripts/d2/README.md); [D1, “v2.2”](scripts/d1/README.md))
+
+4. **Coverage gaps:** eligibility selection isn’t explicit root availability; separation isn’t deliberately stressed; orientation errors are rarely generated; sparse *non-* and contrary-affix classes disappear through pooling. Gaussian noise doesn’t simulate floor compression, which also affects L2 descriptions. Add focused stress cells; reduce repetitive core cells if necessary. ([plan, “D2”, “L2”](analysis_plan.md); [D2, “Grid”, “What’s deliberately absent”](scripts/d2/README.md))
+
+5. **Misleading success:** 20–30 replicates give noisy coverage and conditional Type S/M estimates. Report Monte Carlo uncertainty. Distinguish true associational support under confounding from false causal support; partial pooling and calibrated intervals cannot settle that distinction. ([D2, “Reported”](scripts/d2/README.md))
+tokens used
+32,600
+**Revise before coding.** D2 can assess practical information, but its current calibration targets don’t consistently match its fitted estimands.
+
+1. **L1’s Δ is coherent only within a specified latent measurement model.** It isn’t automatically comparable across judge designs: changing judges changes residual scale, thresholds and variance components. The generator has judge-specific noise scales, while the fit allows only offsets; moreover, conditioning on Y produces latent distributions that needn’t match Gaussian, equal-variance random effects. One response per pair supplies little separation of pair variance from response noise; the second judge supplies some replication, but changing wording simultaneously confounds disagreement with wording variation. Human-only fits omit σ_uw and absorb wording variability elsewhere. Prefer a marginal response-probability contrast standardized to one fixed blind-human protocol, with truth computed under that protocol. Retaining Δ requires explicit variance anchors and sensitivity to their priors. This also changes the plan’s primary log-odds estimand. ([D2, “D2-L1”: Analysis model/Estimand](scripts/d2/README.md); [plan, “L1”](analysis_plan.md))
+
+2. **The practical comparison is promising but incomplete.** At N=40 and 10% off-diagonal, only about four informative pairs exist. Define “informative” through interval width and decision probabilities, and compare one coder alone against coder-plus-subset and models alone. The subset rule “up to 30” conflicts with including every off-diagonal pair when there are 48. Cross judge and wording on some pairs, and vary subset size and judge reliability. ([D2, “Judgments”, “Designs”, “Grid”](scripts/d2/README.md))
+
+3. **L2 identification isn’t established.** Known commonness SE plus unit-variance z identifies its positive loading, following D1’s useful precedent. Stakes needs an explicit scale constraint; two indicators with free errors don’t independently identify their loadings, especially at zero z–s correlation. Identification borrowed from the categorical outcome needs demonstration, not merely converged sampling. Extremity also has a direct .3v term that the measurement specification doesn’t address. Define the predictive comparison exactly: finite shift or derivative, averaging population, and variables held fixed. A’s truth is appropriate for marginal intervention contrasts; B’s adjusted contrast conditions on a descendant and cannot generally recover that truth. Misclassified act type further defeats “adjustment.” ([D2, “D2-L2”](scripts/d2/README.md); [D1, “v2.2”](scripts/d1/README.md))
+
+4. **Coverage gaps:** eligibility selection isn’t explicit root availability; separation isn’t deliberately stressed; orientation errors are rarely generated; sparse *non-* and contrary-affix classes disappear through pooling. Gaussian noise doesn’t simulate floor compression, which also affects L2 descriptions. Add focused stress cells; reduce repetitive core cells if necessary. ([plan, “D2”, “L2”](analysis_plan.md); [D2, “Grid”, “What’s deliberately absent”](scripts/d2/README.md))
+
+5. **Misleading success:** 20–30 replicates give noisy coverage and conditional Type S/M estimates. Report Monte Carlo uncertainty. Distinguish true associational support under confounding from false causal support; partial pooling and calibrated intervals cannot settle that distinction. ([D2, “Reported”](scripts/d2/README.md))
