@@ -55,3 +55,19 @@ log: logs/d1-20261009-113320.json
 [17/21] s3_mechanism small rep19 joint e_r80 prior1.0: 138.5s, rhat_max 1.018, div 0
 [18/21] s3_mechanism large rep2 oracle None prior1.0: 173.6s, rhat_max 1.003, div 0
 [19/21] s3_mechanism large rep6 oracle None prior1.0: 170.4s, rhat_max 1.003, div 0
+[20/21] s3_mechanism large rep17 joint e_r80 prior1.0: 224.2s, rhat_max 1.041, div 0
+[21/21] s3_mechanism large rep12 joint e_r50 prior1.0: 280.9s, rhat_max 1.042, div 0
+log: logs/d1-20261009-121319.json
+=== chunk 12 end 12:13:19
+=== chunk 13 start 12:13:19
+21 fits requested, 21 to run now
+[1/21] s1_recovery small rep9 joint e_r80 prior1.0: 175.4s, rhat_max 1.004, div 0
+[2/21] s1_recovery small rep3 joint f_only prior2.5: 230.2s, rhat_max 1.283, div 0
+[3/21] s1_recovery small rep17 joint e_r80 prior1.0: 168.3s, rhat_max 1.002, div 0
+[4/21] s1_recovery large rep2 joint e_r80 prior1.0: 208.2s, rhat_max 1.015, div 0
+[5/21] s1_recovery large rep8 joint e_r80 prior1.0: 196.9s, rhat_max 1.013, div 0
+[6/21] s1_recovery large rep16 joint e_r80 prior1.0: 200.2s, rhat_max 1.006, div 0
+[7/21] s2_register small rep2 joint f_only prior2.5: 245.3s, rhat_max 1.101, div 0
+[8/21] s2_register small rep7 joint e_r80 prior1.0: 162.5s, rhat_max 1.004, div 0
+[9/21] s2_register small rep15 joint e_r80 prior1.0: 164.0s, rhat_max 1.003, div 0
+[10/21] s2_register large rep1 joint e_r80 prior1.0: 199.4s, rhat_max 1.007, div 0

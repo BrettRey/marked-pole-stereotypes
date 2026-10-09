@@ -1,0 +1,49 @@
+{
+  "timestamp": "2026-10-09T12:13:19",
+  "script": "scripts/d1/d1.py",
+  "command": "chunk",
+  "args": {
+    "command": "chunk",
+    "reps": 20,
+    "chunk": 12,
+    "n_chunks": 16,
+    "max_fits": null,
+    "f_only_reps": 5,
+    "workers": 2,
+    "list": false
+  },
+  "argv": [
+    "scripts/d1/d1.py",
+    "chunk",
+    "--reps",
+    "20",
+    "--f-only-reps",
+    "5",
+    "--chunk",
+    "12",
+    "--of",
+    "16",
+    "--workers",
+    "2"
+  ],
+  "git_sha": "d6cd6b479ed59519b2701550629380cf75598d80",
+  "git_dirty": true,
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "pytensor_flags": "cxx=/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1/bin/clang++",
+  "packages": {
+    "pymc": "6.3.2",
+    "nutpie": "0.16.11",
+    "pytensor": "3.3.3",
+    "arviz": "1.3.0",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1"
+  },
+  "root_seed": 20261008,
+  "outputs": [
+    "results/d1/grid/chunk_12_of_16.csv"
+  ],
+  "failures": [],
+  "elapsed_seconds": 2396.7
+}
