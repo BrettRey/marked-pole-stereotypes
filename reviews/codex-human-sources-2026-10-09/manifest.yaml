@@ -1,0 +1,9 @@
+commit: f1312f59dd5e5655ac18ac568984a863c03c23d1
+route: tools/codex/bin/codex-readonly (Project-Management/templates/dispatch-prompts.md)
+prompt_sha256: c9e91c624ca66b9bf290daa6b8772a86fa14dad91bfba724e150df5100acf4b6
+started: 2026-10-09T17:47:57-04:00
+model: gpt-6.1-sol (OpenAI Codex v0.160.0, sandbox read-only)
+finished: 2026-10-09T17:48:29-04:00
+output_raw_sha256: bb0b4fe0bd7405401e539b1bca80d082fa3841fb0543de3ca59c13e601ae0115
+output_final_answer: output.md (extracted by the parent)
+saved_by: parent session (Claude Opus 5.5)
