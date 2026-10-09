@@ -90,3 +90,13 @@ log: logs/d1-20261009-130033.json
 [2/21] s1_recovery small rep3 joint e_r50 prior1.0: 165.4s, rhat_max 1.009, div 0
 [3/21] s1_recovery small rep18 joint e_r50 prior1.0: 195.5s, rhat_max 1.008, div 0
 [4/21] s1_recovery large rep9 joint e_r50 prior1.0: 179.7s, rhat_max 1.027, div 0
+[5/21] s1_recovery large rep3 joint f_only prior1.0: 562.1s, rhat_max 1.410, div 1
+[6/21] s1_recovery large rep17 joint e_r50 prior1.0: 188.4s, rhat_max 1.024, div 0
+[7/21] s2_register small rep8 joint e_r50 prior1.0: 237.7s, rhat_max 1.012, div 0
+[8/21] s2_register small rep2 joint e_r50 prior1.0: 242.4s, rhat_max 1.005, div 0
+[9/21] s2_register small rep16 joint e_r50 prior1.0: 266.7s, rhat_max 1.003, div 0
+[10/21] s2_register large rep7 joint e_r50 prior1.0: 187.8s, rhat_max 1.023, div 0
+[11/21] s2_register large rep15 joint e_r50 prior1.0: 138.6s, rhat_max 1.006, div 0
+[12/21] s2_register large rep2 joint f_only prior1.0: 620.8s, rhat_max 1.653, div 331
+[13/21] s3_mechanism small rep4 joint e_r50 prior1.0: 184.2s, rhat_max 1.036, div 0
+[14/21] s3_mechanism small rep1 joint f_only prior2.5: 251.9s, rhat_max 1.665, div 0
