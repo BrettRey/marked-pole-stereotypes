@@ -1,0 +1,12 @@
+You are an independent methodological reviewer, in the project repository, read-only. Do not edit anything. Gelman-style lens, but disagree where it misleads.
+
+Read `analysis_plan.md`: "Commonness judges" (especially "Framings" and the human-judges bullet), "Protecting the blind coder", "L1", "L2" (the "Morphological bias" bullet and "What counts against the marking claim").
+
+Problem (a side agent's note, verified): the word-level falsifier Brett just committed to is "estimated with description-based commonness", and those ratings come from model judges only. The plan's own "Framings" rule keeps behavioural (description) outputs auxiliary until a bridge to the human scale is validated, with an exception only for L1's within-pair ordinal comparisons. No human rates descriptions on an absolute scale, so the falsifier rests on an unvalidated instrument.
+
+Draft fix (main session's Gelman pass):
+1. Human bridge: the naive judge who does L1's comparisons (a session in which no words are shown) also rates the absolute commonness of descriptions, in Ziano's wording and scale, for a linking set of about 60–80 traits: Ziano's traits, mostly unnegated plus some negated, and extension traits, intermixed with the comparisons' material. Model judges' description ratings are calibrated to these human ratings, which gives the description instrument a human anchor within the set's support. Human description ratings of unnegated Ziano traits link the description scale to the panel's word scale; for negated Ziano traits, the gap between panel word ratings and linked description ratings, net of the unnegated traits' gap, estimates δ, assuming framing differences don't depend on negation (stated, and varied).
+2. Decision rule: the word-level result counts for or against only if it holds both with the calibrated description indicator and with the word-based indicator across the range of δ that step 1 supports; otherwise inconclusive.
+3. If the bridge isn't obtained, the word-level falsifier can't be applied as committed, and the report says so; results are conditional on a stated δ range.
+
+Critique, briefly (at most about 350 words): is the diagnosis right; is the bridge sound and big enough; is the difference-in-differences estimate of δ defensible; is the decision rule right; anything missing (e.g. the judge's load and blindness, or simply restating the falsifier on word-based commonness with δ bounds). Cite file and section. Mark memory claims "(memory)".
