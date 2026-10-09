@@ -84,6 +84,10 @@ Code committed first; then a timing pilot (two replicates of one L1 design (b) c
 
 Coverage of 50% and 90% intervals, with Monte Carlo standard errors; bias and RMSE of the posterior mean; median 90% interval width; sign-error rate and exaggeration ratio among fits whose interval excludes 0, for non-null truths only (Gelman & Carlin 2014); the share of fits in each H2-style decision (90% interval wholly above the threshold, wholly below it, or neither) at placeholder thresholds θ = .10 (L1) and an average predictive comparison of .03 (L2), with .05 and .20 for L1 to show sensitivity **[ours]**; convergence (R̂ > 1.01, divergences), with failed fits shown, not dropped. Under the confound, coverage is judged against the association, and the rate of meaningful-support decisions is reported as false support for the causal link.
 
+## D2b additions (after the frame is frozen)
+
+From the Codex review of the reading problem (`reviews/codex-reading-2026-10-09/`): pairs whose negated member is a contradictory, with complement-constrained prevalences (the two poles sum to 1, so the comparison turns on whether the root is the majority state), in a share that rises with pair type as Horn (1989, §5.1) leads one to expect; reading misclassification, including the uniform-contrary rendering that describes contradictories as rare traits; and false support defined against the correctly rendered concepts, since support for a distorted protocol can be accurate about the protocol and still false about the hypothesis.
+
 ## Deliberately absent
 
 Domain effects (the plan keeps them as varying intercepts only). Sizes, shares and effect values are placeholders; D2b reruns at the realized frame.
