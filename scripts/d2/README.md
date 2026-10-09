@@ -78,6 +78,8 @@ PyMC with nutpie for (b) and (c), four chains, 1000 draws after 2000 tuning step
 
 Code committed first; then a timing pilot (two replicates of one L1 design (b) cell and one L2 core cell, each model compiled once per cell and design and reused across replicates); replicate counts and workers are then set from the timings, and recorded here before the grid runs. If L2 needs more than an overnight local run, cloud sessions are a question for Brett.
 
+*Settings from pilot 2 (2026-10-09, `results/d2/pilot2_l1.csv`, `pilot2_l2.csv`; all fits R̂ ≤ 1.023, no divergences):* about 1.5 s per design (b) fit, 3–5 s per design (c) fit and 3 s per L2 fit after compilation, so the grid runs locally with three workers: 200 replicates per cell for designs (a) and word-based, 100 for (b) and (c), 60 for L2 (up from 100, 60 and 40; Monte Carlo error on 90% coverage about .02, .03 and .04). About 15,000 fits, three to four hours.
+
 ## Reported, per estimand and cell
 
 Coverage of 50% and 90% intervals, with Monte Carlo standard errors; bias and RMSE of the posterior mean; median 90% interval width; sign-error rate and exaggeration ratio among fits whose interval excludes 0, for non-null truths only (Gelman & Carlin 2014); the share of fits in each H2-style decision (90% interval wholly above the threshold, wholly below it, or neither) at placeholder thresholds θ = .10 (L1) and an average predictive comparison of .03 (L2), with .05 and .20 for L1 to show sensitivity **[ours]**; convergence (R̂ > 1.01, divergences), with failed fits shown, not dropped. Under the confound, coverage is judged against the association, and the rate of meaningful-support decisions is reported as false support for the causal link.

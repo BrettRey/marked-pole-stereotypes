@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-10-09T14:57:27",
+  "script": "scripts/d2/d2.py",
+  "command": "run",
+  "args": {
+    "cmd": "run",
+    "part": "l2",
+    "reps": 2,
+    "reps_a": 100,
+    "workers": 2,
+    "cells": "L2-06,L2-07",
+    "out": "pilot2_l2.csv"
+  },
+  "argv": [
+    "scripts/d2/d2.py",
+    "run",
+    "--part",
+    "l2",
+    "--cells",
+    "L2-06,L2-07",
+    "--reps",
+    "2",
+    "--workers",
+    "2",
+    "--out",
+    "pilot2_l2.csv"
+  ],
+  "git_sha": "4657b998d322264c2b15ceb3970e737f8afda2a6",
+  "scripts_dirty": false,
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "pytensor_flags": "cxx=/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1/bin/clang++",
+  "packages": {
+    "pymc": "6.3.2",
+    "nutpie": "0.16.11",
+    "pytensor": "3.3.3",
+    "arviz": "1.3.0",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1"
+  },
+  "root_seed": 20261009,
+  "outputs": [
+    "results/d2/pilot2_l2.csv"
+  ],
+  "failures": [],
+  "elapsed_seconds": 19.3
+}
