@@ -13,6 +13,8 @@ Still outstanding: ~~Horn 1989~~ (arrived 2026-10-09, CSLI 2001 reissue; filed a
 
 Added 2026-10-09 for L1 (both closed access, Wiley; OpenAlex reports no repository copy): **Hofstee 1995**, "The relation between category breadth and social desirability: A contest between two explanations", *EJP* 9(1), 71–73, https://doi.org/10.1002/per.2410090106 (a direct L1 precedent, per the prevalence search); **Hampson, Goldberg & John 1987**, "Category-breadth and social-desirability values for 573 personality terms", *EJP* 1(4), https://doi.org/10.1002/per.2410010405 (the word pairs Hofstee used; a possible L1 frame). Goldberg 1982 (cited by Ashton, Lee & Goldberg 2004, fn. 3) is a book chapter; low priority.
 
+Added 2026-10-09 (a possible human prevalence anchor, now that judging is model-only; closed access per OpenAlex): **Rothbart, M., & Park, B. (1986).** "On the confirmability and disconfirmability of trait concepts." *Journal of Personality and Social Psychology*, 50(1), 131–142. https://doi.org/10.1037/0022-3514.50.1.131 (reported by the prevalence search to include 150 adjectives rated for "frequency in the population" by 82 undergraduates; whether per-trait values are printed is unverified). Hampson, Goldberg & John (1987) is *European Journal of Personality*, 1(4), 241–258 (OpenAlex, checked 2026-10-09).
+
 ## Already filed this session
 
 - Ingram, Hand & Maciejewski 2016 (PDF verified; S1/S2 in `data/raw/ingram2016/`).
