@@ -1,5 +1,5 @@
 # Literature to fetch
-<!-- SUMMARY: Sources the plan needs that aren't on disk, with links; scripted download blocked by publisher bot checks, so these need fetching by hand · status: nearly complete · updated: 2026-10-09 -->
+<!-- SUMMARY: Sources the plan needs that aren't on disk, with links; scripted download blocked by publisher bot checks, so these need fetching by hand · status: two L1 sources outstanding · updated: 2026-10-09 -->
 
 Scripted downloads (curl, and Chrome automation) hit bot-verification pages at every publisher and repository tried on 2026-10-07, so these need clicking by hand. PDFs saved to `~/Downloads` are moved to `~/pdf-inbox` within a minute; the next session files them into `literature/` with `.md` companions.
 
@@ -10,6 +10,8 @@ DOIs are from UWA's reference list or OpenAlex. Open-access status is OpenAlex's
 Fetched by Brett and filed in `literature/` (PDF plus `.md`, descriptive names): Warriner 2013; Ingendahl 2025; Nicolas 2022; Schulte et al. 2026 (minority labels; female leaders); Leising et al. 2012, 2014; Beukeboom et al. 2010; Dodds et al. 2015; Boucher & Osgood 1969; Lehrer 1985; Haspelmath 2006; Unkelbach, Koch & Alves 2019; Unkelbach, Alves & Koch 2020; Bruner 2019; Rozin, Berman & Royzman 2010; Ford & Stangor 1992; Koch et al. 2016; Alves et al. 2017, 2018; Bruckmüller & Abele 2013; Zajonc 1968; Anderson 1968; Liben, Bigler & Krogh 2002; Vogel et al. 2013; Koch et al. 2024.
 
 Still outstanding: **Horn 1989** (on its way, Brett); **Zimmer 1964** (unobtainable; cite his generalization through Ingram et al. 2016, p. 3, reporting Boucher & Osgood, and CGEL ch. 19 §5.5, p. 1687); **Peeters & Czapinski 1990** (not fetched; low priority).
+
+Added 2026-10-09 for L1 (both closed access, Wiley; OpenAlex reports no repository copy): **Hofstee 1995**, "The relation between category breadth and social desirability: A contest between two explanations", *EJP* 9(1), 71–73, https://doi.org/10.1002/per.2410090106 (a direct L1 precedent, per the prevalence search); **Hampson, Goldberg & John 1987**, "Category-breadth and social-desirability values for 573 personality terms", *EJP* 1(4), https://doi.org/10.1002/per.2410010405 (the word pairs Hofstee used; a possible L1 frame). Goldberg 1982 (cited by Ashton, Lee & Goldberg 2004, fn. 3) is a book chapter; low priority.
 
 ## Already filed this session
 
