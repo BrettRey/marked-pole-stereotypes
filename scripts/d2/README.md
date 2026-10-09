@@ -39,6 +39,8 @@ v1 of this spec (commit 7398633) was reviewed by Codex before any code was writt
 
 **Estimand (protocol contrast).** θ = P(the blind coder judges the positive pole the rarer | Y = 1) − P(the same | Y = 0), for one comparison under the fixed protocol (one wording set at random, about-equal allowed, can't-say excluded), over the frame's pairs. Positive under the rarity account. The full three-category response distribution by pair type is reported beside it. **Truth:** computed under that protocol from 400,000 simulated pairs of the cell's generating model, with the coder as generated and δ = 0; under selection, the pool's value is reported beside the frame's. For model judges, θ_m is the same contrast for a model judge's response; its truth is computed the same way, and its gap from θ is reported, since models alone estimate θ only through a bridge.
 
+*After pilot 1 (2026-10-09, `results/d2/pilot_l1.csv`, `pilot_l2.csv`):* θ is the process-level contrast, for a new pair from the process that generated the frame, matching the truth above. Designs (b) and (c) now integrate over a new pair's random effects (Gauss–Hermite); pilot 1 had averaged over the frame's own pairs, so its (c) intervals (width about .07) described those pairs and missed the process truth in both replicates. In (a) the category probabilities are already process-level. Also reported for (b) and (c): θ_fp, the contrast for this frame's pairs, with its truth computed per replicate from the generating values (δ = 0, no availability bias). Other changes after pilot 1: the L2 unadjusted fits failed because unused data were passed to the compiled model (fixed); sampler settings raised to D1's (1000 draws after 2000 tuning steps, target acceptance .95), since one design (b) fit had R̂ 1.04 and a divergence.
+
 **Designs and analysis models.**
 
 - (a) Coder alone: multinomial regression of the three responses on Y (Dirichlet(1,1,1) priors per pair type, conjugate), giving θ directly.
@@ -47,7 +49,7 @@ v1 of this spec (commit 7398633) was reviewed by Codex before any code was writt
 
 In (b), the inter-judge agreement is the latent correlation of the two judges' judgments of the same pair under different wording sets, within pair type; its truth is the same correlation in the generating model, from the large simulated population.
 
-PyMC with nutpie for (b) and (c), four chains, 1000 draws after 1000 tuning steps; priors N(0, 1.5) on coefficients, HalfNormal(1) on SDs, ordered N(0, 2) cutpoints **[ours]**.
+PyMC with nutpie for (b) and (c), four chains, 1000 draws after 2000 tuning steps (target acceptance .95); priors N(0, 1.5) on coefficients, HalfNormal(1) on SDs, ordered N(0, 2) cutpoints **[ours]**.
 
 **Grid.** Core: N ∈ {40, 80, 160} × s_off ∈ {.1, .2, .3} × β ∈ {0, 1}, plus β = .5 at N = 80. Stress, at N = 80 and s_off = .2, with β ∈ {0, 1} unless noted: δ = +.4; δ = −.4; confound (β = 0); eligibility selection; root availability; orientation errors; shared roots; informative can't-say; floor compression; coder noise .4 and .9; model availability bias (design c). 100 replicates per cell for design (a) and 60 for (b) and (c); seeds fixed per cell and replicate **[ours]**.
 

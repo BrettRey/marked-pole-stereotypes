@@ -1,0 +1,101 @@
+L1-00 core {'alpha': -2.202, 'theta_frame': np.float64(-0.001), 'theta_m': -0.0, 'rho12': 0.467, 'kappa': 0.008, 'theta_pool': np.float64(-0.001)}
+L1-01 core {'alpha': -2.55, 'theta_frame': np.float64(0.189), 'theta_m': 0.174, 'rho12': 0.451, 'kappa': 0.649, 'theta_pool': np.float64(0.188)}
+L1-02 core {'alpha': -1.385, 'theta_frame': np.float64(0.001), 'theta_m': 0.001, 'rho12': 0.468, 'kappa': 0.001, 'theta_pool': np.float64(-0.001)}
+L1-03 core {'alpha': -1.67, 'theta_frame': np.float64(0.172), 'theta_m': 0.153, 'rho12': 0.434, 'kappa': 0.648, 'theta_pool': np.float64(0.173)}
+L1-04 core {'alpha': -0.854, 'theta_frame': np.float64(-0.001), 'theta_m': -0.001, 'rho12': 0.469, 'kappa': 0.001, 'theta_pool': np.float64(-0.003)}
+L1-05 core {'alpha': -1.014, 'theta_frame': np.float64(0.157), 'theta_m': 0.136, 'rho12': 0.427, 'kappa': 0.635, 'theta_pool': np.float64(0.156)}
+L1-06 core {'alpha': -2.206, 'theta_frame': np.float64(-0.001), 'theta_m': 0.0, 'rho12': 0.468, 'kappa': 0.004, 'theta_pool': np.float64(0.0)}
+L1-07 core {'alpha': -2.562, 'theta_frame': np.float64(0.193), 'theta_m': 0.181, 'rho12': 0.45, 'kappa': 0.652, 'theta_pool': np.float64(0.197)}
+L1-08 core {'alpha': -1.398, 'theta_frame': np.float64(0.003), 'theta_m': 0.001, 'rho12': 0.469, 'kappa': 0.006, 'theta_pool': np.float64(0.001)}
+L1-09 core {'alpha': -1.643, 'theta_frame': np.float64(0.173), 'theta_m': 0.153, 'rho12': 0.439, 'kappa': 0.64, 'theta_pool': np.float64(0.171)}
+L1-10 core {'alpha': -0.844, 'theta_frame': np.float64(-0.0), 'theta_m': 0.001, 'rho12': 0.468, 'kappa': -0.001, 'theta_pool': np.float64(-0.001)}
+L1-11 core {'alpha': -1.015, 'theta_frame': np.float64(0.161), 'theta_m': 0.138, 'rho12': 0.426, 'kappa': 0.644, 'theta_pool': np.float64(0.16)}
+L1-12 core {'alpha': -2.202, 'theta_frame': np.float64(0.0), 'theta_m': -0.001, 'rho12': 0.469, 'kappa': 0.003, 'theta_pool': np.float64(-0.002)}
+L1-13 core {'alpha': -2.551, 'theta_frame': np.float64(0.192), 'theta_m': 0.175, 'rho12': 0.45, 'kappa': 0.653, 'theta_pool': np.float64(0.191)}
+L1-14 core {'alpha': -1.388, 'theta_frame': np.float64(-0.0), 'theta_m': -0.001, 'rho12': 0.468, 'kappa': -0.0, 'theta_pool': np.float64(-0.001)}
+L1-15 core {'alpha': -1.65, 'theta_frame': np.float64(0.173), 'theta_m': 0.154, 'rho12': 0.438, 'kappa': 0.643, 'theta_pool': np.float64(0.173)}
+L1-16 core {'alpha': -0.84, 'theta_frame': np.float64(-0.003), 'theta_m': -0.001, 'rho12': 0.467, 'kappa': -0.001, 'theta_pool': np.float64(0.0)}
+L1-17 core {'alpha': -1.015, 'theta_frame': np.float64(0.159), 'theta_m': 0.14, 'rho12': 0.428, 'kappa': 0.639, 'theta_pool': np.float64(0.16)}
+L1-18 core {'alpha': -2.292, 'theta_frame': np.float64(0.094), 'theta_m': 0.085, 'rho12': 0.463, 'kappa': 0.329, 'theta_pool': np.float64(0.095)}
+L1-19 core {'alpha': -1.458, 'theta_frame': np.float64(0.092), 'theta_m': 0.078, 'rho12': 0.46, 'kappa': 0.33, 'theta_pool': np.float64(0.089)}
+L1-20 core {'alpha': -0.899, 'theta_frame': np.float64(0.085), 'theta_m': 0.073, 'rho12': 0.458, 'kappa': 0.327, 'theta_pool': np.float64(0.085)}
+L1-21 delta+ {'alpha': -1.385, 'theta_frame': np.float64(-0.001), 'theta_m': -0.001, 'rho12': 0.469, 'kappa': -0.002, 'theta_pool': np.float64(-0.0)}
+L1-22 delta+ {'alpha': -1.644, 'theta_frame': np.float64(0.171), 'theta_m': 0.154, 'rho12': 0.438, 'kappa': 0.642, 'theta_pool': np.float64(0.17)}
+L1-23 delta- {'alpha': -1.387, 'theta_frame': np.float64(0.003), 'theta_m': 0.0, 'rho12': 0.468, 'kappa': 0.003, 'theta_pool': np.float64(0.002)}
+L1-24 delta- {'alpha': -1.66, 'theta_frame': np.float64(0.174), 'theta_m': 0.154, 'rho12': 0.436, 'kappa': 0.643, 'theta_pool': np.float64(0.174)}
+L1-25 selection {'alpha': -1.496, 'theta_frame': np.float64(-0.059), 'theta_m': -0.051, 'rho12': 0.466, 'kappa': -0.244, 'theta_pool': np.float64(0.002)}
+L1-26 selection {'alpha': -1.462, 'theta_frame': np.float64(0.069), 'theta_m': 0.057, 'rho12': 0.425, 'kappa': 0.343, 'theta_pool': np.float64(0.171)}
+L1-27 rootavail {'alpha': -1.194, 'theta_frame': np.float64(0.034), 'theta_m': 0.031, 'rho12': 0.453, 'kappa': 0.126, 'theta_pool': np.float64(0.0)}
+L1-28 rootavail {'alpha': -1.366, 'theta_frame': np.float64(0.19), 'theta_m': 0.166, 'rho12': 0.424, 'kappa': 0.774, 'theta_pool': np.float64(0.166)}
+L1-29 orient {'alpha': -1.377, 'theta_frame': np.float64(-0.001), 'theta_m': 0.001, 'rho12': 0.467, 'kappa': -0.008, 'theta_pool': np.float64(-0.0)}
+L1-30 orient {'alpha': -1.645, 'theta_frame': np.float64(0.17), 'theta_m': 0.155, 'rho12': 0.435, 'kappa': 0.642, 'theta_pool': np.float64(0.173)}
+L1-31 shared {'alpha': -1.393, 'theta_frame': np.float64(-0.001), 'theta_m': -0.002, 'rho12': 0.468, 'kappa': 0.001, 'theta_pool': np.float64(-0.002)}
+L1-32 shared {'alpha': -1.663, 'theta_frame': np.float64(0.174), 'theta_m': 0.154, 'rho12': 0.437, 'kappa': 0.645, 'theta_pool': np.float64(0.172)}
+L1-33 cs_mnar {'alpha': -1.387, 'theta_frame': np.float64(-0.001), 'theta_m': -0.001, 'rho12': 0.47, 'kappa': -0.001, 'theta_pool': np.float64(-0.0)}
+L1-34 cs_mnar {'alpha': -1.651, 'theta_frame': np.float64(0.173), 'theta_m': 0.154, 'rho12': 0.437, 'kappa': 0.652, 'theta_pool': np.float64(0.175)}
+L1-35 floor {'alpha': -1.386, 'theta_frame': np.float64(-0.0), 'theta_m': -0.001, 'rho12': 0.466, 'kappa': -0.002, 'theta_pool': np.float64(-0.001)}
+L1-36 floor {'alpha': -1.646, 'theta_frame': np.float64(0.147), 'theta_m': 0.127, 'rho12': 0.437, 'kappa': 0.642, 'theta_pool': np.float64(0.15)}
+L1-37 coder.4 {'alpha': -1.387, 'theta_frame': np.float64(-0.001), 'theta_m': -0.001, 'rho12': 0.534, 'kappa': -0.001, 'theta_pool': np.float64(0.0)}
+L1-38 coder.4 {'alpha': -1.646, 'theta_frame': np.float64(0.179), 'theta_m': 0.154, 'rho12': 0.502, 'kappa': 0.644, 'theta_pool': np.float64(0.179)}
+L1-39 coder.9 {'alpha': -1.399, 'theta_frame': np.float64(-0.001), 'theta_m': -0.0, 'rho12': 0.381, 'kappa': -0.004, 'theta_pool': np.float64(0.0)}
+L1-40 coder.9 {'alpha': -1.66, 'theta_frame': np.float64(0.162), 'theta_m': 0.157, 'rho12': 0.351, 'kappa': 0.645, 'theta_pool': np.float64(0.162)}
+L1-41 confound {'alpha': -1.641, 'theta_frame': np.float64(0.081), 'theta_m': 0.071, 'rho12': 0.46, 'kappa': 0.303, 'theta_pool': np.float64(0.082)}
+L1-42 avail {'alpha': -1.398, 'theta_frame': np.float64(0.002), 'theta_m': 0.0, 'rho12': 0.469, 'kappa': 0.004, 'theta_pool': np.float64(-0.0)}
+L1-43 avail {'alpha': -1.648, 'theta_frame': np.float64(0.173), 'theta_m': 0.155, 'rho12': 0.437, 'kappa': 0.65, 'theta_pool': np.float64(0.175)}
+L1-44 word-0.4 {'alpha': -1.376, 'theta_frame': np.float64(0.002), 'theta_m': 0.001, 'rho12': 0.467, 'kappa': -0.001, 'theta_pool': np.float64(0.001)}
+L1-45 word-0.4 {'alpha': -1.646, 'theta_frame': np.float64(0.171), 'theta_m': 0.153, 'rho12': 0.437, 'kappa': 0.651, 'theta_pool': np.float64(0.172)}
+L1-46 word+0.0 {'alpha': -1.384, 'theta_frame': np.float64(0.001), 'theta_m': 0.0, 'rho12': 0.468, 'kappa': 0.002, 'theta_pool': np.float64(-0.0)}
+L1-47 word+0.0 {'alpha': -1.655, 'theta_frame': np.float64(0.174), 'theta_m': 0.155, 'rho12': 0.436, 'kappa': 0.642, 'theta_pool': np.float64(0.175)}
+L1-48 word+0.4 {'alpha': -1.395, 'theta_frame': np.float64(0.001), 'theta_m': 0.0, 'rho12': 0.469, 'kappa': 0.0, 'theta_pool': np.float64(-0.002)}
+L1-49 word+0.4 {'alpha': -1.645, 'theta_frame': np.float64(0.172), 'theta_m': 0.154, 'rho12': 0.436, 'kappa': 0.645, 'theta_pool': np.float64(0.168)}
+8 fits requested, 8 to run now -> results/d2/pilot_l1.csv
+2 closed-form/MLE fits done
+[1/6] ('L1-09', 'b10', 0) core: 0.6s rhat 1.038 div 1
+[2/6] ('L1-09', 'b10', 1) core: 0.6s rhat 1.005 div 0
+[3/6] ('L1-09', 'b30', 0) core: 0.7s rhat 1.010 div 0
+[4/6] ('L1-09', 'b30', 1) core: 0.6s rhat 1.013 div 0
+[5/6] ('L1-09', 'c', 1) core: 2.5s rhat 1.006 div 0
+[6/6] ('L1-09', 'c', 0) core: 2.5s rhat 1.005 div 0
+L2-00 core {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-01 core {'apc_z': 0.0, 'apc_s': -0.081, 'bzC': 0.0}
+L2-02 core {'apc_z': -0.078, 'apc_s': -0.076, 'bzC': -0.4}
+L2-03 core {'apc_z': -0.08, 'apc_s': -0.078, 'bzC': -0.4}
+L2-04 core {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-05 core {'apc_z': 0.0, 'apc_s': -0.081, 'bzC': 0.0}
+L2-06 core {'apc_z': -0.081, 'apc_s': -0.078, 'bzC': -0.4}
+L2-07 core {'apc_z': -0.083, 'apc_s': -0.08, 'bzC': -0.4}
+L2-08 core {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-09 core {'apc_z': 0.0, 'apc_s': -0.081, 'bzC': 0.0}
+L2-10 core {'apc_z': -0.082, 'apc_s': -0.079, 'bzC': -0.4}
+L2-11 core {'apc_z': -0.084, 'apc_s': -0.082, 'bzC': -0.4}
+L2-12 core150 {'apc_z': 0.0, 'apc_s': -0.078, 'bzC': 0.0}
+L2-13 core150 {'apc_z': 0.0, 'apc_s': -0.081, 'bzC': 0.0}
+L2-14 core150 {'apc_z': -0.08, 'apc_s': -0.078, 'bzC': -0.4}
+L2-15 core150 {'apc_z': -0.083, 'apc_s': -0.08, 'bzC': -0.4}
+L2-16 desc+.3 {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-17 desc+.3 {'apc_z': -0.08, 'apc_s': -0.078, 'bzC': -0.4}
+L2-18 desc-.3 {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-19 desc-.3 {'apc_z': -0.081, 'apc_s': -0.078, 'bzC': -0.4}
+L2-20 word+.4 {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-21 word+.4 {'apc_z': -0.08, 'apc_s': -0.078, 'bzC': -0.4}
+L2-22 word-.4 {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-23 word-.4 {'apc_z': -0.08, 'apc_s': -0.078, 'bzC': -0.4}
+L2-24 wordcoded {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-25 wordcoded {'apc_z': -0.08, 'apc_s': -0.078, 'bzC': -0.4}
+L2-26 floor {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-27 floor {'apc_z': -0.08, 'apc_s': -0.078, 'bzC': -0.4}
+L2-28 R.25 {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-29 R.25 {'apc_z': -0.08, 'apc_s': -0.078, 'bzC': -0.4}
+L2-30 R.6 {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-31 R.6 {'apc_z': -0.08, 'apc_s': -0.078, 'bzC': -0.4}
+L2-32 naive {'apc_z': 0.0, 'apc_s': -0.079, 'bzC': 0.0}
+L2-33 naive {'apc_z': -0.08, 'apc_s': -0.078, 'bzC': -0.4}
+L2-34 sep150 {'apc_z': 0.0, 'apc_s': -0.08, 'bzC': 0.0}
+L2-35 sep150 {'apc_z': -0.081, 'apc_s': -0.079, 'bzC': -0.4}
+L2-36 register {'apc_z': 0.0, 'apc_s': -0.075, 'bzC': 0.0}
+4 fits requested, 4 to run now -> results/d2/pilot_l2.csv
+[1/4] ('L2-06', 'adj', 1) core: 1.4s rhat 1.009 div 0
+[2/4] ('L2-06', 'adj', 0) core: 1.4s rhat 1.004 div 0
+[3/4] FAILED ('L2-06', 'unadj', 1): KeyError('Unknown shared variable: a')
+[4/4] FAILED ('L2-06', 'unadj', 0): KeyError('Unknown shared variable: a')
+log: logs/d2-20261009-145504.json

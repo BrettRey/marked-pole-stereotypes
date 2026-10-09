@@ -206,9 +206,17 @@ def l1_dataset(cell: dict, rep: int, alpha: float) -> dict:
     fl = lambda k: np.where(flip, 2 - k, k)  # noqa: E731
     e_posval, e_negval = np.where(flip, e_q, e_p), np.where(flip, e_p, e_q)  # by the analyst's valence labels
     sub_order = rng.permutation(n)   # random order for filling the second judge's Y_obs = 0 slots
+    # finite-population truths for this frame (delta = 0, availability 0), by the true labels
+    band = np.where(floor & (np.maximum(rho_p, rho_q) < FLOOR_LOGIT), FLOOR_BAND, BAND)
+    p0c = expit((-band[:, None] - r[:, None] - wdiff - CODER_B) / cell["coder_s"]).mean(1)
+    p0m = expit((-band[:, None, None] - r[:, None, None] - wdiff[:, None, :] - eta[:, None, None]
+                 - phi[:, :, None] - M_B) / M_S).mean((1, 2))
+    th_fp = p0c[Y].mean() - p0c[~Y].mean() if Y.any() and (~Y).any() else np.nan
+    thm_fp = p0m[Y].mean() - p0m[~Y].mean() if Y.any() and (~Y).any() else np.nan
     return dict(n=n, Y=Y, Y_obs=Y_obs.astype(int), resp_c=fl(resp_c), set_c=set_c, cs_c=cs_c,
                 resp_2=fl(resp_2), set_2=set_2, cs_2=cs_2, resp_m=np.where(flip[:, None, None], 2 - resp_m, resp_m),
-                R_word=e_negval - e_posval, dv_obs=np.abs(dv_obs), sub_order=sub_order, flip=flip)
+                R_word=e_negval - e_posval, dv_obs=np.abs(dv_obs), sub_order=sub_order, flip=flip,
+                theta_fp=th_fp, theta_m_fp=thm_fp)
 
 
 def l1_truths(cell: dict, alpha: float) -> dict:
@@ -368,7 +376,7 @@ def _compiled(key, builder, *args):
     return _COMPILED[key]
 
 
-def _sample(compiled, data: dict, seed: int, tune=1000, draws=1000, target_accept=0.9):
+def _sample(compiled, data: dict, seed: int, tune=2000, draws=1000, target_accept=0.95):
     import nutpie
     t0 = time.time()
     tr = nutpie.sample(compiled.with_data(**data), draws=draws, tune=tune, chains=4, cores=4, seed=seed,
@@ -398,6 +406,17 @@ def _diag(tr, names) -> tuple[float, float, int]:
 def _summ(x: np.ndarray) -> dict:
     q = np.quantile(x, [0.05, 0.25, 0.5, 0.75, 0.95])
     return dict(mean=float(x.mean()), sd=float(x.std(ddof=1)), q05=q[0], q25=q[1], q50=q[2], q75=q[3], q95=q[4])
+
+
+GH_X, GH_W = np.polynomial.hermite_e.hermegauss(30)
+GH_W = GH_W / GH_W.sum()
+
+
+def _p_rarer_new(g, sd, cut1, tau, y):
+    """P(a judge says the positive pole is rarer) for a new pair of type y: integrate the pair's
+    total random effect, N(0, sd), by Gauss-Hermite. Arrays are per posterior draw."""
+    x = sd[:, None] * GH_X[None, :]
+    return ((1 - expit((g[:, None] * y + x - cut1[:, None]) / tau[:, None])) * GH_W[None, :]).sum(1)
 
 
 def l1_subset(d: dict, extra: int) -> np.ndarray:
@@ -445,13 +464,17 @@ def fit_l1(job: dict) -> list[dict]:
         eta = g[:, None, None] * d["Y_obs"][None, :, None] + u[:, :, None] + w      # (S, N, 2)
         p0 = (1 - expit(eta - cut[:, 0][:, None, None])).mean(axis=2)                # P(coder says P rarer)
         on = d["Y_obs"] == 1
-        th = p0[:, on].mean(axis=1) - p0[:, ~on].mean(axis=1)
+        th_fp = p0[:, on].mean(axis=1) - p0[:, ~on].mean(axis=1)                    # this frame's pairs
+        sd_new = np.sqrt(su ** 2 + sw ** 2)
+        one = np.ones_like(g)
+        th = _p_rarer_new(g, sd_new, cut[:, 0], one, 1.0) - _p_rarer_new(g, sd_new, cut[:, 0], one, 0.0)
         k = np.pi ** 2 / 3
         rho12 = su ** 2 / np.sqrt((su ** 2 + sw ** 2 + k) * (su ** 2 + sw ** 2 + k * tau2 ** 2))
         rh, es, dv = _diag(tr, ["gamma", "sig_u", "sig_w", "cut_c", "cut_2", "tau2"])
         common = dict(rhat_max=rh, ess_min=es, divergences=dv, seconds=round(sec, 1), n_sub=int(sub.sum()))
         rows.append(dict(base, estimand="theta", truth=tr_["theta_frame"], truth_pool=tr_["theta_pool"],
                          **_summ(th), **common))
+        rows.append(dict(base, estimand="theta_fp", truth=d["theta_fp"], **_summ(th_fp), **common))
         rows.append(dict(base, estimand="rho12", truth=tr_["rho12"], **_summ(rho12), **common))
         rows.append(dict(base, estimand="gamma", truth=np.nan, **_summ(g), **common))
         return rows
@@ -465,16 +488,20 @@ def fit_l1(job: dict) -> list[dict]:
         cut = _post(tr, "cut")                                    # (S, F, 2)
         tau = np.concatenate([np.ones((len(g), 1)), _post(tr, "tau_rest")], axis=1)
         on = d["Y_obs"] == 1
-        ths = []
+        ths, ths_fp = [], []
+        sd_new = np.sqrt(su ** 2 + sw ** 2 + sf ** 2)
         for fam in range(N_FAM):
             eta = g[:, None, None] * d["Y_obs"][None, :, None] + u[:, :, None] + w + f[:, :, fam][:, :, None]
             p0 = (1 - expit((eta - cut[:, fam, 0][:, None, None]) / tau[:, fam][:, None, None])).mean(axis=2)
-            ths.append(p0[:, on].mean(axis=1) - p0[:, ~on].mean(axis=1))
-        th = np.mean(ths, axis=0)
+            ths_fp.append(p0[:, on].mean(axis=1) - p0[:, ~on].mean(axis=1))
+            ths.append(_p_rarer_new(g, sd_new, cut[:, fam, 0], tau[:, fam], 1.0)
+                       - _p_rarer_new(g, sd_new, cut[:, fam, 0], tau[:, fam], 0.0))
+        th, th_fp = np.mean(ths, axis=0), np.mean(ths_fp, axis=0)
         rh, es, dv = _diag(tr, ["gamma", "sig_u", "sig_w", "sig_f", "cut", "tau_rest"])
         common = dict(rhat_max=rh, ess_min=es, divergences=dv, seconds=round(sec, 1))
         rows.append(dict(base, estimand="theta_m", truth=tr_["theta_m"], truth_coder=tr_["theta_frame"],
                          **_summ(th), **common))
+        rows.append(dict(base, estimand="theta_m_fp", truth=d["theta_m_fp"], **_summ(th_fp), **common))
         rows.append(dict(base, estimand="gamma", truth=np.nan, **_summ(g), **common))
         return rows
     raise ValueError(design)
@@ -620,8 +647,11 @@ def fit_l2(job: dict) -> list[dict]:
     d = l2_dataset(cell, rep, alpha)
     K = d["K"]
     adjusted = fit == "adj"
-    data = dict(y=d["y"], e=d["e"], se=float(d["se"]), ar=d["arousal"], v=d["v"], a=d["a_obs"],
-                Rel=float(cell["R_assumed"]))
+    data = dict(y=d["y"], e=d["e"], se=float(d["se"]), ar=d["arousal"], v=d["v"])
+    if adjusted:
+        data["a"] = d["a_obs"]
+    if not cell["naive"]:
+        data["Rel"] = float(cell["R_assumed"])
     fseed = int(seed_seq(5, cell_index(cell), rep, int(adjusted)).generate_state(1)[0])
     tr, sec = _sample(_compiled(("l2", K, adjusted, cell["naive"]), build_l2, K, adjusted, cell["naive"]), data, fseed)
     S = 1000  # thin for the predictive comparisons
