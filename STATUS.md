@@ -11,11 +11,11 @@ source:
 - notes/project-brief.md
 next_action: 'D1 grid running (2026-10-09): chunks 0 and 11-15 local, 1-10 on cloud branches
   d1-grid-chunk-01..10; when all 16 finish, merge the branch CSVs into results/d1/grid/ and run
-  summarise_d1.py grid/. D2 grid (lexical fake data) running locally. Brett settled Parts 6-7 and
-  the blinding protocol (2026-10-09). Next: propose meaningful-effect thresholds (H2, L1, word
-  level) for Brett; D1 indicator verdict; Part 8 (unwritten plan sections); D1b, D1c, D2b before
-  FIXED. Coder materials go in gitignored private/ (fingerprint only until judges finish). Fetch
-  Hofstee 1995 and Hampson et al. 1987 (notes/literature-to-fetch.md).'
+  summarise_d1.py grid/. D2 grid (lexical fake data) running locally. Model judges only, no new
+  human judges (Brett, 2026-10-09); amended marking falsifiers await Brett's confirmation. Next:
+  propose meaningful-effect thresholds (H2, L1, word level); D1 indicator verdict; Part 8
+  (unwritten plan sections); D1b, D1c, D2b before FIXED. Fetch Hofstee 1995 and Hampson et al.
+  1987 (notes/literature-to-fetch.md).'
 claim:
   argues: >-
     Stereotype content concentrates on the marked pole of evaluative oppositions, because rarity
