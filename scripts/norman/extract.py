@@ -33,6 +33,7 @@ PDF = RAW / "norman_1967_2800_personality_trait_descriptors_ERIC_ED014738.pdf"
 IMG = RAW / "img"
 TASKS = ("10-WR", "DP-S", "DP-A", "DP-B", "DP-C")
 DPI = 300
+DPI_VISION = 200  # after pilot 1: 300 dpi images broke the upload; JPEG at 200 dpi works
 NEG = re.compile(r"^(UN|IN|IM|IL|IR|DIS|NON)|LESS$")
 MODEL_B = "z-ai/glm-5.3-flash"
 MODEL_C = "gemma3:12b"
@@ -90,6 +91,24 @@ def render(p: int) -> dict:
     return paths
 
 
+def render_vision(p: int) -> dict:
+    """JPEG halves at DPI_VISION for the vision passes (same crop fractions as render())."""
+    IMG.mkdir(parents=True, exist_ok=True)
+    w, h = page_size_px(p)
+    k = DPI_VISION / DPI
+    w, h = int(w * k), int(h * k)
+    halves = {"M": (0, int(w * 0.53)), "F": (int(w * 0.47), w - int(w * 0.47))}
+    paths = {}
+    for side, (x, W) in halves.items():
+        stem = IMG / f"p{p:03d}_{side}_v"
+        jpg = stem.with_suffix(".jpg")
+        if not jpg.exists():
+            sh(["pdftoppm", "-f", str(p), "-l", str(p), "-r", str(DPI_VISION), "-gray", "-jpeg", "-jpegopt", "quality=85",
+                "-singlefile", "-x", str(x), "-y", "0", "-W", str(W), "-H", str(h), str(PDF), str(stem)])
+        paths[side] = jpg
+    return paths
+
+
 # ------------------------------------------------------------------ pass A: Tesseract
 
 NUM = re.compile(r"-?\d*\.\d+|-?\d+")
@@ -141,16 +160,18 @@ def _json_list(reply: str):
 
 def pass_b(png: Path, key: str, retries: int = 2) -> tuple[list | None, dict]:
     b64 = base64.b64encode(png.read_bytes()).decode()
-    body = dict(model=MODEL_B, temperature=0, max_tokens=6000,
+    body = dict(model=MODEL_B, temperature=0, max_tokens=8000, reasoning=dict(effort="low"),
                 messages=[dict(role="user", content=[dict(type="text", text=PROMPT),
-                                                     dict(type="image_url", image_url=dict(url=f"data:image/png;base64,{b64}"))])])
+                                                     dict(type="image_url", image_url=dict(url=f"data:image/jpeg;base64,{b64}"))])])
     req = urllib.request.Request("https://openrouter.ai/api/v1/chat/completions", data=json.dumps(body).encode(),
                                  headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
     for attempt in range(retries + 1):
         try:
             with urllib.request.urlopen(req, timeout=300) as r:
                 d = json.loads(r.read())
-            reply = d["choices"][0]["message"]["content"]
+            reply = d["choices"][0]["message"].get("content")
+            if not reply:
+                raise KeyError("empty content (finish: %s)" % d["choices"][0].get("finish_reason"))
             return _json_list(reply), dict(model=d.get("model"), usage=d.get("usage"))
         except (urllib.error.URLError, KeyError, json.JSONDecodeError, TimeoutError) as e:  # noqa: PERF203
             err = repr(e)[:300]
@@ -253,10 +274,11 @@ def run_passes(pages: list[int], workers: int, do_c: bool = False):
     key = _key()
     jobs = []
     for p in pages:
+        vis = render_vision(p)
         for side, png in render(p).items():
             if (p, side) not in doneA:
                 append_jsonl(A_path, dict(page=p, side=side, blocks=pass_a(p, side, png)))
-            jobs.append((p, side, png))
+            jobs.append((p, side, vis[side]))
     todo_b = [j for j in jobs if (j[0], j[1]) not in doneB]
     with ThreadPoolExecutor(max_workers=workers) as ex:
         futs = {ex.submit(pass_b, png, key): (p, side) for p, side, png in todo_b}

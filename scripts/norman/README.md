@@ -26,6 +26,10 @@ The extracted values aren't joined to morphology, and aren't inspected by the ma
 
 `passA.csv`, `passB.jsonl`, `passC.jsonl`, `reconciled.csv` (page, side, block, item number, printed term, matched term, task, N, MEAN, S.D., source of each value, flags), `audit.csv`, and `extraction_log.json` (versions, model IDs, prompt hash, timings). Whether derived values can be published depends on the report's terms of reuse, still to be settled; until then nothing extracted goes into git.
 
+## After pilot 1 (2026-10-09)
+
+Pilot 1 failed before any comparison: one vision reply came back empty because the model spent its token budget on reasoning (about 6,300 tokens at default settings), and a 300 dpi PNG upload broke the connection. Changes: the vision passes get greyscale JPEGs at 200 dpi (same crops), the vision request sets low reasoning effort (a test call returned in 6 seconds with about 1,100 output tokens), and an empty reply counts as a failure and is retried. Tesseract still reads the 300 dpi PNGs. Pilot outputs were cleared and the pilot rerun.
+
 ## Order of running
 
 Spec and code committed first; then a pilot on two pages whose terms contain no negator, with A, B and C compared by hand on those pages only; then the full run; then the audit.
