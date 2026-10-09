@@ -88,6 +88,10 @@ Coverage of 50% and 90% intervals, with Monte Carlo standard errors; bias and RM
 
 Brett withdrew all new human judging ("It will have to be model judgments all the way"; `analysis_plan.md`, "Model judges only"). Design (c) is now L1's primary design and θ_m its estimand; designs (a) and (b) run in the current grid and are kept as a record, but no longer bear on the plan. D2b reports θ_m against both a finite-frame truth and a process truth, with the pair-generating population stated, and simulated coverage is read as validating the inference under the stated assumptions, not the instrument (`reviews/codex-models-only-2026-10-09/`).
 
+## Reporting change for D2b (2026-10-09, `reviews/codex-thresholds-2026-10-09/`)
+
+Label probabilities are shown by generating effect and bias scenario, never averaged over scenarios without stated weights; the exaggeration ratio is undefined at a zero truth and unstable near it, so the absolute bias conditional on a "support" label is reported too.
+
 ## D2b additions (after the frame is frozen)
 
 From the Codex review of the reading problem (`reviews/codex-reading-2026-10-09/`): pairs whose negated member is a contradictory, with complement-constrained prevalences (the two poles sum to 1, so the comparison turns on whether the root is the majority state), in a share that rises with pair type as Horn (1989, §5.1) leads one to expect; reading misclassification, including the uniform-contrary rendering that describes contradictories as rare traits; and false support defined against the correctly rendered concepts, since support for a distorted protocol can be accurate about the protocol and still false about the hypothesis. Shared errors in writing and judging descriptions across model families, correlated with negation in either direction, since with model judges only nothing outside the models checks them. From the review of negatives with no extant root (`reviews/codex-sparsity-2026-10-09/`): root availability that falls as well as rises with the root's prevalence (a root naming an unremarkable default may fall out of use), which tests the consequences of each assumption, not its historical truth.
