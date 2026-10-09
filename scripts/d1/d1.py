@@ -313,8 +313,11 @@ def run(jobs: list[dict], workers: int, out_name: str, max_fits: int | None = No
     done = set()
     if out.exists():  # resume: skip fits already written
         prev = pd.read_csv(out)
+        # Oracle jobs have indicator None, written as an empty cell and read back
+        # as NaN; normalize so the CSV key matches str(None). (Bug found by the
+        # chunk-0 cloud canary, 2026-10-08: oracle fits were never skipped.)
         done = {tuple(r) for r in prev[["scenario", "size", "rep", "model", "indicator", "prior_scale"]]
-                .astype(str).drop_duplicates().itertuples(index=False)}
+                .fillna({"indicator": "None"}).astype(str).drop_duplicates().itertuples(index=False)}
     todo = [j for j in jobs if (j["scenario"], j["size"], str(j["rep"]), j["model"], str(j["indicator"]),
                                 str(j["prior_scale"])) not in done]
     if max_fits is not None:

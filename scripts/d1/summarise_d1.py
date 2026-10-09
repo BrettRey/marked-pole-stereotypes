@@ -27,6 +27,16 @@ def md(df: pd.DataFrame, index: bool = True) -> str:
     return "\n".join(lines)
 
 
+JOB = ["scenario", "size", "rep", "model", "indicator", "prior_scale"]
+
+
+def dedupe(fits: pd.DataFrame) -> pd.DataFrame:
+    """Keep the first run of each job. Before the resume fix (2026-10-09), an
+    oracle job could be rerun with the same seed; the reruns are duplicates."""
+    key = fits[JOB].fillna({"indicator": "None"}).astype(str).agg("|".join, axis=1)
+    return fits[~fits.assign(_k=key).duplicated(subset=["_k", "coef"], keep="first")]
+
+
 def metrics(fits: pd.DataFrame) -> pd.DataFrame:
     f = fits.copy()
     f["indicator"] = f["indicator"].fillna("oracle")
@@ -95,7 +105,14 @@ def identified(m: pd.DataFrame) -> pd.DataFrame:
 
 def main():
     name = sys.argv[1] if len(sys.argv) > 1 else "fits.csv"
-    fits = pd.read_csv(R / name)
+    if name.endswith("/"):  # a directory of chunk CSVs, e.g. grid/
+        fits = pd.concat([pd.read_csv(p) for p in sorted((R / name).glob("chunk_*.csv"))], ignore_index=True)
+        name = name.rstrip("/") + "_fits.csv"
+    else:
+        fits = pd.read_csv(R / name)
+    n_before = len(fits)
+    fits = dedupe(fits)
+    print(f"dropped {n_before - len(fits)} duplicate rows (reruns of the same job)")
     m = metrics(fits)
     stem = name.replace("_fits.csv", "").replace("fits.csv", "grid").rstrip("_")
     m.to_csv(R / f"metrics_{stem}.csv", index=False)

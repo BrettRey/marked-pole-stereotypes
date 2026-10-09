@@ -5,6 +5,21 @@ You are running **one chunk** of a pre-specified fake-data simulation (D1). The 
 
 Your chunk number K and the total N are given in the message that started this session.
 
+## 0. Branch (once)
+
+Work on your chunk's branch, continuing from it if it already exists (a chunk may have been started before):
+
+```bash
+git fetch origin
+if git rev-parse -q --verify origin/d1-grid-chunk-KK >/dev/null; then
+  git checkout -B d1-grid-chunk-KK origin/d1-grid-chunk-KK && git merge --no-edit origin/master
+else
+  git checkout -B d1-grid-chunk-KK origin/master
+fi
+```
+
+(KK is the zero-padded chunk number.) The runner resumes from the chunk CSV on the branch, so finished fits aren't rerun.
+
 ## 1. Set up (once)
 
 ```bash
