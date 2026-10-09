@@ -122,3 +122,11 @@ log: logs/d1-20261009-134952.json
 [9/21] s2_register small rep16 joint e_r80 prior1.0: 176.2s, rhat_max 1.005, div 0
 [10/21] s2_register large rep7 joint e_r80 prior1.0: 205.0s, rhat_max 1.010, div 0
 [11/21] s2_register large rep15 joint e_r80 prior1.0: 192.8s, rhat_max 1.014, div 0
+[12/21] s2_register large rep2 joint f_only prior2.5: 465.6s, rhat_max 1.985, div 0
+[13/21] s3_mechanism small rep1 joint e_r50 prior1.0: 188.7s, rhat_max 1.028, div 0
+[14/21] s3_mechanism small rep4 joint e_r80 prior1.0: 205.8s, rhat_max 1.033, div 0
+[15/21] s3_mechanism small rep9 oracle None prior1.0: 159.7s, rhat_max 1.003, div 0
+[16/21] s3_mechanism small rep15 joint e_r50 prior1.0: 185.2s, rhat_max 1.023, div 0
+[17/21] s3_mechanism large rep3 joint e_r50 prior1.0: 356.7s, rhat_max 1.573, div 0
+[18/21] s3_mechanism large rep0 joint f_only prior2.5: 570.9s, rhat_max 1.571, div 0
+[19/21] s3_mechanism large rep7 oracle None prior1.0: 161.8s, rhat_max 1.002, div 0
