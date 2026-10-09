@@ -1,0 +1,19 @@
+scenario,size,indicator,b_f,b_m,b_vt,b_z,c_z,g_s,g_vt,g_z
+s1_recovery,large,e_r50,identified,identified,identified,identified,identified,identified,identified,identified
+s1_recovery,large,e_r80,identified,identified,identified,identified,identified,identified,identified,identified
+s1_recovery,large,f_only,not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence)
+s1_recovery,small,e_r50,identified,weak,identified,identified,identified,identified,identified,identified
+s1_recovery,small,e_r80,identified,weak,identified,identified,identified,identified,identified,identified
+s1_recovery,small,f_only,not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence)
+s2_register,large,e_r50,weak,weak,weak,weak,identified,identified,identified,identified
+s2_register,large,e_r80,weak,weak,weak,weak,identified,identified,identified,identified
+s2_register,large,f_only,not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence)
+s2_register,small,e_r50,weak,identified,weak,weak,identified,identified,identified,identified
+s2_register,small,e_r80,weak,identified,weak,weak,identified,identified,identified,identified
+s2_register,small,f_only,not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence)
+s3_mechanism,large,e_r50,not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence)
+s3_mechanism,large,e_r80,identified,weak,identified,weak,weak,identified,identified,identified
+s3_mechanism,large,f_only,not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence)
+s3_mechanism,small,e_r50,identified,weak,identified,identified,weak,identified,identified,identified
+s3_mechanism,small,e_r80,identified,identified,identified,identified,weak,identified,identified,identified
+s3_mechanism,small,f_only,not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence),not identified (no convergence)
