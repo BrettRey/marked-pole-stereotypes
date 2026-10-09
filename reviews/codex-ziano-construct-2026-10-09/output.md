@@ -1,0 +1,11 @@
+The correction is right, but point 2 needs revision.
+
+- **Separate constructs, not interchangeable indicators.** Display frequency and person prevalence should be reported as **different estimands**, not alternative measurements of one prevalence latent. Combining them requires an explicit bridge model whose assumptions are varied. Their within-family gap diagnoses prompt sensitivity; it cannot validate either construct. [`analysis_plan.md`, “Which rarity”; “Multiverse”](analysis_plan.md).
+
+- **The primary human estimand changes.** “Within-valence rarity” must become within-valence *perceived infrequency of display* wherever Ziano anchors it. Residualizing on valence does not repair the construct mismatch. Revise the measurement equations, H2’s orientation, SD scaling and substantive threshold accordingly. Keep actual-prevalence effects explicitly conditional on bridge assumptions. Partial pooling can improve precision but cannot supply missing construct validity. [`analysis_plan.md`, “The measurement problem”; “H2 details”; “Overall warrant”](analysis_plan.md).
+
+- **There are two transport problems.** Population-wide display frequency neither measures group-specific π nor establishes that attribute rankings persist across groups. Group-specific content terms and varying slopes do not supply that measurement bridge. Moreover, US-panel calibration does not establish relevance to UK or Irish stereotype production. Fixing prompts to Americans makes calibration coherent but leaves geographic transport assumption-dependent; US/UK/Irish prompt contrasts would be model-only diagnostics, not local human validation. [`analysis_plan.md`, “H2 details”; “Commonness judges”](analysis_plan.md).
+
+- **Calibration needs a modest label.** Matching Ziano’s wording calibrates predictions to this panel’s responses, not to Americans’ behaviour or even a representative American perception. Retain ordinal rater modelling; verify and freeze the authors’ exclusion algorithm rather than assuming every seriousness/quiz field was an exclusion criterion. [`sources.csv`, ziano2021 rows](data/manifests/sources.csv).
+
+Finally, extend D1b/D1c to plausible display-frequency–prevalence divergence and group/geographic transport failure. H2 can remain informative as an association with perceived display infrequency; it becomes a less direct test of UWA’s π mechanism.
