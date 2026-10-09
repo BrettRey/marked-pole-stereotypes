@@ -1,7 +1,7 @@
 # D1 grid: cloud sessions
 <!-- SUMMARY: Which Claude Code cloud session ran which D1 grid chunk; branches d1-grid-chunk-KK on GitHub · status: running · updated: 2026-10-09 -->
 
-Launched with `claude --cloud` from Brett's terminal, following `scripts/d1/CLOUD.md`. Each session pushes its chunk's results, run logs and any error note to its own branch. The session pages open only with Brett's login.
+Launched with `claude --cloud` from Brett's terminal, following `scripts/d1/CLOUD.md`. Each session pushes its chunk's results, run logs and any error note to its own branch. The session pages open only with Brett's login. IDs for chunks 1–10 were transcribed from a screenshot of Brett's terminal, so a character may be wrong (l/I, 0/O); if one doesn't resolve, find the session by its title ("D1 grid chunk K") at claude.ai/code.
 
 | Chunk | Branch | Session | Launched |
 |---|---|---|---|
