@@ -86,7 +86,7 @@ Coverage of 50% and 90% intervals, with Monte Carlo standard errors; bias and RM
 
 ## D2b additions (after the frame is frozen)
 
-From the Codex review of the reading problem (`reviews/codex-reading-2026-10-09/`): pairs whose negated member is a contradictory, with complement-constrained prevalences (the two poles sum to 1, so the comparison turns on whether the root is the majority state), in a share that rises with pair type as Horn (1989, §5.1) leads one to expect; reading misclassification, including the uniform-contrary rendering that describes contradictories as rare traits; and false support defined against the correctly rendered concepts, since support for a distorted protocol can be accurate about the protocol and still false about the hypothesis.
+From the Codex review of the reading problem (`reviews/codex-reading-2026-10-09/`): pairs whose negated member is a contradictory, with complement-constrained prevalences (the two poles sum to 1, so the comparison turns on whether the root is the majority state), in a share that rises with pair type as Horn (1989, §5.1) leads one to expect; reading misclassification, including the uniform-contrary rendering that describes contradictories as rare traits; and false support defined against the correctly rendered concepts, since support for a distorted protocol can be accurate about the protocol and still false about the hypothesis. From the review of negatives with no extant root (`reviews/codex-sparsity-2026-10-09/`): root availability that falls as well as rises with the root's prevalence (a root naming an unremarkable default may fall out of use), which tests the consequences of each assumption, not its historical truth.
 
 ## Deliberately absent
 
