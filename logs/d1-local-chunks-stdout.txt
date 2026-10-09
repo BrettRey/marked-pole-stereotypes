@@ -1,0 +1,7 @@
+=== chunk 0 start 10:38:25
+22 fits requested, 7 to run now
+[1/7] s3_mechanism small rep15 joint e_r80 prior1.0: 175.2s, rhat_max 1.014, div 0
+[2/7] s3_mechanism small rep10 joint e_r50 prior1.0: 198.3s, rhat_max 1.031, div 0
+[3/7] s3_mechanism large rep3 joint e_r80 prior1.0: 207.8s, rhat_max 1.029, div 0
+[4/7] s3_mechanism large rep0 joint e_r50 prior1.0: 283.6s, rhat_max 1.051, div 0
+[5/7] s3_mechanism large rep8 joint e_r50 prior1.0: 322.7s, rhat_max 1.166, div 0
