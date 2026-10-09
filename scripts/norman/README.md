@@ -30,6 +30,10 @@ The extracted values aren't joined to morphology, and aren't inspected by the ma
 
 Pilot 1 failed before any comparison: one vision reply came back empty because the model spent its token budget on reasoning (about 6,300 tokens at default settings), and a 300 dpi PNG upload broke the connection. Changes: the vision passes get greyscale JPEGs at 200 dpi (same crops), the vision request sets low reasoning effort (a test call returned in 6 seconds with about 1,100 output tokens), and an empty reply counts as a failure and is retried. Tesseract still reads the 300 dpi PNGs. Pilot outputs were cleared and the pilot rerun.
 
+## After pilot 2 (2026-10-09)
+
+Scored against a gold transcription of the four pilot half-pages (240 rows, by a Claude subagent working from the 300 dpi images; it cost about 300,000 tokens, so it isn't repeated at scale): rows exactly right, Codex (gpt-6.1-sol through the read-only wrapper with the image attached) 212 of 239, GLM-5.3-flash at low reasoning 163, at default reasoning 148, Tesseract (column-wise, revised) 97. Agreement between two different model families was almost always correct (Codex with Tesseract 88 of 88; Codex with GLM 152 of 153; GLM with Tesseract 89 of 90), agreement between two settings of the same model less so (116 of 121). The local gemma3 pass was dropped (garbage values, minutes per page). New procedure: passes A (Tesseract), B (GLM, low reasoning) and X (Codex, about 10,600 tokens per half-page) on every half-page; a value is accepted when two families agree (X=B, X=A, or A=B); unresolved rows get a second, zoomed Codex read (X2), accepted when it matches A, B or X; anything else is flagged. Codex replaces the Claude subagent for adjudication, at Brett's request to move work off Claude. The audit is redesigned so that it uses a third model family on zoomed block crops, compared by script, with the main session seeing counts only. The full run goes in waves.
+
 ## Order of running
 
 Spec and code committed first; then a pilot on two pages whose terms contain no negator, with A, B and C compared by hand on those pages only; then the full run; then the audit.
