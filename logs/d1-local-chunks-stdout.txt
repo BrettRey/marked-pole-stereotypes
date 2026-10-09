@@ -111,3 +111,14 @@ log: logs/d1-20261009-134952.json
 === chunk 14 end 13:49:52
 === chunk 15 start 13:49:52
 21 fits requested, 21 to run now
+[1/21] s1_recovery small rep10 joint e_r80 prior1.0: 184.6s, rhat_max 1.003, div 0
+[2/21] s1_recovery small rep3 joint e_r80 prior1.0: 185.3s, rhat_max 1.005, div 0
+[3/21] s1_recovery small rep18 joint e_r80 prior1.0: 184.3s, rhat_max 1.003, div 0
+[4/21] s1_recovery large rep9 joint e_r80 prior1.0: 179.2s, rhat_max 1.005, div 0
+[5/21] s1_recovery large rep3 joint f_only prior2.5: 386.9s, rhat_max 1.391, div 1
+[6/21] s1_recovery large rep17 joint e_r80 prior1.0: 181.8s, rhat_max 1.007, div 0
+[7/21] s2_register small rep2 joint e_r80 prior1.0: 167.0s, rhat_max 1.004, div 0
+[8/21] s2_register small rep8 joint e_r80 prior1.0: 181.1s, rhat_max 1.004, div 0
+[9/21] s2_register small rep16 joint e_r80 prior1.0: 176.2s, rhat_max 1.005, div 0
+[10/21] s2_register large rep7 joint e_r80 prior1.0: 205.0s, rhat_max 1.010, div 0
+[11/21] s2_register large rep15 joint e_r80 prior1.0: 192.8s, rhat_max 1.014, div 0
