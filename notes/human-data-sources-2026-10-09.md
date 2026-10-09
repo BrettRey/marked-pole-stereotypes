@@ -20,4 +20,4 @@ Every entry below was checked at the source on 2026-10-09 unless marked otherwis
 
 ## Exposure log
 
-Reading Rothbart & Park's Appendix showed the frequency scores of a few negated traits, including two root/negation pairs (Dependent/Independent; Truthful/Untruthful). Hofstee's published 10-of-12 result is prior evidence. Both are logged in `DECISIONS.md`; any L1 analysis touching these pairs is labelled accordingly.
+The main session read Rothbart & Park's whole Appendix (pp. 140–142), so it saw all 150 traits' standard scores on all eight scales, including the frequency score of every negated trait in the list and two root/negation pairs (Dependent/Independent; Truthful/Untruthful). This bears on L1 and on the word-level test, for which Rothbart & Park is a human source; both are reported with and without those 150 words. (Corrected 2026-10-09 after a side agent's note; the first version of this log said only "a few negated traits".) Hofstee's published 10-of-12 result is prior evidence. Ziano et al.'s aggregated means were seen for two unnegated traits only. No stereotype outcome data have been seen.
