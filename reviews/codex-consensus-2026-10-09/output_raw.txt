@@ -1,0 +1,855 @@
+OpenAI Codex v0.160.0
+--------
+workdir: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: none
+reasoning summaries: none
+session id: 01a1220a-e56f-7b52-99bc-17cc66042f2c
+--------
+user
+You are an independent methodological reviewer, in the project repository, read-only. Do not edit anything. Gelman-style lens, but disagree where it misleads.
+
+Read `notes/project-brief.md` (strand A, step 4, the consensus split and the mapping), `analysis_plan.md` (the second "Open decision" under Hypotheses, on mapping simulated content agreement to observed stereotype consensus), `results/strandA/SUMMARY.md` (section 5, "Consensus split"), and `scripts/simulation/README.md`.
+
+The brief asks to "map how large the true differences must be for content agreement to approach observed stereotype consensus". The plan's draft recommendation is to drop the quantitative mapping and keep the qualitative result.
+
+Main session's Gelman pass, for you to attack:
+1. The calibration is uninterpretable as specified. The observed tasks elicit cultural knowledge: UWA asked for stereotypes "you know that exist in society", Ingendahl et al. for what "society attributes"; the simulation's perceivers form beliefs from their own samples. One agreement statistic can't separate true differences from transmission, so adding a transmission parameter yields a prior-driven posterior.
+2. The statistics aren't commensurable either: the simulation's top-5 Jaccard over 100 attributes against open-vocabulary responses (UWA Study 2: one response per participant per group; Nicolas et al.: six per participant per group, about 14,400 attributes). Any comparison would need a common normalized vocabulary and matched response format.
+3. A "sampling-only predictive check" (does observed content consensus exceed anything sampling alone produces at matched vocabulary and format?) is feasible after normalization, but its result looks foreordained, since everyone grants that cultural transmission exists, so it would add little.
+4. Recommendation: drop the mapping; report the qualitative result (sampling alone yields valence consensus without content consensus, so observed content consensus needs true differences, cultural transmission, or both); state what data would allow a quantitative test (perceivers' own beliefs, a closed vocabulary, k responses each, exposure measures).
+
+Critique, briefly (at most about 350 words): is each point right; is anything quantitative worth keeping from the mapping (e.g. a check that could actually fail, or a use of within-dataset variation such as in-group against out-group perceivers, exposure, or cross-country differences in Ingendahl et al.); what should the plan say. Cite file and section. Mark memory claims "(memory)".
+
+codex
+I’ll read the four specified sections and assess where the proposed critique holds up, where it overstates the problem, and what quantitative check might still be useful.
+exec
+/bin/zsh -lc 'cat notes/project-brief.md analysis_plan.md results/strandA/SUMMARY.md scripts/simulation/README.md' in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+# Project brief (Brett, 2026-10-07, verbatim)
+<!-- SUMMARY: Brett's founding brief for the marked-pole project, verbatim: three strands (UWA simulation, empirical markedness test on open data, optional lexical confound), ground rules, deliverables · status: founding brief · updated: 2026-10-07 -->
+
+This is Brett's brief as pasted on 2026-10-07. It is the project's plan, not a source: its references and URLs are queued in `source-verification.md` until read. The "attached" PDF was found in `~/pdf-inbox` and filed in `literature/`; `uwa_replication.py` was not attached and isn't on disk (see `STATUS.md`).
+
+---
+
+# Project: marked-pole hypothesis and the UWA stereotype-negativity model
+
+## Context
+Unkelbach, Weitzel & Alves (2026, Psychological Review, doi:10.1037/rev0000647; PDF
+attached) argue that stereotypes skew negative because perceivers characterize groups by
+diagnostic attributes, high p(G|A), and rare attributes have higher PPV ceilings. My
+hypothesis: stereotype content concentrates on the marked pole of evaluative oppositions,
+because rarity drives both diagnosticity and overt morphological coding. This project
+(a) extends their simulation and (b) tests the hypothesis on open data.
+
+## Ground rules
+- Never synthesize stand-in data. If a dataset can't be obtained, stop that strand and
+  report it.
+- Record provenance for every input: URL, access date, checksum, licence.
+- Write `analysis_plan.md` (hypotheses, variables, exclusions, models, what would count
+  against each hypothesis) and commit it BEFORE fitting any outcome model.
+- Statistics in the Gelman style:
+  - multilevel models with partial pooling (brms or PyMC; pick one and justify)
+  - posterior predictive checks
+  - effect sizes with uncertainty intervals
+  - no significance-hunting
+- Fix seeds. Log session and package versions.
+
+## Strand A: simulation (start from the attached uwa_replication.py)
+1. Reproduce UWA's design: K = 10 groups of 100; 50 positive and 50 negative binary
+   attributes, independent of group; base-rate pairs .50/.50, .60/.40, .70/.30, .80/.20,
+   .90/.10; 1,000 runs each. Outcomes: share negative among Group 1's top-5 PPV attributes;
+   likelihood ratios with Jeffreys smoothing; mean p(A|G) of the top 5. Check against their
+   Figure 6.
+2. Fresh-sample check: recompute the same attributes' PPV and p(A|G) in an independent
+   sample. Expected: chance (1/K) when there are no true differences.
+3. Negativity diversity: 50 positive vs 100 negative attributes.
+4. Consensus split: give each of N perceivers an independent finite sample. Measure
+   agreement on top-5 attribute identity (Jaccard) and on top-5 negative share.
+   Prediction: high valence agreement and low content agreement with no true group
+   differences. Content agreement should rise as small true differences are added. Map how
+   large the true differences must be for content agreement to approach observed
+   stereotype consensus.
+
+## Strand B: empirical test of the marked-pole hypothesis
+Data (verify each; stop and report if unavailable):
+- UWA Studies 1-2: https://researchbox.org/4585
+- Ingendahl, Woitzel & Alves (2025): https://osf.io/b9f8h
+- Nicolas, Bai & Fiske (2022), JPSP 123(6), 1243-1263, doi:10.1037/pspa0000312. Locate
+  their data.
+- Valence norms: Warriner, Kuperman & Brysbaert (2013), doi:10.3758/s13428-012-0314-x.
+- Word frequency: an open norm such as SUBTLEX-US (verify availability).
+- Antonym markedness probabilities: Ingram, Hand & Maciejewski (2016),
+  doi:10.1371/journal.pone.0157141 (supplementary data).
+- A morphological segmentation resource for detecting affixal negation (un-, in-/im-/il-/ir-,
+  dis-, non-) and privative -less. Verify the resource and hand-check its output: *uniform*
+  and *discuss* aren't negations.
+- A reference set of person-descriptive adjectives to serve as the denominator: the
+  candidate attributes that could have been produced (e.g., Anderson's trait-word list;
+  verify availability).
+
+Steps:
+1. Normalize free-response stereotypes to adjective lemmas. Report coverage and what's
+   lost (multiword responses, nouns, phrases).
+2. H1: P(attribute is produced as a stereotype) rises with markedness (affixal negation;
+   marked member of an antonym pair), controlling for valence and log frequency. Valence
+   and markedness are collinear, so estimate and report that. The informative cases are
+   where they come apart: marked positives (*flawless*, *blameless*) and unmarked
+   negatives.
+3. H2: within valence, rarer attributes are more often stereotypic.
+4. Model structure: random effects for target group, participant and item, as the data
+   allow.
+
+## Strand C (optional): lexical confound
+The stereotypes in Studies 1-2 were elicited with the word *stereotype*. In an openly
+downloadable corpus (document which), compare the valence of collocates of *stereotype(s)*
+with those of *characteristic(s)* and *trait(s)*, using Warriner norms. Report the size of
+any prosody difference.
+
+## Deliverables
+- Repository with README (provenance, how to run), analysis_plan.md, scripts, data
+  manifests.
+- A results report in LaTeX (biblatex-APA) with figures. Linguistic objects in \textit{}
+  or \mention{}, meanings in single quotes, \enquote{} for quotations. Oxford spelling
+  (-ize). Contractions. No em dashes; use ~-- in LaTeX. Paragraphs around 60 words.
+- A short section stating what results would falsify H1 and H2, and whether they occurred.
+- At the end, a summary of what ran, what couldn't, and why.
+# Analysis plan
+<!-- SUMMARY: SKELETON: H2, H1, multiverse, commonness judges and engine settled 2026-10-09; L1/L2 revised and proposed (pending Brett: human workload, what counts against the marking claim); D1 running; D1b, D1c and D2 to run before FIXED · status: skeleton · updated: 2026-10-09 -->
+
+**Status: skeleton.** Nothing below is decided unless marked as settled. The plan of record is the commit that fills these sections and changes the status line to **FIXED**, made before any outcome model is fitted (brief, ground rules). Anything done with outcome data before that commit is post hoc and goes in `DECISIONS.md` as such.
+
+## Hypotheses
+
+- H1 (exploratory, predictive; settled 2026-10-09, see "H1 details"): does formal negation improve prediction of which words are produced as stereotypes, beyond within-valence rarity, valence, word frequency and measured word properties (register, act type)? Not a test of the common-cause account; L1 and L2 test the rarity-to-marking link directly.
+- H2: within valence, rarer attributes are more often stereotypic.
+- **Open decision (raised 2026-10-07, Brett to settle before FIXED): what H1 estimates.** The hypothesis has trait rarity as a common cause of stereotypicality and of overt marking. Log word frequency is another rarity signal, and so is valence (UWA's positivity prevalence). Conditioning on both may absorb the shared path, so a pure common-cause account predicts a near-null conditional markedness effect, and a positive one would point to a further channel (the marking itself). Frequency may also be partly downstream of stereotyping, which makes it a poor control. Candidate structure: (a) markedness without the frequency control, as the common-cause test; (b) the change when log frequency is added, read as how much of (a) frequency accounts for; (c) positive words containing a negator (*flawless*, *blameless*), where the marked-pole and valence accounts predict differently. Caveat: *flawless* is privative *-less* on a noun, and its antonym *flawed* is also derived, so it isn't clearly the marked member of its pair.
+- Strand A predictions (from the brief): fresh-sample PPV at chance (1/K) with no true differences; high valence agreement and low content agreement across perceivers with no true differences, content agreement rising with true differences.
+- **Open decision (raised 2026-10-07 by a reviewing agent; Brett to settle before FIXED): the brief's last strand A step, mapping how large true differences must be for simulated content agreement to reach observed stereotype consensus.** The observed data don't measure what the simulation's perceivers do. UWA asked for stereotypes "you know that exist in society", and Ingendahl et al. for what "society attributes"; agreement in such answers mostly reflects shared cultural knowledge, which the consensus split leaves out. Matching the two would put all observed agreement down to true group differences. Adding a transmission parameter doesn't rescue the mapping, because one agreement statistic can't separate true differences from transmission. Recommended: drop the quantitative mapping and keep the qualitative result (sampling alone yields consensus on valence but not on content, so observed content consensus needs true differences, cultural transmission, or both). Reframe only if a dataset turns up that elicits perceivers' own beliefs.
+
+**H2 details: settled (Brett, 2026-10-09, after an independent review by Codex, `reviews/codex-h2-2026-10-09/`).**
+
+- *Estimand.* The primary quantity is a model-based marginal association: the posterior-predictive change in production for a 1 SD difference in within-valence rarity, averaging over word frequency **and marking** under the joint model. It is labelled an association, not a causal total effect, because frequency's causal position is uncertain and modelling it jointly doesn't establish mediation. Conditional coefficients (holding frequency and marking) are reported second. Orientation: z measures prevalence (higher = more common), so H2 predicts negative values.
+- *Datasets.* UWA Study 1 for calibration only (response normalization; it informs neither the word list nor model selection). UWA Study 2 and Nicolas et al. are separate confirmatory tests with dataset-specific effects, not one pooled estimate. Ingendahl et al.: the Irish (English) subsample only. Participant dependence is modelled in both confirmatory datasets (UWA participants also answer several groups).
+- *The word list (denominator).* Anderson's 555 plus person-descriptive adjectives from the Warriner norms. Eligibility rules (senses, participles, ambiguous adjectives) are frozen and coded independently of which words have prevalence norms, so that norm coverage can't select on familiarity or rarity. Pre-specified sensitivity analyses: Anderson only; the expanded list; norm-covered words only.
+- *Response normalization.* Rules frozen after Study 1. Ambiguous responses are adjudicated blind to rarity and to the hypotheses. Syntactic negation, intensifiers and compounds are preserved, not mapped to affixal forms (*not friendly* is not *unfriendly*; cf. Beukeboom et al. 2010). Exclusions are reported by dataset, group and valence. Responses outside the eligible vocabulary are an explicit outcome category.
+- *What counts against H2.* Report the interval, P(effect < 0) and P(effect < −.10). Meaningful support: the 90% interval lies wholly below −.10. Evidence against an effect that large: it lies wholly above −.10. Otherwise inconclusive. The .10 (per SD of within-valence rarity, log scale) must be justified substantively and translated into predicted response probabilities before the plan is FIXED.
+- *Likelihood.* Production is modelled as a categorical choice among eligible words plus an outside option, matching fixed response budgets and competition among words, not as independent negative-binomial cells. The model includes group-specific content (group-by-item variation) and partially pooled group slopes; participant variation enters through slopes (a participant intercept common to all words cancels in a choice model). Posterior predictive checks: concentration, zeros, between-group overlap.
+- *Design check before FIXED (D1c).* D1's production submodel is re-simulated with the categorical likelihood, with null and threshold-sized effects, indicator bias and prior sensitivity, and with the word-list size, coverage and Nicolas et al.'s clustering updated once the word list is frozen (D1 used placeholders: 400 items, 40% coverage, independent responses). D1's measurement-side conclusions are expected to carry over but are rechecked.
+
+## Proposed revisions (2026-10-07; written in at Brett's request, open until FIXED)
+
+**Order of work.** (1) Strand A, with the group-size extension; (2) design simulation D1, built on strand A's engine; (3) the marking submodel on lexical data (L1, L2); (4) the joint model on stereotype responses (H2, H1). Steps 1–3 touch no outcome data, so they settle what the design can identify, and whether the hypothesis's "because" survives, before any stereotype responses are opened.
+
+**The measurement problem.** H2, L1 and L2 concern how common a trait or state is among people (UWA's π), not how often its word is used. Word frequency measures how much a trait is talked about. That mixes prevalence with stakes (O'Connor 2019, *Games and Kinds*, fn. 10: each term covers an area "about equally important from a payoff point of view"), and in free response it also has a direct accessibility effect. So rarity is treated as a latent variable, not read off a single proxy, and no prevalence measure is chosen by fiat. Wanted, and still being looked for: perceived-prevalence or endorsement norms for trait adjectives, and a baseline production task (UWA's Corollary 3 contrast). *Revised 2026-10-09 (Brett):* no research funding, so no paid participant study; and what the measurement model needs is a **judge** of commonness (an instrument, human or model, validated for this use against human data), not a participant sample. Model-judged commonness is therefore admissible as an instrument whose measurements are labelled as such and calibrated against the human panel in Ziano et al. (149 traits, about 80 raters each); it is never presented as human norms (that would be stand-in data). The earlier blanket exclusion of LLM ratings conflated an instrument with fabricated data.
+
+**Strand B as one generative model (replaces the separate tests and the earlier "reported as not run" rule).** Items are candidate trait words *i*; groups *g*; participants *p*.
+
+- *Latent per item:* prevalence ρ*ᵢ* (logit scale) and stakes s*ᵢ*. Valence v*ᵢ* is observed (Warriner mean, with the standard error of the mean, SD/√n, as measurement error).
+- *Measurement submodels:* log word frequency depends on ρ, s and v; each prevalence indicator that exists depends on ρ, with a desirability bias term (self-endorsement inflates desirable traits); stakes indicators (Warriner arousal, valence extremity) depend on s. Valence extremity can't be separated from a flexible valence term, nor from a linear one within one valence, so where valence enters flexibly (see Multiverse) stakes rest on arousal.
+- *Marking submodel (lexical, word level):* formal negation, by affix type, depends on within-valence rarity, total valence and stakes, with terms for morphological process (participial *un-*, adjectival *un-*, *-less* on nouns, opaque Latinate *in-*). It asks whether, at the same valence, rarer words are more often negated, among positive words and among negative words (L2, where stakes and act type also enter). Which pole of an opposition carries the negator is a pair-level question, L1's, modelled separately (see L1).
+- *Production submodel (H2, H1):* whether participant *p* produces word *i* for group *g*, against the denominator set, depends on ρ (H2), on marking beyond rarity (H1), on word frequency as accessibility, and on v, with varying intercepts for group, participant and item.
+
+Where the indicators are weak, the posteriors for these coefficients will be wide, and that is reported along with prior sensitivity. Nothing is dropped as "not run". D1 says in advance how wide they're likely to be. Fitting latent variables across submodels bears on the engine choice (brms or PyMC; still open).
+
+**What the model can and can't identify (settled by D1's pilot, 2026-10-07).** Any prevalence measure partly lines up with valence, and the data can't tell whether that overlap is real (common traits tend to be desirable) or the measure's own bias (people say desirable traits fit them). So the latent is *within-valence* rarity, and each equation carries a *total* valence term. Identifiable: at the same valence, are rarer traits more often marked (L1, L2) or more often produced as stereotypes (H2)? Is marking associated with production beyond rarity (H1)? **Not identifiable without an extra assumption:** does valence matter once rarity is known? That is the "rarity rather than valence" half of the marked-pole claim, and close to UWA's own argument. The plan therefore claims no rarity-versus-valence contrast. **Settled (Brett, 2026-10-09):** route (b), two prevalence measures whose valence biases differ in a known direction (self-endorsement inflates desirable traits; judged prevalence in others should do so less), where such measures exist; otherwise route (a), one measure with a sensitivity analysis over a stated range of its valence bias. The contrast is claimed only as strongly as the route supports; under (a), as a conditional ("if the measure's valence bias lies between X and Y, valence does or doesn't matter once rarity is known").
+
+**Which rarity: settled (Brett, 2026-10-09): both perceived and actual prevalence, as far as the data allow.** Approach, in Gelman's spirit (model the measurement rather than choose a construct; where a bias can't be estimated, show how conclusions depend on it):
+
+1. *Target:* actual prevalence as a latent variable. Effects are also reported for perceived prevalence, which needs fewer assumptions.
+2. *Indicators,* each with its own item-level standard errors, its own valence term, and an informative prior on a shared (between-rater) bias: judged prevalence in others (likely bias: availability, i.e. tracking word familiarity or marking, modelled as a dependence on word frequency); self-endorsement norms (likely bias: desirability); behavioural or act-frequency data where they exist.
+3. *Identification by what exists.* With two or more indicators whose biases differ, the plausible range for actual prevalence narrows, but actual-prevalence effects stay sensitivity-based: differing biases don't identify actual prevalence without anchors or restrictions on shared bias, and priors supply assumptions, not identification (Codex review, 2026-10-09). With one indicator, perceived prevalence is estimated directly, and actual-prevalence effects appear only as a sensitivity analysis over a stated range of the shared bias.
+4. *Simulate first (D1b, before FIXED):* a fake-data check of the multi-indicator design. Recovery is possible only under explicit identifying restrictions, which D1b must state algebraically (a shared bias, e.g. from familiarity, can be absorbed into the latent without changing the data); it reports conclusions across pre-specified bias, transport and feedback assumptions rather than a single recovery (corrected 2026-10-09 after the Codex review of the prevalence indicators, `reviews/codex-prevalence-2026-10-09/`). Known item-level standard errors constrain sampling error, not unknown systematic measurement error.
+
+Background: D1 converges only when the indicator's noise is known, from item-level standard errors, which capture rater disagreement only; a misjudgment raters share is absorbed into the latent. So a single indicator yields perceived prevalence, and D1's results are a best case. This settlement also serves the availability guard (two indicators with different biases) and reopens the rarity-versus-valence contrast (route (b) above) when the indicators' valence biases differ in a known direction. What can be done depends on the prevalence-norm search (running 2026-10-09).
+
+**Act type (raised 2026-10-09 by the side session's handover; L2 and H1 settled, see "H1 details").** In French (Google Books 1950–2019), whether a bad trait word defers to its antonym in comparatives (*moins honnête que* rather than *plus malhonnête que*) follows act type: failing to do an expected act against doing acts, net of word frequency, logit 1.06 [0.51, 1.56] over 128 concepts. With act type in the model, formal negation has no detectable effect among traits (−0.13 [−0.67, 0.54], 21 prefixed traits), though across all adjectives negated words do defer more (`Project-Management/notes/2026-10-09-marked-pole-brief-for-main-session.md`; numbers checked against `2026-10-08-marked-pole-french-v2/results.md` and `results_1b.md`). Limits: model-coded act type (eight families, no human check), French, comparatives rather than stereotypes. It bears on two things here. (1) H1 measures markedness by formal negation; if the marked pole means the dependent pole, act type may be the better trait-level variable. (2) L2's illustrations confound stakes with act type (*cruel*, *violent* coded 'doing'; *désordonné* 'not doing'). **Settled for L2 (Brett, 2026-10-09): act type is adopted in L2** (see L2 below). Still open, for H1: keep formal negation and say the hypothesis concerns overt coding; add act type (commission against omission) as an observed item-level covariate in the marking and production submodels; or add the comparative measure itself as a functional markedness variable where English counts exist. Act type is close to the "feature absence" sense kept separate in Variables; the French result supports keeping it distinct from formal negation.
+
+**H1 details: settled (Brett, 2026-10-09, after a Gelman pass and an independent Codex review, `reviews/codex-h1-2026-10-09/`).**
+
+- *What H1 asks.* An exploratory, predictive question: does formal negation improve held-out prediction of word choice beyond within-valence rarity, valence, word frequency and measured word properties? Prediction is evaluated by holding out **words or morphological families**, not participants (participant holdouts leave the word-level problem untouched). The conditional association is also reported as a posterior-predictive comparison averaged over a common-support population of words and groups, with the competing vocabulary fixed and the treatment of frequency (held fixed or integrated over) stated. Predictive improvement remains compatible with confounding, so H1 isn't read as evidence for or against the common-cause account.
+- *Why not a test.* D1 scenario 2: an unmeasured register factor produced a marking coefficient of about +.20, with 90% intervals excluding 0 at the large size, where the truth was 0, under both prevalence measures (`results/d1/pilot2_fits.csv`). Only measuring the confounder helps, and adjustment can't rule out unmeasured ones.
+- *Causal structures.* Alternative causal diagrams for marking, act type, register, frequency and production are written down before FIXED. Act type may partly reflect meaning created by negation, and register reflects lexical history and use, so neither is assumed to precede marking without argument.
+- *Negation and act type.* Separate coefficients for contrary prefixes (*un-*, *in-/im-/il-/ir-*, *dis-*), *non-* and privative *-less*; affixes are pooled only within the contrary-prefix class. A sceptical prior on a pre-specified negation × act-type interaction, with a recovery check under sparse overlap. Act type enters through a calibrated measurement model allowing correlated errors across coder families and genuinely ambiguous items, not as a thresholded code or a raw vote share.
+- *Human calibration of act type.* Brett and a second human coder code a stratified random sample of concepts (strata: the word's affix class, valence, coder-family disagreement, rare act-type categories), blind to the model codes. The second coder is also blind to the hypotheses and Brett can't be, so the second coder's codes are primary and Brett's are a sensitivity check (corrected 2026-10-09). Disagreements are adjudicated.
+- *Coding source (revised 2026-10-09, see L2).* Act type is coded, by model families and human coders alike, from the morphology-free descriptions written for L1, for every use (H1 and L2), since coding from the word invites "prefixed" to stand in for "omission". Word-coded act type, with instructions that guard against that shortcut, is a secondary specification showing how far lexical cueing moves the codes. Sample size is set from the precision wanted for the misclassification rates (roughly 150–300 words), fixed before coding.
+- *Register.* Three distinct measures, not one: etymological origin (Latinate against native), present-day register (learnedness or formality), and familiarity (for example Condon, Coughlin & Weston 2022, CC0). Sources still to choose and verify. D1c simulates how much bias survives across control reliabilities, correlations with valence and act type, and differential coding errors.
+- *Reporting.* A pre-specified set of specifications (no word-level controls; register; act type; both), which isn't nested, each reported as standardized predictive contrasts on the same target population, with overlap diagnostics and prior sensitivity. No "interpret only if it survives" rule; coefficient movement isn't read as confounding removed. D1 shows bias is possible; it doesn't give false-positive rates.
+- *Morphological bias.* A morphology-dependent bias in word-based commonness falls exactly on the negated words, so H1's marking coefficient is stated conditional on bounds on that bias, with description-based commonness as a separate indicator (see L2).
+- *Overlap check.* Unprefixed negative words are informative contrasts too; check the overlap of negation and valence on the frozen word list before relying on the claim that the estimate rests on a small off-diagonal set.
+
+**Multiverse (settled, Brett, 2026-10-09: "Gelman would usually say use them all. We take a multiverse approach"; design revised the same day after a Codex review, `reviews/codex-multiverse-2026-10-09/`).** Where several analytic options are defensible, all are run as a pre-specified multiverse (Steegen, Tuerlinckx, Gelman & Vanpaemel 2016) and reported across, instead of one being chosen. Pre-specification constrains the fitting choices; the rules for ordering and emphasis in reporting are fixed in advance too, since otherwise emphasis after the fact would be its own forking path.
+
+*What varies, and how it is reported, in three kinds:*
+
+- **Alternative models of one estimand** (the multiverse proper): prevalence indicators (Ziano et al.'s commonness alone; with Ziano self- and other-ratings as separate auxiliary constructs; with the ESCS self-ratings as auxiliary endorsement data, never as a prevalence indicator; with the new ratings, adjective, behavioural or both, if collected); availability (a grid of shared familiarity bias and of direct morphological bias in the prevalence ratings; familiarity from Condon, Coughlin & Weston 2022); valence bias of the prevalence measure (a grid, for the rarity-versus-valence contrast); valence adjustment (linear and flexible); measurement-invariance and transport restrictions (with and without); feedback from outcomes to inferred rarity (joint, and restricted, "cut"); H1 controls (none, register, act type, both); response normalization (strict and lenient, both frozen after UWA Study 1); priors (reference, and substantively calibrated identifying priors, not merely widened ones).
+- **Different estimands, reported side by side, never tallied together:** frequency held fixed and frequency integrated over, computed from the same posterior where possible.
+- **Different target populations, reported as separate strata:** word sets (Ziano's 149; ESCS-covered; all eligible; Anderson only; the expanded list) and datasets (UWA Study 2, Nicolas et al., Ingendahl et al.'s Irish subsample). Each word set changes the population and the competing vocabulary, so it isn't a robustness check of another.
+
+The categorical choice likelihood is fixed, not varied: independent negative-binomial counts contradict fixed response budgets and competition among words (see "H2 details"), and no sampling rationale supports them. Only admissible combinations are run; unavailable indicators and unsupported scale bridges aren't alternatives. For the lexical models (L1, L2), which are cheap, the relevant dimensions are crossed in full. For the joint production model, a fixed fractional-factorial or space-filling design covering the coupled assumptions (indicators × word sets × availability; availability × valence bias; H1 controls × measurement reliability and feedback) and the plausible bias extremes is chosen by simulation (D1b, D1c) before any stereotype outcomes are opened. Convergence criteria, retry rules, and the display of failed fits are registered; robustness is claimed only over the evaluated design.
+
+*Model expansion where uncertainty is measured; separate fits where it isn't.* Measured uncertainties go inside one expanded model: respondent-level measurement with rater effects, instrument-specific loadings, uncertain act-type codes, partially pooled affix effects within the contrary-prefix class, and regularized nonlinearities. Assumptions the data can't adjudicate (shared bias restrictions, feedback policies) stay as separate sensitivity fits; averaging over them would hide the identifying assumptions inside prior weights.
+
+*Reporting.* Every specification's estimate and interval, in a fixed pre-registered order, stratified by dataset, estimand and word set, on a common contrast scale (the reference scaling of "1 SD of rarity" is frozen across word sets where comparable, not re-standardized within each subset). The H2 evidence rule is applied to each admissible specification separately. Overall labels, fixed in advance: *uniform meaningful support* if every specification qualifies; *uniform evidence against an effect that large* if every one qualifies against; otherwise *specification-dependent*, with the inconclusive and conflicting branches shown. The share of specifications meeting a criterion is descriptive only, not a probability (duplicating grid points would change it). Direction is reported separately from magnitude. Datasets aren't pooled into any tally.
+
+**Commonness judges (replacing the paid rating study, which isn't funded; design settled 2026-10-09 after a Gelman pass and a Codex review, `reviews/codex-judges-2026-10-09/`; engine amendment pending Brett).**
+
+- *The human anchor.* Ziano et al.'s raw commonness ratings (149 traits, about 80 raters each), modelled at the respondent level, ordinal, with rater effects and posterior predictive checks of category use and item disagreement. The OSF data structure and instructions are verified first. The anchor measures this panel's perceived commonness, not actual prevalence; Ziano's wording also mixes "how many people have it" with "how often it's displayed".
+- *Judges.* Several model families, local first, versions and prompts frozen (population, timeframe, trait interpretation, scale). Logprob-based expected ratings and chat ratings are distinct instruments; excluded probability mass and tokenization are checked; repeated chats measure stochastic variation, not independent evidence. Correlated errors across families and prompt effects are modelled, since several families can share one systematic error. A small pilot comes before the full vocabulary.
+- *Calibration and transport.* Judges are linked to the human latent on the 149 with partially pooled discrepancies, regularized nonlinearities, correlated instrument errors and a systematic-error floor. Carrying calibration to the other words isn't automatic, since the 149 are a selected subset: joint support is checked (especially rare positive negations and morphology–valence combinations), and words outside warranted support get descriptive-only status. Calibration is frozen independently of marking and stereotype outcomes, and restricted ("cut") feedback is primary.
+- *Does a judge add anything beyond word frequency?* Test: held-out prediction of human commonness from frequency, familiarity, valence and morphology alone against the same predictors plus judges, with every calibration step fitted inside each fold. Improvement is required overall and within valence and morphological strata. Passing shows incremental prediction of *human perceived* commonness, not information about actual prevalence.
+- *Warrant, specific to each use.* Holdouts by morphological family, semantic domain and support boundary, not only random items. Leave-one-family-out tests instrument dependence, not vocabulary transport. Possible memorization of published tables (Anderson, Ziano) compromises item holdouts and can't be ruled out by paraphrase. Before use in H2, L1 or L2, the plan fixes acceptable calibration error, interval coverage, residual bias by frequency, valence and morphology, and propagated downstream bias, and simulates null and meaningful effects, selected anchors, shared availability errors and failed transport. L1's primary estimand uses morphology-free comparisons instead (see L1); L2 needs morphology, stakes and act-type support.
+- *Framings.* Adjective, behavioural descriptions (frozen, checked for equivalence blind to ratings, wording variation estimated) and an identical-wording accessibility manipulation are **instrument diagnostics**: they show a judge's susceptibility to framing and access, not humans'. Behavioural outputs stay auxiliary until a bridge to the human scale is validated. Exception (proposed 2026-10-09, see L1): for L1's ordinal within-pair estimand, description-based comparisons are primary data, since that estimand needs no bridge to the absolute scale.
+- *Circularity.* Judges can reintroduce it: textual prevalence and textual stereotypes may drive both judged commonness and production. Calibration to humans keeps any availability bias humans share. Neither consensus nor hierarchy removes it, so the shared-bias sensitivity analyses stay.
+- *In the multiverse.* Measurement alternatives (human only; human plus judges) are compared first on the same 149 words; expanded word sets are admitted only within warranted support, as separate populations.
+- *Engine (settled, Brett, 2026-10-09: "reuse acceptometer's Stan measurement model").* The commonness measurement module reuses the acceptometer's Stan model and validation machinery (`tools/llm-acceptability-judgments/`), after checking its construct-specific assumptions for commonness; this amends the brief's "brms or PyMC" for that module. Its posterior draws feed the PyMC joint model, which also implements restricted ("cut") feedback. The joint model stays in PyMC.
+- *Human judges for the region the panel doesn't cover (settled 2026-10-09 after a Codex review, `reviews/codex-extreme-anchor-2026-10-09/`).* Ziano et al.'s 149 come from Anderson's list, which excluded "extreme words, such as ferocious", so extreme traits (*violent*, *cruel*) lie outside the anchor. The second human coder (blind to the hypotheses and to model outputs) is the primary human judge there; Brett, who can't be blind, contributes a pre-specified sensitivity row; two or three further blind volunteer judges are added if they can be found. Each judge rates commonness, with Ziano's wording and scale, for (a) a linking set of about 60–80 of Ziano's traits spanning panel commonness, valence, morphology, semantic domain and boundary items, and (b) an extension set of about 100–150 traits drawn at random from the frozen eligible list, oversampling extreme negatives while keeping near-boundary negatives, positive extremes and other unsupported combinations, with morphology and provisional act type balanced and inclusion probabilities recorded; nothing is selected on stereotype outcomes or model commonness. Final sizes are set by simulating calibration precision and downstream H2 bias. Linking and extension items are intermixed in a fresh random order per judge with strata hidden; commonness is collected before act-type coding, in separate sessions; commonness ratings are kept independent, not adjudicated. Each human judge is modelled separately, with judge-specific thresholds and discrepancies estimated on the overlap. Linking places a judge on the panel's scale within the panel's support; it can't identify a discrepancy that all judges share in the extreme region. So expanded-vocabulary H2 estimates carry a qualified warrant: "conditional on transport of judge-to-panel calibration and stated bounds on extreme-region shared bias", distinct from validated panel support, and reported separately. Floor compression is checked (if extreme traits all get minimum ratings, more ratings won't recover their order).
+
+**H1 and the frequency control.** Gelman & Hill (2007, §9.7, p. 188): "it is generally not a good idea to control for variables measured after the treatment." If word frequency is partly a consequence of trait rarity, it's an intermediate outcome, and §9.8 cautions against regressing on intermediate outcomes to estimate mediation. Frequency is modelled jointly as a path, but the production equation still conditions on it, so modelling it jointly doesn't by itself avoid the problem: what an estimate means depends on the predictive averaging, either holding frequency fixed or integrating over its rarity- and marking-dependent distribution, and each estimand must say which (see "H2 details"; corrected 2026-10-09 after the Codex review of H1, `reviews/codex-h1-2026-10-09/`). This supersedes the "(b) the change when log frequency is added" reading in the open decision above.
+
+**D1: design simulation (no outcome data).** Fake-data simulation in the sense of the *Bayesian Workflow* paper (Gelman et al. 2020, §4.1, p. 16). Two checks:
+
+1. *Parameter recovery:* simulate from the joint model with known coefficients, fit it, and compare.
+2. *Mechanism check:* simulate stereotype production from strand A's process (perceivers selecting high-PPV attributes from finite samples), add a word-frequency channel with accessibility and stakes effects, and fit the joint model. Does it recover the rarity signature from a process it doesn't share?
+
+Conditions: word frequency as the only rarity indicator; word frequency plus one prevalence indicator at several reliabilities; plausible effect sizes; item, group and participant counts matching the real datasets once verified. D1's contraction and convergence criteria describe how the design performs under the assumed models; they don't establish structural identification (Codex review, 2026-10-09). Reported per coefficient: interval coverage, bias, interval width, and sign-error rate and exaggeration ratio (Gelman & Carlin 2014). The results decide whether a prevalence indicator is essential for each coefficient. Brett makes that call with D1's output in hand, before the plan is FIXED. Simulated data is used only to evaluate the design. It's never analysed as evidence and never stands in for a dataset that should come from a source.
+
+**D2: fake-data check of the lexical models (added 2026-10-09 at Brett's prompt, "we should do fake data before actually running right?"; scope from the Codex review, `reviews/codex-lexical-2026-10-09/`).** Before the plan is FIXED, and before any comparison or commonness is joined to morphology, L1's pair model and the word-level marking model (L2) are fitted to simulated data, with sizes taken from the frozen frame (placeholders before then: a range of pair counts and of the share of pairs whose negated member is positive). The simulations include eligibility-dependent selection, root availability, shared roots, near-equal poles, uncertain valence orientation, separation and sparse affix classes; judge effects, wording effects correlated within a concept, and morphological bias of either sign; 'about equal' and 'can't say' responses and floor compression; correlated rarity and stakes among negative words; and act-type misclassification, including dependence on negation. Some generating mechanisms lie outside the fitted model (negation driven by valence and event salience with no rarity link; usage frequency driven by stakes), and false meaningful-support decisions under systematic bias are reported. Reported per estimand: coverage, bias, interval width, sign-error rate, and the exaggeration ratio for non-null truths (Gelman & Carlin 2014; it's undefined at zero), on standardized contrasts with the scaling fixed across specifications. Spec and code are committed before running.
+
+**Strand A, extension A5: unequal group sizes.** UWA say their account "does not require assumptions about minority status or group size" (Cognitive Principle section), but their simulation fixes 10 groups of 100. Vary the target group's share at fixed total N and report UWA's three outcomes by share. Comparison point, not a shared mechanism: the cultural Red King effect (O'Connor 2019, *Origins of Unfairness*, ch. 6), where minority disadvantage comes from learning speed in strategic games. Optional A6: three-valued attributes (positive, neither, negative), per Variables.
+
+**L1: which pole of an opposition carries the negator (pair level; lexical; proposed 2026-10-09 after a Gelman pass and a Codex review, `reviews/codex-lexical-2026-10-09/`; the human workload is pending Brett).** The hypothesis concerns "the marked pole of evaluative oppositions" (brief, lines 14–15), so its marking claim is first a pair-level one: in a root/negation opposition (*selfish/unselfish*, *kind/unkind*), the negated member names the rarer pole. The form-frequency principle concerns usage frequency within an opposition (Haspelmath & Karjus 2017, principle (3)), not prevalence among people, so L1 tests a reduced form that needs an auxiliary bridge: prevalence asymmetries must produce usage asymmetries, and stakes can break that bridge. If L1 fails, the bridge or the coding link may be at fault, and L1 can't say which. Haspelmath & Karjus call the effect "relatively weak" and place it in diachronic change (section 8), which gives no expected effect size for English, so the threshold is justified separately.
+
+- *Frame.* All root/negation pairs (contrary prefixes and *non-*) whose members are both eligible person-descriptive adjectives, detected by rule and hand-checked, with sense-level eligibility and exclusions frozen before any commonness is collected or joined to morphology; pairs that can't be interpreted stay in a reported table. Pairs whose root isn't eligible are described, not used for the estimand. Participial pairs (*shaken/unshaken*) follow the word list's eligibility rules, carry a participial indicator, and are also reported separately, since participial *un-* attaches freely. The list assembled from intuition is dropped: *unbeaten* and *undefeated* describe records, not person traits (UWA's own example of rare positive ability information is "winning a competition"). Hampson, Goldberg & John (1987) supply a second, probably overlapping frame once obtained; Hofstee (1995), a direct precedent reported by the prevalence search, is adjudicated once read.
+- *Why word-based commonness can't carry L1.* If judges rate negated words as rarer by δ, the predictor shifts by +δ exactly when the negated member is positive and by −δ when it's negative, so the bias produces L1's predicted association under a null. Valence adjustment doesn't remove it, and a sensitivity grid makes conclusions conditional without identifying them. The bias can run either way: a marked form may seem rarer, or a judge may read *un-X* as 'not X' and rate it as the complement of a rare *X*.
+- *Primary estimand: morphology-free and ordinal.* For each pair, which concept is judged more common in the population the commonness prompts fix, when both poles are given as behavioural descriptions that avoid the words and their roots (responses: either pole, about equal, can't say). The estimand is a protocol contrast: the difference, between pairs whose positive pole is negated and the rest, in the probability that the blind coder, in one comparison under the fixed protocol, judges the positive pole the rarer (revised 2026-10-09 from a log odds ratio, whose scale depends on which judge and random effects are in the model; `reviews/codex-d2-spec-2026-10-09/`). The rarity account predicts a positive contrast, and pairs whose negated member is positive are the ones that separate it from a valence account. Model judges give the same contrast for their own responses, a different quantity unless bridged to the coder's. Ordinal comparisons can't recover a slope on logit commonness, and none is claimed. This amends "Framings": for this estimand, description-based judgments are primary data.
+- *Descriptions and judges.* Two independent wordings per pole, written from the frozen dictionary sense (source fixed with the plan) by frozen prompts in two model families, checked for equivalence by model checks (all) and the blind second coder (a random sample), so wording effects can be separated from concept differences. Each description characterizes the trait at its pole by what the person does or is like, in the contrary sense fixed under Variables; "not X" and "lacks X" paraphrases are excluded, because a complement makes the negated concept common whenever its root is rare, and negation is allowed only where failing to act is itself the trait. The blind second coder compares every pair once, with wording, order and side randomized, intermixed with filler oppositions (semantic antonym pairs among eligible adjectives, from WordNet's antonym relation, version fixed with the plan; they also give a reference set) so the stratum is hidden. The coder's tasks run in separate sessions in this order: description comparisons, word-based commonness, act-type coding, and last the equivalence spot-check, which shows descriptions beside their words. A second blind judge, if one can be found, compares a stratified subset that includes every pair with a positive negated member; the subset's size is fixed from the precision wanted on disagreement and wording effects. Brett's comparisons, if any, are a sensitivity row. Model judges compare every pair under both wordings, as instruments. The result is limited reproducibility of perceived relative commonness, not accuracy about actual prevalence.
+- *Secondary, conditional specification.* The word-based slope on the poles' logit commonness difference, with the valence difference and morphological-process terms (valence adjustment linear and flexible), reported across the morphological-bias grid with its tipping point (the δ at which the interval reaches 0).
+- *Model size.* The frame will be small, so domains enter as varying intercepts only; domain-varying slopes and many process terms would mostly reflect their priors.
+- *What counts against.* As for H2: meaningful support if the 90% interval for the protocol contrast lies wholly above a threshold, evidence against an effect that large if it lies wholly below, otherwise inconclusive. The threshold is justified and translated into probabilities before any comparison is collected. Evidence against a meaningful effect isn't evidence of absence.
+
+**L2: which negative concepts get negated forms (word level; lexical; a conjecture; revised 2026-10-09 after the Codex review, `reviews/codex-lexical-2026-10-09/`).** If lexicalization follows payoff importance and short forms follow frequency of use (form-frequency correspondence; Haspelmath & Karjus 2017), then among negative person-descriptive adjectives, formal negation should cluster among low-stakes words (*impolite*, *untidy*, *unpunctual*) and simple forms among high-stakes ones (*cruel*, *violent*). The examples are illustrations, not data. Extremity, rarity and stakes probably move together among negative traits, so the rarity coefficient given stakes may be weakly identified; overlap is checked and reported before any coefficient is interpreted. Within negative words, valence extremity is a linear function of valence, so it can't be a stakes indicator separate from the valence term; L2's stakes rest on arousal, whose reliability as a stakes measure is an assumption, stated and varied, and which needs construct validation before it supports a stakes claim.
+
+- *Morphological bias.* The bias that blocks word-based L1 contaminates every word-level coefficient linking commonness and negation (L2, the joint model's marking equation, H1's marking coefficient), since the shift falls exactly on the negated words. So word-level analyses add description-based commonness from the model judges (both wordings) as a separate indicator beside word-based commonness, and their conclusions are stated conditional on bounds on δ.
+- *Act type (adopted for L2, Brett, 2026-10-09).* Each word is coded for act type, naming acts done (commission) or an expected act not done (omission), and act type enters the L2 model as an item-level covariate. In the side session's French coding, the L2 illustrations split along it (*cruel* and *violent* coded 'doing', *désordonné* 'not doing'; per its brief), so without it a stakes effect could be an act-type effect. Omission may be constitutive of a derived concept (*un-X* often names failing to do X-acts), so act type may be partly a consequence of the negation. It's coded from the morphology-free descriptions (as for H1; see "H1 details"), which reduces lexical cueing without making it causally prior; adjusted and unadjusted contrasts are reported on the same population under the alternative causal diagrams required for H1, and coefficient movement isn't read as bias removed. The coding source (the side session's multi-family instrument, `Project-Management/notes/2026-10-08-marked-pole-french-v2/prompts/code.txt`, or human coders) is fixed with the plan.
+- *Model.* Categorical outcome (simple; contrary prefix; *non-*; *-less*), affixes partially pooled within the contrary class, varying intercepts for morphological family and semantic domain; prior and posterior predictive checks (negation share by valence bin, affix counts, off-diagonal counts).
+- **Open decision (Brett): what counts against the marking claim.** The earlier wording ("If marking follows stakes and not prevalence, the hypothesis's single-rarity claim fails") can't stand: a stakes association alone doesn't establish it, since a rarity effect may coexist, be poorly measured, or lack overlap (Codex review). Recommended: the hypothesis commits to both levels, each with a falsifier fixed now. Pair level: L1's log odds ratio (above). Word level, for the common-cause account behind H1: a well-identified rarity coefficient for negation (adequate overlap, description-based commonness, bounds on δ stated) whose interval lies wholly below the threshold. Fixing both in advance stops a failure at one level being reassigned to the other after the fact.
+
+**H1: exploratory (superseded in detail by "H1 details" above).** Formal negation of evaluative adjectives is strongly tied to valence (*un-* attaches mainly to positive bases and yields negatives), so the conditional estimate depends on the off-diagonal words, whose overlap is to be checked. The one item-level test of frequency against markedness (Ingram et al. 2016) found nothing beyond valence.
+
+## Data and exclusions
+
+To write: each dataset (once verified), the unit of analysis, the denominator set of candidate adjectives, lemma normalization and what it loses, exclusions.
+
+## Variables
+
+**Senses of "negative" (settled 2026-10-07; see `DECISIONS.md`).** Four senses stay separate, each with its own variable or none:
+
+- **Valence**: the attribute is evaluated as bad. Warriner rating. In this plan, "negative attribute" and "positive attribute" mean valence and nothing else.
+- **Formal negation**: the word contains a negator. Coded by type, because the types differ in meaning: contrary prefixes (*un-*, *in-/im-/il-/ir-*, *dis-*), *non-*, and privative *-less*. Record the base's valence too (*flawless* negates a negative base, *flaw*, and yields a positive word). Hand-check detections (*uniform*, *discuss*).
+- **Order markedness**: Ingram, Hand & Maciejewski's (2016) markedness probability, where their 154 pairs cover the word. A behavioural measure, not a morphological one.
+- **Scalar polarity**: the less-of pole of a dimension (*short*, *few*). Valence-neutral; not used as a markedness measure for H1.
+
+**Feature absence** (UWA's presence/absence coding, πneg = 1 − πpos) is a modelling choice in strand A, not a property of words. Affixal negation isn't treated as absence: *un-* on an evaluative adjective usually gives a contrary (someone can be neither friendly nor unfriendly). If strand A is extended to carry marking, an attribute needs three values (positive, neither, negative), closer to UWA's range principle than to their binary coding.
+
+Avoid "negative pole" and bare "marked" in the plan and report; name the sense.
+
+To write: outcome coding; formal-negation detection; order markedness coverage; valence (Warriner); log frequency; the valence–negation collinearity and how it's estimated and reported; the informative off-diagonal cases (positive words containing a negator, unnegated negative words).
+
+## Models
+
+To write: engine (brms or PyMC) and why; likelihood; group, participant and item effects as the data allow; priors; posterior predictive checks; the effect sizes to report, with intervals.
+
+## What would count against each hypothesis
+
+To write, before fitting: for H1, H2 and each strand A prediction.
+
+## Seeds and environment
+
+To write: seeds, package versions, how runs are logged in `logs/`.
+# Strand A results
+
+<!-- SUMMARY: Generated by scripts/simulation/summarise_strand_a.py from the CSVs in this folder; do not edit by hand · status: generated -->
+
+Spec: `scripts/simulation/README.md` (committed before the first run). Post-run changes: `DECISIONS.md`, 2026-10-07. Run logs: `logs/strandA-*.json`.
+
+## 1. Replication of UWA's design
+
+1,000 runs per condition; K = 10 groups of 100; 50 positive and 50 negative attributes.
+
+| pi_neg | share_negative_top5 | mean_p_A_given_G1_top5 | LR1_neg_rank1 | LR1_pos_rank1 |
+|---|---|---|---|---|
+| 0.100 | 1.000 | 0.149 | 1.837 | 1.069 |
+| 0.200 | 1.000 | 0.265 | 1.532 | 1.111 |
+| 0.300 | 0.975 | 0.386 | 1.389 | 1.151 |
+| 0.400 | 0.809 | 0.526 | 1.301 | 1.193 |
+| 0.500 | 0.498 | 0.594 | 1.241 | 1.240 |
+
+Checks against the paper (T1 to T5 from its text; the rest against values read from Figure 6 by eye):
+
+| check | value | pass |
+|---|---|---|
+| T1 share negative never falls as pi_neg falls; >= .95 at .10 | 0.1: 1.000; 0.2: 1.000; 0.3: 0.975; 0.4: 0.809; 0.5: 0.498 | True |
+| T2 share negative ~ .50 at .50/.50 | 0.498 (MC SE 0.007) | True |
+| T3 mean LR1 of top-5 positives close to 1, changes modestly | 0.1: 1.053; 0.2: 1.085; 0.3: 1.114; 0.4: 1.146; 0.5: 1.181 | True |
+| T4 mean p(A|G1) about .60 at .50/.50 | 0.594 | True |
+| T5 mean p(A|G1) < .50 at pi_neg .30, > .50 at .40 | .30: 0.386; .40: 0.526 | True |
+| Fig6 share_negative_top5 at pi_neg 0.1 | sim 1.000 vs read 1.00 | True |
+| Fig6 share_negative_top5 at pi_neg 0.2 | sim 1.000 vs read 1.00 | True |
+| Fig6 share_negative_top5 at pi_neg 0.3 | sim 0.975 vs read 0.97 | True |
+| Fig6 share_negative_top5 at pi_neg 0.4 | sim 0.809 vs read 0.81 | True |
+| Fig6 share_negative_top5 at pi_neg 0.5 | sim 0.498 vs read 0.50 | True |
+| Fig6 LR1_neg_rank1 at pi_neg 0.1 | sim 1.837 vs read 1.88 | True |
+| Fig6 LR2_neg_rank1 at pi_neg 0.1 | sim 1.705 vs read 1.88 | False |
+| Fig6 LR1_neg_rank1 at pi_neg 0.2 | sim 1.532 vs read 1.53 | True |
+| Fig6 LR2_neg_rank1 at pi_neg 0.2 | sim 1.464 vs read 1.53 | True |
+| Fig6 LR1_neg_rank1 at pi_neg 0.3 | sim 1.389 vs read 1.38 | True |
+| Fig6 LR2_neg_rank1 at pi_neg 0.3 | sim 1.347 vs read 1.38 | True |
+| Fig6 LR1_neg_rank1 at pi_neg 0.4 | sim 1.301 vs read 1.30 | True |
+| Fig6 LR2_neg_rank1 at pi_neg 0.4 | sim 1.273 vs read 1.30 | True |
+| Fig6 LR1_neg_rank1 at pi_neg 0.5 | sim 1.241 vs read 1.24 | True |
+| Fig6 LR2_neg_rank1 at pi_neg 0.5 | sim 1.221 vs read 1.24 | True |
+| Fig6 LR1_neg_rank5 at pi_neg 0.1 | sim 1.481 vs read 1.48 | True |
+| Fig6 LR2_neg_rank5 at pi_neg 0.1 | sim 1.423 vs read 1.48 | True |
+| Fig6 LR1_neg_rank5 at pi_neg 0.2 | sim 1.305 vs read 1.31 | True |
+| Fig6 LR2_neg_rank5 at pi_neg 0.2 | sim 1.276 vs read 1.31 | True |
+| Fig6 LR1_neg_rank5 at pi_neg 0.3 | sim 1.225 vs read 1.23 | True |
+| Fig6 LR2_neg_rank5 at pi_neg 0.3 | sim 1.207 vs read 1.23 | True |
+| Fig6 LR1_neg_rank5 at pi_neg 0.4 | sim 1.178 vs read 1.18 | True |
+| Fig6 LR2_neg_rank5 at pi_neg 0.4 | sim 1.166 vs read 1.18 | True |
+| Fig6 LR1_neg_rank5 at pi_neg 0.5 | sim 1.141 vs read 1.14 | True |
+| Fig6 LR2_neg_rank5 at pi_neg 0.5 | sim 1.134 vs read 1.14 | True |
+| Fig6 LR1_pos_rank1 at pi_neg 0.1 | sim 1.069 vs read 1.07 | True |
+| Fig6 LR2_pos_rank1 at pi_neg 0.1 | sim 1.070 vs read 1.07 | True |
+| Fig6 LR1_pos_rank1 at pi_neg 0.5 | sim 1.240 vs read 1.20 | True |
+| Fig6 LR2_pos_rank1 at pi_neg 0.5 | sim 1.220 vs read 1.20 | True |
+| Fig6 mean_p_A_given_G1_top5 at pi_neg 0.1 | sim 0.149 vs read 0.15 | True |
+| Fig6 mean_p_A_given_G1_top5 at pi_neg 0.2 | sim 0.265 vs read 0.27 | True |
+| Fig6 mean_p_A_given_G1_top5 at pi_neg 0.3 | sim 0.386 vs read 0.39 | True |
+| Fig6 mean_p_A_given_G1_top5 at pi_neg 0.4 | sim 0.526 vs read 0.52 | True |
+| Fig6 mean_p_A_given_G1_top5 at pi_neg 0.5 | sim 0.594 vs read 0.59 | True |
+
+Committed seed against 50 other seeds per condition:
+
+| pi_neg | metric | mean_across_seeds | sd_across_seeds | committed_seed | z |
+|---|---|---|---|---|---|
+| 0.500 | share_negative_top5 | 0.500 | 0.005 | 0.498 | -0.360 |
+| 0.500 | mean_p_A_given_G1_top5 | 0.594 | 0.000 | 0.594 | 0.810 |
+| 0.500 | LR1_pos_rank1 | 1.241 | 0.001 | 1.240 | -0.736 |
+| 0.500 | LR1_neg_rank1 | 1.241 | 0.002 | 1.241 | -0.323 |
+| 0.400 | share_negative_top5 | 0.812 | 0.006 | 0.809 | -0.415 |
+| 0.400 | mean_p_A_given_G1_top5 | 0.525 | 0.001 | 0.526 | 0.651 |
+| 0.400 | LR1_pos_rank1 | 1.193 | 0.001 | 1.193 | 0.423 |
+| 0.400 | LR1_neg_rank1 | 1.303 | 0.002 | 1.301 | -0.484 |
+| 0.300 | share_negative_top5 | 0.978 | 0.002 | 0.975 | -1.416 |
+| 0.300 | mean_p_A_given_G1_top5 | 0.384 | 0.001 | 0.386 | 1.787 |
+| 0.300 | LR1_pos_rank1 | 1.150 | 0.001 | 1.151 | 0.698 |
+| 0.300 | LR1_neg_rank1 | 1.388 | 0.003 | 1.389 | 0.331 |
+| 0.200 | share_negative_top5 | 1.000 | 0.000 | 1.000 | 1.204 |
+| 0.200 | mean_p_A_given_G1_top5 | 0.265 | 0.000 | 0.265 | 0.382 |
+| 0.200 | LR1_pos_rank1 | 1.111 | 0.001 | 1.111 | 0.802 |
+| 0.200 | LR1_neg_rank1 | 1.531 | 0.004 | 1.532 | 0.208 |
+| 0.100 | share_negative_top5 | 1.000 | 0.000 | 1.000 | nan |
+| 0.100 | mean_p_A_given_G1_top5 | 0.149 | 0.000 | 0.149 | -1.786 |
+| 0.100 | LR1_pos_rank1 | 1.069 | 0.000 | 1.069 | 0.431 |
+| 0.100 | LR1_neg_rank1 | 1.863 | 0.007 | 1.837 | -3.934 |
+
+Tie rules on the same draws: largest absolute difference from random tie-breaking, positives-first 0.0006, negatives-first 0.0008.
+
+## 2. Fresh-sample check
+
+The top-5 attributes chosen in one sample, re-measured in an independent sample from the same population (no true group differences). Expected: PPV at p(G1) = .10, p(A|G1) at the base rate, LR near 1 (Jeffreys smoothing biases it slightly upward at small counts).
+
+| pi_neg | original_ppv_top5 | fresh_ppv_top5 | mean_p_A_given_G1_top5 | fresh_p_A_given_G1_top5 | mean_pi_top5 | fresh_LR1_top5 | null_LR1_unselected |
+|---|---|---|---|---|---|---|---|
+| 0.100 | 0.151 | 0.100 | 0.149 | 0.100 | 0.100 | 1.047 | 1.045 |
+| 0.200 | 0.133 | 0.100 | 0.265 | 0.201 | 0.200 | 1.021 | 1.018 |
+| 0.300 | 0.125 | 0.100 | 0.385 | 0.309 | 0.309 | 1.007 | 1.008 |
+| 0.400 | 0.121 | 0.100 | 0.525 | 0.439 | 0.437 | 1.007 | 1.004 |
+| 0.500 | 0.119 | 0.100 | 0.593 | 0.500 | 0.500 | 1.001 | 1.001 |
+
+`null_LR1_unselected` is the exact expected smoothed LR for an attribute with no group difference and no selection step, i.e. the bias Jeffreys smoothing alone produces at that base rate. The fresh LRs match it, so the selected attributes carry no leftover signal.
+
+## 3. Negativity diversity (50 positive, 100 negative)
+
+| pi_neg | LR1_neg_rank1 (50/100) | LR1_neg_rank1 (50/50) | LR1_pos_rank1 (50/100) | LR1_pos_rank1 (50/50) | mean_p_A_given_G1_top5 (50/100) | mean_p_A_given_G1_top5 (50/50) | share_negative_top5 (50/100) | share_negative_top5 (50/50) |
+|---|---|---|---|---|---|---|---|---|
+| 0.100 | 1.964 | 1.837 | 1.069 | 1.069 | 0.158 | 0.149 | 1.000 | 1.000 |
+| 0.200 | 1.600 | 1.532 | 1.111 | 1.111 | 0.277 | 0.265 | 1.000 | 1.000 |
+| 0.300 | 1.440 | 1.389 | 1.150 | 1.151 | 0.388 | 0.386 | 0.999 | 0.975 |
+| 0.400 | 1.341 | 1.301 | 1.194 | 1.193 | 0.509 | 0.526 | 0.936 | 0.809 |
+| 0.500 | 1.269 | 1.241 | 1.243 | 1.240 | 0.601 | 0.594 | 0.660 | 0.498 |
+
+## 4. A5: unequal group sizes (total N = 1,000; target size varied)
+
+Reading: the share negative barely moves with target size, but chance stereotypes of small groups look more diagnostic (higher LR) and more descriptive (higher p(A|G1)) in-sample, because the sampling noise in p(A|G1) scales as 1/sqrt(n1). The fresh PPV equals p(G1) at every size: none of it replicates. A modulation of UWA's no-minority-assumption claim, from sample size, not a finding about minorities as such.
+
+**share_negative_top5** (rows: target size; columns: π_neg)
+
+| n_target | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|
+| 20 | 1.000 | 1.000 | 0.988 | 0.835 | 0.510 |
+| 50 | 1.000 | 1.000 | 0.979 | 0.814 | 0.497 |
+| 100 | 1.000 | 0.999 | 0.977 | 0.809 | 0.505 |
+| 200 | 1.000 | 0.999 | 0.975 | 0.809 | 0.501 |
+| 300 | 1.000 | 1.000 | 0.971 | 0.809 | 0.489 |
+| 500 | 1.000 | 1.000 | 0.973 | 0.808 | 0.505 |
+
+**mean_p_A_given_G1_top5** (rows: target size; columns: π_neg)
+
+| n_target | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|
+| 20 | 0.224 | 0.360 | 0.485 | 0.638 | 0.721 |
+| 50 | 0.174 | 0.296 | 0.419 | 0.566 | 0.636 |
+| 100 | 0.149 | 0.266 | 0.384 | 0.526 | 0.593 |
+| 200 | 0.132 | 0.243 | 0.360 | 0.496 | 0.562 |
+| 300 | 0.124 | 0.232 | 0.349 | 0.482 | 0.547 |
+| 500 | 0.115 | 0.221 | 0.335 | 0.466 | 0.531 |
+
+**LR1_neg_rank1** (rows: target size; columns: π_neg)
+
+| n_target | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|
+| 20 | 2.937 | 2.151 | 1.828 | 1.621 | 1.492 |
+| 50 | 2.214 | 1.729 | 1.532 | 1.415 | 1.325 |
+| 100 | 1.852 | 1.537 | 1.388 | 1.301 | 1.242 |
+| 200 | 1.645 | 1.398 | 1.299 | 1.234 | 1.185 |
+| 300 | 1.567 | 1.358 | 1.257 | 1.204 | 1.162 |
+| 500 | 1.551 | 1.333 | 1.243 | 1.190 | 1.155 |
+
+**original_ppv_top5** (rows: target size; columns: π_neg)
+
+| n_target | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|
+| 20 | 0.045 | 0.036 | 0.032 | 0.030 | 0.029 |
+| 50 | 0.088 | 0.074 | 0.068 | 0.065 | 0.064 |
+| 100 | 0.151 | 0.134 | 0.125 | 0.121 | 0.119 |
+| 200 | 0.267 | 0.244 | 0.234 | 0.228 | 0.226 |
+| 300 | 0.376 | 0.350 | 0.338 | 0.332 | 0.329 |
+| 500 | 0.582 | 0.554 | 0.541 | 0.534 | 0.532 |
+
+**fresh_ppv_top5** (rows: target size; columns: π_neg)
+
+| n_target | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|
+| 20 | 0.020 | 0.020 | 0.020 | 0.020 | 0.020 |
+| 50 | 0.050 | 0.050 | 0.050 | 0.050 | 0.050 |
+| 100 | 0.100 | 0.100 | 0.100 | 0.100 | 0.100 |
+| 200 | 0.199 | 0.200 | 0.200 | 0.200 | 0.200 |
+| 300 | 0.300 | 0.300 | 0.300 | 0.300 | 0.300 |
+| 500 | 0.501 | 0.501 | 0.500 | 0.500 | 0.500 |
+
+## 5. Consensus split
+
+Approximation check (shared society, M = 1,000, n = 30, .70/.30, δ = 0): mean pairwise Jaccard
+
+| method | mean | mc_se | runs |
+|---|---|---|---|
+| exact_individual_level | 0.063 | 0.001 | 100 |
+| hypergeometric_approx | 0.062 | 0.001 | 100 |
+
+Chance Jaccard for two random 5-of-100 sets: 0.0283; for two random 5-of-50 sets (the relevant baseline when every perceiver's top 5 is negative, as at π_neg ≤ .2): 0.0579.
+
+**jaccard_mean_pairwise, no true differences (δ = 0)** (rows: version, society size M, n per group; columns: π_neg)
+
+| version | society_M | n_per_group | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|---|---|
+| independent | - | 10 | 0.058 | 0.058 | 0.056 | 0.041 | 0.028 |
+| independent | - | 30 | 0.058 | 0.058 | 0.056 | 0.041 | 0.028 |
+| independent | - | 100 | 0.058 | 0.058 | 0.055 | 0.040 | 0.028 |
+| shared | 100 | 10 | 0.080 | 0.080 | 0.076 | 0.058 | 0.042 |
+| shared | 100 | 30 | 0.138 | 0.133 | 0.127 | 0.099 | 0.082 |
+| shared | 100 | 100 | 0.993 | 0.993 | 0.995 | 0.994 | 0.999 |
+| shared | 1000 | 10 | 0.060 | 0.060 | 0.059 | 0.042 | 0.030 |
+| shared | 1000 | 30 | 0.064 | 0.063 | 0.061 | 0.045 | 0.032 |
+| shared | 1000 | 100 | 0.079 | 0.080 | 0.075 | 0.056 | 0.042 |
+
+**share_negative_mean, no true differences (δ = 0)** (rows: version, society size M, n per group; columns: π_neg)
+
+| version | society_M | n_per_group | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|---|---|
+| independent | - | 10 | 1.000 | 1.000 | 0.987 | 0.827 | 0.501 |
+| independent | - | 30 | 1.000 | 1.000 | 0.982 | 0.824 | 0.499 |
+| independent | - | 100 | 1.000 | 1.000 | 0.978 | 0.814 | 0.505 |
+| shared | 100 | 10 | 1.000 | 1.000 | 0.987 | 0.836 | 0.503 |
+| shared | 100 | 30 | 1.000 | 1.000 | 0.982 | 0.821 | 0.506 |
+| shared | 100 | 100 | 1.000 | 1.000 | 0.979 | 0.800 | 0.515 |
+| shared | 1000 | 10 | 1.000 | 1.000 | 0.987 | 0.830 | 0.499 |
+| shared | 1000 | 30 | 1.000 | 1.000 | 0.981 | 0.822 | 0.502 |
+| shared | 1000 | 100 | 1.000 | 1.000 | 0.979 | 0.814 | 0.502 |
+
+**share_negative_sd_across_perceivers, no true differences (δ = 0)** (rows: version, society size M, n per group; columns: π_neg)
+
+| version | society_M | n_per_group | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|---|---|
+| independent | - | 10 | 0.000 | 0.000 | 0.042 | 0.170 | 0.218 |
+| independent | - | 30 | 0.000 | 0.001 | 0.055 | 0.172 | 0.217 |
+| independent | - | 100 | 0.000 | 0.001 | 0.062 | 0.177 | 0.219 |
+| shared | 100 | 10 | 0.000 | 0.000 | 0.042 | 0.165 | 0.212 |
+| shared | 100 | 30 | 0.000 | 0.001 | 0.050 | 0.166 | 0.205 |
+| shared | 100 | 100 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+| shared | 1000 | 10 | 0.000 | 0.001 | 0.041 | 0.172 | 0.221 |
+| shared | 1000 | 30 | 0.000 | 0.001 | 0.055 | 0.175 | 0.218 |
+| shared | 1000 | 100 | 0.000 | 0.001 | 0.058 | 0.170 | 0.218 |
+
+**jaccard_with_society_top5, no true differences (δ = 0)** (rows: version, society size M, n per group; columns: π_neg)
+
+| version | society_M | n_per_group | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|---|---|
+| shared | 100 | 10 | 0.137 | 0.137 | 0.129 | 0.103 | 0.085 |
+| shared | 100 | 30 | 0.236 | 0.228 | 0.218 | 0.184 | 0.165 |
+| shared | 100 | 100 | 0.993 | 0.993 | 0.995 | 0.995 | 0.999 |
+| shared | 1000 | 10 | 0.080 | 0.076 | 0.077 | 0.057 | 0.041 |
+| shared | 1000 | 30 | 0.097 | 0.096 | 0.091 | 0.069 | 0.054 |
+| shared | 1000 | 100 | 0.137 | 0.135 | 0.128 | 0.104 | 0.087 |
+
+Reading the δ tables: "negative" and "positive" here are labels on two base rates (π = .30 and .70 at .70/.30). True differences on the rare attributes are picked up far more readily than on the common ones, because rarity raises the PPV ceiling (UWA's Equation 3). In UWA's ecology rare means negative; the design can't separate valence from rarity.
+
+**jaccard_mean_pairwise at .70/.30 by true difference δ** (rows: version, M, n, valence of the differing attributes; columns: δ)
+
+| version | society_M | n_per_group | diff_valence | 0.0 | 0.25 | 0.5 | 1.0 | 2.0 |
+|---|---|---|---|---|---|---|---|---|
+| independent | - | 10 | mixed | nan | 0.058 | 0.064 | 0.109 | 0.265 |
+| independent | - | 10 | negative | nan | 0.059 | 0.071 | 0.141 | 0.433 |
+| independent | - | 10 | none | 0.056 | nan | nan | nan | nan |
+| independent | - | 10 | positive | nan | 0.056 | 0.056 | 0.056 | 0.055 |
+| independent | - | 30 | mixed | nan | 0.062 | 0.091 | 0.234 | 0.382 |
+| independent | - | 30 | negative | nan | 0.067 | 0.117 | 0.389 | 0.948 |
+| independent | - | 30 | none | 0.056 | nan | nan | nan | nan |
+| independent | - | 30 | positive | nan | 0.056 | 0.055 | 0.052 | 0.058 |
+| independent | - | 100 | mixed | nan | 0.081 | 0.209 | 0.394 | 0.568 |
+| independent | - | 100 | negative | nan | 0.105 | 0.326 | 0.938 | 1.000 |
+| independent | - | 100 | none | 0.055 | nan | nan | nan | nan |
+| independent | - | 100 | positive | nan | 0.054 | 0.051 | 0.106 | 0.404 |
+| shared | 100 | 10 | mixed | nan | 0.079 | 0.084 | 0.126 | 0.291 |
+| shared | 100 | 10 | negative | nan | 0.080 | 0.093 | 0.154 | 0.439 |
+| shared | 100 | 10 | none | 0.076 | nan | nan | nan | nan |
+| shared | 100 | 10 | positive | nan | 0.077 | 0.077 | 0.076 | 0.074 |
+| shared | 100 | 30 | mixed | nan | 0.132 | 0.160 | 0.295 | 0.434 |
+| shared | 100 | 30 | negative | nan | 0.142 | 0.188 | 0.446 | 0.956 |
+| shared | 100 | 30 | none | 0.127 | nan | nan | nan | nan |
+| shared | 100 | 30 | positive | nan | 0.126 | 0.127 | 0.121 | 0.127 |
+| shared | 100 | 100 | mixed | nan | 0.997 | 0.999 | 0.997 | 1.000 |
+| shared | 100 | 100 | negative | nan | 0.997 | 0.997 | 1.000 | 1.000 |
+| shared | 100 | 100 | none | 0.995 | nan | nan | nan | nan |
+| shared | 100 | 100 | positive | nan | 0.998 | 0.996 | 0.998 | 0.998 |
+| shared | 1000 | 10 | mixed | nan | 0.060 | 0.067 | 0.106 | 0.260 |
+| shared | 1000 | 10 | negative | nan | 0.061 | 0.072 | 0.140 | 0.429 |
+| shared | 1000 | 10 | none | 0.059 | nan | nan | nan | nan |
+| shared | 1000 | 10 | positive | nan | 0.058 | 0.058 | 0.056 | 0.056 |
+| shared | 1000 | 30 | mixed | nan | 0.067 | 0.096 | 0.249 | 0.398 |
+| shared | 1000 | 30 | negative | nan | 0.073 | 0.122 | 0.391 | 0.955 |
+| shared | 1000 | 30 | none | 0.061 | nan | nan | nan | nan |
+| shared | 1000 | 30 | positive | nan | 0.061 | 0.059 | 0.058 | 0.064 |
+| shared | 1000 | 100 | mixed | nan | 0.102 | 0.222 | 0.403 | 0.582 |
+| shared | 1000 | 100 | negative | nan | 0.122 | 0.336 | 0.938 | 1.000 |
+| shared | 1000 | 100 | none | 0.075 | nan | nan | nan | nan |
+| shared | 1000 | 100 | positive | nan | 0.074 | 0.070 | 0.125 | 0.417 |
+
+**hit_rate_true_differences at .70/.30 by true difference δ** (rows: version, M, n, valence of the differing attributes; columns: δ)
+
+| version | society_M | n_per_group | diff_valence | 0.25 | 0.5 | 1.0 | 2.0 |
+|---|---|---|---|---|---|---|---|
+| independent | - | 10 | mixed | 0.083 | 0.128 | 0.251 | 0.423 |
+| independent | - | 10 | negative | 0.162 | 0.240 | 0.440 | 0.756 |
+| independent | - | 10 | positive | 0.002 | 0.004 | 0.008 | 0.017 |
+| independent | - | 30 | mixed | 0.121 | 0.217 | 0.407 | 0.539 |
+| independent | - | 30 | negative | 0.219 | 0.392 | 0.726 | 0.984 |
+| independent | - | 30 | positive | 0.007 | 0.016 | 0.063 | 0.183 |
+| independent | - | 100 | mixed | 0.193 | 0.407 | 0.610 | 0.813 |
+| independent | - | 100 | negative | 0.360 | 0.675 | 0.981 | 1.000 |
+| independent | - | 100 | positive | 0.023 | 0.099 | 0.370 | 0.735 |
+| shared | 100 | 10 | mixed | 0.087 | 0.129 | 0.243 | 0.442 |
+| shared | 100 | 10 | negative | 0.161 | 0.243 | 0.429 | 0.752 |
+| shared | 100 | 10 | positive | 0.002 | 0.004 | 0.009 | 0.018 |
+| shared | 100 | 30 | mixed | 0.110 | 0.220 | 0.412 | 0.549 |
+| shared | 100 | 30 | negative | 0.218 | 0.391 | 0.729 | 0.986 |
+| shared | 100 | 30 | positive | 0.006 | 0.017 | 0.062 | 0.183 |
+| shared | 100 | 100 | mixed | 0.201 | 0.409 | 0.622 | 0.833 |
+| shared | 100 | 100 | negative | 0.346 | 0.672 | 0.981 | 1.000 |
+| shared | 100 | 100 | positive | 0.019 | 0.091 | 0.376 | 0.735 |
+| shared | 1000 | 10 | mixed | 0.079 | 0.123 | 0.232 | 0.419 |
+| shared | 1000 | 10 | negative | 0.160 | 0.240 | 0.437 | 0.754 |
+| shared | 1000 | 10 | positive | 0.003 | 0.004 | 0.010 | 0.018 |
+| shared | 1000 | 30 | mixed | 0.116 | 0.215 | 0.425 | 0.546 |
+| shared | 1000 | 30 | negative | 0.223 | 0.388 | 0.723 | 0.986 |
+| shared | 1000 | 30 | positive | 0.007 | 0.018 | 0.063 | 0.184 |
+| shared | 1000 | 100 | mixed | 0.206 | 0.401 | 0.609 | 0.816 |
+| shared | 1000 | 100 | negative | 0.354 | 0.669 | 0.981 | 1.000 |
+| shared | 1000 | 100 | positive | 0.024 | 0.096 | 0.371 | 0.737 |
+
+**Post hoc, exploratory: equal absolute shift.** Added 2026-10-07 after the consensus run, to test whether the asymmetry depended on the logit scale, which moves rates near .30 more than rates near .70. (.70/.30, independent version, n = 100; rows: valence of the differing attributes; columns: shift added to the target group's rate)
+
+*jaccard_mean_pairwise*
+
+| diff_valence | 0.05 | 0.1 | 0.15 | 0.2 |
+|---|---|---|---|---|
+| negative | 0.093 | 0.253 | 0.528 | 0.814 |
+| positive | 0.053 | 0.052 | 0.084 | 0.205 |
+
+*hit_rate_true_differences*
+
+| diff_valence | 0.05 | 0.1 | 0.15 | 0.2 |
+|---|---|---|---|---|
+| negative | 0.331 | 0.604 | 0.814 | 0.939 |
+| positive | 0.022 | 0.111 | 0.310 | 0.544 |
+# Strand A: simulation
+<!-- SUMMARY: Strand A design spec, written before the code ran: UWA's simulation rebuilt from the paper, plus fresh-sample, negativity-diversity, group-size and consensus-split extensions · status: spec fixed 2026-10-07 · updated: 2026-10-07 -->
+
+Built from the published design in Unkelbach, Weitzel & Alves (2026), "Simulation Design" (p. 12), "Outcome Variables" (p. 13) and Figure 6 (p. 14), journal pagination, not from `uwa_replication.py`, which the brief mentions but which was never supplied (Brett, 2026-10-07: "build it from the paper now"). If that script or UWA's own code (researchbox.org/4585) turns up, it becomes a second implementation to check against.
+
+This spec was written before any of it ran. Choices marked **[ours]** aren't in the paper or the brief.
+
+## Core design (UWA)
+
+- K = 10 equally likely groups, 100 individuals each; group 1 is the target.
+- 100 binary attributes, 50 positive and 50 negative, each present with a fixed base rate independent of group: πpos/πneg ∈ {.50/.50, .60/.40, .70/.30, .80/.20, .90/.10}.
+- 1,000 runs per condition.
+
+**Counts, not individuals [ours].** Attributes are independent of group and of each other, so the number of group-*g* members with attribute *A* is Binomial(n_g, π_A), independently across groups and attributes. Drawing those counts directly is equivalent in distribution to drawing every individual. This stops holding if attributes are made correlated (e.g. a three-valued A6); revisit then.
+
+## Outcomes (UWA)
+
+With a = target-group members with A, b = others with A, n₁ = target size, n₀ = N − n₁:
+
+1. **Share negative among the top-5 PPV attributes.** PPV = a/(a + b), ranked over all attributes.
+2. **Likelihood ratios** for the five highest-PPV positive attributes and the five highest-PPV negative attributes, by rank, with Jeffreys smoothing. The paper's wording fits two definitions; both are computed in the first run, and the one that matches Figure 6 is kept and recorded in `DECISIONS.md`:
+   - LR₁ = [(a + .5)/(n₁ + 1)] / [(b + .5)/(n₀ + 1)], i.e. p(A|G₁)/p(A|¬G₁), equal to posterior odds over prior odds;
+   - LR₂ = [(a + .5)/(a + b + 1)] / (n₁/N), i.e. PPV over the prior p(G₁).
+3. **Mean p(A|G₁)** = a/n₁ across the overall top-5 PPV attributes.
+
+**Ties [ours].** Broken at random. UWA's R code may break them by index order, so the replication is rerun once with positives-first and once with negatives-first index order, to confirm the outcomes move only within Monte Carlo noise. *After the first run:* the reruns use the replication's own seeds, so that only the tie rule differs.
+
+**Variation between seeds (added after the first run).** `replicate_seeds` reruns the replication under 50 seeds per condition, so the committed seed's values can be read against Monte Carlo variation between seeds.
+
+## Acceptance check against the paper
+
+Primary, from the paper's text:
+
+- T1. The share negative among the top 5 rises monotonically as πneg falls and "approached 100%" (≥ .95 at πneg = .10). *Amended after the first run:* "monotonically" is checked as never falling, because the share sits at a ceiling of 1.000 at both .10 and .20 (as in Figure 6) and the first implementation demanded a strict rise.
+- T2. At .50/.50, positive and negative "did not differ anymore" (share negative within MC error of .50).
+- T3. The mean LR of the top-5 positive attributes stays "comparatively close to 1" and changes "only modestly" across conditions.
+- T4. At .50/.50, mean p(A|G₁) is "about 60%".
+- T5. Mean p(A|G₁) is under .50 once πneg drops below .35 (so under .50 at πneg = .30, above it at .40).
+
+Secondary: values read from Figure 6 by eye (`results/strandA/figure6_read_by_eye.csv`, approximate), tolerance ±.05 for shares and proportions and ±.08 for LRs. A near miss on an eyeballed value doesn't override a text anchor.
+
+## Extensions
+
+**Fresh-sample check (brief, step 2).** In each run, after selecting the top-5 attributes, draw an independent sample from the same population and recompute those attributes' PPV, p(A|G₁) and LR₁. Expected with no true differences: PPV at p(G₁) (= 1/K only for equal groups), p(A|G₁) at π_A, LR at 1.
+
+**Negativity diversity (brief, step 3).** 50 positive and 100 negative attributes; same base-rate pairs and outcomes.
+
+**A5: unequal group sizes (plan).** Total N fixed at 1,000 with K = 10 **[ours: total fixed, target share varied]**. Target size n₁ ∈ {20, 50, 100, 200, 300, 500}; the rest split as evenly as integers allow. Outcomes as above, plus the fresh-sample PPV against p(G₁). How to read it: UWA claim the mechanism needs no assumption about minority status or group size. If small target groups show stronger negativity (plausible, since p̂(A|G₁) is noisier), that's a modulation, not a refutation.
+
+**Consensus split (brief, step 4).** All parameters **[ours]**:
+
+- A world has true rates θ_gA = π_A, except that the target group differs on k = 5 attributes: logit θ₁A = logit π_A + δ.
+- δ ∈ {0, .25, .5, 1, 2}.
+- **The valence of the differing attributes is a factor:** all negative, all positive, or drawn at random from all attributes. It matters because of the PPV ceiling: a true difference on a frequent positive attribute can't reach the top 5 until it's large, so content agreement should rise faster when the differing attributes are negative. Stated here in advance so the result isn't a choice made after seeing it.
+- **Two versions of what perceivers sample from** (added before any run, after a reviewer noted that the first version builds the predicted result in):
+  - *Independent:* each of P = 20 perceivers draws its own n individuals per group straight from the world's rates θ. No two perceivers share a society. With δ = 0 their chance patterns are unrelated, so low content agreement is close to guaranteed, and it can't count as confirming the brief's prediction.
+  - *Shared society:* each world first realizes one finite society of M members per group (M ∈ {100, 1000}). Each perceiver then samples n members per group from that society, without replacement. Chance differences realized in the society are real differences that every perceiver can see, which is UWA's picture of "real social ecologies". This is the version that tests the prediction.
+  - Shared-society counts are drawn as per-attribute hypergeometrics given the society's counts. That ignores the weak dependence across attributes that comes from sampling the same members (its covariance is proportional to the finite-population covariance between independent attributes). The approximation is checked against an exact individual-level simulation on one cell, and the comparison is reported. *Result:* mean pairwise Jaccard .0629 exact against .0623 approximate (MC SE .0007; `results/strandA/consensus_check.csv`).
+- n ∈ {10, 30, 100} members per group per perceiver (n ≤ M).
+- Base-rate pairs: all five. 300 worlds per cell.
+- Shared version only: each perceiver's agreement with the society's own full-information top 5 (Jaccard), which separates "perceivers agree because the society has realized differences" from "perceivers agree with the generating process".
+- Content agreement: mean pairwise Jaccard of top-5 sets across perceivers. Chance baseline for random 5-of-100 sets: expected overlap .25, Jaccard .028 (computed exactly in the script; the "about .026" first written here was an approximation). *Added after the run:* when every top 5 is negative, the right baseline is random 5-of-50 sets, Jaccard .058. Also reported: the share of each perceiver's top 5 that are truly differing attributes.
+- Valence agreement: mean top-5 negative share, its SD across perceivers, and the proportion of perceivers whose top 5 is majority negative (≥ 3 of 5).
+- Mapping these onto observed stereotype consensus waits for real data and the fixed plan.
+
+## Reproducibility
+
+- One `SeedSequence` (root seed 20261007) spawned per condition.
+- Each run writes `logs/strandA-<timestamp>.json`: Python and package versions, platform, git SHA, seeds, arguments.
+- Results go to `results/strandA/` as CSV. No figures until the dataviz guidance and `/check-chart-style` have been applied.
+
+Run: `python3 scripts/simulation/strand_a.py <replicate|ties|fresh|diversity|groupsize|consensus|consensus_check|all>`.
+
+exec
+/bin/zsh -lc "sed -n '/## 5. Consensus split/,"'$p'"' results/strandA/SUMMARY.md" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+## 5. Consensus split
+
+Approximation check (shared society, M = 1,000, n = 30, .70/.30, δ = 0): mean pairwise Jaccard
+
+| method | mean | mc_se | runs |
+|---|---|---|---|
+| exact_individual_level | 0.063 | 0.001 | 100 |
+| hypergeometric_approx | 0.062 | 0.001 | 100 |
+
+Chance Jaccard for two random 5-of-100 sets: 0.0283; for two random 5-of-50 sets (the relevant baseline when every perceiver's top 5 is negative, as at π_neg ≤ .2): 0.0579.
+
+**jaccard_mean_pairwise, no true differences (δ = 0)** (rows: version, society size M, n per group; columns: π_neg)
+
+| version | society_M | n_per_group | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|---|---|
+| independent | - | 10 | 0.058 | 0.058 | 0.056 | 0.041 | 0.028 |
+| independent | - | 30 | 0.058 | 0.058 | 0.056 | 0.041 | 0.028 |
+| independent | - | 100 | 0.058 | 0.058 | 0.055 | 0.040 | 0.028 |
+| shared | 100 | 10 | 0.080 | 0.080 | 0.076 | 0.058 | 0.042 |
+| shared | 100 | 30 | 0.138 | 0.133 | 0.127 | 0.099 | 0.082 |
+| shared | 100 | 100 | 0.993 | 0.993 | 0.995 | 0.994 | 0.999 |
+| shared | 1000 | 10 | 0.060 | 0.060 | 0.059 | 0.042 | 0.030 |
+| shared | 1000 | 30 | 0.064 | 0.063 | 0.061 | 0.045 | 0.032 |
+| shared | 1000 | 100 | 0.079 | 0.080 | 0.075 | 0.056 | 0.042 |
+
+**share_negative_mean, no true differences (δ = 0)** (rows: version, society size M, n per group; columns: π_neg)
+
+| version | society_M | n_per_group | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|---|---|
+| independent | - | 10 | 1.000 | 1.000 | 0.987 | 0.827 | 0.501 |
+| independent | - | 30 | 1.000 | 1.000 | 0.982 | 0.824 | 0.499 |
+| independent | - | 100 | 1.000 | 1.000 | 0.978 | 0.814 | 0.505 |
+| shared | 100 | 10 | 1.000 | 1.000 | 0.987 | 0.836 | 0.503 |
+| shared | 100 | 30 | 1.000 | 1.000 | 0.982 | 0.821 | 0.506 |
+| shared | 100 | 100 | 1.000 | 1.000 | 0.979 | 0.800 | 0.515 |
+| shared | 1000 | 10 | 1.000 | 1.000 | 0.987 | 0.830 | 0.499 |
+| shared | 1000 | 30 | 1.000 | 1.000 | 0.981 | 0.822 | 0.502 |
+| shared | 1000 | 100 | 1.000 | 1.000 | 0.979 | 0.814 | 0.502 |
+
+**share_negative_sd_across_perceivers, no true differences (δ = 0)** (rows: version, society size M, n per group; columns: π_neg)
+
+| version | society_M | n_per_group | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|---|---|
+| independent | - | 10 | 0.000 | 0.000 | 0.042 | 0.170 | 0.218 |
+| independent | - | 30 | 0.000 | 0.001 | 0.055 | 0.172 | 0.217 |
+| independent | - | 100 | 0.000 | 0.001 | 0.062 | 0.177 | 0.219 |
+| shared | 100 | 10 | 0.000 | 0.000 | 0.042 | 0.165 | 0.212 |
+| shared | 100 | 30 | 0.000 | 0.001 | 0.050 | 0.166 | 0.205 |
+| shared | 100 | 100 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+| shared | 1000 | 10 | 0.000 | 0.001 | 0.041 | 0.172 | 0.221 |
+| shared | 1000 | 30 | 0.000 | 0.001 | 0.055 | 0.175 | 0.218 |
+| shared | 1000 | 100 | 0.000 | 0.001 | 0.058 | 0.170 | 0.218 |
+
+**jaccard_with_society_top5, no true differences (δ = 0)** (rows: version, society size M, n per group; columns: π_neg)
+
+| version | society_M | n_per_group | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
+|---|---|---|---|---|---|---|---|
+| shared | 100 | 10 | 0.137 | 0.137 | 0.129 | 0.103 | 0.085 |
+| shared | 100 | 30 | 0.236 | 0.228 | 0.218 | 0.184 | 0.165 |
+| shared | 100 | 100 | 0.993 | 0.993 | 0.995 | 0.995 | 0.999 |
+| shared | 1000 | 10 | 0.080 | 0.076 | 0.077 | 0.057 | 0.041 |
+| shared | 1000 | 30 | 0.097 | 0.096 | 0.091 | 0.069 | 0.054 |
+| shared | 1000 | 100 | 0.137 | 0.135 | 0.128 | 0.104 | 0.087 |
+
+Reading the δ tables: "negative" and "positive" here are labels on two base rates (π = .30 and .70 at .70/.30). True differences on the rare attributes are picked up far more readily than on the common ones, because rarity raises the PPV ceiling (UWA's Equation 3). In UWA's ecology rare means negative; the design can't separate valence from rarity.
+
+**jaccard_mean_pairwise at .70/.30 by true difference δ** (rows: version, M, n, valence of the differing attributes; columns: δ)
+
+| version | society_M | n_per_group | diff_valence | 0.0 | 0.25 | 0.5 | 1.0 | 2.0 |
+|---|---|---|---|---|---|---|---|---|
+| independent | - | 10 | mixed | nan | 0.058 | 0.064 | 0.109 | 0.265 |
+| independent | - | 10 | negative | nan | 0.059 | 0.071 | 0.141 | 0.433 |
+| independent | - | 10 | none | 0.056 | nan | nan | nan | nan |
+| independent | - | 10 | positive | nan | 0.056 | 0.056 | 0.056 | 0.055 |
+| independent | - | 30 | mixed | nan | 0.062 | 0.091 | 0.234 | 0.382 |
+| independent | - | 30 | negative | nan | 0.067 | 0.117 | 0.389 | 0.948 |
+| independent | - | 30 | none | 0.056 | nan | nan | nan | nan |
+| independent | - | 30 | positive | nan | 0.056 | 0.055 | 0.052 | 0.058 |
+| independent | - | 100 | mixed | nan | 0.081 | 0.209 | 0.394 | 0.568 |
+| independent | - | 100 | negative | nan | 0.105 | 0.326 | 0.938 | 1.000 |
+| independent | - | 100 | none | 0.055 | nan | nan | nan | nan |
+| independent | - | 100 | positive | nan | 0.054 | 0.051 | 0.106 | 0.404 |
+| shared | 100 | 10 | mixed | nan | 0.079 | 0.084 | 0.126 | 0.291 |
+| shared | 100 | 10 | negative | nan | 0.080 | 0.093 | 0.154 | 0.439 |
+| shared | 100 | 10 | none | 0.076 | nan | nan | nan | nan |
+| shared | 100 | 10 | positive | nan | 0.077 | 0.077 | 0.076 | 0.074 |
+| shared | 100 | 30 | mixed | nan | 0.132 | 0.160 | 0.295 | 0.434 |
+| shared | 100 | 30 | negative | nan | 0.142 | 0.188 | 0.446 | 0.956 |
+| shared | 100 | 30 | none | 0.127 | nan | nan | nan | nan |
+| shared | 100 | 30 | positive | nan | 0.126 | 0.127 | 0.121 | 0.127 |
+| shared | 100 | 100 | mixed | nan | 0.997 | 0.999 | 0.997 | 1.000 |
+| shared | 100 | 100 | negative | nan | 0.997 | 0.997 | 1.000 | 1.000 |
+| shared | 100 | 100 | none | 0.995 | nan | nan | nan | nan |
+| shared | 100 | 100 | positive | nan | 0.998 | 0.996 | 0.998 | 0.998 |
+| shared | 1000 | 10 | mixed | nan | 0.060 | 0.067 | 0.106 | 0.260 |
+| shared | 1000 | 10 | negative | nan | 0.061 | 0.072 | 0.140 | 0.429 |
+| shared | 1000 | 10 | none | 0.059 | nan | nan | nan | nan |
+| shared | 1000 | 10 | positive | nan | 0.058 | 0.058 | 0.056 | 0.056 |
+| shared | 1000 | 30 | mixed | nan | 0.067 | 0.096 | 0.249 | 0.398 |
+| shared | 1000 | 30 | negative | nan | 0.073 | 0.122 | 0.391 | 0.955 |
+| shared | 1000 | 30 | none | 0.061 | nan | nan | nan | nan |
+| shared | 1000 | 30 | positive | nan | 0.061 | 0.059 | 0.058 | 0.064 |
+| shared | 1000 | 100 | mixed | nan | 0.102 | 0.222 | 0.403 | 0.582 |
+| shared | 1000 | 100 | negative | nan | 0.122 | 0.336 | 0.938 | 1.000 |
+| shared | 1000 | 100 | none | 0.075 | nan | nan | nan | nan |
+| shared | 1000 | 100 | positive | nan | 0.074 | 0.070 | 0.125 | 0.417 |
+
+**hit_rate_true_differences at .70/.30 by true difference δ** (rows: version, M, n, valence of the differing attributes; columns: δ)
+
+| version | society_M | n_per_group | diff_valence | 0.25 | 0.5 | 1.0 | 2.0 |
+|---|---|---|---|---|---|---|---|
+| independent | - | 10 | mixed | 0.083 | 0.128 | 0.251 | 0.423 |
+| independent | - | 10 | negative | 0.162 | 0.240 | 0.440 | 0.756 |
+| independent | - | 10 | positive | 0.002 | 0.004 | 0.008 | 0.017 |
+| independent | - | 30 | mixed | 0.121 | 0.217 | 0.407 | 0.539 |
+| independent | - | 30 | negative | 0.219 | 0.392 | 0.726 | 0.984 |
+| independent | - | 30 | positive | 0.007 | 0.016 | 0.063 | 0.183 |
+| independent | - | 100 | mixed | 0.193 | 0.407 | 0.610 | 0.813 |
+| independent | - | 100 | negative | 0.360 | 0.675 | 0.981 | 1.000 |
+| independent | - | 100 | positive | 0.023 | 0.099 | 0.370 | 0.735 |
+| shared | 100 | 10 | mixed | 0.087 | 0.129 | 0.243 | 0.442 |
+| shared | 100 | 10 | negative | 0.161 | 0.243 | 0.429 | 0.752 |
+| shared | 100 | 10 | positive | 0.002 | 0.004 | 0.009 | 0.018 |
+| shared | 100 | 30 | mixed | 0.110 | 0.220 | 0.412 | 0.549 |
+| shared | 100 | 30 | negative | 0.218 | 0.391 | 0.729 | 0.986 |
+| shared | 100 | 30 | positive | 0.006 | 0.017 | 0.062 | 0.183 |
+| shared | 100 | 100 | mixed | 0.201 | 0.409 | 0.622 | 0.833 |
+| shared | 100 | 100 | negative | 0.346 | 0.672 | 0.981 | 1.000 |
+| shared | 100 | 100 | positive | 0.019 | 0.091 | 0.376 | 0.735 |
+| shared | 1000 | 10 | mixed | 0.079 | 0.123 | 0.232 | 0.419 |
+| shared | 1000 | 10 | negative | 0.160 | 0.240 | 0.437 | 0.754 |
+| shared | 1000 | 10 | positive | 0.003 | 0.004 | 0.010 | 0.018 |
+| shared | 1000 | 30 | mixed | 0.116 | 0.215 | 0.425 | 0.546 |
+| shared | 1000 | 30 | negative | 0.223 | 0.388 | 0.723 | 0.986 |
+| shared | 1000 | 30 | positive | 0.007 | 0.018 | 0.063 | 0.184 |
+| shared | 1000 | 100 | mixed | 0.206 | 0.401 | 0.609 | 0.816 |
+| shared | 1000 | 100 | negative | 0.354 | 0.669 | 0.981 | 1.000 |
+| shared | 1000 | 100 | positive | 0.024 | 0.096 | 0.371 | 0.737 |
+
+**Post hoc, exploratory: equal absolute shift.** Added 2026-10-07 after the consensus run, to test whether the asymmetry depended on the logit scale, which moves rates near .30 more than rates near .70. (.70/.30, independent version, n = 100; rows: valence of the differing attributes; columns: shift added to the target group's rate)
+
+*jaccard_mean_pairwise*
+
+| diff_valence | 0.05 | 0.1 | 0.15 | 0.2 |
+|---|---|---|---|---|
+| negative | 0.093 | 0.253 | 0.528 | 0.814 |
+| positive | 0.053 | 0.052 | 0.084 | 0.205 |
+
+*hit_rate_true_differences*
+
+| diff_valence | 0.05 | 0.1 | 0.15 | 0.2 |
+|---|---|---|---|---|
+| negative | 0.331 | 0.604 | 0.814 | 0.939 |
+| positive | 0.022 | 0.111 | 0.310 | 0.544 |
+
+codex
+**Drop the causal calibration, but retain conditional quantitative results. The proposed qualitative conclusion also needs correction.**
+
+1. **Point 1 is substantially right, but overstates what the prompts establish.** Eliciting cultural knowledge prevents interpreting agreement as independent learning from encounters; it doesn’t establish that agreement *mostly* reflects transmission. One aggregate agreement statistic cannot identify both mechanisms. Priors can select among compatible explanations without identifying them. Own-belief elicitation would help define the target, but beliefs can also be culturally transmitted. ([analysis_plan.md](/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/analysis_plan.md), Hypotheses, second “Open decision”.)
+
+2. **Point 2 is right about the current statistics.** Normalization alone is insufficient: specify the candidate vocabulary, response budget, selection rule, and unequal lexical accessibility. A closed-vocabulary task helps, but an explicit observation model could instead connect latent rankings to free responses. Neither approach solves causal identification. ([README.md](/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/simulation/README.md), Extensions, “Consensus split”.)
+
+3. **Point 3 is wrong about inevitability.** Transmission’s existence doesn’t guarantee excess consensus. More decisively, sampling alone already yields Jaccard **.995** when δ = 0, M = n = 100: perceivers observe the same realized society. Thus “anything sampling alone produces” supplies no useful ceiling without independently constrained exposure and overlap. A check could fail against a *specified, constrained* sampling model. ([SUMMARY.md](/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/results/strandA/SUMMARY.md), §5.)
+
+4. **Keep the quantitative forward map**, labelled conditional sensitivity, rather than estimating actual differences. At n = 100, δ = 1 gives independent-sample Jaccard .938 for rare differing attributes versus .106 for common ones. Report prevalence shifts, agreement, and recovery together; consensus isn’t accuracy. This preserves part of the brief’s request. (SUMMARY §5; [project-brief.md](/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/notes/project-brief.md), Strand A, step 4.)
+
+The plan should say: **No inverse calibration from observed consensus to true differences. Retain conditional agreement surfaces; empirical checking requires a matched observation model and constrained sampling assumptions.** If available, in-group/out-group, exposure, or country contrasts could test predicted variation using partial pooling and held-out prediction. They wouldn’t independently identify transmission: exposure, ecology, and cultural knowledge can covary. Replace the proposed qualitative conclusion with: **independent sampling yields low content agreement; shared sampling needn’t.**
+tokens used
+33,531
+**Drop the causal calibration, but retain conditional quantitative results. The proposed qualitative conclusion also needs correction.**
+
+1. **Point 1 is substantially right, but overstates what the prompts establish.** Eliciting cultural knowledge prevents interpreting agreement as independent learning from encounters; it doesn’t establish that agreement *mostly* reflects transmission. One aggregate agreement statistic cannot identify both mechanisms. Priors can select among compatible explanations without identifying them. Own-belief elicitation would help define the target, but beliefs can also be culturally transmitted. ([analysis_plan.md](/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/analysis_plan.md), Hypotheses, second “Open decision”.)
+
+2. **Point 2 is right about the current statistics.** Normalization alone is insufficient: specify the candidate vocabulary, response budget, selection rule, and unequal lexical accessibility. A closed-vocabulary task helps, but an explicit observation model could instead connect latent rankings to free responses. Neither approach solves causal identification. ([README.md](/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/simulation/README.md), Extensions, “Consensus split”.)
+
+3. **Point 3 is wrong about inevitability.** Transmission’s existence doesn’t guarantee excess consensus. More decisively, sampling alone already yields Jaccard **.995** when δ = 0, M = n = 100: perceivers observe the same realized society. Thus “anything sampling alone produces” supplies no useful ceiling without independently constrained exposure and overlap. A check could fail against a *specified, constrained* sampling model. ([SUMMARY.md](/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/results/strandA/SUMMARY.md), §5.)
+
+4. **Keep the quantitative forward map**, labelled conditional sensitivity, rather than estimating actual differences. At n = 100, δ = 1 gives independent-sample Jaccard .938 for rare differing attributes versus .106 for common ones. Report prevalence shifts, agreement, and recovery together; consensus isn’t accuracy. This preserves part of the brief’s request. (SUMMARY §5; [project-brief.md](/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/notes/project-brief.md), Strand A, step 4.)
+
+The plan should say: **No inverse calibration from observed consensus to true differences. Retain conditional agreement surfaces; empirical checking requires a matched observation model and constrained sampling assumptions.** If available, in-group/out-group, exposure, or country contrasts could test predicted variation using partial pooling and held-out prediction. They wouldn’t independently identify transmission: exposure, ecology, and cultural knowledge can covary. Replace the proposed qualitative conclusion with: **independent sampling yields low content agreement; shared sampling needn’t.**
