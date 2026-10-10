@@ -168,3 +168,16 @@ latency, `finish_words.py` submits only its three unattempted word batches,
 with two concurrent calls, preserving the original prompt, model and effort.
 The failed serializer check prevents the original word supervisor from
 submitting those batches. No duplicate call or extra research item is added.
+
+After pair pilot v1 (2026-10-10): identifier/quote checks passed, but substantive
+review found unsupported etymology in one answer and complement readings
+inferred just from dictionary glosses using *not* or *lack*. Those glosses do
+not establish exhaustive categories. `pair-recheck-addendum.txt` adds an
+explicit same-time/same-respect neither/both diagnostic, an unresolved route,
+and a prohibition on unsupplied historical assertions. `recheck_pairs.py`
+reruns the entire affected class (all pilot pair analyses) in both families,
+with fresh contexts and unchanged source packets. It does not show either
+original model answer or detector output. The original independent candidate
+lists and decisions remain preserved. This is a post-pilot instrument revision,
+not a claim that the original coding was prospectively adequate. No word
+eligibility judgment or commonness judgment is silently replaced by this run.

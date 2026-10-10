@@ -69,12 +69,12 @@ def validate(result, records, kind):
                     if a[field] not in allowed: errors.append('invalid alignment '+a[field])
     return errors
 
-def call(family, label, records, kind, commit):
+def call(family, label, records, kind, commit, prompt_path=None, schema_override=None):
     directory=OUT/family/label
     if directory.exists(): raise FileExistsError(directory)
     directory.mkdir(parents=True)
-    schema=WORD_SCHEMA if kind=='word' else PAIR_SCHEMA
-    prompt=(HERE/('word-prompt.txt' if kind=='word' else 'pair-prompt.txt')).read_text()
+    schema=schema_override or (WORD_SCHEMA if kind=='word' else PAIR_SCHEMA)
+    prompt=(prompt_path or HERE/('word-prompt.txt' if kind=='word' else 'pair-prompt.txt')).read_text()
     prompt+='\n'+json.dumps(stripped(records,kind=='pair'),ensure_ascii=False,sort_keys=True)+'\n'
     prompt+='\nSource licences:\n'+(PACKET/'WORDNET-LICENSE.txt').read_text()+'\n'+(PACKET/'WIKTIONARY-LICENSE.txt').read_text()
     (directory/'prompt.txt').write_text(prompt); write_json(directory/'schema.json',schema)
