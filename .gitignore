@@ -31,3 +31,6 @@ __pycache__/
 # Coder-facing materials stay off GitHub until every judge has finished (analysis_plan.md, "Protecting the blind coder");
 # a dated SHA-256 fingerprint of the bundle is committed at freeze, the files after the last judge.
 private/
+
+# Caches for sandboxed Codex runs (scripts/codex-ws.sh)
+.cache/
