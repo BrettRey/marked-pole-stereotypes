@@ -21,6 +21,23 @@
 - *Likelihood.* Production is modelled as a categorical choice among eligible words plus an outside option, matching fixed response budgets and competition among words, not as independent negative-binomial cells. The model includes group-specific content (group-by-item variation) and partially pooled group slopes; participant variation enters through slopes (a participant intercept common to all words cancels in a choice model). Posterior predictive checks: concentration, zeros, between-group overlap.
 - *Design check before FIXED (D1c).* D1's production submodel is re-simulated with the categorical likelihood, with null and threshold-sized effects, indicator bias and prior sensitivity, and with the word-list size, coverage and Nicolas et al.'s clustering updated once the word list is frozen (D1 used placeholders: 400 items, 40% coverage, independent responses). D1's measurement-side conclusions are expected to carry over but are rechecked.
 
+**Design informativeness (settled 2026-10-10).** Assess precision, interval
+coverage, bias, sign errors and effect exaggeration across generating effects
+and measurement assumptions, separately by dataset and estimand. Where power
+is reported, state the detection rule and effect size. Substantive benchmarks
+remain unset; the simulation's numerical effect values do not supply them.
+See the reviewed [implementation plan](notes/design-informativeness-plan-2026-10-10.md)
+and [assessment specification](scripts/design_assessment/README.md).
+
+The empirical-design assessment requires frozen vocabulary, participant
+structure and measurement coverage, with documented sensitivity assumptions.
+Use independent simulated datasets and report Monte Carlo uncertainty and
+fit failures. Set replication from the required precision and a documented
+compute budget before launch. Sampler draws and conditional cut components
+do not count as study replications. D1c covers H2 and exploratory H1; L1/L2
+retain the D2b requirement after their frame is frozen. These assessments
+remain pending until adequately replicated results exist.
+
 ## Proposed revisions (2026-10-07; written in at Brett's request, open until FIXED)
 
 **Order of work.** (1) Strand A, with the group-size extension; (2) design simulation D1, built on strand A's engine; (3) the marking submodel on lexical data (L1, L2); (4) the joint model on stereotype responses (H2, H1). Steps 1–3 touch no outcome data, so they settle what the design can identify, and whether the hypothesis's "because" survives, before any stereotype responses are opened.

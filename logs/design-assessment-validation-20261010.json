@@ -1,0 +1,21 @@
+{
+  "observed_at": "2026-10-10T20:03:06.875362+00:00",
+  "result": "passed",
+  "checks": [
+    "All four existing artificial-data pilot summaries checked against CSV using a separate Python standard-library calculation",
+    "Exact all-success coverage lower bound checked analytically",
+    "Every report input hash matches its file"
+  ],
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "source_hashes": {
+    "scripts/design_assessment/metrics.py": "ec64d5c202c4b3bbdcae7f8f60ef54ba82dc8a426afd439938a6490de2f29d09",
+    "scripts/design_assessment/budget.py": "6d5819b56241fd623aabadff71db6025d0dd8aa6a863ae6a180f21b8bcc1833f",
+    "scripts/design_assessment/test_assessment.py": "2451a404aa3235db9d675357cbf6cb7100148aeca23c66224ba3cd07ea3158d1",
+    "scripts/design_assessment/report.py": "9ca1dc3499b5c26df545afe85084ae14f8091e18b510fda109eb09cfd9cc7688"
+  }
+}

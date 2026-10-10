@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "updated": "2026-10-10",
+  "empirical_design_calibration": "pending",
+  "substantive_benchmarks": null,
+  "outcome_access": "No empirical outcome data opened for this assessment",
+  "inputs": {
+    "vocabulary": {
+      "status": "unresolved",
+      "known": "Anderson plus eligible Warriner adjectives; eligibility independent of norm coverage",
+      "required": "Frozen eligible vocabulary, eligibility version and SHA-256; realized denominator size",
+      "value": null,
+      "source": "analysis_plan.md: H2 details, The word list"
+    },
+    "participant_structure": {
+      "status": "unresolved",
+      "known": "UWA and Nicolas assessed separately, with participant dependence and differing response budgets",
+      "required": "Sourced participant–group incidence and response budgets by dataset, with provenance and an outcome-access record if necessary",
+      "value": null,
+      "source": "analysis_plan.md: H2 details; scripts/d1c/README.md: Design and reporting order"
+    },
+    "measurement_coverage": {
+      "status": "unresolved",
+      "known": "Coverage must not determine word eligibility; instruments can overlap incompletely",
+      "required": "Instrument coverage mask over the frozen vocabulary, overlap, missingness assumptions and source hashes",
+      "value": null,
+      "source": "analysis_plan.md: H2 details; data/manifests/sources.csv"
+    },
+    "measurement_assumptions": {
+      "status": "unresolved",
+      "known": "Model judgments require explicit instrument, bias, shared-error and transport assumptions",
+      "required": "Versioned instruments and prespecified sensitivity values, labelled as assumptions where not measured",
+      "value": null,
+      "source": "analysis_plan.md: Model judges only; notes/d1b-design-draft-2026-10-10.md"
+    },
+    "estimands": {
+      "status": "defined_with_dependencies",
+      "known": "H2 marginal predictive association and exploratory H1 fixed-usage marking comparison; prevalence and perceived display separate",
+      "required": "Bind averaging populations to the frozen vocabulary and participant structure",
+      "source": "analysis_plan.md: H2 details and H1 details; scripts/d1c/README.md: Estimands and truth"
+    },
+    "effect_ranges": {
+      "status": "unresolved",
+      "known": "D1c currently varies predictive H2 at 0 and -0.10 as design values; this is not an H1 power curve",
+      "required": "Separate justified H2 and H1 generating-effect ranges including zero; deterministic truth checks on the estimand scales",
+      "value": null,
+      "source": "scripts/d1c/README.md: Estimands and truth; DECISIONS.md: 2026-10-10 reporting priority"
+    },
+    "replication_and_compute": {
+      "status": "unresolved",
+      "known": "Current eight cut components are one generated dataset; full-grid engineering sweep is paused",
+      "required": "Frozen cell list, independent dataset count, precision rationale, seeds, numerical cut accuracy and cost ceiling before a calibration launch",
+      "value": null,
+      "source": "scripts/d1c/README.md: Initial grid; STATUS.md: D1c"
+    },
+    "l1_l2": {
+      "status": "dependency",
+      "known": "D2b evaluates model-judged estimands after the lexical frame is frozen",
+      "required": "Realized L1/L2 frame dimensions and the existing D2b stress assumptions",
+      "source": "scripts/d2/README.md: D2b additions"
+    }
+  },
+  "historical_design": {
+    "purpose": "Engineering examples only; never used as defaults for unresolved empirical inputs",
+    "d1c": {"vocabulary": 400, "coverage": 0.4, "participants": 12, "participant_group_structure": "complete crossing"},
+    "source": "scripts/d1c/README.md: Design and reporting order"
+  }
+}

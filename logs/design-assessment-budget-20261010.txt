@@ -1,0 +1,57 @@
+{
+  "observed_at": "2026-10-10T20:02:44.197446+00:00",
+  "requested_rate_mcse": 0.025,
+  "assumed_rate": 0.5,
+  "independent_datasets": 400,
+  "worst_case_mcse": 0.025,
+  "launch_authorized": false,
+  "environment": {
+    "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O"
+  },
+  "source_sha256": "6d5819b56241fd623aabadff71db6025d0dd8aa6a863ae6a180f21b8bcc1833f",
+  "command": [
+    "scripts/design_assessment/budget.py",
+    "--mcse",
+    ".025",
+    "--plan",
+    "scripts/design_assessment/budget-example.json",
+    "--output",
+    "results/design-assessment/budget-example-20261010.json"
+  ],
+  "compute": {
+    "replicates_per_cell": 400,
+    "cells": [
+      {
+        "cell": "hypothetical-uwa-baseline-cut-measured-register",
+        "platform": "hf",
+        "datasets": 400,
+        "fits": 3600,
+        "worker_hours": 5486.327825306334
+      }
+    ],
+    "platforms": {
+      "hf": {
+        "worker_hours": 5486.327825306334,
+        "ideal_elapsed_hours": 2743.163912653167,
+        "serial_elapsed_hours": 5486.327825306334,
+        "projected_machine_sessions": 115,
+        "estimated_compute_usd": 82.29499999999999,
+        "compute_reserved_at_session_timeouts_usd": 82.8
+      }
+    },
+    "ideal_elapsed_hours": 2743.163912653167,
+    "estimated_compute_usd": 82.29499999999999,
+    "conservative_session_reservation_usd": 82.8,
+    "remaining_authorized_usd": 7.84,
+    "reservation_within_budget": false,
+    "launch_authorized": false,
+    "limitations": [
+      "Ideal elapsed time assumes perfect load balancing and independent one-core work.",
+      "Setup, export overhead, dependencies, contention and failures can increase elapsed time and cost.",
+      "Session counts and reservations assume resumable work across timeout boundaries; no jobs are submitted.",
+      "Different sampler budgets, designs and hardware require new timing inputs."
+    ]
+  },
+  "plan_sha256": "74079af80bccdbee80b5015c38f8f22b5408e4db68169490fd2c390aeb3dbd2e"
+}

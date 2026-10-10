@@ -1,0 +1,807 @@
+{
+  "schema": 1,
+  "observed_at": "2026-10-10T20:02:43.441342+00:00",
+  "purpose": "Engineering integration report; not empirical-design calibration or a power claim",
+  "detection_rule": "Equal-tailed 90% interval wholly on the true nonzero side of zero",
+  "substantive_benchmarks": null,
+  "generating_design": "Original provisional D1c design",
+  "bootstrap_seed": 20261010,
+  "bootstrap_repetitions": 2000,
+  "null_tolerance": 1e-08,
+  "rate_interval": "Exact Clopper\u2013Pearson 95% intervals across independent datasets",
+  "limitations": [
+    "Two pilot datasets do not establish design performance.",
+    "Original per-component contrast budget: 100; historical summaries are not recomputed from full traces.",
+    "Quantile and RMSE bootstrap SEs may be unstable with few independent datasets.",
+    "Rate denominators can vary; selected metrics use only selected nonzero-truth fits.",
+    "A failure counts as no usable detection in the per-attempt measure, not evidence of a null effect."
+  ],
+  "input_registry": {
+    "schema": 1,
+    "updated": "2026-10-10",
+    "empirical_design_calibration": "pending",
+    "substantive_benchmarks": null,
+    "outcome_access": "No empirical outcome data opened for this assessment",
+    "inputs": {
+      "vocabulary": {
+        "status": "unresolved",
+        "known": "Anderson plus eligible Warriner adjectives; eligibility independent of norm coverage",
+        "required": "Frozen eligible vocabulary, eligibility version and SHA-256; realized denominator size",
+        "value": null,
+        "source": "analysis_plan.md: H2 details, The word list"
+      },
+      "participant_structure": {
+        "status": "unresolved",
+        "known": "UWA and Nicolas assessed separately, with participant dependence and differing response budgets",
+        "required": "Sourced participant\u2013group incidence and response budgets by dataset, with provenance and an outcome-access record if necessary",
+        "value": null,
+        "source": "analysis_plan.md: H2 details; scripts/d1c/README.md: Design and reporting order"
+      },
+      "measurement_coverage": {
+        "status": "unresolved",
+        "known": "Coverage must not determine word eligibility; instruments can overlap incompletely",
+        "required": "Instrument coverage mask over the frozen vocabulary, overlap, missingness assumptions and source hashes",
+        "value": null,
+        "source": "analysis_plan.md: H2 details; data/manifests/sources.csv"
+      },
+      "measurement_assumptions": {
+        "status": "unresolved",
+        "known": "Model judgments require explicit instrument, bias, shared-error and transport assumptions",
+        "required": "Versioned instruments and prespecified sensitivity values, labelled as assumptions where not measured",
+        "value": null,
+        "source": "analysis_plan.md: Model judges only; notes/d1b-design-draft-2026-10-10.md"
+      },
+      "estimands": {
+        "status": "defined_with_dependencies",
+        "known": "H2 marginal predictive association and exploratory H1 fixed-usage marking comparison; prevalence and perceived display separate",
+        "required": "Bind averaging populations to the frozen vocabulary and participant structure",
+        "source": "analysis_plan.md: H2 details and H1 details; scripts/d1c/README.md: Estimands and truth"
+      },
+      "effect_ranges": {
+        "status": "unresolved",
+        "known": "D1c currently varies predictive H2 at 0 and -0.10 as design values; this is not an H1 power curve",
+        "required": "Separate justified H2 and H1 generating-effect ranges including zero; deterministic truth checks on the estimand scales",
+        "value": null,
+        "source": "scripts/d1c/README.md: Estimands and truth; DECISIONS.md: 2026-10-10 reporting priority"
+      },
+      "replication_and_compute": {
+        "status": "unresolved",
+        "known": "Current eight cut components are one generated dataset; full-grid engineering sweep is paused",
+        "required": "Frozen cell list, independent dataset count, precision rationale, seeds, numerical cut accuracy and cost ceiling before a calibration launch",
+        "value": null,
+        "source": "scripts/d1c/README.md: Initial grid; STATUS.md: D1c"
+      },
+      "l1_l2": {
+        "status": "dependency",
+        "known": "D2b evaluates model-judged estimands after the lexical frame is frozen",
+        "required": "Realized L1/L2 frame dimensions and the existing D2b stress assumptions",
+        "source": "scripts/d2/README.md: D2b additions"
+      }
+    },
+    "historical_design": {
+      "purpose": "Engineering examples only; never used as defaults for unresolved empirical inputs",
+      "d1c": {
+        "vocabulary": 400,
+        "coverage": 0.4,
+        "participants": 12,
+        "participant_group_structure": "complete crossing"
+      },
+      "source": "scripts/d1c/README.md: Design and reporting order"
+    }
+  },
+  "summaries": [
+    {
+      "cell": {
+        "design": "uwa",
+        "scenario": "baseline",
+        "target": 0.0,
+        "feedback": "joint",
+        "reliability": 0.0,
+        "prior": 1.0,
+        "cell": 0.0
+      },
+      "estimand": "h2_prevalence_bridge",
+      "attempted_datasets": 2,
+      "completed_fits": 2,
+      "converged_fits": 2,
+      "diagnostic_failures": 0,
+      "execution_failures": 0,
+      "truth_range": [
+        1.542746730365252e-11,
+        2.284416211750795e-11
+      ],
+      "metrics_population": "Converged fits unless explicitly per_attempted_dataset",
+      "successful_fit_rate": {
+        "n": 2,
+        "events": 2,
+        "estimate": 1.0,
+        "mcse": null,
+        "lo95": 0.15811388300841897,
+        "hi95": 1.0,
+        "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+      },
+      "metrics": {
+        "bias": {
+          "n": 2,
+          "estimate": 0.06911549144722857,
+          "mcse": 0.0592908364598039,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "rmse": {
+          "n": 2,
+          "estimate": 0.0910623656956876,
+          "mcse": 0.04383746817369541,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "wrong_sign": {
+          "n": 0,
+          "events": 0,
+          "estimate": null,
+          "mcse": null,
+          "lo95": null,
+          "hi95": null
+        },
+        "selected_wrong_sign": {
+          "n": 0,
+          "events": 0,
+          "estimate": null,
+          "mcse": null,
+          "lo95": null,
+          "hi95": null
+        },
+        "selected_exaggeration": {
+          "n": 0,
+          "estimate": null,
+          "mcse": null
+        },
+        "correct_direction_detection": {
+          "n": 0,
+          "events": 0,
+          "estimate": null,
+          "mcse": null,
+          "lo95": null,
+          "hi95": null
+        },
+        "false_exclusion_at_null": {
+          "n": 2,
+          "events": 0,
+          "estimate": 0.0,
+          "mcse": null,
+          "lo95": 0.0,
+          "hi95": 0.841886116991581,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "usable_correct_detection_per_attempted_dataset": {
+          "n": 2,
+          "events": 0,
+          "estimate": 0.0,
+          "mcse": null,
+          "lo95": 0.0,
+          "hi95": 0.841886116991581,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "coverage50": {
+          "n": 2,
+          "events": 1,
+          "estimate": 0.5,
+          "mcse": 0.3535533905932738,
+          "lo95": 0.01257911709342505,
+          "hi95": 0.9874208829065749,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "width50_mean": {
+          "n": 2,
+          "estimate": 0.18041479422016093,
+          "mcse": 0.0051666011917136795,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "width50_median": {
+          "n": 2,
+          "estimate": 0.18041479422016093,
+          "mcse": 0.003640160024925315,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width50_q10": {
+          "n": 2,
+          "estimate": 0.17628151326678998,
+          "mcse": 0.004294908141473359,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width50_q90": {
+          "n": 2,
+          "estimate": 0.18454807517353186,
+          "mcse": 0.0040744860030624405,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "coverage90": {
+          "n": 2,
+          "events": 2,
+          "estimate": 1.0,
+          "mcse": null,
+          "lo95": 0.15811388300841897,
+          "hi95": 1.0,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "width90_mean": {
+          "n": 2,
+          "estimate": 0.4115925749460171,
+          "mcse": 0.02334665622297502,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "width90_median": {
+          "n": 2,
+          "estimate": 0.4115925749460171,
+          "mcse": 0.016449027425389336,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width90_q10": {
+          "n": 2,
+          "estimate": 0.3929152499676371,
+          "mcse": 0.01940768024616519,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width90_q90": {
+          "n": 2,
+          "estimate": 0.4302698999243971,
+          "mcse": 0.01841164441942745,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        }
+      }
+    },
+    {
+      "cell": {
+        "design": "uwa",
+        "scenario": "baseline",
+        "target": 0.0,
+        "feedback": "joint",
+        "reliability": 0.0,
+        "prior": 1.0,
+        "cell": 0.0
+      },
+      "estimand": "h1_fixed_usage",
+      "attempted_datasets": 2,
+      "completed_fits": 2,
+      "converged_fits": 2,
+      "diagnostic_failures": 0,
+      "execution_failures": 0,
+      "truth_range": [
+        -0.013011892701212389,
+        -0.006847869041745858
+      ],
+      "metrics_population": "Converged fits unless explicitly per_attempted_dataset",
+      "successful_fit_rate": {
+        "n": 2,
+        "events": 2,
+        "estimate": 1.0,
+        "mcse": null,
+        "lo95": 0.15811388300841897,
+        "hi95": 1.0,
+        "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+      },
+      "metrics": {
+        "bias": {
+          "n": 2,
+          "estimate": -0.18112899141332767,
+          "mcse": 0.15964052965270006,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "rmse": {
+          "n": 2,
+          "estimate": 0.2414390404184956,
+          "mcse": 0.11465026641705722,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "wrong_sign": {
+          "n": 2,
+          "events": 0,
+          "estimate": 0.0,
+          "mcse": null,
+          "lo95": 0.0,
+          "hi95": 0.841886116991581,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "selected_wrong_sign": {
+          "n": 0,
+          "events": 0,
+          "estimate": null,
+          "mcse": null,
+          "lo95": null,
+          "hi95": null
+        },
+        "selected_exaggeration": {
+          "n": 0,
+          "estimate": null,
+          "mcse": null
+        },
+        "correct_direction_detection": {
+          "n": 2,
+          "events": 0,
+          "estimate": 0.0,
+          "mcse": null,
+          "lo95": 0.0,
+          "hi95": 0.841886116991581,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "false_exclusion_at_null": {
+          "n": 0,
+          "events": 0,
+          "estimate": null,
+          "mcse": null,
+          "lo95": null,
+          "hi95": null
+        },
+        "usable_correct_detection_per_attempted_dataset": {
+          "n": 2,
+          "events": 0,
+          "estimate": 0.0,
+          "mcse": null,
+          "lo95": 0.0,
+          "hi95": 0.841886116991581,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "coverage50": {
+          "n": 2,
+          "events": 1,
+          "estimate": 0.5,
+          "mcse": 0.3535533905932738,
+          "lo95": 0.01257911709342505,
+          "hi95": 0.9874208829065749,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "width50_mean": {
+          "n": 2,
+          "estimate": 0.35710843166534983,
+          "mcse": 0.03701487997901215,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "width50_median": {
+          "n": 2,
+          "estimate": 0.35710843166534983,
+          "mcse": 0.026079056893941778,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width50_q10": {
+          "n": 2,
+          "estimate": 0.3274965276821401,
+          "mcse": 0.03076984336094827,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width50_q90": {
+          "n": 2,
+          "estimate": 0.38672033564855957,
+          "mcse": 0.02919068160736009,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "coverage90": {
+          "n": 2,
+          "events": 2,
+          "estimate": 1.0,
+          "mcse": null,
+          "lo95": 0.15811388300841897,
+          "hi95": 1.0,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "width90_mean": {
+          "n": 2,
+          "estimate": 0.939652814025705,
+          "mcse": 0.00415201647837421,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "width90_median": {
+          "n": 2,
+          "estimate": 0.939652814025705,
+          "mcse": 0.002925328247059054,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width90_q10": {
+          "n": 2,
+          "estimate": 0.9363312008430056,
+          "mcse": 0.0032743640157000594,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width90_q90": {
+          "n": 2,
+          "estimate": 0.9429744272084043,
+          "mcse": 0.003451501038071445,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        }
+      }
+    },
+    {
+      "cell": {
+        "design": "uwa",
+        "scenario": "baseline",
+        "target": 0.0,
+        "feedback": "joint",
+        "reliability": 0.0,
+        "prior": 1.0,
+        "cell": 0.0
+      },
+      "estimand": "b_z",
+      "attempted_datasets": 2,
+      "completed_fits": 2,
+      "converged_fits": 2,
+      "diagnostic_failures": 0,
+      "execution_failures": 0,
+      "truth_range": [
+        -0.12406485110026903,
+        -0.10868058799601256
+      ],
+      "metrics_population": "Converged fits unless explicitly per_attempted_dataset",
+      "successful_fit_rate": {
+        "n": 2,
+        "events": 2,
+        "estimate": 1.0,
+        "mcse": null,
+        "lo95": 0.15811388300841897,
+        "hi95": 1.0,
+        "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+      },
+      "metrics": {
+        "bias": {
+          "n": 2,
+          "estimate": 0.08318189173089777,
+          "mcse": 0.0800955700084935,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "rmse": {
+          "n": 2,
+          "estimate": 0.11547522438565029,
+          "mcse": 0.05964154220462478,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "wrong_sign": {
+          "n": 2,
+          "events": 1,
+          "estimate": 0.5,
+          "mcse": 0.3535533905932738,
+          "lo95": 0.01257911709342505,
+          "hi95": 0.9874208829065749,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "selected_wrong_sign": {
+          "n": 0,
+          "events": 0,
+          "estimate": null,
+          "mcse": null,
+          "lo95": null,
+          "hi95": null
+        },
+        "selected_exaggeration": {
+          "n": 0,
+          "estimate": null,
+          "mcse": null
+        },
+        "correct_direction_detection": {
+          "n": 2,
+          "events": 0,
+          "estimate": 0.0,
+          "mcse": null,
+          "lo95": 0.0,
+          "hi95": 0.841886116991581,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "false_exclusion_at_null": {
+          "n": 0,
+          "events": 0,
+          "estimate": null,
+          "mcse": null,
+          "lo95": null,
+          "hi95": null
+        },
+        "usable_correct_detection_per_attempted_dataset": {
+          "n": 2,
+          "events": 0,
+          "estimate": 0.0,
+          "mcse": null,
+          "lo95": 0.0,
+          "hi95": 0.841886116991581,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "coverage50": {
+          "n": 2,
+          "events": 1,
+          "estimate": 0.5,
+          "mcse": 0.3535533905932738,
+          "lo95": 0.01257911709342505,
+          "hi95": 0.9874208829065749,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "width50_mean": {
+          "n": 2,
+          "estimate": 0.19559349824121658,
+          "mcse": 0.001215379780343695,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "width50_median": {
+          "n": 2,
+          "estimate": 0.19559349824121658,
+          "mcse": 0.0008563031531454822,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width50_q10": {
+          "n": 2,
+          "estimate": 0.19462119441694162,
+          "mcse": 0.00095847303085009,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width50_q90": {
+          "n": 2,
+          "estimate": 0.19656580206549154,
+          "mcse": 0.0010103246447494575,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "coverage90": {
+          "n": 2,
+          "events": 2,
+          "estimate": 1.0,
+          "mcse": null,
+          "lo95": 0.15811388300841897,
+          "hi95": 1.0,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "width90_mean": {
+          "n": 2,
+          "estimate": 0.5213544111002948,
+          "mcse": 0.022576735573690106,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "width90_median": {
+          "n": 2,
+          "estimate": 0.5213544111002948,
+          "mcse": 0.015906575189210084,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width90_q10": {
+          "n": 2,
+          "estimate": 0.5032930226413427,
+          "mcse": 0.01876765823900783,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width90_q90": {
+          "n": 2,
+          "estimate": 0.5394157995592469,
+          "mcse": 0.01780446945225341,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        }
+      }
+    },
+    {
+      "cell": {
+        "design": "uwa",
+        "scenario": "baseline",
+        "target": 0.0,
+        "feedback": "joint",
+        "reliability": 0.0,
+        "prior": 1.0,
+        "cell": 0.0
+      },
+      "estimand": "marking",
+      "attempted_datasets": 2,
+      "completed_fits": 2,
+      "converged_fits": 2,
+      "diagnostic_failures": 0,
+      "execution_failures": 0,
+      "truth_range": [
+        -0.04909509901972146,
+        -0.04604293489888766
+      ],
+      "metrics_population": "Converged fits unless explicitly per_attempted_dataset",
+      "successful_fit_rate": {
+        "n": 2,
+        "events": 2,
+        "estimate": 1.0,
+        "mcse": null,
+        "lo95": 0.15811388300841897,
+        "hi95": 1.0,
+        "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+      },
+      "metrics": {
+        "bias": {
+          "n": 2,
+          "estimate": 0.004396510283482695,
+          "mcse": 0.012082557405219315,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "rmse": {
+          "n": 2,
+          "estimate": 0.012857585159087583,
+          "mcse": 0.0031452295170259666,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "wrong_sign": {
+          "n": 2,
+          "events": 0,
+          "estimate": 0.0,
+          "mcse": null,
+          "lo95": 0.0,
+          "hi95": 0.841886116991581,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "selected_wrong_sign": {
+          "n": 1,
+          "events": 0,
+          "estimate": 0.0,
+          "mcse": null,
+          "lo95": 0.0,
+          "hi95": 0.975,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "selected_exaggeration": {
+          "n": 1,
+          "estimate": 1.1565542645845188,
+          "mcse": null,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "correct_direction_detection": {
+          "n": 2,
+          "events": 1,
+          "estimate": 0.5,
+          "mcse": 0.3535533905932738,
+          "lo95": 0.01257911709342505,
+          "hi95": 0.9874208829065749,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "false_exclusion_at_null": {
+          "n": 0,
+          "events": 0,
+          "estimate": null,
+          "mcse": null,
+          "lo95": null,
+          "hi95": null
+        },
+        "usable_correct_detection_per_attempted_dataset": {
+          "n": 2,
+          "events": 1,
+          "estimate": 0.5,
+          "mcse": 0.3535533905932738,
+          "lo95": 0.01257911709342505,
+          "hi95": 0.9874208829065749,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "coverage50": {
+          "n": 2,
+          "events": 2,
+          "estimate": 1.0,
+          "mcse": null,
+          "lo95": 0.15811388300841897,
+          "hi95": 1.0,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "width50_mean": {
+          "n": 2,
+          "estimate": 0.031330885315257545,
+          "mcse": 0.0007145171923619019,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "width50_median": {
+          "n": 2,
+          "estimate": 0.031330885315257545,
+          "mcse": 0.0005034173965138138,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width50_q10": {
+          "n": 2,
+          "estimate": 0.030759271561368023,
+          "mcse": 0.0005634826825602957,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width50_q90": {
+          "n": 2,
+          "estimate": 0.031902499069147064,
+          "mcse": 0.0005939660509542733,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "coverage90": {
+          "n": 2,
+          "events": 2,
+          "estimate": 1.0,
+          "mcse": null,
+          "lo95": 0.15811388300841897,
+          "hi95": 1.0,
+          "interval": "Clopper\u2013Pearson 95%; plug-in MCSE suppressed at observed boundaries"
+        },
+        "width90_mean": {
+          "n": 2,
+          "estimate": 0.075080917290482,
+          "mcse": 0.002607008634682849,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 0
+        },
+        "width90_median": {
+          "n": 2,
+          "estimate": 0.075080917290482,
+          "mcse": 0.0018367836541802011,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width90_q10": {
+          "n": 2,
+          "estimate": 0.07299531038273571,
+          "mcse": 0.002055939639566988,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        },
+        "width90_q90": {
+          "n": 2,
+          "estimate": 0.07716652419822827,
+          "mcse": 0.0021671621622254326,
+          "uncertainty": "Across datasets; analytic mean SE or fixed-seed bootstrap SE",
+          "bootstrap_repetitions": 2000
+        }
+      }
+    }
+  ],
+  "paired_comparisons": [],
+  "provenance": {
+    "results/d1c/pilot-20261010T101037462787Z-fits.csv": "f36de802ac02876e29f84d3418c43635886ab3a3ffc24ccb7063727c354a40a0",
+    "results/d1c/pilot-20261010T101037462787Z-failures.csv": "cf29578eaa1a60391ec5c399f1a79006a86fc97a6cc32e00e42a3e8c353769fe",
+    "logs/d1c-20261010T101037462787Z.json": "2fe281ca9adaf5b8b9546597ee1d9c5df14feaece5214bb8cfdf1cf717cc224f",
+    "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/design_assessment/inputs.json": "a3cc76f689a330c74fbae3f3ee037d60baec2c78c3e776c278105b5cc72d0d36"
+  },
+  "run_identity": {
+    "timestamp": "20261010T101037462787Z",
+    "git_sha": "5445aa2245c460a65a994d89c8a87c544e6ce9b5",
+    "git_dirty": true,
+    "sampler": {
+      "draws": 2000,
+      "tune": 1000,
+      "chains": 4,
+      "cores": 1,
+      "cut_draws": 8,
+      "contrast_draws": 100,
+      "contrast_diagnostic_draws": 8000
+    }
+  },
+  "environment": {
+    "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1"
+    }
+  },
+  "source_sha256": {
+    "metrics.py": "ec64d5c202c4b3bbdcae7f8f60ef54ba82dc8a426afd439938a6490de2f29d09",
+    "budget.py": "6d5819b56241fd623aabadff71db6025d0dd8aa6a863ae6a180f21b8bcc1833f",
+    "test_assessment.py": "2451a404aa3235db9d675357cbf6cb7100148aeca23c66224ba3cd07ea3158d1",
+    "report.py": "9ca1dc3499b5c26df545afe85084ae14f8091e18b510fda109eb09cfd9cc7688"
+  }
+}

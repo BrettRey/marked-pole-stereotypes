@@ -1,0 +1,68 @@
+test_machine_billing_not_multiplied_by_worker_count (test_assessment.BudgetTests.test_machine_billing_not_multiplied_by_worker_count) ... ok
+test_worst_case_replication_and_assumed_rate (test_assessment.BudgetTests.test_worst_case_replication_and_assumed_rate) ... ok
+test_analytic_mean_and_reproducible_nonlinear_uncertainty (test_assessment.MetricTests.test_analytic_mean_and_reproducible_nonlinear_uncertainty) ... ok
+test_exact_boundary_uncertainty_and_missing_cases (test_assessment.MetricTests.test_exact_boundary_uncertainty_and_missing_cases) ... ok
+test_failure_denominators_selection_and_direction (test_assessment.MetricTests.test_failure_denominators_selection_and_direction) ... ok
+test_root_solve_residue_is_not_a_nonzero_effect (test_assessment.MetricTests.test_root_solve_residue_is_not_a_nonzero_effect) ... ok
+test_complete_run_and_paired_specifications_keep_dataset_denominators (test_assessment.RecordTests.test_complete_run_and_paired_specifications_keep_dataset_denominators) ... ERROR
+test_duplicate_dataset_and_missing_estimand_are_rejected (test_assessment.RecordTests.test_duplicate_dataset_and_missing_estimand_are_rejected) ... FAIL
+test_partial_run_and_conditional_cut_are_rejected (test_assessment.RecordTests.test_partial_run_and_conditional_cut_are_rejected) ... FAIL
+test_seed_or_status_disagreement_is_rejected (test_assessment.RecordTests.test_seed_or_status_disagreement_is_rejected) ... FAIL
+
+======================================================================
+ERROR: test_complete_run_and_paired_specifications_keep_dataset_denominators (test_assessment.RecordTests.test_complete_run_and_paired_specifications_keep_dataset_denominators)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/design_assessment/test_assessment.py", line 96, in test_complete_run_and_paired_specifications_keep_dataset_denominators
+    fits, statuses, _ = report.load_run(*self.files)
+                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/design_assessment/report.py", line 41, in load_run
+    if str(path.resolve().relative_to(ROOT)) not in log["outputs"]:
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 490, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/private/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmpbi8krv76/fits.csv' is not in the subpath of '/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmpbi8krv76'
+
+======================================================================
+FAIL: test_duplicate_dataset_and_missing_estimand_are_rejected (test_assessment.RecordTests.test_duplicate_dataset_and_missing_estimand_are_rejected)
+----------------------------------------------------------------------
+ValueError: '/private/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmp9yuongqz/fits.csv' is not in the subpath of '/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmp9yuongqz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/design_assessment/test_assessment.py", line 112, in test_duplicate_dataset_and_missing_estimand_are_rejected
+    with self.assertRaisesRegex(ValueError, "Missing whole-fit"):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "Missing whole-fit" does not match "'/private/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmp9yuongqz/fits.csv' is not in the subpath of '/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmp9yuongqz'"
+
+======================================================================
+FAIL: test_partial_run_and_conditional_cut_are_rejected (test_assessment.RecordTests.test_partial_run_and_conditional_cut_are_rejected)
+----------------------------------------------------------------------
+ValueError: '/private/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmpdtikwbta/fits.csv' is not in the subpath of '/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmpdtikwbta'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/design_assessment/test_assessment.py", line 126, in test_partial_run_and_conditional_cut_are_rejected
+    with self.assertRaisesRegex(ValueError, "Run is incomplete"):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "Run is incomplete" does not match "'/private/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmpdtikwbta/fits.csv' is not in the subpath of '/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmpdtikwbta'"
+
+======================================================================
+FAIL: test_seed_or_status_disagreement_is_rejected (test_assessment.RecordTests.test_seed_or_status_disagreement_is_rejected)
+----------------------------------------------------------------------
+ValueError: '/private/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmp0kddptpp/fits.csv' is not in the subpath of '/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmp0kddptpp'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/design_assessment/test_assessment.py", line 140, in test_seed_or_status_disagreement_is_rejected
+    with self.assertRaisesRegex(ValueError, "seed mismatch"):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "seed mismatch" does not match "'/private/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmp0kddptpp/fits.csv' is not in the subpath of '/var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmp0kddptpp'"
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.043s
+
+FAILED (failures=3, errors=1)

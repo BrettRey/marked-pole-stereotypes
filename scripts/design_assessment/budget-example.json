@@ -1,0 +1,41 @@
+{
+  "purpose": "Hypothetical single-cut replication budget; provisional design, not a launch specification",
+  "launch_authorized": false,
+  "remaining_authorized_usd": 7.84,
+  "budget_basis": "USD 10 authorization minus USD 2.16 conservatively reserved across existing submissions; no new spending",
+  "platforms": {
+    "hf": {
+      "machines": 1,
+      "workers_per_machine": 2,
+      "usd_per_machine_hour": 0.03,
+      "timeout_hours": 24
+    }
+  },
+  "price_source": "https://huggingface.co/docs/hub/jobs-pricing (verified 2026-10-10)",
+  "cells": [
+    {
+      "id": "hypothetical-uwa-baseline-cut-measured-register",
+      "platform": "hf",
+      "components": [
+        {
+          "label": "upstream preparation",
+          "count": 1,
+          "seconds": 170.32789250899998,
+          "source": "git:942dfd8109232beaf7e5bf35c023409b09a18525:results/d1c/cloud-canary-20261010/runtime.json; cloud upstream-only checkpoint elapsed, not matched HF time"
+        },
+        {
+          "label": "downstream conditional fit",
+          "count": 8,
+          "seconds": 6150.8278169059995,
+          "source": "results/d1c/parallel-components-20261010/collected/hf/runtime.json"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "A single completed HF component is not a matched timing across latent draws or two-worker contention.",
+    "The upstream time includes preparation/export overhead and comes from another platform.",
+    "Current cut has eight upstream draws; additional integration accuracy requirements can increase the cost.",
+    "This example does not supply frozen empirical vocabulary, participant structure or measurement coverage."
+  ]
+}
