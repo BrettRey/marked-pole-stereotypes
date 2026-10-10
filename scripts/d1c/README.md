@@ -141,3 +141,50 @@ Outputs are timestamped CSVs under results/d1c and a JSON log under logs,
 including seeds, configuration, package versions, git state and timing.
 Pilot timing determines practical replication; two replicates cannot assess
 coverage. Re-run at frozen sizes and coverage before treating D1c as complete.
+
+## After pilot 1 (2026-10-09)
+
+The first attempt failed during compilation; its failure table and JSON log
+(`pilot-20261010T005646227622Z`) are debug records. The interrupted debug run
+committed at `e44c1a9` centres the usage latent, computes the multinomial log
+likelihood directly from logits, and reuses quadrature terms. Its equivalence
+check is recorded in `logs/d1c-equivalence-20261009.json`. It also checks
+trace completeness, checkpoints completed pilot traces, accepts ArviZ
+DataTrees, and checks contrasts on all 2,000 retained draws.
+
+Lane S resumes only the specified two-replicate pilot, at Brett's request on
+2026-10-09, with no commit or push. Compiler scratch and caches move from
+`logs/d1c-cache/` to the ignored `.cache/d1c/`, isolated from D2. The model,
+seeds and sampler settings stay fixed. A dated launch record preserves the
+local source hashes because this session won't publish its changes before
+running. The grid and variant-wide timing run remain outside this session.
+
+The resumed pilot (`20261010T014946903490Z`, 2026-10-09 Eastern time) completed
+both replicates, including trace saving, diagnostics, contrasts and CSV/JSON
+reporting. Both failed the registered R-hat gate: maxima 1.043 and 1.020.
+Both had zero divergences and minimum ESS above 100; the derived contrasts
+passed their diagnostics. No further fit was launched. The complete record
+and proposed next run are in `results/d1c/PILOT-SUMMARY-2026-10-09.md`.
+
+After completion, the two trace checkpoints moved from `results/d1c/` to
+the ignored `.cache/d1c/traces/`, and the checkpoint path in `sample()` was
+updated to match. Their contents were preserved. The launch record identifies
+the exact source used for sampling; the completion verification records the
+subsequent cache-path change. There was no model, prior, seed, sampler-budget
+or diagnostic-threshold change, and nothing was committed or pushed by lane S.
+
+## Approved longer pilot (2026-10-10; prospective amendment)
+
+Brett approved the proposed next step on 2026-10-10, before this run was
+launched: repeat exactly the same two baseline replicates with 2,000 retained
+draws per chain instead of 500. Keep four chains, 1,000 warmup steps, target
+acceptance .95, one worker and one sampler core, the model, priors, data and
+fit seeds, and every diagnostic threshold unchanged. Parameter and contrast
+diagnostics use all 8,000 retained draws per replicate; the existing
+100-draw contrast-summary subsample is unchanged.
+
+This is one fixed additional pilot, with no automatic further retry. The
+source constant now records the approved budget; no grid or other variant
+run is authorized. Preserve the earlier failed runs. The local launch record
+will contain source hashes and environment details; Brett's instruction
+not to commit or push remains in force. No empirical outcomes are used.
