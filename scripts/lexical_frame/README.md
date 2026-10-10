@@ -162,3 +162,9 @@ continues to reject every file/network/shell tool. `resume_claude.py` preserves
 the original failure manifest, reparses the saved response without a new
 inference call, and then submits only unattempted batches. Prompts, models,
 effort and research inputs do not change.
+
+The independent calls need no ordering. After observing the first Claude call's
+latency, `finish_words.py` submits only its three unattempted word batches,
+with two concurrent calls, preserving the original prompt, model and effort.
+The failed serializer check prevents the original word supervisor from
+submitting those batches. No duplicate call or extra research item is added.
