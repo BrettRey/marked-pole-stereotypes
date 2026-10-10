@@ -152,3 +152,13 @@ The simulation environment lacks `requests`; lexical imports use the logged
 system Python 3.14.8 with requests 2.34.2. The first supplement invocation in
 `.venv` failed at import before reading or writing any research data, then ran
 successfully under the specified lexical-import interpreter.
+
+After the first coding calls started (2026-10-10): Claude's strict JSON
+transport advertises a `StructuredOutput` serialization tool even when its
+research tool list is empty. The initial validator treats this as forbidden
+and will retain the completed answer as a transport-validation failure. The
+correction accepts only this schema serializer, checks the exact model and
+continues to reject every file/network/shell tool. `resume_claude.py` preserves
+the original failure manifest, reparses the saved response without a new
+inference call, and then submits only unattempted batches. Prompts, models,
+effort and research inputs do not change.

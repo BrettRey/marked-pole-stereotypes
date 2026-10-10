@@ -116,7 +116,10 @@ def call(family, label, records, kind, commit):
             end=next(x for x in reversed(events) if x.get('type')=='result')
             meta['returned_model']=init['model'];meta['tools']=init.get('tools')
             meta['usage']=end.get('usage');meta['model_usage']=end.get('modelUsage');meta['api_equivalent_usd']=end.get('total_cost_usd')
-            if init['model']!=MODELS[family] or init.get('tools'): raise ValueError('model/tools mismatch')
+            # StructuredOutput serializes the supplied schema; it has no file,
+            # network or shell access. It is not an enabled research tool.
+            if init['model']!=MODELS[family] or set(init.get('tools',[]))-{'StructuredOutput'}:
+                raise ValueError('model/tools mismatch')
             result=end.get('structured_output')
             if result is None:
                 result=json.loads(end['result'])
