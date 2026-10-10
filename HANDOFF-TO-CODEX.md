@@ -86,5 +86,5 @@ Spec: `scripts/norman/README.md`. Wave 1 (the first 60 table pages, 120 half-pag
 
 | Process | Owner | Writes | Ends |
 |---|---|---|---|
-| D2 grid (shell PID 77845, Python 77847) | Claude session | `results/d2/`, `logs/d2-*` | about midnight; the Claude session commits the results and summarises them |
+| D2 grid (shell PID 77845, Python 77847) | Claude session | `results/d2/`, `logs/d2-*` | finished 2026-10-09 22:15; summary in `results/d2/SUMMARY.md` |
 | Codex jobs for `info-rate-context` | another project | elsewhere | ignore |
