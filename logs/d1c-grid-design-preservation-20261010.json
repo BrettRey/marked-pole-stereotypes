@@ -1,0 +1,23 @@
+{
+  "original_sha256": "39203b91d5743f6b4b79391bedbdf266bd3ce961873627d7fd974ad7e37192b5",
+  "new_sha256": "e010912c8240416fa79c0670e93a527f12d8185b37f322b5ca7159525d9b0280",
+  "unchanged_functions": [
+    "seed",
+    "cells",
+    "utilities",
+    "contrasts",
+    "generate",
+    "build",
+    "posterior_dataset",
+    "flattened",
+    "downstream_data",
+    "upstream_data",
+    "posterior_contrasts",
+    "summarize",
+    "main"
+  ],
+  "fit_change": "Only del conditional, releasing each completed trace after scalar contrast extraction",
+  "top_level_assignments": "All original assignments unchanged; added optional UPSTREAM_DRAWS=None",
+  "sample_changes": "Mode-specific retained draw budget, identical batched parameter diagnostics, draw/tune metadata",
+  "design_unchanged": true
+}

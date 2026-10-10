@@ -1,0 +1,65 @@
+{
+  "verified_at": "2026-10-10T16:04:17.183636+00:00",
+  "launch": "logs/d1c-timings-launch-20261010T112136Z.json",
+  "results": "logs/d1c-timings-20261010T112137001353Z.json",
+  "records": 12,
+  "parameter_passes": 8,
+  "parameter_failures": [
+    {
+      "design": "uwa",
+      "reliability": 0.8,
+      "mode": "upstream",
+      "rhat": 1.0217536190500587,
+      "worst_rhat": "h_coef"
+    },
+    {
+      "design": "uwa",
+      "reliability": 0.8,
+      "mode": "downstream",
+      "rhat": 1.0136766583333638,
+      "worst_rhat": "content_sd"
+    },
+    {
+      "design": "nicolas",
+      "reliability": 0.8,
+      "mode": "upstream",
+      "rhat": 1.026973366435651,
+      "worst_rhat": "h_coef"
+    },
+    {
+      "design": "nicolas",
+      "reliability": 0.8,
+      "mode": "joint",
+      "rhat": 1.0115613129602863,
+      "worst_rhat": "content_sd"
+    }
+  ],
+  "contrast_checks": 8,
+  "contrast_passes": 8,
+  "divergences": 0,
+  "sampling_seeds_match": true,
+  "source_hashes_before_any_integration": {
+    "scripts/d1c/d1c.py": "39203b91d5743f6b4b79391bedbdf266bd3ce961873627d7fd974ad7e37192b5",
+    "scripts/d1c/time_variants.py": "a4adab00d42d12bc5e3c14b70b65568f6690524ee3481c5ef5e0ca54b4ecde02",
+    "scripts/d1c/README.md": "4b3d5a2dc819f8eecd83c8f5697b1acac4171bf1f4a267fd0a19c4ba941cd09e",
+    "notes/d1c-timing-plan-2026-10-10.md": "ec1de4388b9e24ef0252ab3492c68ad15903ac04ee87843fc2137dcf33eafe65",
+    "analysis_plan.md": "7084ddb9e4776dbafbb602b7d6304d1117a38d1f4d3a83c5ee31243e45d9a726",
+    "scripts/d1/bin/clang++": "3c099c0eb7e73ada6ca18b7387995bdd40316dff49d5c67dbdc12db69a1d5b80"
+  },
+  "source_verification": "Model, timing script, analysis plan, compiler shim and approved timing plan unchanged. README received documented authorization and prospective implementation additions during the run.",
+  "packages_match_launch": true,
+  "process_no_longer_exists": true,
+  "exit_code": null,
+  "completion_evidence": "All twelve records and final grid extrapolation written; stdout has final extrapolation and no traceback. Detached process exit code was not collected.",
+  "hypothetical_40_replicate_grid": {
+    "grid_cells": 240,
+    "replicates_per_cell": 40,
+    "workers": 3,
+    "serial_fit_seconds": 92649626.14290677,
+    "compilation_cpu_seconds": 673.1617007413879,
+    "estimated_wall_hours": 8578.731417093288,
+    "assumptions": "Warm graph reuse, three effective worker cores; .5 approximated by .8, prior 2.5 by 1; baseline timing across scenarios."
+  },
+  "model_backup": ".cache/d1c/timing-source-20261010/d1c.py",
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]"
+}

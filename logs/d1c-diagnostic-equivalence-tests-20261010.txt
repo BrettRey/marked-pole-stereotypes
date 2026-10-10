@@ -1,0 +1,9 @@
+test_constant_parameter_remains_a_failed_diagnostic (test_diagnostic_chunks.DiagnosticBatchTests.test_constant_parameter_remains_a_failed_diagnostic) ... ok
+test_divergences_keep_the_original_failure_rule (test_diagnostic_chunks.DiagnosticBatchTests.test_divergences_keep_the_original_failure_rule) ... ok
+test_noncontiguous_reordered_dimensions_match (test_diagnostic_chunks.DiagnosticBatchTests.test_noncontiguous_reordered_dimensions_match) ... ok
+test_scalar_vector_and_matrix_diagnostics_match (test_diagnostic_chunks.DiagnosticBatchTests.test_scalar_vector_and_matrix_diagnostics_match) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 2.785s
+
+OK

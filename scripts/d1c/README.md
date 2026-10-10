@@ -238,3 +238,126 @@ code was committed. The retrospective commit preserves the documented
 launch text; it does not claim prospective Git registration. The current
 code, results and records follow in a separate commit. The variant-timing
 run continues unchanged while this publication record is added.
+
+## Grid recovery (2026-10-10; prospective implementation)
+
+`grid.py` runs the existing `d1c.fit` function and saves each completed cell
+and replicate, including its estimates and detailed diagnostics, before
+starting more work. Completed records live under `.cache/d1c/grid/`; the
+inspectable CSVs and JSON progress log are rebuilt after every completion.
+A completed diagnostic failure or ordinary worker exception is retained
+and skipped on resumption. An interrupted job without a completion record
+is repeated with its original seeds. Partial cut jobs restart as whole jobs;
+this implementation doesn't save individual cut components.
+
+The runner checks the source hashes, package versions, Python, platform,
+full job list and sampler configuration when resuming. It refuses changed
+specifications, damaged records and a second writer. Sampler code and this
+README must be committed, and local HEAD must match origin HEAD, before
+launch. Runtime outputs can change without invalidating resumption. A lost
+worker stops the pool and leaves unfinished jobs pending; it doesn't label
+the remaining grid as failed.
+
+All original cells and seeds are retained. Scheduling goes by replicate,
+then the original cell order, so the first replicate covers the multiverse
+before the second starts. The command is
+`python scripts/d1c/grid.py start --reps R --draws D --tune T --workers W`;
+resumption uses `python scripts/d1c/grid.py resume RUNSTAMP --workers W`.
+The run's sampler budgets persist on resumption. Defaults currently match
+the longer pilot. This implementation entry selects neither the final
+sampler budgets nor the replication count; those follow completed timing.
+
+Twelve tests pass without fitting a model: completed-job recovery, failed-fit
+retention, changed settings, interrupted writes, record corruption, duplicate
+writers, lost workers, early worker termination, nonfinite failed diagnostics,
+worker sampler budgets, full cell coverage and rebuilding partial progress
+outputs. The timing script and `d1c.py` are
+unchanged. No grid has been launched by this entry.
+
+## Grid contrast summaries (2026-10-10; prospective setting)
+
+The grid runner uses every retained contrast draw for posterior means,
+intervals and probabilities. `posterior_contrasts()` already calculates
+these draws for diagnostics; the earlier 100-draw summary subsample discards
+most of that calculation. Set `POST_DRAWS = CHAINS * DRAWS` in each grid
+worker. The model, eight cut components, equal component weights, data and
+sampling seeds, and diagnostic criteria are unchanged. The initial cut
+draw selections occur before contrast subsampling, so they are unchanged
+too. The completed pilots and running benchmark retain their original
+100-draw summaries. This is a prospective Monte Carlo setting for the grid.
+
+## Bounded-memory diagnostics (2026-10-10; prospective implementation)
+
+The timing process reached a 5.3 GB peak physical footprint at 2,000
+retained draws per chain (`vmmap`, 2026-10-10 15:01 UTC). Before increasing
+the grid's sampler budget, prepare `diagnostic_chunks.py`: calculate the
+same rank-normalized R-hat, bulk ESS and tail ESS in batches of at most
+256 scalar parameters. Each batch retains every chain and draw. Report the
+same extrema and worst variable names, with the same finite-value,
+divergence and numerical gates. This changes temporary memory use, not
+the diagnostic definitions or model.
+
+Four equivalence tests compare against the original whole-variable ArviZ
+calculation at batch sizes 1, 6 and 256, including scalar/vector/matrix
+parameters, noncontiguous arrays, reordered dimensions, constants and
+divergences. Results match to tolerance 1e-12. No model is fitted by these
+tests. Source hashes, versions and the memory observation are recorded in
+`logs/d1c-diagnostic-equivalence-20261010.json`. The helper is not imported
+by the running timing job; integration follows its completion.
+
+## Completed timing and initial grid (2026-10-10; prospective launch specification)
+
+The twelve-fit timing run `20261010T112137001353Z` is complete. Eight fits
+passed the parameter gates. R-hat failures occurred in UWA measured-register
+upstream and downstream fits, and Nicolas measured-register upstream and
+joint fits. All eight contrast checks passed; every fit had zero divergences.
+A passing downstream timing does not validate a cut whose upstream fit
+failed. These are baseline timings at prior SD 1 and register reliability
+.8; a downstream timing covers one conditional fit, not the full cut.
+Source, seed and package verification is recorded in
+`logs/d1c-timing-completion-20261010.json`.
+
+Brett chose local execution and is reserving prospective Alliance access
+for later work. Select **one initial replicate of all 240 registered cells**
+as an engineering sweep. The earlier 40-replicate calculation was a
+hypothetical resource estimate, not a frozen replication count. This first
+sweep checks execution, diagnostics and recovery across the complete cell
+set. One replicate per cell cannot establish coverage, sign-error rates,
+false-support rates or Monte Carlo bias. The existing summary format is
+retained for reproducibility, but its single-replicate proportions and zero
+plug-in binomial SEs must not be treated as calibration evidence. D1c remains
+incomplete pending adequate replication and checks at the frozen empirical
+sizes and measurement coverage.
+
+Freeze four chains, **4,000 retained draws per chain for joint and downstream
+fits, 8,000 for upstream fits, and 2,000 warmup steps for every fit**. Keep
+target acceptance .95, the eight equally weighted cut components, one
+sampler core per worker, three workers, all priors and diagnostic gates,
+and the original seed derivation. The larger upstream posterior changes
+the sampled latent bank; it does not change the cut distribution or weighting
+rule. All retained production contrasts enter posterior summaries. No
+automatic retries or within-run changes to sampler settings.
+
+The tested batched parameter diagnostics are now integrated. Each completed
+conditional trace is released after its scalar contrasts are extracted,
+before allocating the next conditional trace. The generating model,
+likelihood, estimands, cells, seeds, contrast calculation and summary formulas
+are unchanged; the AST comparison is in
+`logs/d1c-grid-design-preservation-20261010.json`. Seventeen tests pass,
+including budget routing through the actual sampling entry point with a
+mocked backend. No model fits were performed by those tests.
+
+Launch only after committing and pushing this specification and code:
+
+```bash
+.venv/bin/python -u scripts/d1c/grid.py start --reps 1 --draws 4000 --upstream-draws 8000 --tune 2000 --workers 3
+```
+
+Allow roughly **18 days** at three effective worker cores, extrapolating the
+measured timings to the larger budgets. This is not a measured concurrent
+grid speed or a completion deadline. Timing at reliability .5 is approximated
+by .8, prior SD 2.5 by 1, and other scenarios by baseline. Memory batching
+has been checked for numerical equivalence, but its end-to-end memory peak
+and runtime have not yet been measured in the grid. Interrupted unfinished
+cut jobs restart as whole jobs; completed jobs, including failures, survive
+resumption.

@@ -1,0 +1,28 @@
+test_constant_parameter_remains_a_failed_diagnostic (test_diagnostic_chunks.DiagnosticBatchTests.test_constant_parameter_remains_a_failed_diagnostic) ... ok
+test_divergences_keep_the_original_failure_rule (test_diagnostic_chunks.DiagnosticBatchTests.test_divergences_keep_the_original_failure_rule) ... ok
+test_noncontiguous_reordered_dimensions_match (test_diagnostic_chunks.DiagnosticBatchTests.test_noncontiguous_reordered_dimensions_match) ... ok
+test_scalar_vector_and_matrix_diagnostics_match (test_diagnostic_chunks.DiagnosticBatchTests.test_scalar_vector_and_matrix_diagnostics_match) ... ok
+test_dead_worker_does_not_turn_unstarted_jobs_into_exceptions (test_grid.GridTests.test_dead_worker_does_not_turn_unstarted_jobs_into_exceptions) ... ok
+test_early_close_terminates_unfinished_workers (test_grid.GridTests.test_early_close_terminates_unfinished_workers) ... ok
+test_grid_covers_original_cells_and_seeds_in_replicate_order (test_grid.GridTests.test_grid_covers_original_cells_and_seeds_in_replicate_order) ... ok
+test_numpy_scalars_and_nonfinite_failed_diagnostics_are_durable (test_grid.GridTests.test_numpy_scalars_and_nonfinite_failed_diagnostics_are_durable) ... ok
+test_partial_progress_rebuilds_from_completion_record (test_grid.GridTests.test_partial_progress_rebuilds_from_completion_record) ... ok
+test_worker_budgets_and_exception_survive_restart (test_grid.GridTests.test_worker_budgets_and_exception_survive_restart) ... ok
+test_corrupt_completed_record_is_not_silently_repeated (test_run_state.RunStateTests.test_corrupt_completed_record_is_not_silently_repeated) ... ok
+test_interrupted_publish_leaves_prior_file_intact (test_run_state.RunStateTests.test_interrupted_publish_leaves_prior_file_intact) ... ok
+test_new_sampler_source_or_job_specification_cannot_resume (test_run_state.RunStateTests.test_new_sampler_source_or_job_specification_cannot_resume) ... ok
+test_restart_skips_successes_failures_and_exceptions (test_run_state.RunStateTests.test_restart_skips_successes_failures_and_exceptions) ... ok
+test_second_writer_is_rejected_without_releasing_first_lock (test_run_state.RunStateTests.test_second_writer_is_rejected_without_releasing_first_lock) ... ok
+test_wrong_job_or_status_is_rejected_before_publishing (test_run_state.RunStateTests.test_wrong_job_or_status_is_rejected_before_publishing) ... ok
+test_actual_sample_entry_point_routes_mode_budgets (test_sampler_budgets.SamplerBudgetTests.test_actual_sample_entry_point_routes_mode_budgets) ... sample (40, 1, False, 1.0, 'upstream'); compile 0.0s
+sample done (40, 1, False, 1.0, 'upstream'): 0.0s
+sample (40, 1, False, 1.0, 'downstream'); compile 0.0s
+sample done (40, 1, False, 1.0, 'downstream'): 0.0s
+sample (40, 1, False, 1.0, 'joint'); compile 0.0s
+sample done (40, 1, False, 1.0, 'joint'): 0.0s
+ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 10.762s
+
+OK

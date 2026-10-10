@@ -47,6 +47,7 @@ SCENARIOS = ("baseline", "valence_bias", "register", "display", "differential")
 PRIORS = (1., 2.5)
 RELIABILITIES = (0., .5, .8)
 DRAWS, TUNE, CHAINS, CUT_DRAWS = 2000, 1000, 4, 8
+UPSTREAM_DRAWS = None  # Grid workers may set a separate upstream budget.
 POST_DRAWS = 100
 OUTSIDE = np.log(I * 1.5)
 NODES, WEIGHTS = hermgauss(5)
@@ -264,17 +265,18 @@ def build(G, budget, register, prior, mode):
 
 
 def sample(job, mode, data, sampling_seed):
-    import arviz as az
     import nutpie
+    from diagnostic_chunks import parameter_diagnostics
 
     G, budget = DESIGNS[job["design"]]
     register = bool(job["reliability"])
     key = (G, budget, register, job["prior"], mode)
+    draws = UPSTREAM_DRAWS if mode == "upstream" and UPSTREAM_DRAWS is not None else DRAWS
     import hashlib
     import inspect
     import pickle
 
-    signature = repr((key, I, P, DRAWS, TUNE, CHAINS, .95,
+    signature = repr((key, I, P, draws, TUNE, CHAINS, .95,
                       version("pymc"), version("nutpie"))) + inspect.getsource(build)
     digest = hashlib.sha256(signature.encode()).hexdigest()[:16]
     checkpoint = (SCRATCH / "traces" / f"trace-{digest}-{sampling_seed}.pickle"
@@ -306,10 +308,10 @@ def sample(job, mode, data, sampling_seed):
                       f"steps {[c.latest_num_steps for c in chains]}", flush=True)
                 last_progress[0] = now
 
-        tr = nutpie.sample(compiled.with_data(**data), draws=DRAWS, tune=TUNE,
+        tr = nutpie.sample(compiled.with_data(**data), draws=draws, tune=TUNE,
                            chains=CHAINS, cores=1, seed=sampling_seed, save_warmup=False,
                            target_accept=.95, progress_bar=False, progress_callback=progress)
-        if tr.posterior.sizes.get("chain") != CHAINS or tr.posterior.sizes.get("draw") != DRAWS:
+        if tr.posterior.sizes.get("chain") != CHAINS or tr.posterior.sizes.get("draw") != draws:
             raise RuntimeError("Sampler returned an incomplete trace (possibly interrupted)")
         sampling_seconds = time.perf_counter() - sample_started
         print(f"sample done {key}: {sampling_seconds:.1f}s", flush=True)
@@ -322,19 +324,10 @@ def sample(job, mode, data, sampling_seed):
                             protocol=pickle.HIGHEST_PROTOCOL)
             print(f"checkpoint {checkpoint.name}", flush=True)
     posterior = posterior_dataset(tr)
-    rh = az.rhat(posterior, var_names=free_names)
-    bulk = az.ess(posterior, var_names=free_names, method="bulk")
-    tail = az.ess(posterior, var_names=free_names, method="tail")
-    rhat = max(float(np.max(rh[n])) for n in free_names)
-    ess = min(float(np.min(x[n])) for x in (bulk, tail) for n in free_names)
     divergences = int(np.asarray(tr.sample_stats["diverging"]).sum())
-    finite = all(np.isfinite(np.asarray(x[n])).all()
-                 for x in (rh, bulk, tail) for n in free_names)
-    good = finite and rhat <= 1.01 and ess >= 100 and divergences == 0
-    worst_rhat = max(free_names, key=lambda n: float(np.max(rh[n])))
-    worst_ess = min(free_names, key=lambda n: min(float(np.min(x[n])) for x in (bulk, tail)))
-    return tr, dict(worst_rhat=worst_rhat, worst_ess=worst_ess, good=good, rhat=rhat, ess=ess, divergences=divergences,
-                    seed=sampling_seed, mode=mode, compile_seconds=compile_seconds,
+    diagnostic = parameter_diagnostics(posterior, free_names, divergences)
+    return tr, dict(**diagnostic, seed=sampling_seed, mode=mode, draws=draws, tune=TUNE,
+                    compile_seconds=compile_seconds,
                     sampling_seconds=sampling_seconds)
 
 
@@ -439,6 +432,9 @@ def fit(job):
             diag.update(contrast_good=good, contrast_rhat=crhat, contrast_ess=cess)
             diagnostics.append(diag)
             posterior.extend(values)
+            # The saved contrasts contain scalars, so the completed trace
+            # needn't coexist with the next conditional fit's trace.
+            del conditional
     converged = all(d["good"] and d["contrast_good"] for d in diagnostics)
     rows = []
     for estimand, truth in truths.items():

@@ -1,0 +1,9 @@
+{
+  "grid_cells": 240,
+  "replicates_per_cell": 40,
+  "workers": 3,
+  "serial_fit_seconds": 92649626.14290677,
+  "compilation_cpu_seconds": 673.1617007413879,
+  "estimated_wall_hours": 8578.731417093288,
+  "assumptions": "Warm graph reuse, three effective worker cores; .5 approximated by .8, prior 2.5 by 1; baseline timing across scenarios."
+}

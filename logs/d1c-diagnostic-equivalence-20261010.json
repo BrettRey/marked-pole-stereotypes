@@ -1,0 +1,29 @@
+{
+  "recorded_at": "2026-10-10T15:06:01.168268+00:00",
+  "purpose": "Bounded-memory parameter diagnostic equivalence; no model fits",
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "numpy": "2.5.3",
+    "arviz": "1.3.0",
+    "arviz-stats": "1.3.3",
+    "xarray": "2026.9.0"
+  },
+  "sources": {
+    "scripts/d1c/diagnostic_chunks.py": "44da7099a5da31193ca6bb13f6e6081aa5e5cc3044e2aa6730da96dcbb838a30",
+    "scripts/d1c/test_diagnostic_chunks.py": "df6cdfa40fc43dea46f2e5bcf3649eb4ac93a4eba5fc8c426b020763552c9e8e"
+  },
+  "test_command": ".venv/bin/python -m unittest discover -s scripts/d1c -p 'test_diagnostic_chunks.py' -v",
+  "test_output": "logs/d1c-diagnostic-equivalence-tests-20261010.txt",
+  "test_count": 4,
+  "passed": true,
+  "memory_observation": {
+    "command": "vmmap -summary 61305",
+    "observed_at": "2026-10-10T15:01:44-00:00",
+    "process": "D1c time_variants.py, 2000 retained draws per chain",
+    "physical_footprint_GiB": 2.9,
+    "peak_physical_footprint_GiB": 5.3,
+    "rounding": "Values reported by vmmap as G; approximate",
+    "note": "Historical whole-array diagnostics; new batched method not yet integrated or memory-benchmarked. Current timing script and model source remain unchanged."
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-10-10T16:08:58.723814+00:00",
+  "purpose": "Initial full-cell engineering sweep, not calibration",
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "seed": null,
+  "method": "Deterministic arithmetic, no stochastic run",
+  "timing_source": "results/d1c/timings-20261010T112137001353Z.csv",
+  "timing_sha256": "f44729c02e40b8e6607c5fd9f611513e3dc55e7f4a93f94a44c068f2b7079c16",
+  "grid_cells": 240,
+  "replicates_per_cell": 1,
+  "workers": 3,
+  "sampler": {
+    "chains": 4,
+    "production_draws": 4000,
+    "upstream_draws": 8000,
+    "tune": 2000,
+    "target_accept": 0.95,
+    "cut_components": 8
+  },
+  "component_fits": {
+    "joint": 120,
+    "upstream": 120,
+    "downstream": 960,
+    "total": 1200
+  },
+  "formula": "Per design/reliability: 5 scenarios * 2 targets * 2 priors * (2*joint + 4*upstream + 8*2*downstream), using measured noncompilation seconds. Compilation: 3 workers * 2 priors * sum of all twelve measured compilation times.",
+  "strata": [
+    {
+      "design": "uwa",
+      "reliability": 0.0,
+      "measured_noncompilation_seconds": {
+        "upstream": 6.508906917180866,
+        "downstream": 1620.2616700842045,
+        "joint": 1602.783195709344
+      },
+      "projected_noncompilation_seconds": {
+        "upstream": 26.035627668723464,
+        "downstream": 3240.523340168409,
+        "joint": 3205.566391418688
+      },
+      "serial_seconds": 583115.7748086937
+    },
+    {
+      "design": "uwa",
+      "reliability": 0.5,
+      "measured_noncompilation_seconds": {
+        "upstream": 14.105189666617662,
+        "downstream": 1671.5143885840662,
+        "joint": 1755.5989174181595
+      },
+      "projected_noncompilation_seconds": {
+        "upstream": 56.42075866647065,
+        "downstream": 3343.0287771681324,
+        "joint": 3511.197834836319
+      },
+      "serial_seconds": 606236.976216957
+    },
+    {
+      "design": "uwa",
+      "reliability": 0.8,
+      "measured_noncompilation_seconds": {
+        "upstream": 14.105189666617662,
+        "downstream": 1671.5143885840662,
+        "joint": 1755.5989174181595
+      },
+      "projected_noncompilation_seconds": {
+        "upstream": 56.42075866647065,
+        "downstream": 3343.0287771681324,
+        "joint": 3511.197834836319
+      },
+      "serial_seconds": 606236.976216957
+    },
+    {
+      "design": "nicolas",
+      "reliability": 0.0,
+      "measured_noncompilation_seconds": {
+        "upstream": 4.826585750095546,
+        "downstream": 1656.8046767082997,
+        "joint": 1832.6185033344664
+      },
+      "projected_noncompilation_seconds": {
+        "upstream": 19.306343000382185,
+        "downstream": 3313.6093534165993,
+        "joint": 3665.2370066689327
+      },
+      "serial_seconds": 603868.3635400422
+    },
+    {
+      "design": "nicolas",
+      "reliability": 0.5,
+      "measured_noncompilation_seconds": {
+        "upstream": 17.106149333994836,
+        "downstream": 3058.752270040568,
+        "joint": 3445.438830875326
+      },
+      "projected_noncompilation_seconds": {
+        "upstream": 68.42459733597934,
+        "downstream": 6117.504540081136,
+        "joint": 6890.877661750652
+      },
+      "serial_seconds": 1117986.7715947144
+    },
+    {
+      "design": "nicolas",
+      "reliability": 0.8,
+      "measured_noncompilation_seconds": {
+        "upstream": 17.106149333994836,
+        "downstream": 3058.752270040568,
+        "joint": 3445.438830875326
+      },
+      "projected_noncompilation_seconds": {
+        "upstream": 68.42459733597934,
+        "downstream": 6117.504540081136,
+        "joint": 6890.877661750652
+      },
+      "serial_seconds": 1117986.7715947144
+    }
+  ],
+  "serial_fit_seconds": 4635431.633972079,
+  "compilation_cpu_seconds": 673.1617007413879,
+  "estimated_wall_hours": 429.26896256229816,
+  "estimated_wall_days": 17.88620677342909,
+  "assumptions": [
+    "Production runtime scales by 2 with doubled retained and warmup budgets.",
+    "Upstream runtime scales conservatively by 4 although warmup only doubles.",
+    "Three workers each achieve measured one-core speed.",
+    "Reliability .5 approximated by .8; prior SD 2.5 by 1; other scenarios by baseline.",
+    "Compile once per shape/register/prior/mode in each worker; graph reuse thereafter.",
+    "No measured performance improvement assumed for diagnostic batching.",
+    "No sleep, interruption or competing workload allowance.",
+    "Measured diagnostic failures are included in costs, not dropped."
+  ]
+}

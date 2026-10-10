@@ -1,0 +1,34 @@
+{
+  "recorded_at": "2026-10-10T16:09:28.585411+00:00",
+  "command": ".venv/bin/python -m unittest discover -s scripts/d1c -p 'test_*.py' -v",
+  "result": "17 tests passed in 10.762 seconds; exit 0",
+  "execution": "Completed before this metadata record; no rerun",
+  "model_fits": false,
+  "fixture_seed": 20261010,
+  "seed_note": "Fixed fixtures or existing deterministic d1c seed derivation; inspect each test for its fixture seed.",
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.3",
+    "nutpie": "0.16.11",
+    "arviz": "1.3.0",
+    "numba": "0.67.0",
+    "llvmlite": "0.49.0",
+    "xarray": "2026.9.0"
+  },
+  "sha256": {
+    "scripts/d1c/d1c.py": "e010912c8240416fa79c0670e93a527f12d8185b37f322b5ca7159525d9b0280",
+    "scripts/d1c/grid.py": "50f514885fdfe84525c3927738eca398885293641347fb22be8e9781116ddf47",
+    "scripts/d1c/run_state.py": "ceb89f98a778930856bfde3d82e4d1272a22901d98eb125488f4aa79d018e52e",
+    "scripts/d1c/diagnostic_chunks.py": "44da7099a5da31193ca6bb13f6e6081aa5e5cc3044e2aa6730da96dcbb838a30",
+    "scripts/d1c/test_diagnostic_chunks.py": "df6cdfa40fc43dea46f2e5bcf3649eb4ac93a4eba5fc8c426b020763552c9e8e",
+    "scripts/d1c/test_grid.py": "f0f661abe9fc6f4d58afdf0f4790028ffb9fb15828a735f1e4d7713072a9c28f",
+    "scripts/d1c/test_run_state.py": "2526cf3ae4df4ddf881ee197887aeb71109d8481b79e64c8ea0c5e607a662e09",
+    "scripts/d1c/test_sampler_budgets.py": "724ef677a6b6f7914cbdbe5523b405b41cfc883327ba3234f859cb286288de2f",
+    "logs/d1c-grid-recovery-tests-20261010.txt": "27cf380f1b5be50b8bceccb102f73ef0ee908c1eb05f58c596228ca347433017"
+  }
+}

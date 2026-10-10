@@ -1,0 +1,304 @@
+{
+  "label": "ILLUSTRATIVE: analyst-chosen distributions, comparison magnitudes and baselines; no fitted posteriors",
+  "created_at": "2026-10-10T13:49:55.341090+00:00",
+  "method": "Analytical normal CDF/quantiles; bounded probability differences use truncation to [-1,1]",
+  "seed": null,
+  "seed_note": "No random sampling",
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "packages": {
+    "numpy": "2.4.2",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8"
+  },
+  "source_hashes": {
+    "analysis_plan.md": "7084ddb9e4776dbafbb602b7d6304d1117a38d1f4d3a83c5ee31243e45d9a726",
+    "DECISIONS.md": "b06a9d3db52d945acf1f93d80a88f5c711b5f2d49aff67ea4522c6a47f9d29b7",
+    "scripts/d1c/README.md": "ddf7637e423bbc99cc5c568b725da62c1673accb942b8752c87e907938a7ce7f",
+    "scripts/d2/README.md": "37ee0071678ae44be2c4b176a2062aec89f078cee60d7faa71bfe36a115ac33e",
+    "reviews/codex-thresholds-2026-10-09/output.md": "c6252a8ca25b4c71a5e9898f0f29c39df9da1c9af4520a1fe7bbbcd16b7a6ef7"
+  },
+  "script_sha256": "200753a787a4651183d21a3962747f433b1d3a7a75905f602b724f9c4a3358e9",
+  "figures": {
+    "log_probability_ratio": {
+      "figure": "notes/threshold-examples-draft-2026-10-10-log.png",
+      "records": [
+        {
+          "label": "A: lower centre",
+          "location": 0.04000000000000001,
+          "scale": 0.03,
+          "interval90": [
+            -0.009345608808544174,
+            0.08934560880854417
+          ],
+          "comparison_magnitudes": [
+            0.05,
+            0.1,
+            0.2
+          ],
+          "probabilities": [
+            0.36944134018176367,
+            0.022750131948179198,
+            4.82130336511409e-08
+          ]
+        },
+        {
+          "label": "B: broad uncertainty",
+          "location": 0.1,
+          "scale": 0.08000000000000002,
+          "interval90": [
+            -0.03158829015611786,
+            0.2315882901561178
+          ],
+          "comparison_magnitudes": [
+            0.05,
+            0.1,
+            0.2
+          ],
+          "probabilities": [
+            0.7340144709512995,
+            0.5,
+            0.1056497736668553
+          ]
+        },
+        {
+          "label": "C: higher centre",
+          "location": 0.18000000000000002,
+          "scale": 0.04000000000000001,
+          "interval90": [
+            0.11420585492194109,
+            0.2457941450780589
+          ],
+          "comparison_magnitudes": [
+            0.05,
+            0.1,
+            0.2
+          ],
+          "probabilities": [
+            0.9994229749576092,
+            0.9772498680518208,
+            0.308537538725987
+          ]
+        }
+      ],
+      "distribution": "normal"
+    },
+    "l1_probability_difference": {
+      "figure": "notes/threshold-examples-draft-2026-10-10-l1.png",
+      "records": [
+        {
+          "label": "A: lower centre",
+          "location": 0.04000000000000001,
+          "scale": 0.03,
+          "interval90": [
+            -0.009345608808544174,
+            0.08934560880854417
+          ],
+          "comparison_magnitudes": [
+            0.05,
+            0.1,
+            0.2
+          ],
+          "probabilities": [
+            0.36944134018176367,
+            0.022750131948179212,
+            4.821303365114085e-08
+          ]
+        },
+        {
+          "label": "B: broad uncertainty",
+          "location": 0.1,
+          "scale": 0.08000000000000002,
+          "interval90": [
+            -0.03158829015611786,
+            0.2315882901561178
+          ],
+          "comparison_magnitudes": [
+            0.05,
+            0.1,
+            0.2
+          ],
+          "probabilities": [
+            0.7340144709512995,
+            0.5,
+            0.10564977366685531
+          ]
+        },
+        {
+          "label": "C: higher centre",
+          "location": 0.18000000000000002,
+          "scale": 0.04000000000000001,
+          "interval90": [
+            0.11420585492194109,
+            0.2457941450780589
+          ],
+          "comparison_magnitudes": [
+            0.05,
+            0.1,
+            0.2
+          ],
+          "probabilities": [
+            0.9994229749576092,
+            0.9772498680518208,
+            0.308537538725987
+          ]
+        }
+      ],
+      "distribution": "normal truncated to [-1,1]"
+    },
+    "word_probability_difference": {
+      "figure": "notes/threshold-examples-draft-2026-10-10-word.png",
+      "records": [
+        {
+          "label": "A: lower centre",
+          "location": 0.008,
+          "scale": 0.006,
+          "interval90": [
+            -0.001869121761708838,
+            0.01786912176170883
+          ],
+          "comparison_magnitudes": [
+            0.01,
+            0.02,
+            0.04
+          ],
+          "probabilities": [
+            0.36944134018176367,
+            0.022750131948179212,
+            4.8213033651141196e-08
+          ]
+        },
+        {
+          "label": "B: broad uncertainty",
+          "location": 0.02,
+          "scale": 0.016,
+          "interval90": [
+            -0.006317658031223566,
+            0.04631765803122355
+          ],
+          "comparison_magnitudes": [
+            0.01,
+            0.02,
+            0.04
+          ],
+          "probabilities": [
+            0.7340144709512995,
+            0.5,
+            0.10564977366685525
+          ]
+        },
+        {
+          "label": "C: higher centre",
+          "location": 0.036000000000000004,
+          "scale": 0.008,
+          "interval90": [
+            0.02284117098438822,
+            0.04915882901561178
+          ],
+          "comparison_magnitudes": [
+            0.01,
+            0.02,
+            0.04
+          ],
+          "probabilities": [
+            0.9994229749576092,
+            0.9772498680518208,
+            0.3085375387259871
+          ]
+        }
+      ],
+      "distribution": "normal truncated to [-1,1]"
+    }
+  },
+  "probability_examples": [
+    {
+      "effect_size": 0.05,
+      "baseline": 0.001,
+      "h2_probability": 0.000951229424500714,
+      "h1_probability": 0.0010512710963760242,
+      "baseline_selections_per_10000": 10.0,
+      "h2_selections_per_10000": 9.51229424500714,
+      "baseline_at_least_once_in_six_independent_draws": 0.0059850199850060015,
+      "conditional_coefficient_probability": 0.0009512758187698539
+    },
+    {
+      "effect_size": 0.05,
+      "baseline": 0.005,
+      "h2_probability": 0.00475614712250357,
+      "h1_probability": 0.005256355481880121,
+      "baseline_selections_per_10000": 50.0,
+      "h2_selections_per_10000": 47.5614712250357,
+      "baseline_at_least_once_in_six_independent_draws": 0.029627490643734378,
+      "conditional_coefficient_probability": 0.0047573072055547795
+    },
+    {
+      "effect_size": 0.05,
+      "baseline": 0.01,
+      "h2_probability": 0.00951229424500714,
+      "h1_probability": 0.010512710963760242,
+      "baseline_selections_per_10000": 100.0,
+      "h2_selections_per_10000": 95.1229424500714,
+      "baseline_at_least_once_in_six_independent_draws": 0.058519850599,
+      "conditional_coefficient_probability": 0.009516935709322475
+    },
+    {
+      "effect_size": 0.1,
+      "baseline": 0.001,
+      "h2_probability": 0.0009048374180359595,
+      "h1_probability": 0.0011051709180756478,
+      "baseline_selections_per_10000": 10.0,
+      "h2_selections_per_10000": 9.048374180359595,
+      "baseline_at_least_once_in_six_independent_draws": 0.0059850199850060015,
+      "conditional_coefficient_probability": 0.0009049235328958299
+    },
+    {
+      "effect_size": 0.1,
+      "baseline": 0.005,
+      "h2_probability": 0.0045241870901797975,
+      "h1_probability": 0.005525854590378239,
+      "baseline_selections_per_10000": 50.0,
+      "h2_selections_per_10000": 45.241870901797974,
+      "baseline_at_least_once_in_six_independent_draws": 0.029627490643734378,
+      "conditional_coefficient_probability": 0.004526340781557909
+    },
+    {
+      "effect_size": 0.1,
+      "baseline": 0.01,
+      "h2_probability": 0.009048374180359595,
+      "h1_probability": 0.011051709180756477,
+      "baseline_selections_per_10000": 100.0,
+      "h2_selections_per_10000": 90.48374180359595,
+      "baseline_at_least_once_in_six_independent_draws": 0.058519850599,
+      "conditional_coefficient_probability": 0.00905699304879313
+    },
+    {
+      "effect_size": 0.2,
+      "baseline": 0.001,
+      "h2_probability": 0.0008187307530779819,
+      "h1_probability": 0.00122140275816017,
+      "baseline_selections_per_10000": 10.0,
+      "h2_selections_per_10000": 8.187307530779819,
+      "baseline_at_least_once_in_six_independent_draws": 0.0059850199850060015,
+      "conditional_coefficient_probability": 0.0008188791906921987
+    },
+    {
+      "effect_size": 0.2,
+      "baseline": 0.005,
+      "h2_probability": 0.0040936537653899095,
+      "h1_probability": 0.00610701379080085,
+      "baseline_selections_per_10000": 50.0,
+      "h2_selections_per_10000": 40.936537653899094,
+      "baseline_at_least_once_in_six_independent_draws": 0.029627490643734378,
+      "conditional_coefficient_probability": 0.00409736739890372
+    },
+    {
+      "effect_size": 0.2,
+      "baseline": 0.01,
+      "h2_probability": 0.008187307530779819,
+      "h1_probability": 0.0122140275816017,
+      "baseline_selections_per_10000": 100.0,
+      "h2_selections_per_10000": 81.87307530779819,
+      "baseline_at_least_once_in_six_independent_draws": 0.058519850599,
+      "conditional_coefficient_probability": 0.008202175552635303
+    }
+  ]
+}
