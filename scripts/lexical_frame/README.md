@@ -181,3 +181,30 @@ original model answer or detector output. The original independent candidate
 lists and decisions remain preserved. This is a post-pilot instrument revision,
 not a claim that the original coding was prospectively adequate. No word
 eligibility judgment or commonness judgment is silently replaced by this run.
+
+Source-audit assembly (2026-10-10): `audit_pilot.py` combines all forty word
+decisions and ninety-three adjective senses from each family, the original
+independent pair lists, and their v2 rechecks. The primary agent's complete
+post-pilot review is retained separately in private `pilot-audit-rules.json`,
+with its hash logged. Original answers are immutable. The audit checks every
+identifier and quote again. A quote rendered from Wiktionary links can match
+their deterministic display text; the source wikitext and mismatch remain in
+the record. This repairs representation, not meaning, with no new inference.
+
+Nine pilot terms have entries but no supported adjective sense after both
+resources were checked. Keep two explicit operational treatments: the
+conservative coverage table leaves them unresolved; a resource-attested
+adjective specification does not admit them, without claiming they have no
+adjective use anywhere. Entry absence still requires the unresolved route.
+The pilot report recommends the latter as a reproducible resource-boundary
+rule, with the conservative table preserved. This is a proposed frame rule,
+not a silently finalized exclusion list. No source list is expanded.
+
+Record substantive audit disagreement and interpretation alternatives even
+when whole-word eligibility agrees. The audit's labels are primary-agent
+source judgments, not an independent gold standard. It also checks all
+candidate/rejected pairs and source gaps, includes the shared-word/base graph,
+and reports bounded missed-pair audit results without estimating recall.
+Actual inference usage and API-equivalent accounting are logged. Primary-agent
+evidence review occurred alongside model calls and is not separately metered;
+the report must not advertise inference-only throughput as total curation cost.
