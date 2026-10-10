@@ -264,7 +264,7 @@ def pass_b(png: Path, key: str, retries: int = 2) -> tuple[list | None, dict]:
             if not reply:
                 raise KeyError("empty content (finish: %s)" % d["choices"][0].get("finish_reason"))
             return _json_list(reply), dict(model=d.get("model"), usage=d.get("usage"))
-        except (urllib.error.URLError, KeyError, json.JSONDecodeError, TimeoutError) as e:  # noqa: PERF203
+        except Exception as e:  # noqa: BLE001  (after wave 1: an ssl.SSLError escaped the narrower list and stopped the run)
             err = repr(e)[:300]
             time.sleep(5 * (attempt + 1))
     return None, dict(error=err)
