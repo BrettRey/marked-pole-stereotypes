@@ -1,0 +1,16 @@
+{
+  "verified_at": "2026-10-10T17:21:38.042560+00:00",
+  "job": "6aca739c095c578089314dc3",
+  "source_commit": "89f299ad85db3cca16facc6d209d06628c14cbd3",
+  "state": "running",
+  "setup_completed": true,
+  "scientific_code_and_package_checks_passed": true,
+  "upstream_persistent_export_sha256": "76dd842934bb2d0ab9c3b5db9fe1a1be2876183e8abb059e2891a751db3295f6",
+  "upstream_bytes": 148416,
+  "container_memory_max": "32000000000",
+  "python": "3.14.8 (main, Oct  6 2026, 04:40:14) [GCC 12.2.0]",
+  "platform": "Linux-6.12.110-135.202.amzn2023.x86_64-x86_64-with-glibc2.36",
+  "runtime_started_at": "2026-10-10T17:20:35.501335+00:00",
+  "completed_components": [],
+  "limitation": "Provider setup and persistent start/upstream exports verified; downstream component and final runtime/memory/cost pending."
+}
