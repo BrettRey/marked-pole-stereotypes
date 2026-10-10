@@ -10,10 +10,10 @@ source:
 - STATUS.md
 - notes/project-brief.md
 next_action: 'Implementation runs in Codex tabs Brett drives (2026-10-09; HANDOFF-TO-CODEX.md).
-  Lane N fixes the Norman pass-X parser and the failed-row retry, then reruns wave 1 (pass B
-  blocked on OpenRouter credit). Lane S finishes the D1c pilot and grid, then D1b, threshold
-  examples and a Part 8 draft. The D2 grid runs in the Claude session until about midnight; that
-  session commits and summarises it. Waiting on Brett: OpenRouter credit, the D1 verdict (after
+  Lane N fixes the Norman pass-X parser and the failed-row retry, pilots Apple''s Vision OCR in
+  place of GLM (no OpenRouter credit), then reruns wave 1. Lane S finishes the D1c pilot and grid,
+  then D1b, threshold examples and a Part 8 draft. The D2 grid runs in the Claude session until
+  about midnight; that session commits and summarises it. Waiting on Brett: the D1 verdict (after
   D1c), threshold benchmarks, the Part 8 merge, the Koch licence reply. D2b waits for L1''s frame.'
 claim:
   argues: >-
@@ -26,7 +26,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A done (replication matches UWA); D1 grid done (verdict on the frequency-only indicator after D1c); D2 grid running; plan settled through H2, H1, L1, L2, multiverse and model judges only; implementation handed to Codex tabs (HANDOFF-TO-CODEX.md); Norman extraction blocked on a parser bug and OpenRouter credit; no strand B outcome data opened · status: active · updated: 2026-10-09 -->
+<!-- SUMMARY: Strand A done (replication matches UWA); D1 grid done (verdict on the frequency-only indicator after D1c); D2 grid running; plan settled through H2, H1, L1, L2, multiverse and model judges only; implementation handed to Codex tabs (HANDOFF-TO-CODEX.md); Norman extraction: parser bug to fix, GLM replaced by Apple's Vision OCR (no OpenRouter credit); no strand B outcome data opened · status: active · updated: 2026-10-09 -->
 
 ## State
 
@@ -44,4 +44,4 @@ Scaffolded 2026-10-07 from Brett's brief (`notes/project-brief.md`, verbatim). T
 
 - Strand B literature and data: scripted downloads hit bot checks; fetch by hand (`notes/literature-to-fetch.md`).
 - ~~No trait-prevalence measure found yet~~ (2026-10-09: Ziano et al.'s commonness panel, 149 traits, is the human anchor for calibrated model judges; human judges cover extreme traits; see `analysis_plan.md`, "Commonness judges"). No second human coder: model judges only (Brett, 2026-10-09).
-- Norman (1967) pass B needs OpenRouter credit (Brett); see `HANDOFF-TO-CODEX.md`, lane N.
+- Norman (1967) pass B (GLM) dropped: no OpenRouter credit (Brett, 2026-10-09). Lane N pilots Apple's Vision OCR in its place (`HANDOFF-TO-CODEX.md`).

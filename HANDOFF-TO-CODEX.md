@@ -1,5 +1,5 @@
 # Handoff to Codex
-<!-- SUMMARY: Implementation moves from the Claude session to Codex tabs Brett drives (2026-10-09): two lanes, N (Norman extraction, blocked on a pass-X parser bug and OpenRouter credit) and S (D1c, D1b, threshold examples, Part 8 draft); rules, environment, state at handoff · status: active · updated: 2026-10-09 -->
+<!-- SUMMARY: Implementation moves from the Claude session to Codex tabs Brett drives (2026-10-09): two lanes, N (Norman extraction: fix the pass-X parser, pilot Apple's Vision OCR in place of GLM) and S (D1c, D1b, threshold examples, Part 8 draft); rules, environment, state at handoff · status: active · updated: 2026-10-09 -->
 
 From 2026-10-09 (Brett: "make it so"), build, test, debug and extraction work in this project runs in Codex tabs that Brett drives directly. The Claude session no longer dispatches Codex jobs. It keeps the D2 grid until that ends (about midnight) and is otherwise one more agent Brett can ask, under the same rules.
 
@@ -45,13 +45,13 @@ The lanes keep two writers out of each other's files; they'd apply the same way 
 | Known failure | a D1c test run aborted in llvmlite (`LLVMPY_DisposeString`, macOS crash report 2026-10-09 20:59); not diagnosed |
 | Extraction | `uv run --quiet --no-project --with pillow==11.3.0 python scripts/norman/extract.py {pages, pilot, run --first F --count C --workers W, passC, disputes, reconcile}` |
 | Scripted Codex vision | `scripts/codex-ro-images.sh DIR PROMPT_FILE IMAGE...` (read-only sandbox, scrubbed environment) |
-| Pass B | OpenRouter `z-ai/glm-5.3-flash`, key from the Keychain service `ox-alpha`; returns HTTP 402 until Brett adds credit |
+| Pass B | OpenRouter `z-ai/glm-5.3-flash`; unavailable (no OpenRouter credit, Brett, 2026-10-09), replaced by pass V |
 
 ## Lane N: Norman extraction
 
 Spec: `scripts/norman/README.md`. Wave 1 (the first 60 table pages, 120 half-pages) was stopped by the Claude session at 21:15 on 2026-10-09.
 
-**Run every extraction command outside the sandbox, the one-page test included.** The tab's sandbox has no network, and each half-page needs it: pass B calls OpenRouter, and pass X starts its own read-only Codex, which calls OpenAI (macOS may also refuse a sandbox started inside another). Inside the sandbox those calls fail, and the script records each as a failed row without stopping, so a sandbox failure looks like the parser bug. Ask Brett to approve each extraction command to run outside the sandbox, or ask him to run it in an ordinary terminal. Simulation work (lane S) needs no network.
+**Run every extraction command outside the sandbox, the one-page test included.** The tab's sandbox has no network, and pass X needs it: it starts its own read-only Codex, which calls OpenAI (macOS may also refuse a sandbox started inside another). Inside the sandbox those calls fail, and the script records each as a failed row without stopping, so a sandbox failure looks like the parser bug. Ask Brett to approve each extraction command to run outside the sandbox, or ask him to run it in an ordinary terminal. Simulation work (lane S) needs no network.
 
 | Pass | Rows ok | Rows failed | Cause |
 |---|---|---|---|
@@ -60,11 +60,10 @@ Spec: `scripts/norman/README.md`. Wave 1 (the first 60 table pages, 120 half-pag
 
 1. **Fix pass X.** `pass_x` (`extract.py:273`) keeps only stdout and wants a line reading `codex`; stderr is thrown away, so the cause is invisible. Run `scripts/codex-ro-images.sh "$PWD" data/raw/norman1967/prompt_x.md data/raw/norman1967/img/p040_M.png` by hand with stdout and stderr captured separately. The likely cause is that `codex exec` (v0.160.0) writes its transcript to stderr and only the final message to stdout, in which case 99 transcriptions were made and discarded. `codex exec -o FILE` (`--output-last-message`) gives the answer independent of the format. Keep stderr and the token count in `meta`. Test on pages 40 and 41 against the gold file (pilot 2 scored 212 of 239 rows exactly right). Keep the wrapper's settings fixed across waves so pass X stays one instrument: gpt-6.1-sol, and the transcript header reports reasoning effort "none" because the wrapper ignores user config. Record them in the extraction log.
 2. **Make failures retryable.** `load_jsonl` counts every row as done, failed or not. Change `run_passes` so rows with `blocks: null` aren't done; keep them in the file as the record of attempts, and have readers take the last non-null row per page and side.
-3. **Rerun wave 1, pass X:** `run --first 0 --count 60 --workers 4`. Pass B stays blocked.
-4. **Waves 2 onwards** over the remaining table pages (`extract.py pages`), once wave 1's X is clean.
-5. **Then** X2 (a zoomed Codex re-read of unresolved rows, per the README), the third-family audit (scripted, counts only), Appendix 0 term matching, and `reconcile`.
-
-Without pass B, the only cross-family pair is X with Tesseract, and Tesseract was exactly right on 97 of 239 pilot rows, so most rows would stay unresolved. Don't change the acceptance rule; report the counts to Brett.
+3. **Replace pass B.** Brett has no OpenRouter credit (2026-10-09), so GLM is gone; its 26 completed rows can still count. Without a second model family the only cross-family pair is X with Tesseract, which was exactly right on 97 of 239 pilot rows. Add **pass V, Apple's Vision OCR** (the engine behind Live Text; local, free, no network): `pyobjc-framework-Vision` 12.2.2 (on PyPI, checked 2026-10-09) through `uv run --with`, `VNRecognizeTextRequest` at the accurate level with language correction off so digits aren't "corrected", read by column like pass A. Pilot it on pages 40 and 41 against the gold, and write "After pilot 3" into the README: V's exact-row score, and how often rows where V agrees with X, and with A, are right. If V=X rows are about as reliable as GLM=X rows were (1 wrong of 153 in pilot 2), V takes B's place and the acceptance rule keeps its form. If not, tell Brett before running.
+4. **Rerun wave 1 with passes X and V:** `run --first 0 --count 60 --workers 4`, skipping B.
+5. **Waves 2 onwards** over the remaining table pages (`extract.py pages`), once wave 1 is clean.
+6. **Then** X2 (a zoomed Codex re-read of unresolved rows, per the README), the audit (scripted, counts only; its third family needs choosing now that GLM is gone), Appendix 0 term matching, and `reconcile`.
 
 ## Lane S: simulations and drafts
 
@@ -78,7 +77,6 @@ Without pass B, the only cross-family pair is X with Tesseract, and Tesseract wa
 
 | Item | Why |
 |---|---|
-| OpenRouter credit | pass B; without it lane N mostly fails its acceptance rule |
 | Verdict on the D1 frequency-only indicator | after D1c |
 | Threshold benchmarks | after the examples note |
 | Part 8 merge | after the draft |
