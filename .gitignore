@@ -34,3 +34,6 @@ private/
 
 # Caches for sandboxed Codex runs (scripts/codex-ws.sh)
 .cache/
+
+# Cache written by scripts/d1c/d1c.py during the 2026-10-09 debug run (to move into .cache/)
+logs/d1c-cache/
