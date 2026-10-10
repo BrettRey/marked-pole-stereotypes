@@ -5,7 +5,7 @@ From 2026-10-09 (Brett: "make it so"), build, test, debug and extraction work in
 
 ## Start
 
-1. Launch from the project folder with `scripts/codex-tab.sh`. It gives what Brett approved ("Workspace-write, this project only"): writes limited to this project, network off, approvals on request, so pushes ask him first. Network calls fail inside it, which matters for lane N (see there). It also sets the compile caches (below). `--yolo` would drop all of that.
+1. Brett starts Codex in the project folder, either plainly (his config: `gpt-6-astra` at reasoning effort `xhigh`) or with `scripts/codex-tab.sh`, which adds a workspace-write sandbox limited to the project, network off and approvals on request. Started plainly, the rules below are instructions, not guarantees: follow them. In the sandbox, network calls fail, which matters for lane N (see there). `d1c.py` sets the compiler shim itself; other PyMC scripts need the variables under Environment.
 2. Read `AGENTS.md`, this file, `analysis_plan.md`, the last 30 entries of `DECISIONS.md`, and your lane's README.
 3. Brett's first message names your lane. One tab can do lane N, then lane S; two tabs run them in parallel.
 
