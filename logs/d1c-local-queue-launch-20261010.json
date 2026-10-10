@@ -1,0 +1,24 @@
+{
+  "pid": 66627,
+  "started_at": "2026-10-10T19:03:27.829874+00:00",
+  "source_commit": "f02ab60d8b7723c55c8f28a7603dc28492313c3b",
+  "command": [
+    "nohup",
+    "nice",
+    "-n",
+    "10",
+    "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/bin/python",
+    "-u",
+    "scripts/d1c/local_queue.py",
+    "--source",
+    "f02ab60d8b7723c55c8f28a7603dc28492313c3b"
+  ],
+  "assigned_components": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "concurrent_workers": 1
+}

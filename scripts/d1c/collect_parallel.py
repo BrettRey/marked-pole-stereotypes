@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect and verify the three assigned components; never launch model jobs."""
+"""Collect and verify the assigned cut components; never launch model jobs."""
 from __future__ import annotations
 
 import argparse
@@ -167,13 +167,12 @@ def conditional_summary(arrays):
 
 
 def render_report(report):
-    lines = ["# Three-component run report", "", f"Observed: {report['observed_at']}", "",
-             f"Verified completed components: {len(report['verified_components'])}/3 assigned, out of 8 required for this cut.",
+    lines = ["# Cut-component run report", "", f"Observed: {report['observed_at']}", "",
+             f"Verified completed components: {len(report['verified_components'])}/{len(report['assigned_components'])} assigned, out of 8 required for this cut.",
              "These are conditional results for cell 10, replicate 0. The full grid remains stopped.", "",
              "| Location | Component | State | Parameter diagnostics | Contrast diagnostics | Sample time | Peak process memory |",
              "|---|---:|---|---|---|---|---|"]
-    for location in ("cloud", "local", "hf"):
-        entry = report["components"][location]
+    for location, entry in report["components"].items():
         diag, runtime = entry.get("diagnostic", {}), entry.get("runtime", {})
         parameter = "pending" if not diag else ("pass" if diag["good"] else "fail")
         contrast = "pending" if not diag else ("pass" if diag["contrast_good"] else "fail")
@@ -184,9 +183,13 @@ def render_report(report):
         # final downstream peak while the supervisor is still running.
         memory = "pending" if peak is None or not entry["terminal"] else f"{peak/2**30:.2f} GiB"
         lines.append(f"| {location} | {entry['component']} | {entry['state']} | {parameter} | {contrast} | {sample_time} | {memory} |")
-    local = report["components"]["local"].get("sampler_progress")
-    if local:
-        lines += ["", f"Local sampler counts, including warmup: {local['finished_draws_including_warmup']} / 6,000 per chain. These counts are not recoverable completion checkpoints."]
+    for location, entry in report["components"].items():
+        local = entry.get("sampler_progress")
+        if local and not entry["terminal"]:
+            lines += ["", f"Local component {entry['component']} sampler counts, including warmup: {local['finished_draws_including_warmup']} / 6,000 per chain. These counts are not recoverable completion checkpoints."]
+    if report.get("local_queue"):
+        queue = report["local_queue"]
+        lines += ["", f"Local queue: {queue['state']}; current component {queue.get('current_component')}; completed from queue {queue.get('completed', [])}."]
     estimate = report["components"]["hf"]["monitoring"].get("estimated_compute_usd")
     lines += ["", "HF active-job compute ceiling: USD 0.72. Total authorized HF budget: USD 10.",
               ("Provider-duration compute estimate so far: unavailable." if estimate is None else
@@ -206,13 +209,17 @@ def collect():
     OUTPUT.mkdir(parents=True, exist_ok=True)
     canonical = json.loads(command("git", "show", f"{UPSTREAM_COMMIT}:{CLOUD_PATH}/checkpoints/manifest.json"))
     report = dict(observed_at=datetime.now(timezone.utc).isoformat(), full_cut=False,
-                  assigned_components=[0, 1, 2], unassigned_components=[3, 4, 5, 6, 7],
-                  scope="Three conditional components of cell 10, replicate 0; no calibration claim.",
+                  assigned_components=list(range(8)), unassigned_components=[],
+                  scope="Eight conditional components of cell 10, replicate 0; local queue 3–7; no calibration claim.",
                   timing_limit="Different fixed latent draws, compile environments and local contention; not matched hardware trials.",
                   hf_budget=dict(total_authorized_usd=10, active_job_ceiling_usd=.72,
                                  conservative_reserved_usd=1.44, billed_total_usd=None),
                   components={}, refresh_errors={})
     sources = {"cloud": CACHE / "cloud", "local": ROOT / "results/d1c/local-component-001-20261010", "hf": CACHE / "hf"}
+    sources.update({f"local-{component:03d}": ROOT / "results/d1c" / f"local-component-{component:03d}-20261010"
+                    for component in range(3, 8)})
+    queue_path = ROOT / "results/d1c/local-queue-20261010/progress.json"
+    report["local_queue"] = json_file(queue_path) if queue_path.exists() else None
     refreshed = {}
     for location, refresh in (("cloud", refresh_cloud), ("hf", refresh_hf)):
         try:
@@ -223,6 +230,11 @@ def collect():
             report["refresh_errors"][location] = type(exc).__name__
     for component, (location, directory) in enumerate(sources.items()):
         entry = dict(component=component, monitoring=refreshed.get(location, {}), state="pending", terminal=False)
+        if component >= 3 and not (directory / "runtime.json").exists():
+            stopped = bool(report["local_queue"] and report["local_queue"]["state"] != "running")
+            entry.update(state="queue_stopped" if stopped else "queued", terminal=stopped)
+            report["components"][location] = entry
+            continue
         try:
             runtime = json_file(directory / "runtime.json")
             entry["runtime"] = runtime
@@ -240,7 +252,7 @@ def collect():
                 entry["terminal"] = runtime["state"] in {"complete", "failed", "interrupted"}
             else:
                 entry["terminal"] = runtime["state"] in {"component_complete", "interrupted"}
-                log = ROOT / "logs/d1c-local-component-001-20261010-stdout.txt"
+                log = ROOT / "logs" / f"d1c-local-component-{component:03d}-20261010-stdout.txt"
                 matches = re.findall(r"sampling .*: draws (\[[0-9, ]+\]); steps", log.read_text()) if log.exists() else []
                 if matches:
                     counts = json.loads(matches[-1])
@@ -250,7 +262,7 @@ def collect():
                 if not entry["terminal"]:
                     observed = subprocess.run(["ps", "-p", str(runtime["pid"]), "-o", "command="],
                                               capture_output=True, text=True, timeout=10).stdout
-                    if "scripts/d1c/run_component.py" not in observed or "--component 1" not in observed:
+                    if "scripts/d1c/run_component.py" not in observed or f"--component {component}" not in observed:
                         entry.update(state="worker_stopped_without_final_record", terminal=True)
             if entry["terminal"] and result is None:
                 entry["state"] = "stopped_without_component"
