@@ -1,7 +1,7 @@
 # Handoff to Codex
 <!-- SUMMARY: Implementation moves from the Claude session to Codex tabs Brett drives (2026-10-09): two lanes, N (Norman extraction, blocked on a pass-X parser bug and OpenRouter credit) and S (D1c, D1b, threshold examples, Part 8 draft); rules, environment, state at handoff · status: active · updated: 2026-10-09 -->
 
-From 2026-10-09 (Brett: "make it so"), build, test, debug and extraction work in this project runs in Codex tabs that Brett drives directly. The Claude session no longer dispatches Codex jobs. It keeps the D2 grid until that ends (about midnight), stays the only writer of `STATUS.md`, and does design reviews when Brett asks.
+From 2026-10-09 (Brett: "make it so"), build, test, debug and extraction work in this project runs in Codex tabs that Brett drives directly. The Claude session no longer dispatches Codex jobs. It keeps the D2 grid until that ends (about midnight) and is otherwise one more agent Brett can ask, under the same rules.
 
 ## Start
 
@@ -15,9 +15,11 @@ From 2026-10-09 (Brett: "make it so"), build, test, debug and extraction work in
 |---|---|---|
 | N: Norman extraction | `scripts/norman/`, `data/raw/norman1967/` (gitignored), `logs/norman-*` | `scripts/d1c/`, `scripts/d1b/`, `notes/` drafts |
 | S: simulations and drafts | `scripts/d1c/`, `scripts/d1b/` (new), `results/d1c/`, `results/d1b/`, `logs/d1c-*`, `logs/d1b-*`, `notes/*-draft-*.md` | `scripts/norman/`, `data/raw/norman1967/` |
-| Both | append to `DECISIONS.md` | `analysis_plan.md`, `STATUS.md`, `results/d2/`, `logs/d2-*` (the D2 grid is still writing them) |
+| Both | append to `DECISIONS.md`; update `STATUS.md` (see rules) | `results/d2/`, `logs/d2-*` (the D2 grid is still writing them) |
 
-## Rules (Brett's; they bind both lanes)
+The lanes keep two writers out of each other's files; they'd apply the same way to two Claude tabs.
+
+## Rules (Brett's; they bind every agent in this project, the Claude session included)
 
 - **The repo is public.** Before every commit run `git status --porcelain` and name what becomes public. Commit explicit paths only: `git add <new files> && git commit -m "..." -- <paths>`. Never `git add -A`, `git add .` or `git commit -a`, and never leave files staged (the other tab may commit). Never commit `data/raw/`, `private/`, PDFs or caches.
 - **Spec and code are committed and pushed before any run, pilots included.** Changes after a run go in a dated README section ("After pilot 1 (2026-10-09)"), never as silent edits.
@@ -25,6 +27,7 @@ From 2026-10-09 (Brett: "make it so"), build, test, debug and extraction work in
 - **Design questions.** Reason as Gelman would: fake-data simulation first, multilevel models with partial pooling, posterior predictive checks, effect sizes with intervals, no significance-hunting. Where several analytic options are defensible, pre-specify them all as a multiverse instead of asking Brett to pick. Ask Brett only about resources, ethics, scope, values or authorization, and give one recommendation. For a second opinion from another model family, Brett can ask the Claude session.
 - **`analysis_plan.md`**: settled sections change only with Brett's agreement. New plan text goes to `notes/` as a draft for him to merge.
 - **`DECISIONS.md`**: append only, in the file's form `YYYY-MM-DD — Decision. Reason.` Never rewrite an entry.
+- **`STATUS.md`**: whoever finishes a task updates `next_action` and the SUMMARY line, editing in place after re-reading the file (a patch whose context has moved fails, which is the point). An agent that has sat idle for hours doesn't write it.
 - **Sources.** Facts, numbers, word senses and citations come from a source you've read, with a page, never from memory. When you need Brett to fetch something, give the full reference with its DOI link and say whether you can fetch it yourself.
 - **Data boundary.** Nothing under review, blinded or restricted goes to an external model. Norman (1967) is a public ERIC document, so passes B and X may send it out.
 - **Norman firewall.** Until L1's frame is frozen, no one looks at extracted Norman values: print counts and range-check summaries only, and never join values to morphology. The one exception is the pilot pages 40 and 41 (no negated terms; gold in `data/raw/norman1967/gold_pilot_claude.json`), which may be read value by value for debugging. If other values are seen, log it in `DECISIONS.md` in full: which items, which scales, which tests it touches.
