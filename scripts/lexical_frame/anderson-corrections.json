@@ -1,0 +1,57 @@
+{
+  "purpose": "Corrections to the OCR transcription, verified against word-column images of the original PDF on 2026-10-10; no rating values used",
+  "anderson_pdf_sha256": "99b77881e63d4e22d291e4e2dfcbb2d62dcab861c3cb0f7723dfe0a746d97f1f",
+  "review": "All ten table word columns were visually compared with the transcription; the table ends above y=210 on PDF page 6",
+  "corrections": [
+    {
+      "source_entry_id": "anderson1968:p3:c1:r2",
+      "before": "vigorou!5",
+      "after": "vigorous",
+      "reason": "OCR character substitutions"
+    },
+    {
+      "source_entry_id": "anderson1968:p4:c2:r15",
+      "before": "unadvcnturous",
+      "after": "unadventurous",
+      "reason": "OCR e read as c"
+    },
+    {
+      "source_entry_id": "anderson1968:p4:c2:r54",
+      "before": "uoninquisitive",
+      "after": "noninquisitive",
+      "reason": "OCR n read as u"
+    },
+    {
+      "source_entry_id": "anderson1968:p5:c1:r1",
+      "before": "untidy \"*l",
+      "after": "untidy",
+      "reason": "Scan marks beside word were read as letters"
+    },
+    {
+      "source_entry_id": "anderson1968:p5:c1:r2",
+      "before": "unaccomod ating",
+      "after": "unaccomodating",
+      "reason": "Spurious OCR space; original single-m spelling retained"
+    },
+    {
+      "source_entry_id": "anderson1968:p5:c1:r67",
+      "before": "irrational]",
+      "after": "irrational",
+      "reason": "Nonlexical scan mark at end of word"
+    }
+  ],
+  "printed_variants_preserved": [
+    {
+      "source_entry_id": "anderson1968:p4:c1:r10",
+      "printed": "self-possesssed",
+      "dictionary_lookup_alias": "self-possessed",
+      "reason": "Apparent extra s in the printed source, not silently removed from the transcription"
+    },
+    {
+      "source_entry_id": "anderson1968:p5:c1:r2",
+      "printed": "unaccomodating",
+      "dictionary_lookup_alias": "unaccommodating",
+      "reason": "Printed spelling retained; canonical lookup spelling is an explicit editorial alias"
+    }
+  ]
+}

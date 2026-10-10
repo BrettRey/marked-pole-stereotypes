@@ -108,3 +108,5 @@ source gaps, boundary decisions, complete accepted/rejected/unresolved pair
 examples, proposed judgment targets, and observed coding/review/rerun costs.
 Proceeding beyond the pilot requires defensible rules or explicit alternatives
 for observed problems, not a high agreement score or a claim of full coverage.
+
+After import 1 (2026-10-10): the Anderson OCR yielded 561 lines because six paragraph/footnote lines below the final table entered the last left column. The page image fixes the lower table boundary at y=210 PDF points on page 6. Import v2 retains v1 and applies that boundary. All ten word columns were inspected; six OCR corrections are recorded separately, and two apparent printed spelling variants remain explicit. Warriner contains 13,915 source rows and 13,905 case-folded forms; capitalization distinctions and source rows are retained, not assumed to be identical lexical senses. Its ZIP contains one CSV and no licence file, so public download is not treated as a redistribution licence.

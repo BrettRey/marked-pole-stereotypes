@@ -1,0 +1,357 @@
+{
+  "action": "inventory",
+  "finished_at": "2026-10-10T20:46:07.939800+00:00",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "python": "3.14.8",
+  "requests_version": "2.34.2",
+  "result": {
+    "warriner_headers": {
+      "BRM-emot-submit.csv": [
+        "",
+        "Word",
+        "V.Mean.Sum",
+        "V.SD.Sum",
+        "V.Rat.Sum",
+        "A.Mean.Sum",
+        "A.SD.Sum",
+        "A.Rat.Sum",
+        "D.Mean.Sum",
+        "D.SD.Sum",
+        "D.Rat.Sum",
+        "V.Mean.M",
+        "V.SD.M",
+        "V.Rat.M",
+        "V.Mean.F",
+        "V.SD.F",
+        "V.Rat.F",
+        "A.Mean.M",
+        "A.SD.M",
+        "A.Rat.M",
+        "A.Mean.F",
+        "A.SD.F",
+        "A.Rat.F",
+        "D.Mean.M",
+        "D.SD.M",
+        "D.Rat.M",
+        "D.Mean.F",
+        "D.SD.F",
+        "D.Rat.F",
+        "V.Mean.Y",
+        "V.SD.Y",
+        "V.Rat.Y",
+        "V.Mean.O",
+        "V.SD.O",
+        "V.Rat.O",
+        "A.Mean.Y",
+        "A.SD.Y",
+        "A.Rat.Y",
+        "A.Mean.O",
+        "A.SD.O",
+        "A.Rat.O",
+        "D.Mean.Y",
+        "D.SD.Y",
+        "D.Rat.Y",
+        "D.Mean.O",
+        "D.SD.O",
+        "D.Rat.O",
+        "V.Mean.L",
+        "V.SD.L",
+        "V.Rat.L",
+        "V.Mean.H",
+        "V.SD.H",
+        "V.Rat.H",
+        "A.Mean.L",
+        "A.SD.L",
+        "A.Rat.L",
+        "A.Mean.H",
+        "A.SD.H",
+        "A.Rat.H",
+        "D.Mean.L",
+        "D.SD.L",
+        "D.Rat.L",
+        "D.Mean.H",
+        "D.SD.H",
+        "D.Rat.H"
+      ]
+    },
+    "warriner_members": [
+      {
+        "bytes": 3736801,
+        "name": "BRM-emot-submit.csv"
+      }
+    ],
+    "wordnet_members": [
+      {
+        "bytes": 5319,
+        "name": "dict/sents.vrb"
+      },
+      {
+        "bytes": 38301,
+        "name": "dict/noun.exc"
+      },
+      {
+        "bytes": 1125,
+        "name": "dict/verb.Framestext"
+      },
+      {
+        "bytes": 825353,
+        "name": "dict/index.adj"
+      },
+      {
+        "bytes": 15325523,
+        "name": "dict/data.noun"
+      },
+      {
+        "bytes": 2778475,
+        "name": "dict/data.verb"
+      },
+      {
+        "bytes": 7304224,
+        "name": "dict/index.sense"
+      },
+      {
+        "bytes": 520168,
+        "name": "dict/data.adv"
+      },
+      {
+        "bytes": 85,
+        "name": "dict/adv.exc"
+      },
+      {
+        "bytes": 4792749,
+        "name": "dict/index.noun"
+      },
+      {
+        "bytes": 911244,
+        "name": "dict/cntlist.rev"
+      },
+      {
+        "bytes": 23019,
+        "name": "dict/adj.exc"
+      },
+      {
+        "bytes": 524435,
+        "name": "dict/index.verb"
+      },
+      {
+        "bytes": 73166,
+        "name": "dict/sentidx.vrb"
+      },
+      {
+        "bytes": 0,
+        "name": "dict/cousin.exc"
+      },
+      {
+        "bytes": 3167437,
+        "name": "dict/data.adj"
+      },
+      {
+        "bytes": 2511,
+        "name": "dict/log.grind.3.1"
+      },
+      {
+        "bytes": 2034655,
+        "name": "dict/dbfiles/adj.all"
+      },
+      {
+        "bytes": 7673,
+        "name": "dict/dbfiles/adj.ppl"
+      },
+      {
+        "bytes": 478142,
+        "name": "dict/dbfiles/adv.all"
+      },
+      {
+        "bytes": 60848,
+        "name": "dict/dbfiles/verb.emotion"
+      },
+      {
+        "bytes": 288753,
+        "name": "dict/dbfiles/verb.communication"
+      },
+      {
+        "bytes": 152470,
+        "name": "dict/dbfiles/noun.quantity"
+      },
+      {
+        "bytes": 132943,
+        "name": "dict/dbfiles/verb.cognition"
+      },
+      {
+        "bytes": 63940,
+        "name": "dict/dbfiles/noun.feeling"
+      },
+      {
+        "bytes": 1481893,
+        "name": "dict/dbfiles/noun.person"
+      },
+      {
+        "bytes": 551434,
+        "name": "dict/dbfiles/adj.pert"
+      },
+      {
+        "bytes": 486105,
+        "name": "dict/dbfiles/noun.cognition"
+      },
+      {
+        "bytes": 394810,
+        "name": "dict/dbfiles/noun.substance"
+      },
+      {
+        "bytes": 201624,
+        "name": "dict/dbfiles/verb.social"
+      },
+      {
+        "bytes": 269371,
+        "name": "dict/dbfiles/noun.food"
+      },
+      {
+        "bytes": 911244,
+        "name": "dict/dbfiles/cntlist"
+      },
+      {
+        "bytes": 777725,
+        "name": "dict/dbfiles/noun.communication"
+      },
+      {
+        "bytes": 210462,
+        "name": "dict/dbfiles/verb.motion"
+      },
+      {
+        "bytes": 1416396,
+        "name": "dict/dbfiles/noun.artifact"
+      },
+      {
+        "bytes": 97387,
+        "name": "dict/dbfiles/noun.phenomenon"
+      },
+      {
+        "bytes": 933739,
+        "name": "dict/dbfiles/noun.animal"
+      },
+      {
+        "bytes": 323481,
+        "name": "dict/dbfiles/verb.contact"
+      },
+      {
+        "bytes": 77010,
+        "name": "dict/dbfiles/verb.perception"
+      },
+      {
+        "bytes": 126021,
+        "name": "dict/dbfiles/verb.stative"
+      },
+      {
+        "bytes": 6111,
+        "name": "dict/dbfiles/noun.motive"
+      },
+      {
+        "bytes": 13569,
+        "name": "dict/dbfiles/verb.weather"
+      },
+      {
+        "bytes": 286123,
+        "name": "dict/dbfiles/noun.body"
+      },
+      {
+        "bytes": 157756,
+        "name": "dict/dbfiles/noun.event"
+      },
+      {
+        "bytes": 215337,
+        "name": "dict/dbfiles/noun.object"
+      },
+      {
+        "bytes": 1125,
+        "name": "dict/dbfiles/verb.Framestext"
+      },
+      {
+        "bytes": 137748,
+        "name": "dict/dbfiles/noun.time"
+      },
+      {
+        "bytes": 139144,
+        "name": "dict/dbfiles/noun.possession"
+      },
+      {
+        "bytes": 65810,
+        "name": "dict/dbfiles/verb.competition"
+      },
+      {
+        "bytes": 387190,
+        "name": "dict/dbfiles/verb.change"
+      },
+      {
+        "bytes": 135168,
+        "name": "dict/dbfiles/verb.possession"
+      },
+      {
+        "bytes": 449694,
+        "name": "dict/dbfiles/noun.location"
+      },
+      {
+        "bytes": 65623,
+        "name": "dict/dbfiles/noun.relation"
+      },
+      {
+        "bytes": 523910,
+        "name": "dict/dbfiles/noun.state"
+      },
+      {
+        "bytes": 397164,
+        "name": "dict/dbfiles/noun.group"
+      },
+      {
+        "bytes": 119022,
+        "name": "dict/dbfiles/verb.creation"
+      },
+      {
+        "bytes": 46086,
+        "name": "dict/dbfiles/noun.shape"
+      },
+      {
+        "bytes": 1263989,
+        "name": "dict/dbfiles/noun.plant"
+      },
+      {
+        "bytes": 39416,
+        "name": "dict/dbfiles/verb.consumption"
+      },
+      {
+        "bytes": 8519,
+        "name": "dict/dbfiles/noun.Tops"
+      },
+      {
+        "bytes": 506779,
+        "name": "dict/dbfiles/noun.attribute"
+      },
+      {
+        "bytes": 1011777,
+        "name": "dict/dbfiles/noun.act"
+      },
+      {
+        "bytes": 89102,
+        "name": "dict/dbfiles/verb.body"
+      },
+      {
+        "bytes": 127393,
+        "name": "dict/dbfiles/noun.process"
+      },
+      {
+        "bytes": 162795,
+        "name": "dict/index.adv"
+      },
+      {
+        "bytes": 38033,
+        "name": "dict/verb.exc"
+      },
+      {
+        "bytes": 911244,
+        "name": "dict/cntlist"
+      }
+    ]
+  },
+  "script_sha256": "ecaccb35b4a735020466b0d486c0ff756d1973d21b6102995fe272060a12ee42",
+  "source_commit": "86b133aa4b5ed46ddb14d32c81ea858d1df0330a",
+  "started_at": "2026-10-10T20:46:07.821447+00:00"
+}

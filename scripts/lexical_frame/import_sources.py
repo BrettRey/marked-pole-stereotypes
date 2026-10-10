@@ -166,7 +166,7 @@ def anderson_ocr():
             left = float(header.attrib['xMin']) - 28
             right = float(header.attrib['xMin']) + 51
             top = float(header.attrib['yMax']) + 1
-            bottom = 647 if page_number < 6 else 295
+            bottom = 647 if page_number < 6 else 210
             candidates = [w for w in words if left <= float(w.attrib['xMin']) < right
                           and top < float(w.attrib['yMin']) < bottom
                           and float(w.attrib['yMax']) - float(w.attrib['yMin']) <= 9
@@ -191,15 +191,15 @@ def anderson_ocr():
 def import_words():
     wr, info = read_warriner()
     ar = anderson_ocr()
-    write_json(PRIVATE / 'import-v1/warriner_words.json', wr)
-    write_json(PRIVATE / 'import-v1/anderson_ocr_words.json', ar)
+    write_json(PRIVATE / 'import-v2/warriner_words.json', wr)
+    write_json(PRIVATE / 'import-v2/anderson_ocr_words.json', ar)
     words = {r['normalized_word'] for r in wr}
     summary = {'warriner_entries': len(wr), 'warriner_unique_normalized': len(words),
                'anderson_ocr_rows_pending_verification': len(ar),
                'anderson_rows_by_page_column': {f'{p}-{c}': sum(r['pdf_page']==p and r['column']==c for r in ar) for p in range(2,7) for c in (1,2)},
                'warriner_columns_imported': ['Word'], 'warriner_member': info,
                'ratings_exported': False, 'frame_frozen': False}
-    write_json(PRIVATE / 'import-v1/summary.json', summary)
+    write_json(PRIVATE / 'import-v2/summary.json', summary)
     return summary
 
 
