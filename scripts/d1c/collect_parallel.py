@@ -91,8 +91,12 @@ def validate_assignment(directory, location, component, canonical):
     spec, expected = manifest["specification"], canonical["specification"]
     if digest(spec) != manifest["signature"]:
         raise ValueError("Damaged assignment manifest")
-    if spec["job"] != expected["job"] or spec["sampler"] != expected["sampler"]:
+    if (spec["job"] != expected["job"] or spec["sampler"] != expected["sampler"]
+            or spec.get("packages") != expected.get("packages")):
         raise ValueError("Job or sampler differs from the assigned benchmark")
+    for name, value in spec.get("sources", {}).items():
+        if name in expected.get("sources", {}) and value != expected["sources"][name]:
+            raise ValueError("Scientific source differs from the shared upstream specification")
     if location != "cloud" and (spec["component"] != component
             or spec["upstream_archive_sha256"] != UPSTREAM_SHA
             or spec["upstream_commit"] != UPSTREAM_COMMIT
@@ -162,6 +166,41 @@ def conditional_summary(arrays):
             for name, values in arrays.items()}
 
 
+def render_report(report):
+    lines = ["# Three-component run report", "", f"Observed: {report['observed_at']}", "",
+             f"Verified completed components: {len(report['verified_components'])}/3 assigned, out of 8 required for this cut.",
+             "These are conditional results for cell 10, replicate 0. The full grid remains stopped.", "",
+             "| Location | Component | State | Parameter diagnostics | Contrast diagnostics | Sample time | Peak process memory |",
+             "|---|---:|---|---|---|---|---|"]
+    for location in ("cloud", "local", "hf"):
+        entry = report["components"][location]
+        diag, runtime = entry.get("diagnostic", {}), entry.get("runtime", {})
+        parameter = "pending" if not diag else ("pass" if diag["good"] else "fail")
+        contrast = "pending" if not diag else ("pass" if diag["contrast_good"] else "fail")
+        seconds = diag.get("sampling_seconds")
+        sample_time = "pending" if seconds is None else f"{seconds/60:.1f} min"
+        peak = runtime.get("peak_process_rss_bytes", runtime.get("peak_sampled_process_group_rss_bytes"))
+        # Do not present the cloud's early upstream-only memory sample as its
+        # final downstream peak while the supervisor is still running.
+        memory = "pending" if peak is None or not entry["terminal"] else f"{peak/2**30:.2f} GiB"
+        lines.append(f"| {location} | {entry['component']} | {entry['state']} | {parameter} | {contrast} | {sample_time} | {memory} |")
+    local = report["components"]["local"].get("sampler_progress")
+    if local:
+        lines += ["", f"Local sampler counts, including warmup: {local['finished_draws_including_warmup']} / 6,000 per chain. These counts are not recoverable completion checkpoints."]
+    estimate = report["components"]["hf"]["monitoring"].get("estimated_compute_usd")
+    lines += ["", "HF active-job compute ceiling: USD 0.72. Total authorized HF budget: USD 10.",
+              ("Provider-duration compute estimate so far: unavailable." if estimate is None else
+               f"Provider-duration compute estimate so far: USD {estimate:.4f}; this is not an invoice."),
+              "Conservatively reserved across both submissions: USD 1.44; the malformed first submission was cancelled while queued.",
+              "", report["timing_limit"],
+              "Cloud memory is a sampled process-group sum; local and HF memory use the worker’s process peak. These measures are not identical.",
+              "Diagnostic failures remain in the record. No incomplete mixture is reported as a full cut or calibration result.",
+              "", "Machine-readable status: `status.json`. Conditional intervals: `conditional-summaries.csv`. Verified archives: `collected/`."]
+    if report["refresh_errors"]:
+        lines += ["", "Monitoring errors (earlier saved records retained): " + json.dumps(report["refresh_errors"])]
+    atomic_bytes(OUTPUT / "REPORT.md", ("\n".join(lines) + "\n").encode())
+
+
 def collect():
     CACHE.mkdir(parents=True, exist_ok=True)
     OUTPUT.mkdir(parents=True, exist_ok=True)
@@ -215,6 +254,8 @@ def collect():
                         entry.update(state="worker_stopped_without_final_record", terminal=True)
             if entry["terminal"] and result is None:
                 entry["state"] = "stopped_without_component"
+            elif result is None:
+                entry["state"] = "awaiting_cloud_export" if location == "cloud" else "running"
         except (OSError, ValueError, KeyError, TypeError) as exc:
             entry.update(state="verification_pending_or_failed", verification_error=type(exc).__name__ + ": " + str(exc))
         report["components"][location] = entry
@@ -233,6 +274,7 @@ def collect():
     writer.writeheader()
     writer.writerows(rows)
     atomic_bytes(OUTPUT / "conditional-summaries.csv", stream.getvalue().encode())
+    render_report(report)
     print(json.dumps(dict(observed_at=report["observed_at"], verified=report["verified_components"],
                           states={name: entry["state"] for name, entry in report["components"].items()},
                           refresh_errors=report["refresh_errors"])), flush=True)
