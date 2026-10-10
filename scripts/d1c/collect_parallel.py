@@ -144,6 +144,23 @@ def refresh_hf():
                 estimate_basis="Provider starting/running duration rounded up to a minute; not an invoice.")
 
 
+def refresh_hf_batch():
+    receipt = ROOT / "logs/d1c-hf-batch-job-20261010.json"
+    if not receipt.exists():
+        return dict(stage="NOT_SUBMITTED")
+    submitted = json_file(receipt)
+    job = "BrettRey/" + json.loads(submitted["stdout"])["id"]
+    response = json.loads(command("hf", "jobs", "inspect", job, "--json"))[0]
+    command("hf", "buckets", "sync", HF_PATH.rsplit("/", 1)[0], str(CACHE / "hf-batch"))
+    durations = response.get("durations", {})
+    seconds = sum(durations.get(name, 0) for name in ("starting_secs", "running_secs"))
+    progress = CACHE / "hf-batch/batch-004-006/progress.json"
+    return dict(job=job, stage=response["status"]["stage"], durations=durations,
+                estimated_compute_usd=math.ceil(seconds/60)*.03/60,
+                progress=json_file(progress) if progress.exists() else None,
+                estimate_basis="One batch job, counted once; provider duration, not an invoice.")
+
+
 def preserve(directory, location, component):
     """Only called after validation; archive precedes completion marker."""
     target = OUTPUT / "collected" / location
@@ -190,11 +207,14 @@ def render_report(report):
     if report.get("local_queue"):
         queue = report["local_queue"]
         lines += ["", f"Local queue: {queue['state']}; current component {queue.get('current_component')}; completed from queue {queue.get('completed', [])}."]
-    estimate = report["components"]["hf"]["monitoring"].get("estimated_compute_usd")
-    lines += ["", "HF active-job compute ceiling: USD 0.72. Total authorized HF budget: USD 10.",
-              ("Provider-duration compute estimate so far: unavailable." if estimate is None else
-               f"Provider-duration compute estimate so far: USD {estimate:.4f}; this is not an invoice."),
-              "Conservatively reserved across both submissions: USD 1.44; the malformed first submission was cancelled while queued.",
+    trial = report["components"]["hf"]["monitoring"].get("estimated_compute_usd")
+    batch = report.get("hf_batch", {}).get("estimated_compute_usd")
+    estimate = None if trial is None or batch is None else trial + batch
+    lines += ["", "HF batch compute ceiling: USD 0.72. Total authorized HF budget: USD 10.",
+              ("Combined trial/batch provider-duration compute estimate: unavailable." if estimate is None else
+               f"Combined trial/batch provider-duration compute estimate: USD {estimate:.4f}; each job counted once, not an invoice."),
+              f"HF batch stage: {report.get('hf_batch', {}).get('stage', 'unknown')}; components 4–6, two workers.",
+              "Conservatively reserved across all three submissions: USD 2.16; the malformed first submission was cancelled while queued.",
               "", report["timing_limit"],
               "Cloud memory is a sampled process-group sum; local and HF memory use the worker’s process peak. These measures are not identical.",
               "Diagnostic failures remain in the record. No incomplete mixture is reported as a full cut or calibration result.",
@@ -210,28 +230,34 @@ def collect():
     canonical = json.loads(command("git", "show", f"{UPSTREAM_COMMIT}:{CLOUD_PATH}/checkpoints/manifest.json"))
     report = dict(observed_at=datetime.now(timezone.utc).isoformat(), full_cut=False,
                   assigned_components=list(range(8)), unassigned_components=[],
-                  scope="Eight conditional components of cell 10, replicate 0; local queue 3–7; no calibration claim.",
+                  scope="Eight conditional components of cell 10, replicate 0; local 3/7 and HF 4–6 queues; no calibration claim.",
                   timing_limit="Different fixed latent draws, compile environments and local contention; not matched hardware trials.",
                   hf_budget=dict(total_authorized_usd=10, active_job_ceiling_usd=.72,
-                                 conservative_reserved_usd=1.44, billed_total_usd=None),
+                                 conservative_reserved_usd=2.16, billed_total_usd=None),
                   components={}, refresh_errors={})
     sources = {"cloud": CACHE / "cloud", "local": ROOT / "results/d1c/local-component-001-20261010", "hf": CACHE / "hf"}
-    sources.update({f"local-{component:03d}": ROOT / "results/d1c" / f"local-component-{component:03d}-20261010"
-                    for component in range(3, 8)})
+    for component in range(3, 8):
+        location = "hf" if component in (4, 5, 6) else "local"
+        sources[f"{location}-{component:03d}"] = (CACHE / "hf-batch" / f"component-{component:03d}"
+            if location == "hf" else ROOT / "results/d1c" / f"local-component-{component:03d}-20261010")
     queue_path = ROOT / "results/d1c/local-queue-20261010/progress.json"
     report["local_queue"] = json_file(queue_path) if queue_path.exists() else None
     refreshed = {}
-    for location, refresh in (("cloud", refresh_cloud), ("hf", refresh_hf)):
+    for location, refresh in (("cloud", refresh_cloud), ("hf", refresh_hf), ("hf_batch", refresh_hf_batch)):
         try:
             refreshed[location] = refresh()
         except (OSError, subprocess.SubprocessError, ValueError, KeyError, IndexError) as exc:
             # Do not include subprocess stderr: account/network errors could
             # contain details unrelated to the scientific record.
             report["refresh_errors"][location] = type(exc).__name__
+    report["hf_batch"] = refreshed.get("hf_batch", {})
     for component, (location, directory) in enumerate(sources.items()):
-        entry = dict(component=component, monitoring=refreshed.get(location, {}), state="pending", terminal=False)
+        remote_batch = location.startswith("hf-")
+        monitor = refreshed.get("hf_batch" if remote_batch else location, {})
+        entry = dict(component=component, monitoring=monitor, state="pending", terminal=False)
         if component >= 3 and not (directory / "runtime.json").exists():
-            stopped = bool(report["local_queue"] and report["local_queue"]["state"] != "running")
+            stopped = (monitor.get("stage") in TERMINAL_HF if remote_batch else
+                       bool(report["local_queue"] and report["local_queue"]["state"] != "running"))
             entry.update(state="queue_stopped" if stopped else "queued", terminal=stopped)
             report["components"][location] = entry
             continue
@@ -246,8 +272,9 @@ def collect():
                 entry.update(state="verified_component", archive_sha256=record["archive_sha256"],
                              diagnostic=diagnostic, diagnostics_pass=bool(diagnostic["good"] and diagnostic["contrast_good"]),
                              conditional_summaries=conditional_summary(arrays))
-            if location == "hf":
-                entry["terminal"] = refreshed.get(location, {}).get("stage") in TERMINAL_HF
+            if location == "hf" or remote_batch:
+                entry["terminal"] = (monitor.get("stage") in TERMINAL_HF or
+                                      runtime["state"] in {"component_complete", "interrupted"})
             elif location == "cloud":
                 entry["terminal"] = runtime["state"] in {"complete", "failed", "interrupted"}
             else:

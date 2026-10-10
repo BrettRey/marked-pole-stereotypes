@@ -544,3 +544,29 @@ Later reporting-only commits must not strand this fixed queue: validate all
 executable/specification file bytes against the published source commit
 instead of demanding that unrelated Git HEAD metadata never advance.
 Commit and push the queue and this specification before the next fit.
+
+## Keep HF occupied too (2026-10-10; prospective)
+
+Brett explicitly requested continued HF work within the existing USD 10
+budget. Transfer pending components 4, 5 and 6 to one CPU Upgrade job with
+two concurrent single-core workers. Component 6 starts when a slot clears.
+The completed HF trial peaked at 7.32 GiB; two workers leave headroom within
+the 32-GB container. Mac component 3 continues uninterrupted, followed by 7.
+Cloud retains 0; completed components 1 and 2 are not repeated. This changes
+execution assignments only, not the scientific specification or full-grid stop.
+
+Replace the old local queue supervisor while preserving its independently
+grouped worker. Verify both process identities, stop dispatch by suspending
+only the supervisor, terminate only that supervisor, and have its replacement
+observe component 3's original runtime and completion record before starting
+7. A completed diagnostic failure still advances; an execution failure stops
+without retry. Record the handoff and check the same worker remains alive.
+
+Use the same pinned image, packages, upstream archive, seeds, sampler budget
+and contrast RNG ordering. Publish before new fits. Serialize concurrent Git
+publication checks, retain separate component outputs in the existing private
+bucket, and stream progress to provider logs. One provider attempt and a
+24-hour timeout cap this batch at USD .72 compute; conservatively reserve
+USD 2.16 across all three submissions, including the cancelled setup attempt.
+The collector must count the new job's cost once, check all eight assignments,
+and preserve verified completed results without treating a partial cut as full.
