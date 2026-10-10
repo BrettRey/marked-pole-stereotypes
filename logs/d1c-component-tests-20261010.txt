@@ -1,0 +1,27 @@
+test_bounded_benchmark_stops_after_one_component_and_never_reports_full_cut (test_component_state.ComponentTests.test_bounded_benchmark_stops_after_one_component_and_never_reports_full_cut) ... saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmprwsfo0ao/components
+saved component downstream-000: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmprwsfo0ao/components
+ok
+test_changed_specification_and_corrupt_archive_are_rejected (test_component_state.ComponentTests.test_changed_specification_and_corrupt_archive_are_rejected) ... saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpfnx5l34i/components
+ok
+test_cut_restart_preserves_exact_mixture_and_does_not_retry_failed_component (test_component_state.ComponentTests.test_cut_restart_preserves_exact_mixture_and_does_not_retry_failed_component) ... saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpacxwc2tk/components
+saved component downstream-000: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpacxwc2tk/components
+saved component downstream-001: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpacxwc2tk/components
+saved component downstream-002: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpacxwc2tk/components
+saved component downstream-003: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpacxwc2tk/components
+saved component downstream-004: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpacxwc2tk/components
+saved component downstream-005: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpacxwc2tk/components
+saved component downstream-006: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpacxwc2tk/components
+saved component downstream-007: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpacxwc2tk/components
+ok
+test_interrupted_commit_marker_is_not_a_completed_component (test_component_state.ComponentTests.test_interrupted_commit_marker_is_not_a_completed_component) ... saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpeyomkuhb/components
+saved component downstream-000: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpeyomkuhb/components
+ok
+test_joint_restart_reuses_completed_contrasts (test_component_state.ComponentTests.test_joint_restart_reuses_completed_contrasts) ... saved component joint: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpeoz9hwq5/components
+ok
+test_second_writer_and_modified_record_are_rejected (test_component_state.ComponentTests.test_second_writer_and_modified_record_are_rejected) ... saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpsbjl4867/components
+ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.071s
+
+OK

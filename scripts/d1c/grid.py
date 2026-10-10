@@ -28,6 +28,10 @@ import d1c
 import pandas as pd
 
 from run_state import RunState, atomic_json
+from component_state import ComponentState
+
+COMPONENT_ROOT = None
+COMPONENT_SPECIFICATION = None
 
 
 def git(*arguments):
@@ -35,12 +39,21 @@ def git(*arguments):
                           text=True, check=True).stdout.strip()
 
 
-def configure_sampler(draws, tune, upstream_draws=None):
+def configure_sampler(draws, tune, upstream_draws=None, component_root=None, component_specification=None):
+    global COMPONENT_ROOT, COMPONENT_SPECIFICATION
     # The worker calls d1c.fit directly. Use every contrast already computed
     # for diagnostics, rather than discarding most for summary statistics.
     d1c.DRAWS, d1c.TUNE = draws, tune
     d1c.UPSTREAM_DRAWS = draws if upstream_draws is None else upstream_draws
     d1c.POST_DRAWS = d1c.CHAINS * draws
+    COMPONENT_ROOT, COMPONENT_SPECIFICATION = component_root, component_specification
+
+
+def checkpointed_fit(job):
+    from run_state import job_key
+    spec = dict(COMPONENT_SPECIFICATION, job=job)
+    with ComponentState(Path(COMPONENT_ROOT) / job_key(job), spec) as components:
+        return d1c.fit(job, components=components)
 
 
 def specification(reps, draws, tune, upstream_draws=None):
@@ -49,7 +62,7 @@ def specification(reps, draws, tune, upstream_draws=None):
     # the next. Scheduling changes neither data nor fit seeds.
     jobs = [dict(cell, rep=rep) for rep in range(reps) for cell in cells]
     paths = ("scripts/d1c/d1c.py", "scripts/d1c/grid.py", "scripts/d1c/run_state.py",
-             "scripts/d1c/diagnostic_chunks.py",
+             "scripts/d1c/diagnostic_chunks.py", "scripts/d1c/component_state.py",
              "scripts/d1/bin/clang++")
     packages = ("numpy", "pandas", "scipy", "pymc", "pytensor", "nutpie", "arviz",
                 "numba", "llvmlite", "xarray")
@@ -67,7 +80,8 @@ def specification(reps, draws, tune, upstream_draws=None):
         order="replicate, then original cell order", retries="none")
 
 
-def completed_jobs(jobs, workers, draws, tune, *, upstream_draws=None, fit=d1c.fit):
+def completed_jobs(jobs, workers, draws, tune, *, upstream_draws=None, fit=d1c.fit,
+                   component_root=None, component_specification=None):
     """Bound queued work; a broken pool leaves uncompleted jobs pending.
 
     Ordinary exceptions returned by a live worker become terminal records.
@@ -78,7 +92,10 @@ def completed_jobs(jobs, workers, draws, tune, *, upstream_draws=None, fit=d1c.f
     pool = ProcessPoolExecutor(max_workers=workers,
                                mp_context=multiprocessing.get_context("spawn"),
                                initializer=configure_sampler,
-                               initargs=(draws, tune, upstream_draws))
+                               initargs=(draws, tune, upstream_draws,
+                                         component_root, component_specification))
+    if component_root is not None and fit is d1c.fit:
+        fit = checkpointed_fit
     try:
         pending = {}
 
@@ -231,7 +248,10 @@ def main():
         started = time.perf_counter()
         try:
             with closing(completed_jobs(store.pending(), args.workers, draws, tune,
-                                        upstream_draws=upstream_draws)) as jobs:
+                                        upstream_draws=upstream_draws,
+                                        component_root=store.path / "components",
+                                        component_specification={key: spec[key] for key in
+                                            ("sampler", "sources", "packages", "python", "platform", "root_seed")})) as jobs:
                 for job, rows, status in jobs:
                     store.save(job, rows, status)
                     publish(store, stamp, sessions, state="running")

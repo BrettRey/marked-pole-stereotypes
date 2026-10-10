@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-10-10T16:52:38.918131+00:00",
+  "baseline_commit": "1a6e437",
+  "source_sha256": "09560f794a2a27af4b7349466c996b9ec266e93b1e3d9e0eff2aed1ed63d30dd",
+  "unchanged_ast_functions": [
+    "seed",
+    "cells",
+    "utilities",
+    "contrasts",
+    "generate",
+    "build",
+    "sample",
+    "posterior_dataset",
+    "flattened",
+    "downstream_data",
+    "upstream_data",
+    "posterior_contrasts",
+    "summarize"
+  ],
+  "exact_fixture_results": [
+    "joint",
+    "cut"
+  ],
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "note": "Fixture-only comparison; no model fits. All scientific rows and status fields agree except elapsed seconds."
+}

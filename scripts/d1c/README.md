@@ -361,3 +361,61 @@ has been checked for numerical equivalence, but its end-to-end memory peak
 and runtime have not yet been measured in the grid. Interrupted unfinished
 cut jobs restart as whole jobs; completed jobs, including failures, survive
 resumption.
+
+## Grid stopped by Brett (2026-10-10)
+
+Brett stopped the initial grid after questioning the roughly 18-day projected
+cost. Run `20261010T161109492336Z` ended at 16:28:32 UTC after 17.4 minutes,
+with zero completed cells. The runner and its three workers are stopped;
+the saved state is `interrupted`, and the unfinished fits are not diagnostic
+failures. Preserve all records. This instruction supersedes the earlier grid
+launch authorization: do not resume or launch a replacement without a newly
+agreed resource scope. D1c calibration remains incomplete.
+
+## Component recovery and Claude-cloud benchmark (2026-10-10; prospective)
+
+Brett authorized this next step with “do it” after the proposal to add
+component checkpoints and run one bounded D1c component in Claude cloud.
+The stopped full local grid stays stopped. This authorization covers the
+single benchmark below; it does not restart the full grid or authorize
+unbounded cloud batches.
+
+Save each completed upstream, downstream and joint component separately.
+Upstream recovery retains the exact eight selected latent draws, their
+indices, diagnostics and random-generator state. Downstream/joint recovery
+retains all scalar contrast draws, diagnostics and the subsequent generator
+state. A component is complete only after its archive and checksum-bearing
+record are atomically published. Resumption checks the specification and
+hashes, preserves completed diagnostic failures and skips completed components.
+It never silently substitutes new latent draws. An interruption can still
+lose the active component; partial sampler trajectories are not resumed.
+Each saved component also gets an immediately readable progress summary.
+A partial cut is labelled partial, never a completed eight-component estimate.
+
+The cloud benchmark uses the original baseline UWA-like cut cell at null H2,
+measured register reliability .8 and prior SD 1, replicate 0 (cell 10).
+Generate the same artificial data with the existing seed derivation. Fit the
+upstream module with 8,000 retained draws per chain and retain its eight
+selected latent draws; then fit only downstream component 0 with 4,000
+retained draws per chain. Both use four chains, 2,000 warmup, target acceptance
+.95 and one sampler core. Keep all 16,000 production contrasts. All models,
+priors, estimands and diagnostic gates stay unchanged. A failed diagnostic
+is retained and reported. It does not trigger a retry. No empirical data enter.
+
+Stop after the one downstream component finishes, with one environment setup
+attempt and no automatic retries. After Brett questioned the proposed timeout,
+remove the analyst-chosen four-hour cutoff: it could discard useful work while
+providing no credit-spend guarantee. The cloud session
+must export the completed component records and compact scalar/latent archives
+on its dedicated branch after each completion, plus a final report. These
+are our artificial-data calculation outputs, not third-party raw datasets or
+full model traces. Large-scale archival storage is a later resource decision.
+
+Record wall time, process memory, the container memory limit when available,
+Python/packages, code identity, seeds, sampler settings, and all diagnostics.
+Record the reported cloud-credit balance before and after when the account
+UI exposes it; if unavailable, say so. The last user-reported balance is $216.
+There is no verified programmatic dollar cap for Claude cloud. Use one
+cloud session and sparse supervision. Do not launch additional sessions or
+continue after this benchmark. Commit and push all executable changes before
+it runs. Unit tests use fixtures and do not fit models locally.

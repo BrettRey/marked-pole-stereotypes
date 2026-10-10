@@ -399,7 +399,14 @@ def posterior_contrasts(tr, observed, fixed, rng):
     return [rows[pick] for pick in picks], finite and contrast_rhat <= 1.01 and contrast_ess >= 100, contrast_rhat, contrast_ess
 
 
-def fit(job):
+def fit(job, *, components=None, max_downstream_components=None):
+    from component_state import (ComponentLimitReached, contrast_arrays,
+                                 contrast_rows, contrast_summaries)
+
+    if max_downstream_components is not None:
+        if (components is None or job["feedback"] != "cut"
+                or not 1 <= max_downstream_components <= CUT_DRAWS):
+            raise ValueError("A bounded cut requires checkpoints and 1..CUT_DRAWS components")
     started = time.time()
     observed, truths, data_seed = generate(job)
     fit_seed = seed(2, job["cell"], job["rep"])
@@ -408,33 +415,70 @@ def fit(job):
     downstream = downstream_data(observed)
     diagnostics, posterior = [], []
     if job["feedback"] == "joint":
-        tr, diag = sample(job, "joint", dict(upstream, **downstream), fit_seed)
-        values, good, crhat, cess = posterior_contrasts(tr, observed, None, rng)
-        diag.update(contrast_good=good, contrast_rhat=crhat, contrast_ess=cess)
+        saved = components.load("joint") if components is not None else None
+        if saved is not None:
+            metadata, arrays = saved
+            diag, values = metadata["diagnostic"], contrast_rows(arrays)
+            rng.bit_generator.state = metadata["rng_state"]
+        else:
+            tr, diag = sample(job, "joint", dict(upstream, **downstream), fit_seed)
+            values, good, crhat, cess = posterior_contrasts(tr, observed, None, rng)
+            diag.update(contrast_good=good, contrast_rhat=crhat, contrast_ess=cess)
+            if components is not None:
+                arrays = contrast_arrays(values)
+                components.save("joint", dict(
+                    diagnostic=diag, rng_state=rng.bit_generator.state,
+                    summaries=contrast_summaries(arrays), interpretation="joint posterior"), arrays)
+            del tr
         diagnostics.append(diag)
         posterior.extend(values)
     else:
-        tr, diag = sample(job, "upstream", upstream, fit_seed)
-        diag.update(contrast_good=True, contrast_rhat=None)
+        saved = components.load("upstream") if components is not None else None
+        if saved is not None:
+            metadata, selected = saved
+            diag = metadata["diagnostic"]
+            rng.bit_generator.state = metadata["rng_state"]
+        else:
+            tr, diag = sample(job, "upstream", upstream, fit_seed)
+            diag.update(contrast_good=True, contrast_rhat=None)
+            latents = {k: flattened(tr, k) for k in ("z", "v", "s")}
+            if job["reliability"]:
+                latents["h"] = flattened(tr, "h")
+            # Independent uniform draws from the empirical upstream posterior.
+            # Draws are not weighted by downstream marginal likelihood.
+            picks = rng.integers(len(latents["z"]), size=CUT_DRAWS)
+            selected = {k: values[picks] for k, values in latents.items()}
+            if components is not None:
+                components.save("upstream", dict(
+                    diagnostic=diag, picks=picks.tolist(), rng_state=rng.bit_generator.state,
+                    interpretation="selected upstream draws for the fixed cut"), selected)
+            del latents, tr
         diagnostics.append(diag)
-        latents = {k: flattened(tr, k) for k in ("z", "v", "s")}
-        if job["reliability"]:
-            latents["h"] = flattened(tr, "h")
-        # Independent uniform draws from the empirical upstream posterior.
-        # Draws are not weighted by downstream marginal likelihood.
-        picks = rng.integers(len(latents["z"]), size=CUT_DRAWS)
-        for component, pick in enumerate(picks):
-            fixed = {f"{k}_fixed": x[pick] for k, x in latents.items()}
-            component_seed = seed(4, job["cell"], job["rep"], component)
-            conditional, diag = sample(job, "downstream", dict(downstream, **fixed),
-                                       component_seed)
-            values, good, crhat, cess = posterior_contrasts(conditional, observed, fixed, rng)
-            diag.update(contrast_good=good, contrast_rhat=crhat, contrast_ess=cess)
+        for component in range(CUT_DRAWS):
+            if max_downstream_components is not None and component >= max_downstream_components:
+                raise ComponentLimitReached(f"Saved {component} of {CUT_DRAWS} cut components")
+            key = f"downstream-{component:03d}"
+            saved = components.load(key) if components is not None else None
+            if saved is not None:
+                metadata, arrays = saved
+                diag, values = metadata["diagnostic"], contrast_rows(arrays)
+                rng.bit_generator.state = metadata["rng_state"]
+            else:
+                fixed = {f"{k}_fixed": x[component] for k, x in selected.items()}
+                component_seed = seed(4, job["cell"], job["rep"], component)
+                conditional, diag = sample(job, "downstream", dict(downstream, **fixed),
+                                           component_seed)
+                values, good, crhat, cess = posterior_contrasts(conditional, observed, fixed, rng)
+                diag.update(contrast_good=good, contrast_rhat=crhat, contrast_ess=cess)
+                if components is not None:
+                    arrays = contrast_arrays(values)
+                    components.save(key, dict(
+                        diagnostic=diag, rng_state=rng.bit_generator.state,
+                        summaries=contrast_summaries(arrays),
+                        interpretation=f"conditional cut component {component}; not the full cut"), arrays)
+                del conditional
             diagnostics.append(diag)
             posterior.extend(values)
-            # The saved contrasts contain scalars, so the completed trace
-            # needn't coexist with the next conditional fit's trace.
-            del conditional
     converged = all(d["good"] and d["contrast_good"] for d in diagnostics)
     rows = []
     for estimand, truth in truths.items():

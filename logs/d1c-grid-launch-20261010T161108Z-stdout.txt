@@ -1,0 +1,92 @@
+D1c grid 20261010T161109492336Z: 0/240 completed; 3 workers; 4000 production / 8000 upstream retained + 2000 warmup per chain
+compile (40, 1, False, 1.0, 'joint')
+compile (40, 1, True, 1.0, 'joint')
+compile (40, 1, False, 2.5, 'joint')
+sample (40, 1, False, 1.0, 'joint'); compile 13.1s
+sample (40, 1, True, 1.0, 'joint'); compile 16.0s
+sample (40, 1, False, 2.5, 'joint'); compile 26.2s
+sampling (40, 1, False, 1.0, 'joint'): draws [13, 0, 0, 0]; steps [1023, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [13, 0, 0, 0]; steps [1023, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [13, 0, 0, 0]; steps [1023, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [24, 0, 0, 0]; steps [511, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [25, 0, 0, 0]; steps [255, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [22, 0, 0, 0]; steps [1023, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [170, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [161, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [107, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [333, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [318, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [274, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [501, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [481, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [443, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [673, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [649, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [619, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [852, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [822, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [798, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [1027, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [992, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [967, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [1194, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [1153, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [1141, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [1364, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [1319, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [1309, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [1534, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [1477, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [1467, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [1669, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [1612, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [1605, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [1834, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [1773, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [1775, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [2010, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [1943, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [1947, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [2189, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [2116, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [2125, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [2370, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [2291, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [2302, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [2533, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [2449, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [2466, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [2714, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [2626, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [2646, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [2883, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [2789, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [2813, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [3065, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [2963, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [2996, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [3250, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [3143, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [3177, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [3422, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, True, 1.0, 'joint'): draws [3308, 0, 0, 0]; steps [63, 0, 0, 0]
+sampling (40, 1, False, 2.5, 'joint'): draws [3348, 0, 0, 0]; steps [63, 0, 0, 0]
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/grid.py", line 253, in <module>
+    main()
+    ~~~~^^
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/grid.py", line 235, in main
+    for job, rows, status in jobs:
+                             ^^^^
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/grid.py", line 93, in completed_jobs
+    done, _ = wait(pending, return_when=FIRST_COMPLETED)
+              ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/concurrent/futures/_base.py", line 300, in wait
+    waiter.event.wait(timeout)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 670, in wait
+    signaled = self._cond.wait(timeout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 369, in wait
+    waiter.acquire()
+    ~~~~~~~~~~~~~~^^
+KeyboardInterrupt

@@ -14,13 +14,16 @@ next_action: 'Implementation runs in Codex tabs Brett drives (2026-10-09; HANDOF
   place of GLM (no OpenRouter credit), then reruns wave 1. Lane S completed all twelve
   D1c component timings: eight parameter passes, four R-hat failures, eight contrast
   passes and zero divergences. Summary: results/d1c/TIMING-SUMMARY-2026-10-10.md.
-  The local grid launched after commit/push at 72035fd, run 20261010T161109492336Z.
-  Monitor logs/d1c-grid-20261010T161109492336Z.json and the launch stdout. It covers
-  one initial replicate of all 240 cells, three workers, four chains, 4,000 production / 8,000 upstream retained
-  draws and 2,000 warmup. About 18 days is an extrapolation, not a deadline. This
-  first sweep checks execution and diagnostics; D1c calibration remains incomplete.
-  Recovery, budget routing and equivalent batched diagnostics pass 17 tests.
-  Stop only for a required design change. Brett chose reporting estimated size, uncertainty
+  Brett stopped the local grid on 2026-10-10 at 16:28 UTC after the roughly
+  18-day estimate. Run 20261010T161109492336Z ended after 17.4 minutes with zero
+  completed cells; the parent and all three workers are confirmed stopped.
+  Preserve the interrupted record; the full grid stays stopped. Brett authorized
+  component recovery and one Claude-cloud benchmark: upstream preparation and
+  downstream component 0 of original cell 10, replicate 0. Recovery and cloud
+  export checks pass 26 tests; publish the executable code, then launch one
+  cloud session. Stop at the component boundary, with no arbitrary wall-clock
+  cutoff or retries. D1c calibration remains incomplete.
+  Brett chose reporting estimated size, uncertainty
   and changes across assumptions, with substantive benchmarks unset. Both lane-S
   reporting drafts now follow that direction; the analyst handles later plan
   integration. D1b has a preparatory design note but no executable specification or pilot.
@@ -40,7 +43,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A done (conditional forward map retained); D1 grid done (indicator verdict after D1c); longer D1c baseline pilot passed both replicates; twelve-fit timing complete (four R-hat failures, zero divergences), initial full-cell local sweep running after commit/push 72035fd with 17 passing tests; D1c calibration remains incomplete; Brett chose effect size, uncertainty and sensitivity reporting with substantive benchmarks unset, incorporated into both drafts; D1b design note prepared; Koch data permission confirmed by email, with citation requested; D2 grid done (results/d2/SUMMARY.md); plan settled through H2, H1, L1, L2, multiverse and model judges only; implementation handed to Codex tabs (HANDOFF-TO-CODEX.md); Norman extraction: parser bug to fix, GLM replaced by Apple's Vision OCR (no OpenRouter credit); no strand B outcome data opened · status: active · updated: 2026-10-10 -->
+<!-- SUMMARY: Strand A done (conditional forward map retained); D1 grid done (indicator verdict after D1c); longer D1c baseline pilot passed both replicates; twelve-fit timing complete (four R-hat failures, zero divergences), initial full-cell local sweep stopped at Brett’s request after 17.4 minutes, zero cells completed, all workers stopped; full grid remains stopped, one Claude-cloud component benchmark authorized and recovery/export implementation passes 26 tests; D1c calibration remains incomplete; Brett chose effect size, uncertainty and sensitivity reporting with substantive benchmarks unset, incorporated into both drafts; D1b design note prepared; Koch data permission confirmed by email, with citation requested; D2 grid done (results/d2/SUMMARY.md); plan settled through H2, H1, L1, L2, multiverse and model judges only; implementation handed to Codex tabs (HANDOFF-TO-CODEX.md); Norman extraction: parser bug to fix, GLM replaced by Apple's Vision OCR (no OpenRouter credit); no strand B outcome data opened · status: active · updated: 2026-10-10 -->
 
 ## State
 
@@ -55,11 +58,11 @@ Scaffolded 2026-10-07 from Brett's brief (`notes/project-brief.md`, verbatim). T
 5. Missing literature: `notes/literature-to-fetch.md` (scripted downloads blocked; fetch by hand).
 6. Lane S drafts: `notes/threshold-examples-draft-2026-10-10.md` and `notes/plan-part8-draft-2026-10-10.md` now follow Brett's direction to report estimated size, uncertainty and changes across assumptions, with substantive benchmarks unset and no benchmark-selection checklist. The analyst handles later integration and reconciliation of older threshold language in the plan. `notes/d1b-design-draft-2026-10-10.md` maps identification and implementation requirements. The plan itself is unchanged. D1b still needs its numerical specification, code, pilot and grid.
 7. Koch et al. (2024): Alex Koch's email of 2026-10-09, supplied by Brett on 2026-10-10, gives permission for research use and publication of derived summaries; his follow-up requests citation. Cite the paper (doi:10.1037/pspa0000383) and OSF project (https://osf.io/eadcm/). Record this as explicit author permission, not an inferred CC BY licence. The permission blocker is cleared; no Koch data have been downloaded or opened in this session. Record file-level provenance when retrieving them and preserve the existing analysis-plan and outcome-data gates.
-8. D1c initial grid: run `20261010T161109492336Z`, launched 2026-10-10 16:11 UTC from published commit `72035fd`. Progress: `logs/d1c-grid-20261010T161109492336Z.json`; stdout: `logs/d1c-grid-launch-20261010T161108Z-stdout.txt`; launch record: `logs/d1c-grid-launch-20261010T161108Z.json`. Completed jobs survive interruption. After an actual interruption, resume with `.venv/bin/python -u scripts/d1c/grid.py resume 20261010T161109492336Z --workers 3`, detached with the same thread limits as the launch record. Do not launch a duplicate while the current runner is active. No automatic retries of completed failures. The initial sweep cannot establish calibration; D1b remains at preparatory-note stage.
+8. D1c initial grid: run `20261010T161109492336Z` was stopped at Brett’s explicit request on 2026-10-10 at 16:28 UTC, after 17.4 minutes and zero completed cells. All workers are stopped; records remain in `logs/d1c-grid-*`. Brett subsequently authorized component recovery and one Claude-cloud benchmark, specified in `scripts/d1c/README.md` and `scripts/d1c/CLOUD.md`. Implementation passes 26 tests and preserves the previous scientific functions and fixture results. Publish code before launching the single benchmark; the full grid stays stopped. D1b remains at preparatory-note stage.
 
 ## Blockers
 
-- D1c baseline pilot convergence blocker resolved: both approved longer-run replicates passed (maximum R-hat 1.00624 and 1.00671; zero divergences). Completed variant timing has four R-hat failures: UWA measured-register upstream/downstream and Nicolas measured-register upstream/joint. All eight contrast checks passed; all twelve fits had zero divergences. The initial grid uses larger, prospectively fixed budgets and preserves failures without automatic retries. One replicate per cell cannot establish calibration. The wider design assessment and D1 indicator verdict remain open; required design changes must be raised with Brett.
+- D1c baseline pilot convergence blocker resolved: both approved longer-run replicates passed (maximum R-hat 1.00624 and 1.00671; zero divergences). Completed variant timing has four R-hat failures: UWA measured-register upstream/downstream and Nicolas measured-register upstream/joint. All eight contrast checks passed; all twelve fits had zero divergences. The initial grid was stopped by Brett because of its roughly 18-day projected cost; no cell completed. One Claude-cloud component benchmark is now authorized; broader runs still need a new agreed resource scope. One replicate per cell cannot establish calibration. The wider design assessment and D1 indicator verdict remain open; required design changes must be raised with Brett.
 - Strand B literature and data: scripted downloads hit bot checks; fetch by hand (`notes/literature-to-fetch.md`).
 - ~~No commonness measure found yet~~ (2026-10-09: Ziano et al.'s display-frequency panel, 149 traits, is a human anchor for calibrated model judges; see `analysis_plan.md`, "Commonness judges"). No new human judges: unsupported vocabulary remains a separately labelled model-judged population (Brett, 2026-10-09).
 - Norman (1967) pass B (GLM) dropped: no OpenRouter credit (Brett, 2026-10-09). Lane N pilots Apple's Vision OCR in its place (`HANDOFF-TO-CODEX.md`).

@@ -1,0 +1,61 @@
+{
+  "created_at": "2026-10-10T16:35:54.010202+00:00",
+  "purpose": "Options after Brett stopped local grid; no run authorized",
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "seed": null,
+  "method": "Deterministic arithmetic, no model fit",
+  "input": "logs/d1c-initial-grid-estimate-20261010.json",
+  "input_sha256": "b81e603844eb4182e8c5177b16ff266cdb93032ec8e9b9b104298f9d3ede3f89",
+  "one_sweep_worker_hours": 1287.8068876868945,
+  "replicates_per_cell": 1,
+  "huggingface": [
+    {
+      "workers_per_machine": 2,
+      "machines": 10,
+      "total_workers": 20,
+      "ideal_hours": 64.39034438434473,
+      "compute_USD": 19.317103315303417
+    },
+    {
+      "workers_per_machine": 4,
+      "machines": 10,
+      "total_workers": 40,
+      "ideal_hours": 32.195172192172365,
+      "compute_USD": 9.658551657651708
+    }
+  ],
+  "modal": [
+    {
+      "workers": 50,
+      "memory_GiB_per_worker": 8,
+      "ideal_hours": 25.75613775373789,
+      "price_per_worker_hour": 0.111096,
+      "compute_USD": 143.0701939944632
+    },
+    {
+      "workers": 50,
+      "memory_GiB_per_worker": 16,
+      "ideal_hours": 25.75613775373789,
+      "price_per_worker_hour": 0.175032,
+      "compute_USD": 225.40741516561252
+    }
+  ],
+  "local_three_workers_eight_hours_per_day_calendar_days": 53.65862032028727,
+  "hf_single_four_hour_benchmark_compute_ceiling_USD": 0.12,
+  "price_sources": {
+    "huggingface": "https://huggingface.co/docs/hub/jobs-pricing",
+    "huggingface_API": "https://huggingface.co/api/jobs/hardware",
+    "modal": "https://modal.com/pricing"
+  },
+  "verified_price_date": "2026-10-10",
+  "assumptions": [
+    "Cloud fit worker matches local timing throughput; unmeasured.",
+    "HF CPU Upgrade is 8 vCPU/32 GB at USD 0.03 per machine-hour; feasibility of 2-4 concurrent fit workers unmeasured.",
+    "HF ten-machine concurrency is hypothetical; account quota not checked.",
+    "Modal regular function execution at posted base CPU/memory rates, not non-preemptible or Sandbox pricing.",
+    "Modal one physical CPU core and 8-16 GiB per fit worker are proposed allocations, not validated peak requirements.",
+    "No credits, tax, storage, transfers, start-up, interruption, idle or queue allowance.",
+    "Cloud preparation, persistent output storage and bounded-job orchestration are not yet implemented.",
+    "These costs cover one full-cell sweep, not adequate replication-based calibration."
+  ]
+}
