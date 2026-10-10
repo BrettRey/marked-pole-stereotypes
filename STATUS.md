@@ -20,9 +20,12 @@ next_action: 'Implementation runs in Codex tabs Brett drives (2026-10-09; HANDOF
   Preserve the interrupted record; the full grid stays stopped. Brett authorized
   component recovery and one Claude-cloud benchmark: upstream preparation and
   downstream component 0 of original cell 10, replicate 0. Recovery and cloud
-  export checks pass 26 tests; publish the executable code, then launch one
-  cloud session. Stop at the component boundary, with no arbitrary wall-clock
-  cutoff or retries. D1c calibration remains incomplete.
+  export checks pass 26 tests. The cloud benchmark is running from published
+  commit 0401100 on claude/d1c-cloud-benchmark-qjwn7f. Its upstream checkpoint
+  passed diagnostics and was exported and checksum-verified; downstream
+  component 0 is next. Follow its final result, runtime and memory record.
+  Stop at the component boundary, with no arbitrary wall-clock cutoff or
+  retries. D1c calibration remains incomplete.
   Brett chose reporting estimated size, uncertainty
   and changes across assumptions, with substantive benchmarks unset. Both lane-S
   reporting drafts now follow that direction; the analyst handles later plan
@@ -43,7 +46,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A done (conditional forward map retained); D1 grid done (indicator verdict after D1c); longer D1c baseline pilot passed both replicates; twelve-fit timing complete (four R-hat failures, zero divergences), initial full-cell local sweep stopped at Brett’s request after 17.4 minutes, zero cells completed, all workers stopped; full grid remains stopped, one Claude-cloud component benchmark authorized and recovery/export implementation passes 26 tests; D1c calibration remains incomplete; Brett chose effect size, uncertainty and sensitivity reporting with substantive benchmarks unset, incorporated into both drafts; D1b design note prepared; Koch data permission confirmed by email, with citation requested; D2 grid done (results/d2/SUMMARY.md); plan settled through H2, H1, L1, L2, multiverse and model judges only; implementation handed to Codex tabs (HANDOFF-TO-CODEX.md); Norman extraction: parser bug to fix, GLM replaced by Apple's Vision OCR (no OpenRouter credit); no strand B outcome data opened · status: active · updated: 2026-10-10 -->
+<!-- SUMMARY: Strand A done (conditional forward map retained); D1 grid done (indicator verdict after D1c); longer D1c baseline pilot passed both replicates; twelve-fit timing complete (four R-hat failures, zero divergences), initial full-cell local sweep stopped at Brett’s request after 17.4 minutes, zero cells completed, all workers stopped; full grid remains stopped, one Claude-cloud component benchmark running with verified exported upstream checkpoint, recovery/export implementation passes 26 tests; D1c calibration remains incomplete; Brett chose effect size, uncertainty and sensitivity reporting with substantive benchmarks unset, incorporated into both drafts; D1b design note prepared; Koch data permission confirmed by email, with citation requested; D2 grid done (results/d2/SUMMARY.md); plan settled through H2, H1, L1, L2, multiverse and model judges only; implementation handed to Codex tabs (HANDOFF-TO-CODEX.md); Norman extraction: parser bug to fix, GLM replaced by Apple's Vision OCR (no OpenRouter credit); no strand B outcome data opened · status: active · updated: 2026-10-10 -->
 
 ## State
 
@@ -58,7 +61,7 @@ Scaffolded 2026-10-07 from Brett's brief (`notes/project-brief.md`, verbatim). T
 5. Missing literature: `notes/literature-to-fetch.md` (scripted downloads blocked; fetch by hand).
 6. Lane S drafts: `notes/threshold-examples-draft-2026-10-10.md` and `notes/plan-part8-draft-2026-10-10.md` now follow Brett's direction to report estimated size, uncertainty and changes across assumptions, with substantive benchmarks unset and no benchmark-selection checklist. The analyst handles later integration and reconciliation of older threshold language in the plan. `notes/d1b-design-draft-2026-10-10.md` maps identification and implementation requirements. The plan itself is unchanged. D1b still needs its numerical specification, code, pilot and grid.
 7. Koch et al. (2024): Alex Koch's email of 2026-10-09, supplied by Brett on 2026-10-10, gives permission for research use and publication of derived summaries; his follow-up requests citation. Cite the paper (doi:10.1037/pspa0000383) and OSF project (https://osf.io/eadcm/). Record this as explicit author permission, not an inferred CC BY licence. The permission blocker is cleared; no Koch data have been downloaded or opened in this session. Record file-level provenance when retrieving them and preserve the existing analysis-plan and outcome-data gates.
-8. D1c initial grid: run `20261010T161109492336Z` was stopped at Brett’s explicit request on 2026-10-10 at 16:28 UTC, after 17.4 minutes and zero completed cells. All workers are stopped; records remain in `logs/d1c-grid-*`. Brett subsequently authorized component recovery and one Claude-cloud benchmark, specified in `scripts/d1c/README.md` and `scripts/d1c/CLOUD.md`. Implementation passes 26 tests and preserves the previous scientific functions and fixture results. Publish code before launching the single benchmark; the full grid stays stopped. D1b remains at preparatory-note stage.
+8. D1c initial grid: run `20261010T161109492336Z` was stopped at Brett’s explicit request after 17.4 minutes and zero completed cells. The full local grid stays stopped. One cloud benchmark is running from published source commit `0401100`, session `session_01QyT922V6vtqQgFdfab6ps8`, branch `claude/d1c-cloud-benchmark-qjwn7f`. The upstream checkpoint passed (R-hat 1.00363, minimum ESS 1236.4, zero divergences), was exported at `942dfd8`, and its checksum and latent arrays were verified. Downstream component 0 is pending; do not mistake this partial result for a full cut or calibration. Launch and monitoring record: `logs/d1c-cloud-launch-20261010.json`. D1b remains at preparatory-note stage.
 
 ## Blockers
 
