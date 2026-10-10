@@ -112,3 +112,43 @@ for observed problems, not a high agreement score or a claim of full coverage.
 After import 1 (2026-10-10): the Anderson OCR yielded 561 lines because six paragraph/footnote lines below the final table entered the last left column. The page image fixes the lower table boundary at y=210 PDF points on page 6. Import v2 retains v1 and applies that boundary. All ten word columns were inspected; six OCR corrections are recorded separately, and two apparent printed spelling variants remain explicit. Warriner contains 13,915 source rows and 13,905 case-folded forms; capitalization distinctions and source rows are retained, not assumed to be identical lexical senses. Its ZIP contains one CSV and no licence file, so public download is not treated as a redistribution licence.
 
 Before coding the 40-term pilot (2026-10-10): the first packet identifies eleven terms with no WordNet adjective sense. Apply one supplementary policy to all eleven: retrieve and pin English Wiktionary revisions, then expose only English definition lines, omitting usage notes and quotations. Preserve unresolved absence; do not infer nonexistence. Rebuild the packet as v2 before any coding call. WordNet lookup is case-insensitive but retains original lemmas and every matching sense; this avoids accidentally dropping proper/capitalized entries. The earlier packet and its manifest remain. The model routes passed neutral connection probes: Codex gpt-6.1-sol with high reasoning and Claude claude-sonnet-4-6; probes contain no research items. Their prompts and coding schemas follow in a separate pre-call commit.
+
+Coding v1 specification (2026-10-10): `word-prompt.txt` and `pair-prompt.txt`
+are the exact frozen rubrics. `code_pilot.py words` makes four fresh calls of
+ten alphabetized terms per model family; `pairs` makes one fresh independent
+candidate-generation call per family over all forty terms. Codex CLI 0.161.0
+uses `gpt-6.1-sol`, high reasoning; Claude CLI 2.1.296 uses
+`claude-sonnet-4-6`, high effort. These are structured research judgments,
+not the older no-reasoning OCR instrument. The neutral directories and
+scrubbed environments prevent repository or peer-answer access. Prompts are
+identical across families. Schemas differ only through provider transport.
+Current source selection is fixed at seed 20261010; neither route exposes a
+sampling seed here. Do not claim bitwise reproducibility of remote inference.
+
+Use existing subscription routes, with no API keys in either child's
+environment. Claude's $5 per-call limit is an API-equivalent accounting guard,
+not permission to buy API credits. Record actual returned usage separately
+from subscription cost. A transport failure stops that family's further
+calls; an evidence-validation failure remains visible for review, not an
+automatic silent retry. The strict schema and identifier/substring checks
+test evidence integrity, while substantive evidence review checks support.
+
+Every pilot word decision will receive source-based review by the primary
+agent after both families finish, including agreements and all original
+adjective senses. Independent pair lists are retained before joining to the
+mechanical detector. Check all proposed, rejected, absent-counterpart and
+missed candidates against source membership and dictionary evidence. Preserve
+model outputs and a separate adjudication record; unresolved rules become
+explicit alternatives rather than forced consensus. If a rubric changes,
+publish the revision and rerun every affected pilot case before calling it
+stable. Full-frame coding and commonness collection remain unauthorized here.
+
+Source-bearing prompts and raw answers stay in `private/` because the source
+word-table redistribution conditions remain unresolved; publish prompts as
+templates, software, aggregate cost and audit summaries, and selected brief
+examples with attribution. This source-specific restriction takes precedence
+over the older generic instruction to publish complete scripted transcripts.
+The simulation environment lacks `requests`; lexical imports use the logged
+system Python 3.14.8 with requests 2.34.2. The first supplement invocation in
+`.venv` failed at import before reading or writing any research data, then ran
+successfully under the specified lexical-import interpreter.
