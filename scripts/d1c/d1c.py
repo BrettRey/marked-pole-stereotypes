@@ -7,10 +7,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-# Keep compiler scratch and caches inside the authorized output tree.
-SCRATCH = ROOT / "logs" / "d1c-cache"
+# Keep D1c compiler scratch and caches separate from the concurrent D2 run.
+SCRATCH = ROOT / ".cache" / "d1c"
 SCRATCH.mkdir(parents=True, exist_ok=True)
 os.environ["TMPDIR"] = str(SCRATCH)
+os.environ["NUMBA_CACHE_DIR"] = str(SCRATCH / "numba")
+os.environ["MPLCONFIGDIR"] = str(SCRATCH / "mpl")
 flags = [flag for flag in os.environ.get("PYTENSOR_FLAGS", "").split(",")
          if flag and not flag.startswith(("base_compiledir=", "compiledir="))]
 flags.append(f"base_compiledir={SCRATCH / 'pytensor'}")
@@ -44,7 +46,7 @@ DESIGNS = {"uwa": (40, 1), "nicolas": (43, 6)}
 SCENARIOS = ("baseline", "valence_bias", "register", "display", "differential")
 PRIORS = (1., 2.5)
 RELIABILITIES = (0., .5, .8)
-DRAWS, TUNE, CHAINS, CUT_DRAWS = 500, 1000, 4, 8
+DRAWS, TUNE, CHAINS, CUT_DRAWS = 2000, 1000, 4, 8
 POST_DRAWS = 100
 OUTSIDE = np.log(I * 1.5)
 NODES, WEIGHTS = hermgauss(5)
@@ -275,7 +277,7 @@ def sample(job, mode, data, sampling_seed):
     signature = repr((key, I, P, DRAWS, TUNE, CHAINS, .95,
                       version("pymc"), version("nutpie"))) + inspect.getsource(build)
     digest = hashlib.sha256(signature.encode()).hexdigest()[:16]
-    checkpoint = (ROOT / "results" / "d1c" / f"trace-{digest}-{sampling_seed}.pickle"
+    checkpoint = (SCRATCH / "traces" / f"trace-{digest}-{sampling_seed}.pickle"
                   if job.get("_checkpoint") else None)
     if checkpoint is not None and checkpoint.exists():
         with checkpoint.open("rb") as stream:

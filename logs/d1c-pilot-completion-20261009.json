@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-10-10T02:40:34.802258+00:00",
+  "launch_record": "logs/d1c-pilot-launch-20261010T014927Z.json",
+  "run_log": "logs/d1c-20261010T014946903490Z.json",
+  "source_during_run_sha256": "b0fc7decdfa21130462eee8621b7ea4ad45cb43c87800544c18701fd1fd66bc6",
+  "source_after_run_sha256": "21e7fc004b6d2415f1d54e3a0189f17bc42463f4fe8a8f8cfb4c3324cfc1d893",
+  "post_run_code_change": "Only checkpoint destination: results/d1c -> .cache/d1c/traces",
+  "model_and_sampler_unchanged": true,
+  "source_syntax": "pass",
+  "checkpoints": [
+    {
+      "original": "results/d1c/trace-ac0b03987f254b1f-4202202426.pickle",
+      "current": ".cache/d1c/traces/trace-ac0b03987f254b1f-4202202426.pickle",
+      "sha256": "2ef675ecd37f09d353537f461f88b91b0b6a678fd53c350caec645bddb7ac60f",
+      "bytes": 307351053
+    },
+    {
+      "original": "results/d1c/trace-ac0b03987f254b1f-283345801.pickle",
+      "current": ".cache/d1c/traces/trace-ac0b03987f254b1f-283345801.pickle",
+      "sha256": "2f5e48af442914301a6b4cbb986d269618f0eae2ec038f42fb8e278d6e91bb8b",
+      "bytes": 307351052
+    }
+  ]
+}

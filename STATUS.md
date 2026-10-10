@@ -5,14 +5,18 @@ title: 'The marked-pole hypothesis and the UWA model of stereotype negativity'
 stage: development
 external: none
 blocked_on: []
-updated: 2026-10-09
+updated: 2026-10-10
 source:
 - STATUS.md
 - notes/project-brief.md
 next_action: 'Implementation runs in Codex tabs Brett drives (2026-10-09; HANDOFF-TO-CODEX.md).
   Lane N fixes the Norman pass-X parser and the failed-row retry, pilots Apple''s Vision OCR in
-  place of GLM (no OpenRouter credit), then reruns wave 1. Lane S finishes the D1c pilot and grid,
-  then D1b, threshold examples and a Part 8 draft. The D2 grid finished 2026-10-09 (results/d2/SUMMARY.md):
+  place of GLM (no OpenRouter credit), then reruns wave 1. Lane S is running the twelve-fit
+  D1c variant-timing stage approved in Roughdraft on 2026-10-10, with unchanged code and
+  the passing pilot budget. Launch: logs/d1c-timings-launch-20261010T112136Z.json.
+  Overnight limits lifted: finish timing, commit/push and run the D1c grid as authorized
+  on 2026-10-10; stop only for a required design change. Lane S continues under the handoff.
+  The D2 grid finished 2026-10-09 (results/d2/SUMMARY.md):
   L2 calibrated in its core; L1''s theta_m under-covers; judge bias is the main threat. Waiting on Brett: the D1 verdict (after
   D1c), threshold benchmarks, the Part 8 merge, the Koch licence reply. D2b waits for L1''s frame.'
 claim:
@@ -26,7 +30,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A done (replication matches UWA); D1 grid done (verdict on the frequency-only indicator after D1c); D2 grid done (results/d2/SUMMARY.md); plan settled through H2, H1, L1, L2, multiverse and model judges only; implementation handed to Codex tabs (HANDOFF-TO-CODEX.md); Norman extraction: parser bug to fix, GLM replaced by Apple's Vision OCR (no OpenRouter credit); no strand B outcome data opened · status: active · updated: 2026-10-09 -->
+<!-- SUMMARY: Strand A done (replication matches UWA); D1 grid done (indicator verdict after D1c); longer D1c baseline pilot passed both replicates; twelve-fit variant timing running; overnight limits lifted, commits/push and subsequent D1c grid authorized; D2 grid done (results/d2/SUMMARY.md); plan settled through H2, H1, L1, L2, multiverse and model judges only; implementation handed to Codex tabs (HANDOFF-TO-CODEX.md); Norman extraction: parser bug to fix, GLM replaced by Apple's Vision OCR (no OpenRouter credit); no strand B outcome data opened · status: active · updated: 2026-10-10 -->
 
 ## State
 
@@ -42,6 +46,7 @@ Scaffolded 2026-10-07 from Brett's brief (`notes/project-brief.md`, verbatim). T
 
 ## Blockers
 
+- D1c pilot convergence blocker resolved: both approved longer-run replicates passed (maximum R-hat 1.00624 and 1.00671; zero divergences). Variant timing is running; the measured-register upstream component has a recorded R-hat failure. Brett authorized further sampler work, commits/push and the subsequent D1c grid on 2026-10-10. The wider design assessment and D1 indicator verdict remain open; required design changes must be raised with Brett.
 - Strand B literature and data: scripted downloads hit bot checks; fetch by hand (`notes/literature-to-fetch.md`).
 - ~~No trait-prevalence measure found yet~~ (2026-10-09: Ziano et al.'s commonness panel, 149 traits, is the human anchor for calibrated model judges; human judges cover extreme traits; see `analysis_plan.md`, "Commonness judges"). No second human coder: model judges only (Brett, 2026-10-09).
 - Norman (1967) pass B (GLM) dropped: no OpenRouter credit (Brett, 2026-10-09). Lane N pilots Apple's Vision OCR in its place (`HANDOFF-TO-CODEX.md`).

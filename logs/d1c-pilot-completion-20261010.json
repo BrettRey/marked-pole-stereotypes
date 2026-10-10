@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-10-10T11:07:07.418111+00:00",
+  "launch_record": "logs/d1c-pilot-launch-20261010T101036Z.json",
+  "run_log": "logs/d1c-20261010T101037462787Z.json",
+  "checks": "pass",
+  "source_hashes_at_completion": {
+    "scripts/d1c/d1c.py": {
+      "expected": "39203b91d5743f6b4b79391bedbdf266bd3ce961873627d7fd974ad7e37192b5",
+      "actual": "39203b91d5743f6b4b79391bedbdf266bd3ce961873627d7fd974ad7e37192b5"
+    },
+    "scripts/d1c/README.md": {
+      "expected": "816673084b90cc213c95e6de2dc52a4f93b42c9691872fdd8c0876b387feeeec",
+      "actual": "816673084b90cc213c95e6de2dc52a4f93b42c9691872fdd8c0876b387feeeec"
+    },
+    "analysis_plan.md": {
+      "expected": "7084ddb9e4776dbafbb602b7d6304d1117a38d1f4d3a83c5ee31243e45d9a726",
+      "actual": "7084ddb9e4776dbafbb602b7d6304d1117a38d1f4d3a83c5ee31243e45d9a726"
+    },
+    "scripts/d1/bin/clang++": {
+      "expected": "3c099c0eb7e73ada6ca18b7387995bdd40316dff49d5c67dbdc12db69a1d5b80",
+      "actual": "3c099c0eb7e73ada6ca18b7387995bdd40316dff49d5c67dbdc12db69a1d5b80"
+    }
+  },
+  "source_syntax": "pass",
+  "same_cells_seeds_truths_and_packages": true,
+  "sampler_budget": {
+    "draws": 2000,
+    "tune": 1000,
+    "chains": 4,
+    "cores": 1,
+    "cut_draws": 8,
+    "contrast_draws": 100,
+    "contrast_diagnostic_draws": 8000
+  },
+  "completed_replicates": 2,
+  "converged_replicates": 2,
+  "fit_rows": 8,
+  "summary_rows": 4,
+  "all_eight_90pct_intervals_contain_truth": true,
+  "checkpoints": [
+    {
+      "path": ".cache/d1c/traces/trace-fa679ed1d11f48cb-4202202426.pickle",
+      "bytes": 1229287183,
+      "sha256": "30063789713b443032d7b51b19728d25aaf0ee274e75d73a46aac04e790baabb"
+    },
+    {
+      "path": ".cache/d1c/traces/trace-fa679ed1d11f48cb-283345801.pickle",
+      "bytes": 1229287182,
+      "sha256": "f8dad4f6c8bdd3e6aea442e8e6698feb2a8daca0a55a508f0e9830838a88571c"
+    }
+  ],
+  "output_sha256": {
+    "logs/d1c-20261010T101037462787Z.json": "2fe281ca9adaf5b8b9546597ee1d9c5df14feaece5214bb8cfdf1cf717cc224f",
+    "results/d1c/pilot-20261010T101037462787Z-fits.csv": "f36de802ac02876e29f84d3418c43635886ab3a3ffc24ccb7063727c354a40a0",
+    "results/d1c/pilot-20261010T101037462787Z-summary.csv": "8c0e08bbdcb7139d36cc5c63ca73bc00a955e886a4db565ca1b117485e35a521",
+    "results/d1c/pilot-20261010T101037462787Z-failures.csv": "cf29578eaa1a60391ec5c399f1a79006a86fc97a6cc32e00e42a3e8c353769fe",
+    "logs/d1c-pilot-20261010T101036Z-stdout.txt": "5b6289601cd66b301ad2578900d61ee9b2c9340622175dad262e2a63bb5750e9"
+  },
+  "d1c_processes_running": false,
+  "git_sha": "5445aa2245c460a65a994d89c8a87c544e6ce9b5",
+  "git_index_unchanged": true,
+  "notes": "Verification before appending post-run README results. No source edit, refit, grid, staging, commit or push after launch. Trace dimensions checked by sampler before checkpointing."
+}

@@ -1,0 +1,3 @@
+design,scenario,target,feedback,reliability,prior,cell,rep,_checkpoint,status,data_seed,fit_seed,seconds
+uwa,baseline,0.0,joint,0.0,1.0,0,0,True,diagnostic_failure,1207664664,4202202426,2059.3195400238037
+uwa,baseline,0.0,joint,0.0,1.0,0,1,True,diagnostic_failure,2435420159,283345801,931.451818227768

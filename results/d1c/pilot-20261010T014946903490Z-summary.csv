@@ -1,0 +1,5 @@
+cell,design,scenario,target,feedback,reliability,prior,estimand,attempted,converged,diagnostic_failures,coverage50,coverage50_mcse,coverage50_n,coverage90,coverage90_mcse,coverage90_n,width50,width50_mcse,width50_n,width90,width90_mcse,width90_n,bias,bias_mcse,bias_n,sign_error,sign_error_mcse,sign_error_n,selected_sign_error,selected_sign_error_mcse,selected_sign_error_n,selected_exaggeration,selected_exaggeration_mcse,selected_exaggeration_n,conditional_absolute_bias,conditional_absolute_bias_mcse,conditional_absolute_bias_n,false_meaningful_support,false_meaningful_support_mcse,false_meaningful_support_n
+0,uwa,baseline,0.0,joint,0.0,1.0,b_z,2,0,2,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0
+0,uwa,baseline,0.0,joint,0.0,1.0,h1_fixed_usage,2,0,2,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0
+0,uwa,baseline,0.0,joint,0.0,1.0,h2_prevalence_bridge,2,0,2,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0
+0,uwa,baseline,0.0,joint,0.0,1.0,marking,2,0,2,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0,,,0

@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-10-10T12:42:07.678814+00:00",
+  "authorization": "Brett: overnight limits over; commit verified second-pilot-launch README first, then everything else, push and continue lane S; stop only for necessary design change",
+  "first_commit": "25e368aece4b317b06ec37f465da6aa4dc1e182a",
+  "readme_path": "scripts/d1c/README.md",
+  "readme_launch_sha256": "816673084b90cc213c95e6de2dc52a4f93b42c9691872fdd8c0876b387feeeec",
+  "committed_readme_sha256": "816673084b90cc213c95e6de2dc52a4f93b42c9691872fdd8c0876b387feeeec",
+  "current_d1c_source_sha256": "39203b91d5743f6b4b79391bedbdf266bd3ce961873627d7fd974ad7e37192b5",
+  "pilot_code_committed_before_runs": false,
+  "variant_benchmark_still_running": true,
+  "running_benchmark_model_unchanged": true,
+  "build": "Forced complete XeLaTeX/Biber/XeLaTeX/XeLaTeX passed; expected scaffold empty bibliography; ship gate clear",
+  "publication": "Current README restores post-run results and records new authorization; pilot launch manifests remain historical records; active timing logs are an in-progress snapshot."
+}

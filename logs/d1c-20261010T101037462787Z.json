@@ -1,0 +1,114 @@
+{
+  "timestamp": "20261010T101037462787Z",
+  "script": "scripts/d1c/d1c.py",
+  "args": {
+    "command": "pilot"
+  },
+  "root_seed": 20261009,
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.3",
+    "nutpie": "0.16.11",
+    "arviz": "1.3.0"
+  },
+  "git_sha": "5445aa2245c460a65a994d89c8a87c544e6ce9b5",
+  "git_dirty": true,
+  "sampler": {
+    "draws": 2000,
+    "tune": 1000,
+    "chains": 4,
+    "cores": 1,
+    "cut_draws": 8,
+    "contrast_draws": 100,
+    "contrast_diagnostic_draws": 8000
+  },
+  "pytensor_flags": "base_compiledir=/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/pytensor,cxx=/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1/bin/clang++",
+  "cells": [
+    {
+      "design": "uwa",
+      "scenario": "baseline",
+      "target": 0.0,
+      "feedback": "joint",
+      "reliability": 0.0,
+      "prior": 1.0,
+      "cell": 0
+    }
+  ],
+  "statuses": [
+    {
+      "design": "uwa",
+      "scenario": "baseline",
+      "target": 0.0,
+      "feedback": "joint",
+      "reliability": 0.0,
+      "prior": 1.0,
+      "cell": 0,
+      "rep": 0,
+      "_checkpoint": true,
+      "status": "converged",
+      "data_seed": 1207664664,
+      "fit_seed": 4202202426,
+      "diagnostics": [
+        {
+          "worst_rhat": "item_sd",
+          "worst_ess": "content_sd",
+          "good": true,
+          "rhat": 1.0062445378938814,
+          "ess": 777.9869171728305,
+          "divergences": 0,
+          "seed": 4202202426,
+          "mode": "joint",
+          "compile_seconds": 4.735519332811236,
+          "sampling_seconds": 1381.7705339579843,
+          "contrast_good": true,
+          "contrast_rhat": 1.000650485652237,
+          "contrast_ess": 4001.219229545385
+        }
+      ],
+      "seconds": 1582.7434651851654
+    },
+    {
+      "design": "uwa",
+      "scenario": "baseline",
+      "target": 0.0,
+      "feedback": "joint",
+      "reliability": 0.0,
+      "prior": 1.0,
+      "cell": 0,
+      "rep": 1,
+      "_checkpoint": true,
+      "status": "converged",
+      "data_seed": 2435420159,
+      "fit_seed": 283345801,
+      "diagnostics": [
+        {
+          "worst_rhat": "content_raw",
+          "worst_ess": "content_sd",
+          "good": true,
+          "rhat": 1.0067077261926753,
+          "ess": 910.8631901659423,
+          "divergences": 0,
+          "seed": 283345801,
+          "mode": "joint",
+          "compile_seconds": 1.3124663382768631e-05,
+          "sampling_seconds": 1515.0357573339716,
+          "contrast_good": true,
+          "contrast_rhat": 1.0010670405253201,
+          "contrast_ess": 3710.6352495681185
+        }
+      ],
+      "seconds": 1736.8579540252686
+    }
+  ],
+  "outputs": [
+    "results/d1c/pilot-20261010T101037462787Z-fits.csv",
+    "results/d1c/pilot-20261010T101037462787Z-summary.csv",
+    "results/d1c/pilot-20261010T101037462787Z-failures.csv"
+  ],
+  "elapsed_seconds": 3321.1887397766113
+}

@@ -1,0 +1,62 @@
+{
+  "timestamp": "20261010T101036Z",
+  "purpose": "Approved longer D1c artificial-data baseline pilot only",
+  "authorization": "Brett: proceed with the next proposed step (2026-10-10); no commit or push persists",
+  "command": ".venv/bin/python -u scripts/d1c/d1c.py pilot",
+  "files": {
+    "scripts/d1c/d1c.py": "39203b91d5743f6b4b79391bedbdf266bd3ce961873627d7fd974ad7e37192b5",
+    "scripts/d1c/README.md": "816673084b90cc213c95e6de2dc52a4f93b42c9691872fdd8c0876b387feeeec",
+    "analysis_plan.md": "7084ddb9e4776dbafbb602b7d6304d1117a38d1f4d3a83c5ee31243e45d9a726",
+    "scripts/d1/bin/clang++": "3c099c0eb7e73ada6ca18b7387995bdd40316dff49d5c67dbdc12db69a1d5b80"
+  },
+  "git_sha": "5445aa2245c460a65a994d89c8a87c544e6ce9b5",
+  "git_status": " M DECISIONS.md\n M STATUS.md\n M scripts/d1c/README.md\n M scripts/d1c/d1c.py\n?? logs/d1c-20261010T014946903490Z.json\n?? logs/d1c-pilot-20261009-lane-s-stdout.txt\n?? logs/d1c-pilot-completion-20261009.json\n?? logs/d1c-pilot-launch-20261010T014927Z.json\n?? logs/d1c-pilot-rep0-diagnostics-20261009.json\n?? results/d1c/PILOT-SUMMARY-2026-10-09.md\n?? results/d1c/pilot-20261010T014946903490Z-failures.csv\n?? results/d1c/pilot-20261010T014946903490Z-fits.csv\n?? results/d1c/pilot-20261010T014946903490Z-summary.csv\n",
+  "source_change": "Retained draws per chain 500 -> 2000; all other model, seed, sampler and diagnostic settings unchanged",
+  "root_seed": 20261009,
+  "data_seeds": [
+    1207664664,
+    2435420159
+  ],
+  "fit_seeds": [
+    4202202426,
+    283345801
+  ],
+  "stdout": "logs/d1c-pilot-20261010T101036Z-stdout.txt",
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.3",
+    "nutpie": "0.16.11",
+    "arviz": "1.3.0",
+    "numba": "0.67.0",
+    "llvmlite": "0.49.0"
+  },
+  "sampler": {
+    "draws": 2000,
+    "tune": 1000,
+    "chains": 4,
+    "cores": 1,
+    "target_accept": 0.95,
+    "contrast_diagnostic_draws": 8000,
+    "contrast_summary_draws": 100
+  },
+  "workers": 1,
+  "replicates": 2,
+  "environment": {
+    "PYTENSOR_FLAGS": null,
+    "NUMBA_CACHE_DIR": null,
+    "MPLCONFIGDIR": null,
+    "OMP_NUM_THREADS": null,
+    "OPENBLAS_NUM_THREADS": null,
+    "MKL_NUM_THREADS": null
+  },
+  "scratch": ".cache/d1c",
+  "previous_run": "20261010T014946903490Z",
+  "automatic_retry": false,
+  "pid": 32504,
+  "initial_poll": null
+}

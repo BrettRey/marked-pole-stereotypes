@@ -1,0 +1,180 @@
+{
+  "trace": ".cache/d1c/traces/trace-ac0b03987f254b1f-4202202426.pickle",
+  "rep": 0,
+  "divergences": 0,
+  "shape": {
+    "chain": 4,
+    "draw": 500
+  },
+  "metrics": [
+    {
+      "variable": "z",
+      "max_rhat": 1.0123006830135974,
+      "min_bulk_ess": 1965.679250047616,
+      "min_tail_ess": 1047.0001127427772
+    },
+    {
+      "variable": "s",
+      "max_rhat": 1.0150324922809602,
+      "min_bulk_ess": 3511.4776626464613,
+      "min_tail_ess": 1015.6886895765452
+    },
+    {
+      "variable": "v",
+      "max_rhat": 1.0170461235203394,
+      "min_bulk_ess": 3939.6928563297843,
+      "min_tail_ess": 885.2231127968283
+    },
+    {
+      "variable": "e_v",
+      "max_rhat": 1.0038914505526688,
+      "min_bulk_ess": 623.9586047364418,
+      "min_tail_ess": 983.6904471286309
+    },
+    {
+      "variable": "g0",
+      "max_rhat": 1.0006294489740581,
+      "min_bulk_ess": 1625.736230480216,
+      "min_tail_ess": 1441.993126192956
+    },
+    {
+      "variable": "gz",
+      "max_rhat": 1.0031058707537075,
+      "min_bulk_ess": 824.7462827383406,
+      "min_tail_ess": 1259.1979730933695
+    },
+    {
+      "variable": "gv",
+      "max_rhat": 1.0011465454992483,
+      "min_bulk_ess": 2532.875620670586,
+      "min_tail_ess": 1636.9283053669014
+    },
+    {
+      "variable": "gs",
+      "max_rhat": 1.0017930011156062,
+      "min_bulk_ess": 1608.6935833348853,
+      "min_tail_ess": 1345.7712227328846
+    },
+    {
+      "variable": "f0",
+      "max_rhat": 1.0010554705291983,
+      "min_bulk_ess": 1439.4878409901316,
+      "min_tail_ess": 1351.7955545163952
+    },
+    {
+      "variable": "lz",
+      "max_rhat": 1.0003688718153512,
+      "min_bulk_ess": 530.7827395720951,
+      "min_tail_ess": 751.0307381801633
+    },
+    {
+      "variable": "ls",
+      "max_rhat": 1.0024173950394992,
+      "min_bulk_ess": 697.6340145638342,
+      "min_tail_ess": 882.6315550684947
+    },
+    {
+      "variable": "lv",
+      "max_rhat": 1.0000097574180766,
+      "min_bulk_ess": 1584.6591886179972,
+      "min_tail_ess": 1471.4790385097851
+    },
+    {
+      "variable": "lm",
+      "max_rhat": 1.0025407481237019,
+      "min_bulk_ess": 796.5520890499197,
+      "min_tail_ess": 968.4643648163453
+    },
+    {
+      "variable": "sig_f",
+      "max_rhat": 1.0024823080026577,
+      "min_bulk_ess": 540.7010009559954,
+      "min_tail_ess": 813.5105666008664
+    },
+    {
+      "variable": "ell",
+      "max_rhat": 1.0152146253650534,
+      "min_bulk_ess": 3438.5622433385056,
+      "min_tail_ess": 912.5188676699167
+    },
+    {
+      "variable": "b_z",
+      "max_rhat": 1.0001740847584664,
+      "min_bulk_ess": 1083.8036094936115,
+      "min_tail_ess": 1097.5672979411008
+    },
+    {
+      "variable": "b_m",
+      "max_rhat": 1.0012855876945757,
+      "min_bulk_ess": 1819.2861543995152,
+      "min_tail_ess": 1402.6551675167432
+    },
+    {
+      "variable": "bf",
+      "max_rhat": 1.013467174683524,
+      "min_bulk_ess": 385.8175451933418,
+      "min_tail_ess": 409.28262789570783
+    },
+    {
+      "variable": "bv",
+      "max_rhat": 1.0031752674457377,
+      "min_bulk_ess": 2850.0242590349253,
+      "min_tail_ess": 1265.6547662402536
+    },
+    {
+      "variable": "bs",
+      "max_rhat": 1.0023027939664089,
+      "min_bulk_ess": 1445.4689199823295,
+      "min_tail_ess": 1473.38378224276
+    },
+    {
+      "variable": "group_sd",
+      "max_rhat": 1.005543777475555,
+      "min_bulk_ess": 788.4110635096738,
+      "min_tail_ess": 675.8396197166473
+    },
+    {
+      "variable": "group_raw",
+      "max_rhat": 1.0131637362792587,
+      "min_bulk_ess": 3573.703725600375,
+      "min_tail_ess": 1106.3765706689328
+    },
+    {
+      "variable": "participant_sd",
+      "max_rhat": 1.0019544050618867,
+      "min_bulk_ess": 402.9104233060229,
+      "min_tail_ess": 383.5292926236793
+    },
+    {
+      "variable": "participant_raw",
+      "max_rhat": 1.0093065016302754,
+      "min_bulk_ess": 1692.86353416199,
+      "min_tail_ess": 1197.5488149548844
+    },
+    {
+      "variable": "item_sd",
+      "max_rhat": 1.0434430442161102,
+      "min_bulk_ess": 165.2525094033379,
+      "min_tail_ess": 144.4674266758103
+    },
+    {
+      "variable": "item_raw",
+      "max_rhat": 1.0190470373946585,
+      "min_bulk_ess": 931.6679496971311,
+      "min_tail_ess": 872.7637582006412
+    },
+    {
+      "variable": "content_sd",
+      "max_rhat": 1.0319609197333441,
+      "min_bulk_ess": 172.75595708767742,
+      "min_tail_ess": 292.4925855805493
+    },
+    {
+      "variable": "content_raw",
+      "max_rhat": 1.023245731297854,
+      "min_bulk_ess": 752.9920509169895,
+      "min_tail_ess": 788.3395184781781
+    }
+  ],
+  "trace_at_diagnostic_time": "results/d1c/trace-ac0b03987f254b1f-4202202426.pickle"
+}

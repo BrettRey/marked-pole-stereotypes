@@ -188,3 +188,53 @@ source constant now records the approved budget; no grid or other variant
 run is authorized. Preserve the earlier failed runs. The local launch record
 will contain source hashes and environment details; Brett's instruction
 not to commit or push remains in force. No empirical outcomes are used.
+
+## Longer pilot result (2026-10-10)
+
+The approved rerun (`20261010T101037462787Z`) completed in 55.4 minutes. Both
+replicates passed every unchanged parameter and contrast diagnostic gate:
+maximum parameter R-hat 1.00624 and 1.00671, minimum ESS 778.0 and 910.9,
+and zero divergences. All eight 90% intervals contain their generating
+truths, though point recovery is uneven. Two replicates do not establish
+coverage or validate the wider design. Full results and limitations are in
+`results/d1c/PILOT-SUMMARY-2026-10-10.md`.
+
+Source hashes matched at completion before this result entry was appended.
+Both traces and earlier failed runs are preserved. The approved pilot step
+is complete; no further retry, grid or variant-wide timing was launched,
+and nothing was staged, committed or pushed.
+
+## Approved variant timing (2026-10-10; prospective record)
+
+Brett approved `notes/d1c-timing-plan-2026-10-10.md` in Roughdraft before
+launch. Run the existing `time_variants.py` once, unchanged: twelve fits
+cross two designs, register omitted or measured at reliability .8, and
+upstream, downstream and joint components. Use baseline artificial data,
+null H2, prior SD 1, existing seeds, four chains, 1,000 warmup and 2,000
+retained draws per chain, target acceptance .95, sequential fits and one
+sampler core. Retain all existing diagnostic gates; no automatic retries.
+
+The downstream timing conditions on one upstream draw; it is not a full
+eight-component cut validation. Preserve every diagnostic failure and
+exception. The script's 40-replicate, three-worker grid calculation is only
+a hypothetical extrapolation, not an approved grid size or launch. Its
+reliability, prior and scenario timing approximations must be reported.
+Source hashes, package versions, command and environment are recorded
+before launch. No commit or push; no empirical outcomes are used.
+
+## Overnight limits lifted (2026-10-10)
+
+Brett lifted the no-commit/no-push instruction and authorized continuing lane S
+under `HANDOFF-TO-CODEX.md`: finish variant timing, commit and push, then run
+the D1c grid. Sampler-setting changes may be handled and recorded without
+further approval; a required change to the design itself must be raised with
+Brett. This supersedes the earlier scope restrictions, which remain above
+as the historical record of each launch.
+
+At Brett's request, commit `25e368a` first restored exactly the second pilot's
+launch-time README. Its SHA-256 matches
+`logs/d1c-pilot-launch-20261010T101036Z.json`. Both pilots ran before their
+code was committed. The retrospective commit preserves the documented
+launch text; it does not claim prospective Git registration. The current
+code, results and records follow in a separate commit. The variant-timing
+run continues unchanged while this publication record is added.

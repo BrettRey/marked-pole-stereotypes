@@ -1,0 +1,48 @@
+{
+  "timestamp": "20261010T014927Z",
+  "purpose": "D1c artificial-data baseline pilot only",
+  "authorization": "Brett: work only on getting the D1c pilot running; do not commit or push (2026-10-09)",
+  "command": ".venv/bin/python -u scripts/d1c/d1c.py pilot",
+  "files": {
+    "scripts/d1c/d1c.py": "b0fc7decdfa21130462eee8621b7ea4ad45cb43c87800544c18701fd1fd66bc6",
+    "scripts/d1c/README.md": "276039a5e7f5cccfd630b084a189bd7a7a0866a965d288deee4d9684a01cb3cb",
+    "analysis_plan.md": "7084ddb9e4776dbafbb602b7d6304d1117a38d1f4d3a83c5ee31243e45d9a726",
+    "scripts/d1/bin/clang++": "3c099c0eb7e73ada6ca18b7387995bdd40316dff49d5c67dbdc12db69a1d5b80"
+  },
+  "git_sha": "eaf067b1cc5ace39080d5e953b433fd8ac0e1c51",
+  "git_status": " M logs/d2-grid-stdout.txt\n M results/d2/l2_grid.csv\n M scripts/d1c/README.md\n M scripts/d1c/d1c.py\n",
+  "source_change": "Move D1c caches to .cache/d1c; no model or sampler changes",
+  "root_seed": 20261009,
+  "pid": 89159,
+  "stdout": "logs/d1c-pilot-20261009-lane-s-stdout.txt",
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.3",
+    "nutpie": "0.16.11",
+    "arviz": "1.3.0",
+    "numba": "0.67.0",
+    "llvmlite": "0.49.0"
+  },
+  "sampler": {
+    "draws": 500,
+    "tune": 1000,
+    "chains": 4,
+    "cores": 1,
+    "target_accept": 0.95
+  },
+  "environment": {
+    "PYTENSOR_FLAGS": null,
+    "NUMBA_CACHE_DIR": null,
+    "MPLCONFIGDIR": null,
+    "OMP_NUM_THREADS": null,
+    "OPENBLAS_NUM_THREADS": null,
+    "MKL_NUM_THREADS": null
+  },
+  "scratch": ".cache/d1c",
+  "launch_note": "Initial shell background job ended without output; relaunched with nohup and start_new_session=True; confirmed running."
+}
