@@ -25,16 +25,21 @@ def main():
     rules=json.loads((PRIVATE/'pilot-audit-rules.json').read_text())
     if set(rules['word_notes'])!=set(byword): raise ValueError('Incomplete primary source review')
     dictionary=WordNet(RAW/'wn3.1.dict.tar.gz')
-    records={};manifests=[];quote_audit=[];pair_outputs={};reading_checks=[]
+    records={};manifests=[];quote_audit=[];pair_outputs={};reading_checks=[];failed_rechecks=[]
     input_paths=[PACKET/'terms.json',PACKET/'manifest.json',PRIVATE/'pilot-audit-rules.json']
     for family in ('codex','claude'):
         records[family]={}
         for label in [f'words-{n:02}' for n in range(1,5)]+['independent-pairs','independent-pairs-v2']:
             directory=OUT/family/label
             meta=json.loads((directory/'manifest.json').read_text())
-            if meta['status']=='failed': raise RuntimeError('Unresolved transport failure')
+            manifests.append(meta);input_paths.append(directory/'manifest.json')
+            if meta['status']=='failed':
+                if label!='independent-pairs-v2': raise RuntimeError('An original pilot pass is incomplete')
+                failed_rechecks.append({'family':family,'label':label,'exit_code':meta.get('exit_code'),'error':meta.get('error')})
+                input_paths.append(directory/'stdout.txt')
+                continue
             answer=json.loads((directory/'answer.json').read_text())
-            manifests.append(meta);input_paths.extend([directory/'manifest.json',directory/'answer.json'])
+            input_paths.append(directory/'answer.json')
             if label.startswith('words'):
                 for row in answer['words']:
                     if row['word'] in records[family]: raise ValueError('Duplicate word judgment')
@@ -149,6 +154,7 @@ def main():
         'detector_words_omitted_from_independent_screens':{k:sorted(all_detector_words-v) for k,v in indep_words.items()},
         'additional_supported_primary_pairs_from_independent_audit':len(missed_supported),
         'bounded_audit_not_recall_estimate':True,'model_calls':len(manifests),
+        'failed_recheck_attempts':failed_rechecks,'api_equivalent_accounting_complete':not failed_rechecks,
         'claude_api_equivalent_usd':sum(m.get('api_equivalent_usd') or 0 for m in manifests),
         'model_call_seconds':sum(m['elapsed_seconds'] for m in manifests),'cost_by_call':cost,
         'ratings_joined':False,'commonness_judgments_collected':False,'frame_frozen':False,

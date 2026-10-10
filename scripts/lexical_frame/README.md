@@ -208,3 +208,10 @@ and reports bounded missed-pair audit results without estimating recall.
 Actual inference usage and API-equivalent accounting are logged. Primary-agent
 evidence review occurred alongside model calls and is not separately metered;
 the report must not advertise inference-only throughput as total curation cost.
+
+Each model call retains its fixed 900-second limit. A failed final pair
+recheck is reported as a failed attempt, with its elapsed time, rather than
+causing another unplanned call or suppressing the completed original pilot.
+The assembler requires both complete original word/pair passes; it can retain
+a missing v2 recheck transparently, without manufacturing a replacement answer
+or claiming complete inference-cost accounting for a timed-out transport.
