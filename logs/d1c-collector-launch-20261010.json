@@ -1,0 +1,17 @@
+{
+  "pid": 28707,
+  "started_at": "2026-10-10T17:43:19.713639+00:00",
+  "source_commit": "01516822c00ded6f6df4b77607d9174ff9574786",
+  "command": [
+    "nohup",
+    "nice",
+    "-n",
+    "15",
+    "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/bin/python",
+    "-u",
+    "scripts/d1c/collect_parallel.py",
+    "--watch"
+  ],
+  "purpose": "Observe three existing jobs and collect verified results; no job submission, retry or cancellation",
+  "interval_seconds": 60
+}
