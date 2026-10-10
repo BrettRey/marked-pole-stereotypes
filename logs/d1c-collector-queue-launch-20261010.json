@@ -1,0 +1,17 @@
+{
+  "pid": 69738,
+  "started_at": "2026-10-10T19:06:55.072367+00:00",
+  "source_commit": "5e5ceb62d1afc4fd200101a28d20404655bb7090",
+  "replaces_pid": 28707,
+  "command": [
+    "nohup",
+    "nice",
+    "-n",
+    "15",
+    "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/bin/python",
+    "-u",
+    "scripts/d1c/collect_parallel.py",
+    "--watch"
+  ],
+  "scope": "Observe all eight assigned components of one cut, including the continuing local queue"
+}
