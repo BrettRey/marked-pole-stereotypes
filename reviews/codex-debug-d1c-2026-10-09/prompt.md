@@ -1,0 +1,7 @@
+You are a research engineer with write access to this project only (sandboxed; no network). Earlier you wrote `scripts/d1c/README.md` and `scripts/d1c/d1c.py` without running them. Now make the pilot work.
+
+1. Run `.venv/bin/python scripts/d1c/d1c.py pilot` (the project venv has PyMC, nutpie, pytensor, arviz, numpy, pandas, scipy; PYTENSOR_FLAGS already points the compile cache and C++ compiler into the project). Fix every error in `scripts/d1c/d1c.py` until the pilot runs end to end, writes its CSVs under `results/d1c/` and a log under `logs/`, and reports sensible values (truths computed, estimates near truths in the baseline cell, R-hat at or below 1.01, few or no divergences). If a model choice in the README proves infeasible, change it minimally and record the change in a new section of `scripts/d1c/README.md` titled "After pilot 1 (2026-10-09)", stating what changed and why. Don't alter the README's pre-registered design otherwise.
+2. Time one fit of each fitted variant and estimate the run time of the full grid at 40 replicates per cell with 3 workers.
+3. Don't edit any file outside `scripts/d1c/`, `results/d1c/` and `logs/`; don't touch `analysis_plan.md`, `DECISIONS.md` or `STATUS.md`; don't commit or push. Other processes are using the CPU (a D2 grid and an extraction); be patient with timings.
+
+Final message, at most 25 lines: what you changed (file and function), the pilot's convergence and timing per variant, the estimated grid time, and anything still not working.
