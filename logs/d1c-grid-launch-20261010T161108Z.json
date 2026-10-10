@@ -1,0 +1,42 @@
+{
+  "created_at": "2026-10-10T16:11:08.347180+00:00",
+  "command": [
+    "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/bin/python",
+    "-u",
+    "scripts/d1c/grid.py",
+    "start",
+    "--reps",
+    "1",
+    "--draws",
+    "4000",
+    "--upstream-draws",
+    "8000",
+    "--tune",
+    "2000",
+    "--workers",
+    "3"
+  ],
+  "cwd": "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes",
+  "git_sha": "72035fd3bc803824b802854d9db1ae12ff97f44d",
+  "remote_head": "72035fd3bc803824b802854d9db1ae12ff97f44d",
+  "git_clean_before_launch": true,
+  "source_sha256": {
+    "scripts/d1c/d1c.py": "e010912c8240416fa79c0670e93a527f12d8185b37f322b5ca7159525d9b0280",
+    "scripts/d1c/grid.py": "50f514885fdfe84525c3927738eca398885293641347fb22be8e9781116ddf47",
+    "scripts/d1c/run_state.py": "ceb89f98a778930856bfde3d82e4d1272a22901d98eb125488f4aa79d018e52e",
+    "scripts/d1c/diagnostic_chunks.py": "44da7099a5da31193ca6bb13f6e6081aa5e5cc3044e2aa6730da96dcbb838a30",
+    "scripts/d1c/README.md": "c1991391e7dd8a5f33f2742597b63732d92984b0a099a7b21ac75f5c428b374e",
+    "analysis_plan.md": "7084ddb9e4776dbafbb602b7d6304d1117a38d1f4d3a83c5ee31243e45d9a726",
+    "scripts/d1/bin/clang++": "3c099c0eb7e73ada6ca18b7387995bdd40316dff49d5c67dbdc12db69a1d5b80"
+  },
+  "environment": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "stdout": "logs/d1c-grid-launch-20261010T161108Z-stdout.txt",
+  "execution": "nohup, new process session, detached from terminal; stdin /dev/null",
+  "scope": "One-replicate full 240-cell engineering sweep; no calibration claim; local only",
+  "status": "started",
+  "pid": 61116
+}

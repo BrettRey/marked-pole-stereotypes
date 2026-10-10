@@ -14,8 +14,9 @@ next_action: 'Implementation runs in Codex tabs Brett drives (2026-10-09; HANDOF
   place of GLM (no OpenRouter credit), then reruns wave 1. Lane S completed all twelve
   D1c component timings: eight parameter passes, four R-hat failures, eight contrast
   passes and zero divergences. Summary: results/d1c/TIMING-SUMMARY-2026-10-10.md.
-  Commit/push, then launch the authorized local grid: one initial replicate of all
-  240 cells, three workers, four chains, 4,000 production / 8,000 upstream retained
+  The local grid launched after commit/push at 72035fd, run 20261010T161109492336Z.
+  Monitor logs/d1c-grid-20261010T161109492336Z.json and the launch stdout. It covers
+  one initial replicate of all 240 cells, three workers, four chains, 4,000 production / 8,000 upstream retained
   draws and 2,000 warmup. About 18 days is an extrapolation, not a deadline. This
   first sweep checks execution and diagnostics; D1c calibration remains incomplete.
   Recovery, budget routing and equivalent batched diagnostics pass 17 tests.
@@ -39,7 +40,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A done (conditional forward map retained); D1 grid done (indicator verdict after D1c); longer D1c baseline pilot passed both replicates; twelve-fit timing complete (four R-hat failures, zero divergences), initial full-cell local sweep specified with 17 passing tests, awaiting commit/push then launch; D1c calibration remains incomplete; Brett chose effect size, uncertainty and sensitivity reporting with substantive benchmarks unset, incorporated into both drafts; D1b design note prepared; Koch data permission confirmed by email, with citation requested; D2 grid done (results/d2/SUMMARY.md); plan settled through H2, H1, L1, L2, multiverse and model judges only; implementation handed to Codex tabs (HANDOFF-TO-CODEX.md); Norman extraction: parser bug to fix, GLM replaced by Apple's Vision OCR (no OpenRouter credit); no strand B outcome data opened · status: active · updated: 2026-10-10 -->
+<!-- SUMMARY: Strand A done (conditional forward map retained); D1 grid done (indicator verdict after D1c); longer D1c baseline pilot passed both replicates; twelve-fit timing complete (four R-hat failures, zero divergences), initial full-cell local sweep running after commit/push 72035fd with 17 passing tests; D1c calibration remains incomplete; Brett chose effect size, uncertainty and sensitivity reporting with substantive benchmarks unset, incorporated into both drafts; D1b design note prepared; Koch data permission confirmed by email, with citation requested; D2 grid done (results/d2/SUMMARY.md); plan settled through H2, H1, L1, L2, multiverse and model judges only; implementation handed to Codex tabs (HANDOFF-TO-CODEX.md); Norman extraction: parser bug to fix, GLM replaced by Apple's Vision OCR (no OpenRouter credit); no strand B outcome data opened · status: active · updated: 2026-10-10 -->
 
 ## State
 
@@ -54,6 +55,7 @@ Scaffolded 2026-10-07 from Brett's brief (`notes/project-brief.md`, verbatim). T
 5. Missing literature: `notes/literature-to-fetch.md` (scripted downloads blocked; fetch by hand).
 6. Lane S drafts: `notes/threshold-examples-draft-2026-10-10.md` and `notes/plan-part8-draft-2026-10-10.md` now follow Brett's direction to report estimated size, uncertainty and changes across assumptions, with substantive benchmarks unset and no benchmark-selection checklist. The analyst handles later integration and reconciliation of older threshold language in the plan. `notes/d1b-design-draft-2026-10-10.md` maps identification and implementation requirements. The plan itself is unchanged. D1b still needs its numerical specification, code, pilot and grid.
 7. Koch et al. (2024): Alex Koch's email of 2026-10-09, supplied by Brett on 2026-10-10, gives permission for research use and publication of derived summaries; his follow-up requests citation. Cite the paper (doi:10.1037/pspa0000383) and OSF project (https://osf.io/eadcm/). Record this as explicit author permission, not an inferred CC BY licence. The permission blocker is cleared; no Koch data have been downloaded or opened in this session. Record file-level provenance when retrieving them and preserve the existing analysis-plan and outcome-data gates.
+8. D1c initial grid: run `20261010T161109492336Z`, launched 2026-10-10 16:11 UTC from published commit `72035fd`. Progress: `logs/d1c-grid-20261010T161109492336Z.json`; stdout: `logs/d1c-grid-launch-20261010T161108Z-stdout.txt`; launch record: `logs/d1c-grid-launch-20261010T161108Z.json`. Completed jobs survive interruption. After an actual interruption, resume with `.venv/bin/python -u scripts/d1c/grid.py resume 20261010T161109492336Z --workers 3`, detached with the same thread limits as the launch record. Do not launch a duplicate while the current runner is active. No automatic retries of completed failures. The initial sweep cannot establish calibration; D1b remains at preparatory-note stage.
 
 ## Blockers
 
