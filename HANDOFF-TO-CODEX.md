@@ -5,7 +5,7 @@ From 2026-10-09 (Brett: "make it so"), build, test, debug and extraction work in
 
 ## Start
 
-1. Launch from the project folder with `scripts/codex-tab.sh`. It gives what Brett approved ("Workspace-write, this project only"): writes limited to this project, network off, approvals on request, so pushes ask him first. It also sets the compile caches (below). `--yolo` would drop all of that.
+1. Launch from the project folder with `scripts/codex-tab.sh`. It gives what Brett approved ("Workspace-write, this project only"): writes limited to this project, network off, approvals on request, so pushes ask him first. Network calls fail inside it, which matters for lane N (see there). It also sets the compile caches (below). `--yolo` would drop all of that.
 2. Read `AGENTS.md`, this file, `analysis_plan.md`, the last 30 entries of `DECISIONS.md`, and your lane's README.
 3. Brett's first message names your lane. One tab can do lane N, then lane S; two tabs run them in parallel.
 
@@ -46,6 +46,8 @@ From 2026-10-09 (Brett: "make it so"), build, test, debug and extraction work in
 ## Lane N: Norman extraction
 
 Spec: `scripts/norman/README.md`. Wave 1 (the first 60 table pages, 120 half-pages) was stopped by the Claude session at 21:15 on 2026-10-09.
+
+**Run every extraction command outside the sandbox, the one-page test included.** The tab's sandbox has no network, and each half-page needs it: pass B calls OpenRouter, and pass X starts its own read-only Codex, which calls OpenAI (macOS may also refuse a sandbox started inside another). Inside the sandbox those calls fail, and the script records each as a failed row without stopping, so a sandbox failure looks like the parser bug. Ask Brett to approve each extraction command to run outside the sandbox, or ask him to run it in an ordinary terminal. Simulation work (lane S) needs no network.
 
 | Pass | Rows ok | Rows failed | Cause |
 |---|---|---|---|
