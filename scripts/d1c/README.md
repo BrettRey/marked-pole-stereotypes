@@ -526,3 +526,21 @@ estimate, not a billing-account observation. Preserve the .72 active-job
 ceiling and USD 10 total authorization. Timing comparisons are descriptive:
 the machines fit different fixed upstream draws, with different compilation
 environments and local contention, so these are not matched speed trials.
+
+## Keep the local worker occupied (2026-10-10; prospective)
+
+Brett corrected the interpretation that the Mac should stop after its first
+component. Queue the remaining unassigned components 3, 4, 5, 6 and 7 of the
+same cell 10/replicate 0, sequentially on the Mac at nice 10 and one sampler
+core. Cloud still owns 0, local 1 is complete, and HF still owns 2. The full
+240-cell grid is not restarted. No additional HF spending is introduced.
+
+The queue starts the next assigned component after a completed component,
+whether its diagnostics pass or fail. It never repeats a completed result,
+never automatically retries a crashed fit, and records a crash for repair.
+Use the identical upstream checkpoint, seeds, selected draws and sampler
+settings. Each component's compact outputs and diagnostics remain durable.
+Later reporting-only commits must not strand this fixed queue: validate all
+executable/specification file bytes against the published source commit
+instead of demanding that unrelated Git HEAD metadata never advance.
+Commit and push the queue and this specification before the next fit.

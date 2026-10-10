@@ -1,0 +1,58 @@
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpeo87g44o/work/results/d1c/cloud-canary-20261010/checkpoints
+...saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpx0crq3va/upstream
+saved component downstream-001: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpx0crq3va/checkpoints
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpp71l7guf/upstream
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbku6pqwr/upstream
+saved component downstream-001: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbku6pqwr/checkpoints
+saved component downstream-001: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbku6pqwr/checkpoints
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp1lfp10eh/upstream
+saved component downstream-001: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp1lfp10eh/checkpoints
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmplwybbvoy/components
+saved component downstream-000: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmplwybbvoy/components
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp77u6ee7s/components
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp8xomyh3x/components
+saved component downstream-000: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp8xomyh3x/components
+saved component downstream-001: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp8xomyh3x/components
+saved component downstream-002: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp8xomyh3x/components
+saved component downstream-003: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp8xomyh3x/components
+saved component downstream-004: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp8xomyh3x/components
+saved component downstream-005: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp8xomyh3x/components
+saved component downstream-006: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp8xomyh3x/components
+saved component downstream-007: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp8xomyh3x/components
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpk5jjmf2p/components
+saved component downstream-000: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpk5jjmf2p/components
+.saved component joint: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpy2aakdkw/components
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp2him5i01/components
+..............contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+saved component downstream-001: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpwxnfs4ks
+.saved component downstream-002: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpdotvrhmm/source/checkpoints
+.saved component downstream-002: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpyx2s9pm9/source/checkpoints
+.contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+.......sample (40, 1, False, 1.0, 'upstream'); compile 0.0s
+sample done (40, 1, False, 1.0, 'upstream'): 0.0s
+sample (40, 1, False, 1.0, 'downstream'); compile 0.0s
+sample done (40, 1, False, 1.0, 'downstream'): 0.0s
+sample (40, 1, False, 1.0, 'joint'); compile 0.0s
+sample done (40, 1, False, 1.0, 'joint'): 0.0s
+.
+----------------------------------------------------------------------
+Ran 38 tests in 12.658s
+
+OK

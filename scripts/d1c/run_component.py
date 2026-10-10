@@ -24,12 +24,22 @@ from run_state import atomic_json, digest
 
 UPSTREAM_COMMIT = "942dfd8109232beaf7e5bf35c023409b09a18525"
 UPSTREAM_PATH = "results/d1c/cloud-canary-20261010/checkpoints"
+ASSIGNMENTS = {"local": {1, 3, 4, 5, 6, 7}, "hf": {2}}
 
 
 def git(*args, binary=False):
     result = subprocess.run(["git", *args], cwd=d1c.ROOT, capture_output=True,
                             check=True, timeout=60)
     return result.stdout if binary else result.stdout.decode().strip()
+
+
+def verify_published_source(source, paths):
+    """Freeze relevant file bytes while permitting later result-only commits."""
+    if git("status", "--porcelain", "--", *paths):
+        raise RuntimeError("Commit the exact source and specification before this fit")
+    git("diff", "--exit-code", source, "--", *paths)
+    git("fetch", "--quiet", "origin", "master")
+    git("merge-base", "--is-ancestor", source, "origin/master")
 
 
 def component_rng(state, component, *, chains, draws, contrast_draws):
@@ -112,20 +122,17 @@ def export_files(directory, destination):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", required=True)
-    parser.add_argument("--component", type=int, choices=[1, 2], required=True)
+    parser.add_argument("--component", type=int, choices=range(1, 8), required=True)
     parser.add_argument("--location", choices=["local", "hf"], required=True)
     parser.add_argument("--export-directory", type=Path)
     args = parser.parse_args()
-    if (args.location, args.component) not in (("local", 1), ("hf", 2)):
-        parser.error("Assignments are fixed: local component 1, HF component 2")
+    if args.component not in ASSIGNMENTS[args.location]:
+        parser.error("Assignments are fixed: local 1 and 3–7, HF 2; cloud owns 0")
     if args.location == "hf" and args.export_directory is None:
         parser.error("HF requires a persistent export directory")
     paths = ["scripts/d1c/d1c.py", "scripts/d1c/run_component.py", "scripts/d1c/component_state.py",
              "scripts/d1c/run_state.py", "scripts/d1c/diagnostic_chunks.py", "scripts/d1c/README.md"]
-    if git("rev-parse", "HEAD") != args.source or git("status", "--porcelain", "--", *paths):
-        raise RuntimeError("Commit the exact source and specification before this fit")
-    git("fetch", "--quiet", "origin", "master")
-    git("merge-base", "--is-ancestor", args.source, "origin/master")
+    verify_published_source(args.source, paths)
     directory = d1c.ROOT / "results/d1c" / f"{args.location}-component-{args.component:03d}-20261010"
     directory.mkdir(parents=True, exist_ok=True)
     spec, metadata, selected, archive_hash = imported_upstream(directory)
