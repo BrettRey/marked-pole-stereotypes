@@ -1,0 +1,59 @@
+test_ambiguous_submission_cannot_repeat (test_baseline_batch.BaselineTests.test_ambiguous_submission_cannot_repeat) ... ok
+test_budget_and_commands_are_bounded (test_baseline_batch.BaselineTests.test_budget_and_commands_are_bounded) ... ok
+test_capacity_wait_resumes_without_repeating_accepted_jobs (test_baseline_batch.BaselineTests.test_capacity_wait_resumes_without_repeating_accepted_jobs) ... ok
+test_missing_component_never_falls_through_to_sampler (test_baseline_batch.BaselineTests.test_missing_component_never_falls_through_to_sampler) ... ok
+test_nonregister_cut_replays_all_eight_and_retains_diagnostic_failure (test_baseline_batch.BaselineTests.test_nonregister_cut_replays_all_eight_and_retains_diagnostic_failure) ... ok
+test_pairing_requires_same_generated_data (test_baseline_batch.BaselineTests.test_pairing_requires_same_generated_data) ... ok
+test_register_shapes_and_wrong_seed_are_enforced (test_baseline_batch.BaselineTests.test_register_shapes_and_wrong_seed_are_enforced) ... ok
+test_scope_exactly_completes_sixteen_cells_without_repeats (test_baseline_batch.BaselineTests.test_scope_exactly_completes_sixteen_cells_without_repeats) ... ok
+test_shared_upstream_is_checked_before_consumption (test_baseline_batch.BaselineTests.test_shared_upstream_is_checked_before_consumption) ... ok
+test_exact_parallel_work_is_disjoint (test_paired_batch.PairedBatchTests.test_exact_parallel_work_is_disjoint) ... ok
+test_final_cut_is_cached_and_preserves_failed_diagnostic (test_paired_batch.PairedBatchTests.test_final_cut_is_cached_and_preserves_failed_diagnostic) ... ok
+test_foreign_seed_and_lost_register_axis_are_rejected (test_paired_batch.PairedBatchTests.test_foreign_seed_and_lost_register_axis_are_rejected) ... ok
+test_missing_and_failed_upstream_never_start_a_fit (test_paired_batch.PairedBatchTests.test_missing_and_failed_upstream_never_start_a_fit) ... ok
+test_provider_commands_have_fixed_caps_and_no_secrets_or_retries (test_paired_batch.PairedBatchTests.test_provider_commands_have_fixed_caps_and_no_secrets_or_retries) ... ok
+test_shared_checkpoint_survives_export_and_host_environment_difference (test_paired_batch.PairedBatchTests.test_shared_checkpoint_survives_export_and_host_environment_difference) ... ok
+test_upstream_boundary_stops_actual_fit_before_downstream (test_paired_batch.PairedBatchTests.test_upstream_boundary_stops_actual_fit_before_downstream) ... ok
+test_assigned_component_keeps_sequential_draws_and_failed_diagnostics (test_run_component.ComponentSchedulingTests.test_assigned_component_keeps_sequential_draws_and_failed_diagnostics) ... contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+saved component downstream-001: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpdg22lci9
+ok
+test_export_rejects_corruption_before_copying_commit_marker (test_run_component.ComponentSchedulingTests.test_export_rejects_corruption_before_copying_commit_marker) ... saved component downstream-002: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpj6psrdvm/source/checkpoints
+ok
+test_export_survives_source_loss_and_excludes_incomplete_archive (test_run_component.ComponentSchedulingTests.test_export_survives_source_loss_and_excludes_incomplete_archive) ... saved component downstream-002: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpcrwl8fww/source/checkpoints
+ok
+test_skipped_rng_matches_actual_sequential_contrast_function (test_run_component.ComponentSchedulingTests.test_skipped_rng_matches_actual_sequential_contrast_function) ... contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+ok
+test_assignments_are_disjoint_and_cover_the_cut (test_hf_batch.BatchTests.test_assignments_are_disjoint_and_cover_the_cut) ... ok
+test_execution_failure_stops_dispatch_but_finishes_running_peer (test_hf_batch.BatchTests.test_execution_failure_stops_dispatch_but_finishes_running_peer) ... ok
+test_supervisor_replacement_preserves_independent_heartbeat_worker (test_hf_batch.BatchTests.test_supervisor_replacement_preserves_independent_heartbeat_worker) ... ok
+test_two_slots_and_no_repeat_after_completion (test_hf_batch.BatchTests.test_two_slots_and_no_repeat_after_completion) ... ok
+test_cache_never_falls_back_to_fit (test_assemble_cut.AssemblyTests.test_cache_never_falls_back_to_fit) ... ok
+test_damaged_archive_is_rejected (test_assemble_cut.AssemblyTests.test_damaged_archive_is_rejected) ... ok
+test_missing_component_stops_before_replay_and_output (test_assemble_cut.AssemblyTests.test_missing_component_stops_before_replay_and_output) ... ok
+test_nonfinite_draws_are_not_silently_removed (test_assemble_cut.AssemblyTests.test_nonfinite_draws_are_not_silently_removed) ... ok
+test_publication_retains_failure_and_refuses_overwrite (test_assemble_cut.AssemblyTests.test_publication_retains_failure_and_refuses_overwrite) ... ok
+test_register_covariate_axis_cannot_be_lost (test_assemble_cut.AssemblyTests.test_register_covariate_axis_cannot_be_lost) ... ok
+test_replay_equal_weight_mixture_preserves_failed_component (test_assemble_cut.AssemblyTests.test_replay_equal_weight_mixture_preserves_failed_component) ... ok
+test_wrong_regenerated_data_seed_stops_publication (test_assemble_cut.AssemblyTests.test_wrong_regenerated_data_seed_stops_publication) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 6.442s
+
+OK
