@@ -488,3 +488,16 @@ that receipt already exists. A failed or ambiguous submission is inspected,
 not automatically repeated. Retrieve the bucket files and verify the compact
 archive before accepting a completed result. This trial estimates runtime,
 memory and actual cost; its single conditional component is not a full cut.
+
+### HF launcher correction before model execution (2026-10-10)
+
+The initial HF CLI invocation consumed Bash’s `-lc` as a job label flag.
+Inspection caught the malformed command while job `6aca7346095c578089314d4b`
+was still SCHEDULING. Cancel that job; no model ran. Preserve its receipt.
+Add the explicit CLI `--` separator before the image and command, verify the
+resolved configuration in a dry run, and publish the correction before one
+replacement submission. This is a manual setup correction within Brett’s
+authorized HF trial and USD 10 budget, not a diagnostic-triggered rerun.
+Until billed durations are confirmed, conservatively reserve .72 for each
+submission (1.44 total). The scientific runner and all model settings remain
+unchanged.

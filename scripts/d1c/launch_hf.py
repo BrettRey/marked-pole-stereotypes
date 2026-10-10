@@ -30,12 +30,12 @@ def main():
     receipt = ROOT / "logs/d1c-hf-job-20261010.json"
     if args.execute and receipt.exists():
         raise RuntimeError("An HF submission record already exists; inspect it, do not duplicate the job")
-    command = ["hf", "jobs", "run", "--json", "--detach", "--flavor", "cpu-upgrade",
+    command = ["hf", "jobs", "run", "--format", "json" if args.execute else "human", "--detach", "--flavor", "cpu-upgrade",
                "--timeout", "24h", "--attempts", "1", "--name", "d1c-component-002-20261010",
                "--volume", f"{BUCKET}:/outputs:rw"]
     if not args.execute:
         command.append("--dry-run")
-    command.extend([IMAGE, "bash", "-lc", BOOTSTRAP, "d1c-job", args.source])
+    command.extend(["--", IMAGE, "bash", "-lc", BOOTSTRAP, "d1c-job", args.source])
     environment = os.environ.copy()
     # Use Brett's newly authorized cached OAuth login, not the old read-only
     # environment token. No credential enters the job or this public receipt.

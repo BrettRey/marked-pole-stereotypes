@@ -1,0 +1,15 @@
+Job configuration:
+  image     python@sha256:7ee7e4d4fb42c3ad45b8fdc473b64ec69c3cf6e80ae5d52f6fa55f77fac29027
+  command   bash -lc 'set -eu
+            git clone --quiet https://github.com/BrettRey/marked-pole-stereotypes.git /work
+            cd /work
+            git checkout --quiet "$1"
+            git fetch --quiet origin 942dfd8109232beaf7e5bf35c023409b09a18525
+            exec bash scripts/d1c/hf_job.sh "$1"
+            ' d1c-job 827b5b9555e773e90d11cb71cacd134be1026bda
+  flavor    cpu-upgrade
+  timeout   24h
+  attempts  1
+  volumes   hf://buckets/BrettRey/marked-pole-d1c-compute:/outputs:rw
+  labels    name=d1c-component-002-20261010
+(dry run) Job not submitted.

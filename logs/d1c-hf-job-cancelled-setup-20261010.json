@@ -1,0 +1,20 @@
+{
+  "submitted_at": "2026-10-10T17:17:58.323091+00:00",
+  "source_commit": "827b5b9555e773e90d11cb71cacd134be1026bda",
+  "image": "python@sha256:7ee7e4d4fb42c3ad45b8fdc473b64ec69c3cf6e80ae5d52f6fa55f77fac29027",
+  "bucket": "hf://buckets/BrettRey/marked-pole-d1c-compute",
+  "flavor": "cpu-upgrade",
+  "timeout_seconds": 86400,
+  "maximum_attempts": 1,
+  "hourly_compute_usd": 0.03,
+  "maximum_compute_usd": 0.72,
+  "total_authorized_hf_usd": 10,
+  "returncode": 0,
+  "stdout": "{\"id\": \"6aca7346095c578089314d4b\", \"name\": \"d1c-component-002-20261010\", \"url\": \"https://huggingface.co/jobs/BrettRey/6aca7346095c578089314d4b\"}\n",
+  "stderr": "Job configuration:\n  image     python@sha256:7ee7e4d4fb42c3ad45b8fdc473b64ec69c3cf6e80ae5d52f6fa55f77fac29027\n  command   bash 'set -eu\n            git clone --quiet https://github.com/BrettRey/marked-pole-stereotypes.git /work\n            cd /work\n            git checkout --quiet \"$1\"\n            git fetch --quiet origin 942dfd8109232beaf7e5bf35c023409b09a18525\n            exec bash scripts/d1c/hf_job.sh \"$1\"\n            ' d1c-job 827b5b9555e773e90d11cb71cacd134be1026bda\n  flavor    cpu-upgrade\n  timeout   24h\n  attempts  1\n  volumes   hf://buckets/BrettRey/marked-pole-d1c-compute:/outputs:rw\n  labels    c=\n            name=d1c-component-002-20261010\nHint: Use `hf jobs logs -f BrettRey/6aca7346095c578089314d4b` to stream logs, or `hf jobs inspect BrettRey/6aca7346095c578089314d4b` to check status.\nHint: Use `hf jobs wait BrettRey/6aca7346095c578089314d4b` to block until it finishes.\n",
+  "verified_cancelled_at": "2026-10-10T17:19:12.594792+00:00",
+  "last_observed_stage_before_cancel": "SCHEDULING",
+  "final_stage": "CANCELED",
+  "reason": "HF CLI consumed Bash -lc as job label; no model started",
+  "billing_status": "No STARTING or RUNNING observed; billed charge unconfirmed"
+}
