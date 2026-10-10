@@ -1,0 +1,500 @@
+{
+  "additional_supported_primary_pairs_from_independent_audit": 0,
+  "adjective_senses_per_pass": 93,
+  "anderson_primary_candidate_pairs": 5,
+  "api_equivalent_accounting_complete": false,
+  "audit_script_sha256": "8a9511188290c08b5e567b0375b4a25dfcfd263cf59a67fc8244f3e4d1030b6b",
+  "bounded_audit_not_recall_estimate": true,
+  "claude_api_equivalent_usd": 1.7601404999999999,
+  "commonness_judgments_collected": false,
+  "conservative_word_audit_counts": {
+    "eligible": 25,
+    "ineligible": 4,
+    "unresolved": 11
+  },
+  "cost_by_call": [
+    {
+      "api_equivalent_usd": null,
+      "cli_reported_tokens_used": 26461,
+      "completed_at": "2026-10-10T21:00:34.764684+00:00",
+      "elapsed_seconds": 76.72638883301988,
+      "family": "codex",
+      "kind": "word",
+      "label": "words-01",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "source_commit": "6e5d0ea4570d99e039f4098b5f066dff4d339294",
+      "started_at": "2026-10-10T20:59:18.038655+00:00",
+      "usage": null
+    },
+    {
+      "api_equivalent_usd": null,
+      "cli_reported_tokens_used": 19776,
+      "completed_at": "2026-10-10T21:01:30.879194+00:00",
+      "elapsed_seconds": 56.10909325024113,
+      "family": "codex",
+      "kind": "word",
+      "label": "words-02",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "source_commit": "6e5d0ea4570d99e039f4098b5f066dff4d339294",
+      "started_at": "2026-10-10T21:00:34.770411+00:00",
+      "usage": null
+    },
+    {
+      "api_equivalent_usd": null,
+      "cli_reported_tokens_used": 22565,
+      "completed_at": "2026-10-10T21:02:54.135125+00:00",
+      "elapsed_seconds": 83.2514292919077,
+      "family": "codex",
+      "kind": "word",
+      "label": "words-03",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "source_commit": "6e5d0ea4570d99e039f4098b5f066dff4d339294",
+      "started_at": "2026-10-10T21:01:30.884072+00:00",
+      "usage": null
+    },
+    {
+      "api_equivalent_usd": null,
+      "cli_reported_tokens_used": 22655,
+      "completed_at": "2026-10-10T21:04:07.968813+00:00",
+      "elapsed_seconds": 73.82790900021791,
+      "family": "codex",
+      "kind": "word",
+      "label": "words-04",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "source_commit": "6e5d0ea4570d99e039f4098b5f066dff4d339294",
+      "started_at": "2026-10-10T21:02:54.141294+00:00",
+      "usage": null
+    },
+    {
+      "api_equivalent_usd": null,
+      "cli_reported_tokens_used": 39815,
+      "completed_at": "2026-10-10T21:01:31.584481+00:00",
+      "elapsed_seconds": 122.55190454190597,
+      "family": "codex",
+      "kind": "pair",
+      "label": "independent-pairs",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "source_commit": "6e5d0ea4570d99e039f4098b5f066dff4d339294",
+      "started_at": "2026-10-10T20:59:29.032918+00:00",
+      "usage": null
+    },
+    {
+      "api_equivalent_usd": null,
+      "cli_reported_tokens_used": 43861,
+      "completed_at": "2026-10-10T21:09:38.446301+00:00",
+      "elapsed_seconds": 171.34659462515265,
+      "family": "codex",
+      "kind": "pair",
+      "label": "independent-pairs-v2",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "source_commit": "10241e6794f8d5737a5f56fb5dee6d32ffd3de43",
+      "started_at": "2026-10-10T21:06:47.100127+00:00",
+      "usage": null
+    },
+    {
+      "api_equivalent_usd": 0.452037,
+      "completed_at": "2026-10-10T21:04:31.552733+00:00",
+      "elapsed_seconds": 313.5155176669359,
+      "family": "claude",
+      "kind": "word",
+      "label": "words-01",
+      "requested_model": "claude-sonnet-4-6",
+      "returned_model": "claude-sonnet-4-6",
+      "source_commit": "6e5d0ea4570d99e039f4098b5f066dff4d339294",
+      "started_at": "2026-10-10T20:59:18.038159+00:00",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 14666,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 14666,
+        "cache_read_input_tokens": 0,
+        "fallback_credit": null,
+        "inference_geo": "global",
+        "input_tokens": 2,
+        "iterations": [
+          {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 14666,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 14666,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 2,
+            "output_tokens": 24269,
+            "type": "message"
+          }
+        ],
+        "output_tokens": 24269,
+        "output_tokens_details": {
+          "thinking_tokens": 19745
+        },
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 0
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    {
+      "api_equivalent_usd": 0.23075849999999998,
+      "completed_at": "2026-10-10T21:07:06.643496+00:00",
+      "elapsed_seconds": 157.6008951663971,
+      "family": "claude",
+      "kind": "word",
+      "label": "words-02",
+      "requested_model": "claude-sonnet-4-6",
+      "returned_model": "claude-sonnet-4-6",
+      "source_commit": "b0383332029823468a3080f48597280428e74b20",
+      "started_at": "2026-10-10T21:04:29.043031+00:00",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 4864,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 4864,
+        "cache_read_input_tokens": 3895,
+        "fallback_credit": null,
+        "inference_geo": "global",
+        "input_tokens": 2,
+        "iterations": [
+          {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 4864,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 4864,
+            "cache_read_input_tokens": 3895,
+            "input_tokens": 2,
+            "output_tokens": 13360,
+            "type": "message"
+          }
+        ],
+        "output_tokens": 13360,
+        "output_tokens_details": {
+          "thinking_tokens": 10040
+        },
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 0
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    {
+      "api_equivalent_usd": 0.24064649999999999,
+      "completed_at": "2026-10-10T21:07:19.582669+00:00",
+      "elapsed_seconds": 170.5397228328511,
+      "family": "claude",
+      "kind": "word",
+      "label": "words-03",
+      "requested_model": "claude-sonnet-4-6",
+      "returned_model": "claude-sonnet-4-6",
+      "source_commit": "b0383332029823468a3080f48597280428e74b20",
+      "started_at": "2026-10-10T21:04:29.043582+00:00",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 6757,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 6757,
+        "cache_read_input_tokens": 3895,
+        "fallback_credit": null,
+        "inference_geo": "global",
+        "input_tokens": 2,
+        "iterations": [
+          {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 6757,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 6757,
+            "cache_read_input_tokens": 3895,
+            "input_tokens": 2,
+            "output_tokens": 13262,
+            "type": "message"
+          }
+        ],
+        "output_tokens": 13262,
+        "output_tokens_details": {
+          "thinking_tokens": 9936
+        },
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 0
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    {
+      "api_equivalent_usd": 0.2709585,
+      "completed_at": "2026-10-10T21:10:24.246224+00:00",
+      "elapsed_seconds": 197.59685020893812,
+      "family": "claude",
+      "kind": "word",
+      "label": "words-04",
+      "requested_model": "claude-sonnet-4-6",
+      "returned_model": "claude-sonnet-4-6",
+      "source_commit": "b0383332029823468a3080f48597280428e74b20",
+      "started_at": "2026-10-10T21:07:06.650206+00:00",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 6154,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 6154,
+        "cache_read_input_tokens": 3895,
+        "fallback_credit": null,
+        "inference_geo": "global",
+        "input_tokens": 2,
+        "iterations": [
+          {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 6154,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 6154,
+            "cache_read_input_tokens": 3895,
+            "input_tokens": 2,
+            "output_tokens": 15524,
+            "type": "message"
+          }
+        ],
+        "output_tokens": 15524,
+        "output_tokens_details": {
+          "thinking_tokens": 11567
+        },
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 0
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    {
+      "api_equivalent_usd": 0.56574,
+      "completed_at": "2026-10-10T21:05:19.908484+00:00",
+      "elapsed_seconds": 350.87600329099223,
+      "family": "claude",
+      "kind": "pair",
+      "label": "independent-pairs",
+      "requested_model": "claude-sonnet-4-6",
+      "returned_model": "claude-sonnet-4-6",
+      "source_commit": "6e5d0ea4570d99e039f4098b5f066dff4d339294",
+      "started_at": "2026-10-10T20:59:29.033900+00:00",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 27149,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 27149,
+        "cache_read_input_tokens": 0,
+        "fallback_credit": null,
+        "inference_geo": "global",
+        "input_tokens": 2,
+        "iterations": [
+          {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 27149,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 27149,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 2,
+            "output_tokens": 26856,
+            "type": "message"
+          }
+        ],
+        "output_tokens": 26856,
+        "output_tokens_details": {
+          "thinking_tokens": 21879
+        },
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 0
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    {
+      "api_equivalent_usd": null,
+      "completed_at": "2026-10-10T21:21:47.250573+00:00",
+      "elapsed_seconds": 900.0724476249889,
+      "family": "claude",
+      "kind": "pair",
+      "label": "independent-pairs-v2",
+      "requested_model": "claude-sonnet-4-6",
+      "returned_model": null,
+      "source_commit": "10241e6794f8d5737a5f56fb5dee6d32ffd3de43",
+      "started_at": "2026-10-10T21:06:47.101881+00:00",
+      "usage": null
+    }
+  ],
+  "created_at": "2026-10-10T21:21:47.952587+00:00",
+  "detector_candidates": 11,
+  "detector_words_omitted_from_independent_screens": {
+    "claude/independent-pairs": [],
+    "codex/independent-pairs": [],
+    "codex/independent-pairs-v2": []
+  },
+  "explicit_sense_overrides": 4,
+  "failed_recheck_attempts": [
+    {
+      "error": "RuntimeError('CLI failed')",
+      "exit_code": "timeout",
+      "family": "claude",
+      "label": "independent-pairs-v2"
+    }
+  ],
+  "frame_frozen": false,
+  "full_vocabulary_coding_started": false,
+  "independent_screen_counts": {
+    "claude/independent-pairs": 11,
+    "codex/independent-pairs": 11,
+    "codex/independent-pairs-v2": 11
+  },
+  "input_sha256": {
+    "private/lexical_frame/coding-20261010-v1/claude/independent-pairs-v2/manifest.json": "15f0930af0d79157a5c49d64dd67b8fa1ed47597d8247f98f5ca8b1feab71569",
+    "private/lexical_frame/coding-20261010-v1/claude/independent-pairs-v2/stdout.txt": "2423bd34cd2bfd901ab97e4274565765000cb6c764d495f8c3eb14637c9c84c7",
+    "private/lexical_frame/coding-20261010-v1/claude/independent-pairs/answer.json": "74bd1b5d40ee3ccb8ac7059b7f6ba643743b214912f8c3e85f7f84b31389953f",
+    "private/lexical_frame/coding-20261010-v1/claude/independent-pairs/manifest.json": "462942a6cec42f3a253b8092de0f51ab624ae984d1abcf7e66a2587558276861",
+    "private/lexical_frame/coding-20261010-v1/claude/words-01/answer.json": "7e9843cf0f05c8472649ac5f14dbee53f64cece5a8debe0f2917895d704c2f8f",
+    "private/lexical_frame/coding-20261010-v1/claude/words-01/manifest.json": "5d4234ae855a880180a7260d0272c5921e93bf55f54d8aafea271d3fc9d67d7c",
+    "private/lexical_frame/coding-20261010-v1/claude/words-02/answer.json": "2676920f7e1dbb5ca5751cdb3fcad56e34106b31178dda89c1c1f183c4c0ecdb",
+    "private/lexical_frame/coding-20261010-v1/claude/words-02/manifest.json": "261160058a31d813e2af675258af29d4c032183c22d1c7efcc1589de8e68b6ca",
+    "private/lexical_frame/coding-20261010-v1/claude/words-03/answer.json": "fd76eda7d28e20a3fbf9bd3bf3d9ab9a800700cd6b974a41a89c2c14bc77ea50",
+    "private/lexical_frame/coding-20261010-v1/claude/words-03/manifest.json": "b8b7197627ea25a752d88d0522bd6c3a56cfc1ae7557f1d791c5be8edc3a8bb7",
+    "private/lexical_frame/coding-20261010-v1/claude/words-04/answer.json": "94ac8d80ac1fd13446226568eec153b31d6a09694920b5316ce28fdb85ac2548",
+    "private/lexical_frame/coding-20261010-v1/claude/words-04/manifest.json": "cbb0f40057b4556566e4e97f567cf9d93e55a5f9a80456e471ac88164ebee550",
+    "private/lexical_frame/coding-20261010-v1/codex/independent-pairs-v2/answer.json": "4021b04c57d2c4fb43bd074e3db3ca947c36dde8985c22401b4fb2ad57884995",
+    "private/lexical_frame/coding-20261010-v1/codex/independent-pairs-v2/manifest.json": "569619584651ca981c284d6c9f3b5a55fdef81cc1f750347e5743ebfd593350a",
+    "private/lexical_frame/coding-20261010-v1/codex/independent-pairs/answer.json": "4bb162131f082980f2206b35b03f318cb223effcee57292bb7c0656e9b3e7e35",
+    "private/lexical_frame/coding-20261010-v1/codex/independent-pairs/manifest.json": "60a281cecf37fba856cd2d8ab1e3b28dd87bb5b6fd98a71eec7e20dad0bfb97a",
+    "private/lexical_frame/coding-20261010-v1/codex/words-01/answer.json": "ea6fe10ec6b0accc02ab8db6eeef11ad580979f9cd66459e07629a35d1819853",
+    "private/lexical_frame/coding-20261010-v1/codex/words-01/manifest.json": "0a3527d03c81c44b24299b8dad67123b2153032fa8fdb03fee48a3201ce37929",
+    "private/lexical_frame/coding-20261010-v1/codex/words-02/answer.json": "f72eaf5274b3efb0cc7ff58ce6573fd699870ae8c439590619a331b60114de16",
+    "private/lexical_frame/coding-20261010-v1/codex/words-02/manifest.json": "5d8e2c3e3fc470f4018ed5cda6de520350da92fa32237c772fcaa37ed07573c4",
+    "private/lexical_frame/coding-20261010-v1/codex/words-03/answer.json": "d77b75b7d62548ca625c5dc765473024a40dd0c8ebd37f32c77548ef7adfb6bf",
+    "private/lexical_frame/coding-20261010-v1/codex/words-03/manifest.json": "bc8d2fc5bcf0596e8ef4b9a3ba7afbb6986255b8194f71a1da5500156cd8eb58",
+    "private/lexical_frame/coding-20261010-v1/codex/words-04/answer.json": "c7badf47c1bb655258ce1656f48928089f9f8c87a6586eee00d42af71b9c7b27",
+    "private/lexical_frame/coding-20261010-v1/codex/words-04/manifest.json": "06020eb06cddb78bb20d7a1a4114f521c83528b24129bc58bb01d883600c7daf",
+    "private/lexical_frame/pilot-20261010-v2/manifest.json": "d7b7ac08a1cc5122c8c4699c23b61ad7516df8b5acda2045ac1d86249c815239",
+    "private/lexical_frame/pilot-20261010-v2/terms.json": "a6cf4392c7a2df5d727a8ef14cecb63a099b1e460d6139090573c13e49c3ec45",
+    "private/lexical_frame/pilot-audit-rules.json": "bc2ac97d8bc2dd84566be066127552919fc67abd343f2265103c5a7e70090cc0"
+  },
+  "model_call_seconds": 2674.0147563335486,
+  "model_calls": 12,
+  "model_word_passes": 2,
+  "original_grouping_difference_words": 5,
+  "other_pair_analyses": 5,
+  "pair_graph_components": 5,
+  "primary_candidate_pairs": 6,
+  "primary_review_timing": "Source review overlapped model execution; a separate active-review or token-cost meter was not available. Do not extrapolate model inference time as end-to-end curation cost.",
+  "python": "3.14.8",
+  "quote_checks": {
+    "exact_source_substring": 293,
+    "verified_wiki_display_substring": 5
+  },
+  "ratings_joined": false,
+  "reading_diagnostic_errors": 0,
+  "resource_attested_specification_counts": {
+    "eligible": 25,
+    "ineligible": 4,
+    "not_admitted_no_attested_adjective": 9,
+    "unresolved": 2
+  },
+  "sense_audit_counts": {
+    "eligible": 45,
+    "ineligible": 37,
+    "unresolved": 11
+  },
+  "sense_status_agreement": {
+    "agree": 84,
+    "denominator": 93,
+    "not_accuracy": true
+  },
+  "source_commit": "396d95fb3a6d498f28ed77a888083f82b3e16880",
+  "source_import": {
+    "all_candidates_with_wordnet_adjective": 3786,
+    "anderson_normalized_forms": 555,
+    "anderson_rows": 555,
+    "case_variant_groups": 10,
+    "frame_frozen": false,
+    "no_predominant_pos_filter": true,
+    "ocr_corrections": 6,
+    "overlap_normalized_forms": 378,
+    "pilot_by_stratum": {
+      "challenge": 20,
+      "random_anderson": 10,
+      "random_warriner": 10
+    },
+    "pilot_no_dictionary_adjective_sense": [
+      "abuse",
+      "care",
+      "forceps",
+      "insight",
+      "liar",
+      "mansions",
+      "onboard",
+      "porcelain",
+      "thunder",
+      "turbine",
+      "unattentive"
+    ],
+    "pilot_no_dictionary_entry": [
+      "mansions",
+      "onboard",
+      "unattentive"
+    ],
+    "pilot_terms": 40,
+    "printed_spelling_variants_retained": 2,
+    "ratings_exported": false,
+    "supplement_missing_entries": [],
+    "supplement_no_adjective_definition": [
+      "abuse",
+      "care",
+      "forceps",
+      "insight",
+      "liar",
+      "mansions",
+      "porcelain",
+      "thunder",
+      "turbine"
+    ],
+    "supplement_requested": [
+      "abuse",
+      "care",
+      "forceps",
+      "insight",
+      "liar",
+      "mansions",
+      "onboard",
+      "porcelain",
+      "thunder",
+      "turbine",
+      "unattentive"
+    ],
+    "union_normalized_forms": 14082,
+    "warriner_normalized_forms": 13905,
+    "warriner_rows": 13915
+  },
+  "unique_primary_pair_words": 11,
+  "warriner_primary_candidate_pairs": 4,
+  "word_status_agreement": {
+    "agree": 38,
+    "denominator": 40,
+    "not_accuracy": true
+  },
+  "words_per_pass": 40
+}

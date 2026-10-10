@@ -11,7 +11,12 @@ and a source-based audit before we freeze anything. Start with a small pilot
 to settle the rubric and estimate the work. This can proceed alongside the
 current simulations; it does not require another outcome-model fit.
 
-**What we already have.** The settled candidate sources are Anderson's 555
+**Implementation update, 2026-10-10.** Source import and the authorized 40-term
+pilot have now been completed; see the [pilot report](lexical-frame-pilot-report-2026-10-10.md).
+The source-status paragraph below records what remained at planning, not the
+current import state.
+
+**Source status at planning.** The settled candidate sources are Anderson's 555
 trait words and eligible person-descriptive adjectives from Warriner. Both
 papers are in the local literature collection. The project has no assembled
 vocabulary table or registered Warriner data file. The source-verification

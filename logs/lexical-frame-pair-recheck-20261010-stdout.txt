@@ -1,0 +1,2 @@
+codex independent-pairs-v2: validated; 171.3s
+claude independent-pairs-v2: failed; 900.1s

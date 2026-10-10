@@ -1,0 +1,6 @@
+claude words-02: validated; 157.6s
+validated
+claude words-03: needs_evidence_review; 170.5s
+needs_evidence_review
+claude words-04: needs_evidence_review; 197.6s
+needs_evidence_review

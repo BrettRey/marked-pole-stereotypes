@@ -1,0 +1,22 @@
+test_complement_requires_exhaustive_exclusive (test_audit.AuditChecks.test_complement_requires_exhaustive_exclusive) ... ok
+test_contrary_allows_neither (test_audit.AuditChecks.test_contrary_allows_neither) ... ok
+test_link_display (test_audit.AuditChecks.test_link_display) ... ok
+test_no_template_inference (test_audit.AuditChecks.test_no_template_inference) ... ok
+test_uncertainty_not_forced (test_audit.AuditChecks.test_uncertainty_not_forced) ... ok
+test_complete (test_coding.EvidenceChecks.test_complete) ... ok
+test_hallucinated_quote (test_coding.EvidenceChecks.test_hallucinated_quote) ... ok
+test_missing_sense (test_coding.EvidenceChecks.test_missing_sense) ... ok
+test_noneligible_group (test_coding.EvidenceChecks.test_noneligible_group) ... ok
+test_pair_evidence_wrong_word (test_coding.EvidenceChecks.test_pair_evidence_wrong_word) ... ok
+test_wrong_word_status (test_coding.EvidenceChecks.test_wrong_word_status) ... ok
+test_base_not_root (test_import.NormalizationTests.test_base_not_root) ... ok
+test_hyphenated_prefix_deduplicated (test_import.NormalizationTests.test_hyphenated_prefix_deduplicated) ... ok
+test_ids_independent_of_order (test_import.NormalizationTests.test_ids_independent_of_order) ... ok
+test_nominal_base_does_not_create_adjective_opposite (test_import.NormalizationTests.test_nominal_base_does_not_create_adjective_opposite) ... ok
+test_reversible_scope (test_import.NormalizationTests.test_reversible_scope) ... ok
+test_source_and_dictionary_absence_are_separate (test_import.NormalizationTests.test_source_and_dictionary_absence_are_separate) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.002s
+
+OK

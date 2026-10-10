@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-10T21:21:47.952587+00:00",
+  "private_artifact_hashes": {
+    "grouping-differences.json": "ab2643306d566721ff720827ea18dd8f728f7fa53f4481b45b8d19ad8668881c",
+    "pair-audit.json": "3b9bd7e98fcbdd6167bb731b2b07b1ac3b4f8c2f058247114617a21b82035f6e",
+    "quote-audit.json": "ab308479f4b532682d09af7dac46a333f9ee49901343274358ea3a6d4ef8d730",
+    "sense-disagreements.json": "caa86ff49dacbd7cd138646d2b23bdf0d453f0c71daa1ab2c78d5141c7ff0fcf",
+    "word-audit.json": "a9f105545c2d71c6b75f6dcf25bf605610eae922b11f3ae3762a267a471bcee0"
+  },
+  "source_commit": "396d95fb3a6d498f28ed77a888083f82b3e16880",
+  "summary_sha256": "0a00889816fe368ed450e3241b5e17d76138fcb6adca3e2f62852419a45b98c1"
+}

@@ -1,0 +1,93 @@
+{
+  "artifact_hashes": {
+    "WIKTIONARY-LICENSE.txt": "fa14a37a2c1b403c03e30a0ae698cb6925a000fcf48183113bdb7ccad801a5f4",
+    "WORDNET-LICENSE.txt": "854b6be82518aa1dffd251d91109c78e81b974f6587b8addaa49fb22c8ed246d",
+    "all_candidate_forms.json": "a9a233fd554197c2cab88da81e92ba096c55b94c298d0d1805c78196d7ef8bdc",
+    "challenge_cases.json": "2cf1032690e61410affde138a144a63d0377164cdeb23791caa3a3489097810f",
+    "detector_candidates.json": "13fd78cf8c0b9ce6dcce88e3823bab49b858afbcbfb078d5e8e296ae3494a576",
+    "source_entries.json": "97b0e9f6f633cc289eaf87cbdacbca8d73aef5e256ae35e1dcc25bb4fdae8aa0",
+    "supplementary_sources.json": "95161c2150dc8f9fe45352c468e1687c94f3cdb220266f2100e7840bc1bc8e63",
+    "terms.json": "a6cf4392c7a2df5d727a8ef14cecb63a099b1e460d6139090573c13e49c3ec45"
+  },
+  "created_at": "2026-10-10T20:57:15.554441+00:00",
+  "parent_manifest_sha256": "40a1fb3ce0a679c6a8b0db039492e9edd77b4c49212fc42a3651738133bd56ca",
+  "script_hashes": {
+    "import_sources.py": "ecbaccd8c6c76ecd46747291ddea9567e09ea264d8efa12e8fdb33b926564240",
+    "prepare_pilot.py": "c22930cbe20e92caea1840c9486fe1d3e6a2b300d2668a089f9569c47dff0760",
+    "supplement_pilot.py": "c7d6843e5f0e7700bd15142935d9a2fff9ffe75db935af7f61fb91126a74bc49",
+    "test_import.py": "f79b869cc7036e642ef8d8b5d149132a42c9e47c5b607c32d0258833721c15bc",
+    "wordnet_source.py": "dfe59c41201198ca650b91b583db79bba4d0d2975da1c40e21f37b0d9a84f90e"
+  },
+  "seed": 20261010,
+  "source_commit": "f3e2b27bad44ec29d8a604452a039cc9fd9e0123",
+  "source_hashes": {
+    "anderson_pdf": "99b77881e63d4e22d291e4e2dfcbb2d62dcab861c3cb0f7723dfe0a746d97f1f",
+    "warriner_zip": "5a0db0437ef234219fb899caced5eb3195dbf9f84396637ab4db74c50ca441aa",
+    "wordnet_archive": "3f7d8be8ef6ecc7167d39b10d66954ec734280b5bdcd57f7d9eafe429d11c22a"
+  },
+  "summary": {
+    "all_candidates_with_wordnet_adjective": 3786,
+    "anderson_normalized_forms": 555,
+    "anderson_rows": 555,
+    "case_variant_groups": 10,
+    "frame_frozen": false,
+    "no_predominant_pos_filter": true,
+    "ocr_corrections": 6,
+    "overlap_normalized_forms": 378,
+    "pilot_by_stratum": {
+      "challenge": 20,
+      "random_anderson": 10,
+      "random_warriner": 10
+    },
+    "pilot_no_dictionary_adjective_sense": [
+      "abuse",
+      "care",
+      "forceps",
+      "insight",
+      "liar",
+      "mansions",
+      "onboard",
+      "porcelain",
+      "thunder",
+      "turbine",
+      "unattentive"
+    ],
+    "pilot_no_dictionary_entry": [
+      "mansions",
+      "onboard",
+      "unattentive"
+    ],
+    "pilot_terms": 40,
+    "printed_spelling_variants_retained": 2,
+    "ratings_exported": false,
+    "supplement_missing_entries": [],
+    "supplement_no_adjective_definition": [
+      "abuse",
+      "care",
+      "forceps",
+      "insight",
+      "liar",
+      "mansions",
+      "porcelain",
+      "thunder",
+      "turbine"
+    ],
+    "supplement_requested": [
+      "abuse",
+      "care",
+      "forceps",
+      "insight",
+      "liar",
+      "mansions",
+      "onboard",
+      "porcelain",
+      "thunder",
+      "turbine",
+      "unattentive"
+    ],
+    "union_normalized_forms": 14082,
+    "warriner_normalized_forms": 13905,
+    "warriner_rows": 13915
+  },
+  "supplement_raw_sha256": "56146c9b4082acec329332fe038a73c18f92f1518e160084c8ae6b662fe1f867"
+}

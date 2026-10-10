@@ -1,0 +1,5 @@
+codex words-01: validated; 76.7s
+codex words-02: validated; 56.1s
+codex words-03: validated; 83.3s
+codex words-04: validated; 73.8s
+claude words-01: failed; 313.5s

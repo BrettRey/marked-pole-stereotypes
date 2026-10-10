@@ -1,0 +1,78 @@
+{
+  "created_at": "2026-10-10T21:21:47.952587+00:00",
+  "source_commit": "396d95fb3a6d498f28ed77a888083f82b3e16880",
+  "python": "3.14.8",
+  "model_word_passes": 2,
+  "words_per_pass": 40,
+  "adjective_senses_per_pass": 93,
+  "word_status_agreement": {
+    "agree": 38,
+    "denominator": 40,
+    "not_accuracy": true
+  },
+  "sense_status_agreement": {
+    "agree": 84,
+    "denominator": 93,
+    "not_accuracy": true
+  },
+  "conservative_word_audit_counts": {
+    "unresolved": 11,
+    "eligible": 25,
+    "ineligible": 4
+  },
+  "resource_attested_specification_counts": {
+    "not_admitted_no_attested_adjective": 9,
+    "eligible": 25,
+    "ineligible": 4,
+    "unresolved": 2
+  },
+  "sense_audit_counts": {
+    "eligible": 45,
+    "ineligible": 37,
+    "unresolved": 11
+  },
+  "explicit_sense_overrides": 4,
+  "original_grouping_difference_words": 5,
+  "quote_checks": {
+    "exact_source_substring": 293,
+    "verified_wiki_display_substring": 5
+  },
+  "reading_diagnostic_errors": 0,
+  "primary_candidate_pairs": 6,
+  "anderson_primary_candidate_pairs": 5,
+  "warriner_primary_candidate_pairs": 4,
+  "unique_primary_pair_words": 11,
+  "pair_graph_components": 5,
+  "other_pair_analyses": 5,
+  "detector_candidates": 11,
+  "independent_screen_counts": {
+    "codex/independent-pairs": 11,
+    "codex/independent-pairs-v2": 11,
+    "claude/independent-pairs": 11
+  },
+  "detector_words_omitted_from_independent_screens": {
+    "codex/independent-pairs": [],
+    "codex/independent-pairs-v2": [],
+    "claude/independent-pairs": []
+  },
+  "additional_supported_primary_pairs_from_independent_audit": 0,
+  "bounded_audit_not_recall_estimate": true,
+  "model_calls": 12,
+  "failed_recheck_attempts": [
+    {
+      "family": "claude",
+      "label": "independent-pairs-v2",
+      "exit_code": "timeout",
+      "error": "RuntimeError('CLI failed')"
+    }
+  ],
+  "api_equivalent_accounting_complete": false,
+  "claude_api_equivalent_usd": 1.7601404999999999,
+  "model_call_seconds": 2674.0147563335486,
+  "ratings_joined": false,
+  "commonness_judgments_collected": false,
+  "frame_frozen": false,
+  "full_vocabulary_coding_started": false,
+  "audit_script_sha256": "8a9511188290c08b5e567b0375b4a25dfcfd263cf59a67fc8244f3e4d1030b6b",
+  "primary_review_timing": "Source review overlapped model execution; a separate active-review or token-cost meter was not available. Do not extrapolate model inference time as end-to-end curation cost."
+}

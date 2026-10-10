@@ -1,0 +1,65 @@
+{
+  "artifact_hashes": {
+    "WORDNET-LICENSE.txt": "854b6be82518aa1dffd251d91109c78e81b974f6587b8addaa49fb22c8ed246d",
+    "all_candidate_forms.json": "a9a233fd554197c2cab88da81e92ba096c55b94c298d0d1805c78196d7ef8bdc",
+    "challenge_cases.json": "2cf1032690e61410affde138a144a63d0377164cdeb23791caa3a3489097810f",
+    "detector_candidates.json": "13fd78cf8c0b9ce6dcce88e3823bab49b858afbcbfb078d5e8e296ae3494a576",
+    "source_entries.json": "97b0e9f6f633cc289eaf87cbdacbca8d73aef5e256ae35e1dcc25bb4fdae8aa0",
+    "terms.json": "4376df5844bc7a2b28e1aa946e12feec7232eba51013f552fb9d6f4a4db25978"
+  },
+  "completed_at": "2026-10-10T20:52:37.130157+00:00",
+  "python": "3.14.8",
+  "script_hashes": {
+    "import_sources.py": "ecbaccd8c6c76ecd46747291ddea9567e09ea264d8efa12e8fdb33b926564240",
+    "prepare_pilot.py": "c22930cbe20e92caea1840c9486fe1d3e6a2b300d2668a089f9569c47dff0760",
+    "test_import.py": "f79b869cc7036e642ef8d8b5d149132a42c9e47c5b607c32d0258833721c15bc",
+    "wordnet_source.py": "7b82f0b8a42a90d5d79b9e49003d9b03be9be7e9680dc9c3ff4c6191dc3a620c"
+  },
+  "seed": 20261010,
+  "source_commit": "86e099be1e5e85cb81482f1e37094dc2b91da124",
+  "source_hashes": {
+    "anderson_pdf": "99b77881e63d4e22d291e4e2dfcbb2d62dcab861c3cb0f7723dfe0a746d97f1f",
+    "warriner_zip": "5a0db0437ef234219fb899caced5eb3195dbf9f84396637ab4db74c50ca441aa",
+    "wordnet_archive": "3f7d8be8ef6ecc7167d39b10d66954ec734280b5bdcd57f7d9eafe429d11c22a"
+  },
+  "started_at": "2026-10-10T20:52:34.065826+00:00",
+  "summary": {
+    "all_candidates_with_wordnet_adjective": 3776,
+    "anderson_normalized_forms": 555,
+    "anderson_rows": 555,
+    "case_variant_groups": 10,
+    "frame_frozen": false,
+    "no_predominant_pos_filter": true,
+    "ocr_corrections": 6,
+    "overlap_normalized_forms": 378,
+    "pilot_by_stratum": {
+      "challenge": 20,
+      "random_anderson": 10,
+      "random_warriner": 10
+    },
+    "pilot_no_dictionary_adjective_sense": [
+      "abuse",
+      "care",
+      "forceps",
+      "insight",
+      "liar",
+      "mansions",
+      "onboard",
+      "porcelain",
+      "thunder",
+      "turbine",
+      "unattentive"
+    ],
+    "pilot_no_dictionary_entry": [
+      "mansions",
+      "onboard",
+      "unattentive"
+    ],
+    "pilot_terms": 40,
+    "printed_spelling_variants_retained": 2,
+    "ratings_exported": false,
+    "union_normalized_forms": 14082,
+    "warriner_normalized_forms": 13905,
+    "warriner_rows": 13915
+  }
+}
