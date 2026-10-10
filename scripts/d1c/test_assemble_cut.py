@@ -28,7 +28,10 @@ class AssemblyTests(unittest.TestCase):
         self.spec = dict(job=self.job, root_seed=20261009, seeds=dict(data=123),
             sampler=dict(chains=4, draws=4000, tune=2000, cut_draws=8, contrast_draws=16000),
             sources={"scripts/d1c/d1c.py": "fixture-science", "scripts/d1c/component_state.py": "fixture-storage"})
-        upstream_arrays = {name: np.zeros((8, 400)) for name in ("z", "v", "s", "h")}
+        upstream_arrays = {name: np.zeros((8, 400)) for name in ("z", "v", "s")}
+        # The generator has three register covariates per item, unlike its
+        # three scalar item latents. Match that actual archive contract.
+        upstream_arrays["h"] = np.zeros((8, 400, 3))
         rng_state = np.random.default_rng(9).bit_generator.state
         self.upstream_metadata = dict(diagnostic=dict(mode="upstream", seed=1, good=True,
             contrast_good=True, rhat=1.001, ess=3000, divergences=0), rng_state=rng_state)
@@ -116,6 +119,19 @@ class AssemblyTests(unittest.TestCase):
             return record, arrays
         with patch.object(collection, "validate_assignment", side_effect=damaged):
             with self.assertRaisesRegex(ValueError, "Nonfinite contrasts"):
+                assembly.read_complete(self.folder, self.canonical)
+
+    def test_register_covariate_axis_cannot_be_lost(self):
+        original = collection.verify_component
+        def malformed(folder, key):
+            result = original(folder, key)
+            if key == "upstream" and result is not None:
+                manifest, record, arrays = result
+                arrays["h"] = arrays["h"][:, :, 0]
+                return manifest, record, arrays
+            return result
+        with patch.object(collection, "verify_component", side_effect=malformed):
+            with self.assertRaisesRegex(ValueError, "Invalid selected upstream draws"):
                 assembly.read_complete(self.folder, self.canonical)
 
     def test_publication_retains_failure_and_refuses_overwrite(self):

@@ -88,10 +88,12 @@ def read_complete(folder, canonical):
     if upstream is None:
         raise IncompleteCut("Missing upstream checkpoint")
     _, record, arrays = upstream
-    if any(values.shape != (8, 400) or not np.isfinite(values).all() for values in arrays.values()):
-        raise ValueError("Invalid selected upstream draws")
-    if set(arrays) != {"z", "v", "s", "h"}:
+    shapes = {"z": (8, 400), "v": (8, 400), "s": (8, 400), "h": (8, 400, 3)}
+    if set(arrays) != set(shapes):
         raise ValueError("Unexpected upstream variables for the assigned cell")
+    if any(values.shape != shapes[name] or not np.isfinite(values).all()
+           for name, values in arrays.items()):
+        raise ValueError("Invalid selected upstream draws")
     records["upstream"] = (record["metadata"], arrays)
     return ReadOnlyComponents(records), provenance
 

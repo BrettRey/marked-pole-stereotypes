@@ -46,3 +46,14 @@ rename; an existing result is never overwritten. A terminal incomplete
 collection or verification error stops the watcher without retrying a fit.
 The output contains the original component hashes, software versions,
 assembly source identity, summaries and all nine diagnostic records.
+
+## Assembly validation correction, 2026-10-10
+
+The first watcher stopped after all eight components arrived: its upstream
+shape check wrongly required every latent array to be `[8, 400]`. The
+register covariates `h` have shape `[8, 400, 3]`, as specified by the original
+generator and recorded in the verified archive; `z`, `v` and `s` are
+`[8, 400]`. Correct the validator and the test fixture, retaining a regression
+check that rejects loss of the covariate axis. Preserve the failed assembly
+log and publish this correction before replaying the saved summaries. No
+sampling failed, no component changed and no model fit is repeated.
