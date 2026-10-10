@@ -1,0 +1,51 @@
+{
+  "name": "d1c-components-004-006-20261010",
+  "id": "6aca8f63095c578089316431",
+  "created_at": "2026-10-10T19:17:55.022000+00:00",
+  "started_at": "2026-10-10T19:18:02.096000+00:00",
+  "docker_image": "python@sha256:7ee7e4d4fb42c3ad45b8fdc473b64ec69c3cf6e80ae5d52f6fa55f77fac29027",
+  "command": [
+    "bash",
+    "-lc",
+    "set -eu\ngit clone --quiet https://github.com/BrettRey/marked-pole-stereotypes.git /work\ncd /work\ngit checkout --quiet \"$1\"\ngit fetch --quiet origin 942dfd8109232beaf7e5bf35c023409b09a18525\nexec bash scripts/d1c/hf_batch.sh \"$1\"\n",
+    "d1c-job",
+    "157ccf1eaa363c9b7d5283206591fb342e81896e"
+  ],
+  "arguments": [],
+  "environment": {},
+  "secrets": [],
+  "flavor": "cpu-upgrade",
+  "labels": {
+    "name": "d1c-components-004-006-20261010"
+  },
+  "volumes": [
+    {
+      "type": "bucket",
+      "source": "BrettRey/marked-pole-d1c-compute",
+      "mount_path": "/outputs",
+      "read_only": false
+    }
+  ],
+  "status": {
+    "stage": "RUNNING"
+  },
+  "durations": {
+    "scheduling_secs": 7,
+    "running_secs": 3,
+    "total_secs": 10
+  },
+  "owner": {
+    "id": "663d3999bc8177e039c13e2f",
+    "name": "BrettRey",
+    "type": "user"
+  },
+  "initiator": {
+    "type": "user",
+    "id": "663d3999bc8177e039c13e2f",
+    "name": "BrettRey"
+  },
+  "retry": 0,
+  "expose": [],
+  "endpoint": "https://huggingface.co",
+  "url": "https://huggingface.co/jobs/BrettRey/6aca8f63095c578089316431"
+}

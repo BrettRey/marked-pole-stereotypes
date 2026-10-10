@@ -1,0 +1,28 @@
+{
+  "pid": 77353,
+  "started_at": "2026-10-10T19:18:59.113286+00:00",
+  "source_commit": "157ccf1eaa363c9b7d5283206591fb342e81896e",
+  "command": [
+    "nohup",
+    "nice",
+    "-n",
+    "15",
+    "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/bin/python",
+    "-u",
+    "scripts/d1c/collect_parallel.py",
+    "--watch"
+  ],
+  "poll_seconds": 60,
+  "assigned_components": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "hf_batch_job": "BrettRey/6aca8f63095c578089316431",
+  "note": "Read-only collector; no worker/job launches or cancellations"
+}
