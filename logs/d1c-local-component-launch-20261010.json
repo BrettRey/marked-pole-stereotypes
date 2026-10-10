@@ -1,0 +1,24 @@
+{
+  "launched_at": "2026-10-10T17:17:57.079351+00:00",
+  "pid": 14963,
+  "source_commit": "827b5b9555e773e90d11cb71cacd134be1026bda",
+  "command": [
+    "nohup",
+    "nice",
+    "-n",
+    "10",
+    "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/bin/python",
+    "-u",
+    "scripts/d1c/run_component.py",
+    "--source",
+    "827b5b9555e773e90d11cb71cacd134be1026bda",
+    "--location",
+    "local",
+    "--component",
+    "1"
+  ],
+  "stdout": "logs/d1c-local-component-001-20261010-stdout.txt",
+  "component": 1,
+  "worker_cores": 1,
+  "nice_level": 10
+}
