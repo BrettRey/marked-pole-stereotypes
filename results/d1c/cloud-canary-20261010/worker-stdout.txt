@@ -1,0 +1,6 @@
+compile (40, 1, True, 1.0, 'upstream')
+sample (40, 1, True, 1.0, 'upstream'); compile 30.2s
+sampling (40, 1, True, 1.0, 'upstream'): draws [10000, 10000, 6976, 0]; steps [31, 31, 31, 0]
+sample done (40, 1, True, 1.0, 'upstream'): 73.6s
+saved component upstream: /home/user/marked-pole-stereotypes/results/d1c/cloud-canary-20261010/checkpoints
+compile (40, 1, True, 1.0, 'downstream')
