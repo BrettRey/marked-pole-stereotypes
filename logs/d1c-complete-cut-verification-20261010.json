@@ -1,0 +1,24 @@
+{
+  "verified_at": "2026-10-10T23:07:20.401496+00:00",
+  "assembly_status": "converged",
+  "components": 8,
+  "diagnostics": 9,
+  "all_diagnostics_pass": true,
+  "divergences": 0,
+  "all_input_arrays_match": true,
+  "all_summary_arithmetic_matches": true,
+  "independent_datasets": 1,
+  "component_weights": [
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125
+  ],
+  "archive_sha256": "802a023f04fb08c2a82a6209263adc9d7a821c9ab58c68d979c26f6d1899aa6a",
+  "max_parameter_rhat": 1.0053279061474085,
+  "assembly_source_commit": "32086c8f5fe9073d728cb011b3dc1a2087cfc2b6"
+}

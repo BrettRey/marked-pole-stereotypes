@@ -1,0 +1,1 @@
+{"state": "complete", "status": "converged", "output": "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/results/d1c/complete-cut-20261010"}
