@@ -7,6 +7,7 @@ import tempfile
 import time
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import numpy as np
@@ -16,6 +17,19 @@ from component_state import ComponentState
 
 
 class CloudTests(unittest.TestCase):
+    def test_cleanup_permission_error_requires_confirming_group_has_no_live_members(self):
+        from unittest.mock import Mock
+        for listing, has_live in (("123 Z\n999 S\n", False), ("123 S\n", True)):
+            process = Mock(pid=123)
+            with patch.object(cloud.os, "killpg", side_effect=PermissionError), \
+                 patch.object(cloud.subprocess, "run", return_value=SimpleNamespace(stdout=listing)):
+                if has_live:
+                    with self.assertRaises(PermissionError):
+                        cloud.stop_group(process)
+                else:
+                    cloud.stop_group(process)
+                    process.wait.assert_called_once()
+
     def test_supervisor_stops_a_descendant_that_ignores_interrupt(self):
         with tempfile.TemporaryDirectory() as tmp:
             heartbeat = Path(tmp) / "child-alive"

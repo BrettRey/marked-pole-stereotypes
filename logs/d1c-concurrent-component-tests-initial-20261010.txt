@@ -1,0 +1,75 @@
+saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpvjusjwco/work/results/d1c/cloud-canary-20261010/checkpoints
+.E.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp1nhbyz3k/components
+saved component downstream-000: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp1nhbyz3k/components
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp_vm2cqca/components
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbn8hqbnt/components
+saved component downstream-000: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbn8hqbnt/components
+saved component downstream-001: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbn8hqbnt/components
+saved component downstream-002: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbn8hqbnt/components
+saved component downstream-003: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbn8hqbnt/components
+saved component downstream-004: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbn8hqbnt/components
+saved component downstream-005: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbn8hqbnt/components
+saved component downstream-006: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbn8hqbnt/components
+saved component downstream-007: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpbn8hqbnt/components
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpjlzey17i/components
+saved component downstream-000: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmpjlzey17i/components
+.saved component joint: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp3ytscg8i/components
+.saved component upstream: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmphjiv2zbu/components
+...........contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+saved component downstream-001: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp5xlek2_n
+.saved component downstream-002: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmp91kx2xml/source/checkpoints
+.saved component downstream-002: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/d1c/tmplmyplhnj/source/checkpoints
+.contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+contrasts: R-hat 1.0850, ESS 26.3
+.......sample (40, 1, False, 1.0, 'upstream'); compile 0.0s
+sample done (40, 1, False, 1.0, 'upstream'): 0.0s
+sample (40, 1, False, 1.0, 'downstream'); compile 0.0s
+sample done (40, 1, False, 1.0, 'downstream'): 0.0s
+sample (40, 1, False, 1.0, 'joint'); compile 0.0s
+sample done (40, 1, False, 1.0, 'joint'): 0.0s
+.
+======================================================================
+ERROR: test_supervisor_stops_a_descendant_that_ignores_interrupt (test_cloud_benchmark.CloudTests.test_supervisor_stops_a_descendant_that_ignores_interrupt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/cloud_benchmark.py", line 53, in supervise
+    on_tick(process.pid)
+    ~~~~~~~^^^^^^^^^^^^^
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/test_cloud_benchmark.py", line 29, in interrupt
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/test_cloud_benchmark.py", line 32, in test_supervisor_stops_a_descendant_that_ignores_interrupt
+    cloud.supervise([sys.executable, "-c", parent], output, interrupt, interval=.01)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/cloud_benchmark.py", line 59, in supervise
+    stop_group(process)
+    ~~~~~~~~~~^^^^^^^^^
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/cloud_benchmark.py", line 41, in stop_group
+    os.killpg(process.pid, 0)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+
+----------------------------------------------------------------------
+Ran 30 tests in 11.052s
+
+FAILED (errors=1)

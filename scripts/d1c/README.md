@@ -419,3 +419,72 @@ There is no verified programmatic dollar cap for Claude cloud. Use one
 cloud session and sparse supervision. Do not launch additional sessions or
 continue after this benchmark. Commit and push all executable changes before
 it runs. Unit tests use fixtures and do not fit models locally.
+
+## Concurrent local component (2026-10-10; prospective)
+
+Brett authorized useful local work alongside the Claude-cloud benchmark.
+Start downstream component 1 of the same cell 10, replicate 0, using the exact
+upstream checkpoint exported by cloud commit
+`942dfd8109232beaf7e5bf35c023409b09a18525`. Cloud keeps component 0. The other
+components remain unassigned unless separately authorized below. This preserves the stopped full grid and
+avoids duplicate sampling. The Mac has ten cores and 32 GiB RAM, but other
+project jobs currently use most resources. Start one sampler worker at nice
+level 10, with one sampler/BLAS core, retaining the existing four chains,
+4,000 production draws, 2,000 warmup and target acceptance .95. No wall-clock
+cutoff, automatic retry or full-grid restart.
+
+Freeze and verify the imported checkpoint, code, package versions and seeds
+before fitting. Retain the original eight selected upstream draws. Advance
+the contrast-selection RNG over the preceding component's four chain-wise
+selections so component 1 has exactly the same draw ordering and subsequent
+RNG state as sequential execution. All 16,000 contrasts are retained. This
+changes scheduling only; it does not change the model or estimands. Tests
+must compare this advancement against the actual contrast function.
+
+Save the local conditional draws, diagnostics and runtime under
+`results/d1c/local-component-001-20261010/`, with atomic component records.
+These persist on the Mac if a process or session is interrupted. Record the
+platform difference (local Python 3.14.8/macOS, cloud Python 3.14.6/Linux).
+Completed diagnostic failures are retained. This is still a partial cut;
+combining all eight components and larger resource assignments come later.
+Commit and push the runner and this specification before starting it.
+
+## HF component trial (2026-10-10; prospective)
+
+Brett subsequently authorized testing HF and up to USD 10 total HF spending,
+then confirmed adding credit and authorizing the CLI login. Assign downstream
+component 2 of the same cell and replicate. Reuse the same published upstream
+checkpoint and preserve the sampler settings, seed derivation and sequential
+contrast selection described above. Components 3–7 remain unassigned.
+
+Use one CPU Upgrade job (8 vCPU, 32 GB) at USD .03/hour, one attempt, with a
+24-hour provider timeout: at most USD .72 compute. This is a paid-compute
+ceiling, distinct from the removed arbitrary Claude-cloud timeout. The job
+exits when its one component finishes; no automatic retry or additional jobs.
+The USD 10 amount is a total budget, not a spending target. Reserve .72 for
+this job until actual billed usage is known. Provider pricing was checked on
+2026-10-10 at https://huggingface.co/docs/hub/jobs-pricing.
+
+Use the official Python 3.14 Bookworm image pinned by digest in
+`launch_hf.py`; install `requirements-d1.txt` exactly, once. No floating-package
+fallback. Record the actual Python patch version and platform. The launcher
+clones the public project and checks out the published source commit. No
+account token enters the container. The CLI uses Brett's authorized cached
+OAuth login; the pre-existing environment token is read-only.
+
+Mount the private `BrettRey/marked-pole-d1c-compute` bucket at `/outputs`.
+Export runtime metadata, verified upstream inputs and completed component
+archives under `20261010/component-002/`; copy the JSON completion marker
+only after the archive and verify copied bytes. Persist setup and worker
+logs there too. These small artificial-data outputs fall within the free
+storage allowance; no storage subscription is requested. Bucket creation and
+the free tier are documented at https://huggingface.co/docs/hub/storage-buckets
+and https://huggingface.co/docs/hub/storage-limits.
+
+Preview with `python3 scripts/d1c/launch_hf.py --source <full-commit>`; submit
+once with `--execute`. The launcher records the returned job identity and
+budget in `logs/d1c-hf-job-20261010.json` and refuses a second submission if
+that receipt already exists. A failed or ambiguous submission is inspected,
+not automatically repeated. Retrieve the bucket files and verify the compact
+archive before accepting a completed result. This trial estimates runtime,
+memory and actual cost; its single conditional component is not a full cut.

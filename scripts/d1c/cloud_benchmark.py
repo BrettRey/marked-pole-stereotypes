@@ -28,18 +28,32 @@ def git(*args):
 
 def stop_group(process):
     """Stop only the separate process group created for this benchmark."""
-    for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGKILL):
+    def signal_group(sig):
         try:
             os.killpg(process.pid, sig)
+            return True
         except ProcessLookupError:
+            return False
+        except PermissionError:
+            # macOS can report EPERM for an exiting orphan process group.
+            # Confirm there are no live members before treating it as gone;
+            # an actual permission failure on a live group must still surface.
+            listing = subprocess.run(["ps", "-axo", "pgid=,stat="], check=True,
+                                     capture_output=True, text=True).stdout
+            for line in listing.splitlines():
+                group, state = line.split()
+                if int(group) == process.pid and not state.startswith("Z"):
+                    raise
+            return False
+
+    for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGKILL):
+        if not signal_group(sig):
             break
         if sig != signal.SIGKILL:
             deadline = time.monotonic() + 3
             while time.monotonic() < deadline:
                 process.poll()
-                try:
-                    os.killpg(process.pid, 0)
-                except ProcessLookupError:
+                if not signal_group(0):
                     break
                 time.sleep(.1)
     process.wait()
