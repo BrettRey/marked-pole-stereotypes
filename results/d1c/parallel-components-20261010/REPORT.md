@@ -1,6 +1,6 @@
 # Cut-component run report
 
-Observed: 2026-10-10T19:18:10.068199+00:00
+Observed: 2026-10-10T19:20:05.752979+00:00
 
 Verified completed components: 2/8 assigned, out of 8 required for this cut.
 These are conditional results for cell 10, replicate 0. The full grid remains stopped.
@@ -11,17 +11,17 @@ These are conditional results for cell 10, replicate 0. The full grid remains st
 | local | 1 | verified_component | pass | pass | 85.7 min | 6.53 GiB |
 | hf | 2 | verified_component | pass | pass | 88.6 min | 7.32 GiB |
 | local-003 | 3 | running | pending | pending | pending | pending |
-| hf-004 | 4 | queued | pending | pending | pending | pending |
-| hf-005 | 5 | queued | pending | pending | pending | pending |
+| hf-004 | 4 | running | pending | pending | pending | pending |
+| hf-005 | 5 | running | pending | pending | pending | pending |
 | hf-006 | 6 | queued | pending | pending | pending | pending |
 | local-007 | 7 | queued | pending | pending | pending | pending |
 
-Local component 3 sampler counts, including warmup: [3655, 0, 0, 0] / 6,000 per chain. These counts are not recoverable completion checkpoints.
+Local component 3 sampler counts, including warmup: [4087, 0, 0, 0] / 6,000 per chain. These counts are not recoverable completion checkpoints.
 
 Local queue: running; current component 3; completed from queue [].
 
 HF batch compute ceiling: USD 0.72. Total authorized HF budget: USD 10.
-Combined trial/batch provider-duration compute estimate: USD 0.0525; each job counted once, not an invoice.
+Combined trial/batch provider-duration compute estimate: USD 0.0535; each job counted once, not an invoice.
 HF batch stage: RUNNING; components 4–6, two workers.
 Conservatively reserved across all three submissions: USD 2.16; the malformed first submission was cancelled while queued.
 

@@ -1,0 +1,18 @@
+Downloading xarray-2026.9.0-py3-none-any.whl (1.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 100.5 MB/s  0:00:00
+Downloading xarray_einstats-0.11.0-py3-none-any.whl (39 kB)
+Downloading zarr-3.4.0-py3-none-any.whl (376 kB)
+Installing collected packages: typing-extensions, threadpoolctl, six, setuptools, pyyaml, pygments, pyarrow, platformdirs, packaging, obstore, numpy, msgspec, mdurl, llvmlite, google-crc32c, filelock, cloudpickle, cachetools, arro3-core, scipy, python-dateutil, numcodecs, numba, markdown-it-py, lazy-loader, donfig, zarr, rich, pytensor, pandas, arviz-stats, xarray, xarray-einstats, arviz-base, arviz-plots, arviz, pymc, nutpie
+
+Successfully installed arro3-core-0.9.0 arviz-1.3.0 arviz-base-1.3.1 arviz-plots-1.3.2 arviz-stats-1.3.3 cachetools-6.2.6 cloudpickle-3.1.2 donfig-0.8.1.post1 filelock-4.0.12 google-crc32c-1.9.0 lazy-loader-0.6 llvmlite-0.49.0 markdown-it-py-4.2.0 mdurl-0.1.2 msgspec-0.22.0 numba-0.67.0 numcodecs-0.17.0 numpy-2.5.3 nutpie-0.16.11 obstore-0.11.1 packaging-26.3 pandas-3.0.6 platformdirs-4.12.3 pyarrow-25.0.1 pygments-2.21.0 pymc-6.3.2 pytensor-3.3.3 python-dateutil-2.9.0.post0 pyyaml-6.0.3 rich-15.0.0 scipy-1.18.1 setuptools-84.0.0 six-1.17.0 threadpoolctl-3.7.0 typing-extensions-4.16.0 xarray-2026.9.0 xarray-einstats-0.11.0 zarr-3.4.0
+{"state": "running", "source_commit": "157ccf1eaa363c9b7d5283206591fb342e81896e", "pid": 1, "started_at": "2026-10-10T19:18:31.732441+00:00", "assigned": [4, 5, 6], "workers": 2, "pending": [4, 5, 6], "active": {}, "completed": [], "failed": [], "updated_at": "2026-10-10T19:18:31.732508+00:00", "container_memory_peak_bytes": 1449119744}
+{"state": "running", "source_commit": "157ccf1eaa363c9b7d5283206591fb342e81896e", "pid": 1, "started_at": "2026-10-10T19:18:31.732441+00:00", "assigned": [4, 5, 6], "workers": 2, "pending": [5, 6], "active": {"4": 82}, "completed": [], "failed": [], "updated_at": "2026-10-10T19:18:31.767899+00:00", "container_memory_peak_bytes": 1449119744}
+{"state": "running", "source_commit": "157ccf1eaa363c9b7d5283206591fb342e81896e", "pid": 1, "started_at": "2026-10-10T19:18:31.732441+00:00", "assigned": [4, 5, 6], "workers": 2, "pending": [6], "active": {"4": 82, "5": 83}, "completed": [], "failed": [], "updated_at": "2026-10-10T19:18:31.810062+00:00", "container_memory_peak_bytes": 1449119744}
+[component 4]
+compile (40, 1, True, 1.0, 'downstream')
+[component 5]
+compile (40, 1, True, 1.0, 'downstream')
+[component 4]
+sample (40, 1, True, 1.0, 'downstream'); compile 59.7s
+[component 5]
+sample (40, 1, True, 1.0, 'downstream'); compile 60.2s

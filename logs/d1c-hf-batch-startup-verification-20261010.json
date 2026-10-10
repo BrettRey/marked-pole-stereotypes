@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-10-10T19:20:10.407947+00:00",
+  "components": [
+    {
+      "component": 4,
+      "pid": 82,
+      "started_at": "2026-10-10T19:18:32.458922+00:00",
+      "state": "running",
+      "source_commit": "157ccf1eaa363c9b7d5283206591fb342e81896e",
+      "container_memory_max": "32000000000",
+      "upstream_sha256": "76dd842934bb2d0ab9c3b5db9fe1a1be2876183e8abb059e2891a751db3295f6",
+      "checks": "Runtime exists after exact scientific source/package checks; input digest and sampler assignment validated; downstream result pending"
+    },
+    {
+      "component": 5,
+      "pid": 83,
+      "started_at": "2026-10-10T19:18:32.571332+00:00",
+      "state": "running",
+      "source_commit": "157ccf1eaa363c9b7d5283206591fb342e81896e",
+      "container_memory_max": "32000000000",
+      "upstream_sha256": "76dd842934bb2d0ab9c3b5db9fe1a1be2876183e8abb059e2891a751db3295f6",
+      "checks": "Runtime exists after exact scientific source/package checks; input digest and sampler assignment validated; downstream result pending"
+    }
+  ]
+}
