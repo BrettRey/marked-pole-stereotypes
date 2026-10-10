@@ -36,7 +36,7 @@ class WordNet:
                               'gloss': gloss.strip(), 'pointers': pointers, 'lexicographer_file': lex_file}
                     self.senses[sid] = record
                     for lemma in lemmas:
-                        self.by_lemma[lemma.replace('_', ' ')].append(sid)
+                        self.by_lemma[lemma.replace('_', ' ').lower()].append(sid)
 
     def lookup(self, word):
         forms = {word.lower(), word.lower().replace('-', ' ')}
