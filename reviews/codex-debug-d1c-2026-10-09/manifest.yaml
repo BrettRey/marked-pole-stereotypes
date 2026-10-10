@@ -1,0 +1,10 @@
+commit: 18ce186108ee49f2046dd8a6e57e13975e70c6f3
+route: scripts/codex-ws.sh (workspace-write sandbox, this project only; Brett approved 2026-10-09)
+prompt_sha256: 6cda958076015e73877b7e672b92972b77ab6e52fb0ff5806bae9eb1237dcd92
+started: 2026-10-09T20:56:36-04:00
+model: gpt-6.1-sol (OpenAI Codex v0.160.0, sandbox workspace-write, reasoning effort none per the transcript header)
+stopped_by_parent: 2026-10-09T21:22:55-04:00 (implementation moved to a Codex tab Brett drives; HANDOFF-TO-CODEX.md)
+output_raw_sha256: a625bb4877aec25904a0f774b480d5d7b19ef7aa37837bafd25b7f215e8ae446
+output_final_answer: none; stopped before its final message, while testing checkpointing after an interrupted multiprocessing run
+working_tree_at_stop: scripts/d1c/d1c.py (118 lines added, 40 removed; parses), scripts/d1c/time_variants.py (new), logs/d1c-equivalence-20261009.json (its numerical equivalence check), committed as found with this manifest
+saved_by: parent session (Claude Opus 5.5)

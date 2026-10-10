@@ -1,0 +1,10 @@
+commit: 271828ecd5ba6486688cbec64c6d1aa9ee658e99
+route: tools/codex/bin/codex-readonly (Project-Management/templates/dispatch-prompts.md)
+prompt_sha256: a55c65ae1046c5d0b8866d4c4ddca0423579cbdbc2d54c50be032d3b6d10d756
+started: 2026-10-09T19:39:11-04:00
+model: gpt-6.1-sol (OpenAI Codex v0.160.0, sandbox read-only, reasoning effort none per the transcript header)
+finished: 2026-10-09T19:42:29-04:00
+output_raw_sha256: d7571990a9d0e6bc6a1fd73804901572913e3fb598375a251b4bd21f3add438e
+output_final_answer: output.md (extracted by the parent; a patch, identical to d1c.patch, sha256 4ba7e596b14acbd75f5325f16e4ddc95621587d9b0d1b30c6a792246d5244037)
+note: the patch's hunk header undercounted, so applying it truncated d1c.py; the parent rebuilt scripts/d1c/README.md and d1c.py from its added lines (commit a4e4942)
+saved_by: parent session (Claude Opus 5.5)

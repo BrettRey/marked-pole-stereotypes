@@ -1,0 +1,1888 @@
+OpenAI Codex v0.160.0
+--------
+workdir: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: none
+session id: 01a1234f-d6e9-7370-9ce6-9b77f9433820
+--------
+user
+You are a research engineer with write access to this project only (sandboxed; no network). Earlier you wrote `scripts/d1c/README.md` and `scripts/d1c/d1c.py` without running them. Now make the pilot work.
+
+1. Run `.venv/bin/python scripts/d1c/d1c.py pilot` (the project venv has PyMC, nutpie, pytensor, arviz, numpy, pandas, scipy; PYTENSOR_FLAGS already points the compile cache and C++ compiler into the project). Fix every error in `scripts/d1c/d1c.py` until the pilot runs end to end, writes its CSVs under `results/d1c/` and a log under `logs/`, and reports sensible values (truths computed, estimates near truths in the baseline cell, R-hat at or below 1.01, few or no divergences). If a model choice in the README proves infeasible, change it minimally and record the change in a new section of `scripts/d1c/README.md` titled "After pilot 1 (2026-10-09)", stating what changed and why. Don't alter the README's pre-registered design otherwise.
+2. Time one fit of each fitted variant and estimate the run time of the full grid at 40 replicates per cell with 3 workers.
+3. Don't edit any file outside `scripts/d1c/`, `results/d1c/` and `logs/`; don't touch `analysis_plan.md`, `DECISIONS.md` or `STATUS.md`; don't commit or push. Other processes are using the CPU (a D2 grid and an extraction); be patient with timings.
+
+Final message, at most 25 lines: what you changed (file and function), the pilot's convergence and timing per variant, the estimated grid time, and anything still not working.
+
+codex
+I’ll run the pilot, fix failures within the allowed directories, then check convergence and time each fitted variant. I’ll leave the registered design unchanged except for any necessary, documented model adjustment.
+exec
+/bin/zsh -lc '.venv/bin/python scripts/d1c/d1c.py pilot' in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+exec
+/bin/zsh -lc "cat scripts/d1c/README.md; sed -n '1,240p' scripts/d1c/d1c.py" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+# D1c: categorical production design simulation
+
+This is a prospective specification. No D1c results are assumed here. Commit
+the specification and code before running; results inform the plan before it
+is FIXED. Simulated data evaluates a design, never supplies research evidence
+or replaces unavailable source data. All numerical design choices below are
+placeholders **[ours]**; none estimates a property of the actual datasets.
+
+## Design and reporting order
+
+Fit UWA-like and Nicolas-like designs separately: respectively 40 **[ours]**
+and 43 **[ours]** groups, with 12 **[ours]** participants answering every group,
+giving one and six responses per participant-group. Those response budgets
+match the task descriptions; group counts and the complete crossing remain
+placeholder designs. The vocabulary has 400 **[ours]** eligible words plus
+one explicit outside category. Independent commonness measurements cover
+40% **[ours]** of words, chosen at random, with reliability .8 **[ours]**.
+Eligibility and measurement coverage are different: uncovered words remain
+in the competing vocabulary.
+
+The fixed scenario order is baseline, indicator valence bias, register,
+display divergence, and differential register error. Each is crossed with
+null and threshold-sized *predictive* H2 truths, both datasets, joint and cut
+feedback, omitted register and measured register at reliabilities .5 and
+.8 **[ours]**, and coefficient prior SDs 1 and 2.5 **[ours]**. This is a
+first-version restricted multiverse, not coverage of every plan dimension.
+Both control reliabilities are fitted even in scenarios without confounding.
+Specifications share generated data and proxy noise within a replicate.
+Datasets, estimands, assumptions and priors stay separate in summaries.
+
+## Generating model
+
+All continuous predictors use fixed population scales. Higher z means greater
+within-valence prevalence. Valence v, prevalence residual z and stakes s are
+independent standard normals **[ours]**. Observed valence is v plus normal
+error of SD .1 **[ours]**, and arousal is s plus error of SD 1 **[ours]**.
+The fitted measurement model retains those known sampling errors.
+
+Three distinct register dimensions h are generated, representing origin,
+formality and familiarity. In register scenarios, each has mean
+−.3z + .2v + .2s and independent residual SD sqrt(.83) **[ours]**.
+Otherwise their mean is zero and residual SD is 1 **[ours]**. Origin is a
+continuous propensity here, not an observed Latinate/native classification.
+Register proxies are h plus paired normal errors of SD sqrt((1−r)/r)
+**[ours]**. Differential-error stress additionally shifts every proxy by
+.3m + .2v **[ours]**, which the fitted model deliberately does not know.
+
+Marking is binary, with logit probability
+−2 − .45z − v − .3s + .4 sum(h) in register scenarios **[ours]**.
+The h loading is zero otherwise. This approximates pooled formal negation;
+affix-specific H1 models and uncertain act-type coding are outside this
+first-version design. Stakes supplies a correlated semantic control, not a
+substitute for act type.
+
+Latent log usage ell has mean
+−4 + .4z + .3s + .3v − .3m − .25 sum(h), with the register term active only
+in register scenarios, and its own residual SD .7 **[ours]**. Corpus counts
+are Poisson(exp(ell) × 1,000) **[ours]**. Production uses latent ell,
+never log observed counts. There is no extra negative-binomial dispersion.
+
+The commonness indicator measures d + bias*v with known normal error;
+bias is .2 normally and .8 in the valence-bias scenario **[ours]**.
+Ordinarily d=z. In display divergence,
+d=.5z+sqrt(.75)*q **[ours]**, representing frequent minority display versus
+occasional majority display. This is a failed construct bridge, not a second
+indicator of prevalence. The fitted model implicitly assumes the identity
+bridge; results show its failure against both construct-specific truths.
+
+Eligible-word utilities contain z, marking, ell, valence and stakes, plus
+register in confounded scenarios. Accessibility is .3, valence −.5, stakes
+.1 and direct marking zero **[ours]**. Register production loadings are
+.25 each **[ours]**. Shared item effects have SD .2; group-by-word content
+has SD .35; group and participant rarity and marking slopes have SD .1
+**[ours]**. The outside utility is log(400 × 1.5) **[ours]**.
+
+Conditional on those slopes, each participant-group gives multinomial
+counts across the full vocabulary. This is exactly equivalent to independent
+categorical draws with that response budget: no group aggregation removes
+participant slopes. Nicolas-like responses can repeat a word. Conditional
+independence and sampling with replacement are approximations; sequential
+depletion, order and participant-group-specific dependence are not modelled.
+
+## Estimands and truth
+
+H2 is the mean log ratio of focal-word choice probabilities under z versus
+z+1, averaging over the model's marking and usage distributions, over all
+words, groups and the design's participants. Shift one focal word at a time;
+hold its competitors, outside option, content effects, valence, stakes and
+register fixed. This specifies competition and the target population.
+It is a predictive association, not a causal effect.
+
+Marking is integrated exactly over its two states; usage residuals use
+five-point Gauss–Hermite quadrature **[ours]**. Each branch changes the focal
+word's contribution to the denominator. This is not b_z or a sum of path
+coefficients. A deterministic root solve sets generating b_z so prevalence
+H2 equals 0 or −.10 **[ours]**, conditional on the generated design.
+The latter is a design magnitude, not a justified substantive benchmark.
+
+Also report H1's mean log probability ratio for m=1 versus m=0, with usage
+held fixed; conditional b_z; and the marking probability difference for z+1.
+Display truth shifts prevalence by .5 **[ours]**, preserving the residual
+in the Gaussian prevalence-given-display bridge and holding other controls
+fixed. Display and prevalence truths are reported separately, never pooled.
+Fitted H2 against prevalence truth explicitly evaluates its identity bridge.
+
+## Feedback, fitting and checks
+
+Let L=(z,s,v,h), E denote commonness/arousal/valence/register measurements,
+C corpus counts, M marking and Y production. The joint fit is proportional
+to p(L,theta) p(E|L,theta) p(C,M,Y|L,theta).
+The cut fit is
+q(L,theta_E,theta_D)=p(L,theta_E|E)
+×p(theta_D|C,M,Y,L).
+Each downstream factor is normalized separately for its upstream draw.
+Neither frequency, marking nor production updates L in the cut.
+Merely stopping a gradient or inserting a plug-in mean is not this cut.
+Omitted-register fits also omit register measurements from E.
+
+Use eight upstream posterior draws **[ours]**, each followed by a conditional
+downstream fit, and equally mix their contrasts. This is finite Monte Carlo
+integration of the cut; increase it before relying on small uncertainty
+differences. Compile once per shape/variant within each worker, with pm.Data,
+freeze_model=False and with_data. Use four chains, 500 retained draws,
+1,000 tuning steps, target acceptance .95 **[ours]**, with one sampler core
+per job. Flag any divergence, R-hat above 1.01, bulk or tail ESS below 100,
+or nonfinite diagnostics **[ours]**. Check every sampled variable and the
+derived contrasts. All cut components must pass. No automatic retries.
+
+CSV summaries report 50% and 90% coverage with binomial Monte Carlo SEs,
+bias and its SE, width, unconditional and 90%-selected sign errors,
+selected exaggeration ratios for nonzero truths, selected absolute bias,
+and false meaningful support. Selection means the 90% interval excludes zero.
+Benchmarks are −.10 for H2 and b_z, +.10 for H1, and −.02 for marking
+**[ours]**. False support is conditional on a truth not beyond its benchmark.
+Undefined quantities remain missing. Convergence failures and exceptions
+have separate rows; bias summaries use converged fits and state that selection.
+
+Run `python scripts/d1c/d1c.py pilot` for two replicates of one baseline
+cell and timing, or `python scripts/d1c/d1c.py run --reps R --workers W`.
+Outputs are timestamped CSVs under results/d1c and a JSON log under logs,
+including seeds, configuration, package versions, git state and timing.
+Pilot timing determines practical replication; two replicates cannot assess
+coverage. Re-run at frozen sizes and coverage before treating D1c as complete.
+#!/usr/bin/env python3
+"""D1c prospective design check; artificial data only. See README.md."""
+from __future__ import annotations
+
+import os
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+if sys.platform == "darwin":
+    os.environ.setdefault(
+        "PYTENSOR_FLAGS", f"cxx={ROOT / 'scripts/d1/bin/clang++'}"
+    )
+# Avoid nested BLAS parallelism inside the process pool.
+for name in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ.setdefault(name, "1")
+
+import argparse
+import itertools
+import json
+import platform
+import subprocess
+import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from datetime import datetime, timezone
+from importlib.metadata import PackageNotFoundError, version
+
+import numpy as np
+import pandas as pd
+from numpy.polynomial.hermite import hermgauss
+from scipy.optimize import brentq
+from scipy.special import expit, logsumexp
+
+# All numerical simulation/sampler choices are [ours]; see prospective spec.
+SEED = 20261009
+I, P, COVERAGE = 400, 12, .4
+DESIGNS = {"uwa": (40, 1), "nicolas": (43, 6)}
+SCENARIOS = ("baseline", "valence_bias", "register", "display", "differential")
+PRIORS = (1., 2.5)
+RELIABILITIES = (0., .5, .8)
+DRAWS, TUNE, CHAINS, CUT_DRAWS = 500, 1000, 4, 8
+POST_DRAWS = 100
+OUTSIDE = np.log(I * 1.5)
+NODES, WEIGHTS = hermgauss(5)
+NODES, WEIGHTS = NODES * np.sqrt(2), WEIGHTS / np.sqrt(np.pi)
+BENCHMARKS = {"h2_prevalence_bridge": -.1, "h2_display": -.1,
+              "h1_fixed_usage": .1, "b_z": -.1, "marking": -.02}
+COMPILED = {}
+
+
+def seed(*keys):
+    return int(np.random.SeedSequence(SEED, spawn_key=keys).generate_state(1)[0])
+
+
+def cells():
+    for index, values in enumerate(itertools.product(
+            DESIGNS, SCENARIOS, (0., -.1), ("joint", "cut"),
+            RELIABILITIES, PRIORS)):
+        yield dict(zip(("design", "scenario", "target", "feedback", "reliability",
+                        "prior"), values), cell=index)
+
+
+def utilities(t, z=None, marking=None, ell=None):
+    z = t["z"] if z is None else z
+    marking = t["m"] if marking is None else marking
+    ell = t["ell"] if ell is None else ell
+    return (t["base"] + t["bz"][:, None] * z
+            + t["bm"][:, None] * marking + t["bf"] * ell
+            + t["bv"] * t["v"] + t["bs"] * t["s"] + t["h"] @ t["bh"])
+
+
+def contrasts(t, delta=1.):
+    """All focal words, fixed competitors; branch-specific choice denominators."""
+    eta = utilities(t)
+    denominator = np.exp(eta).sum(axis=1) + np.exp(OUTSIDE)
+    competitors = denominator[:, None] - np.exp(eta)
+
+    def averaged_probability(z):
+        pm = expit(t["g0"] + t["gz"] * z + t["gv"] * t["v"]
+                   + t["gs"] * t["s"] + t["h"] @ t["gh"])
+        probability = np.zeros_like(eta)
+        for marking in (0., 1.):
+            mean = (t["f0"] + t["lz"] * z + t["ls"] * t["s"]
+                    + t["lv"] * t["v"] + t["lm"] * marking
+                    + t["h"] @ t["lh"])
+            mass = pm if marking else 1 - pm
+            for node, weight in zip(NODES, WEIGHTS):
+                focal = utilities(t, z, marking, mean + node * t["sig_f"])
+                # Stable logistic focal/(focal + competitors).
+                probability += weight * mass * expit(focal - np.log(competitors))
+        return probability
+
+    p0 = averaged_probability(t["z"])
+    p1 = averaged_probability(t["z"] + delta)
+    h2 = np.mean(np.log(p1) - np.log(p0))
+    # Marking held at each level, usage held at its current latent value.
+    a = expit(utilities(t, marking=0.) - np.log(competitors))
+    b = expit(utilities(t, marking=1.) - np.log(competitors))
+    h1 = np.mean(np.log(b) - np.log(a))
+    mark0 = (t["g0"] + t["gz"] * t["z"] + t["gv"] * t["v"]
+             + t["gs"] * t["s"] + t["h"] @ t["gh"])
+    return dict(h2=h2, h1_fixed_usage=h1,
+                marking=np.mean(expit(mark0 + t["gz"] * delta) - expit(mark0)))
+
+
+def generate(job):
+    design_index = list(DESIGNS).index(job["design"])
+    scenario_index = SCENARIOS.index(job["scenario"])
+    target_index = int(job["target"] != 0)
+    data_seed = seed(1, design_index, scenario_index, target_index, job["rep"])
+    rng = np.random.default_rng(data_seed)
+    G, budget = DESIGNS[job["design"]]
+    z, v, s = rng.normal(size=(3, I))
+    confounded = job["scenario"] in ("register", "differential")
+    h = rng.normal(size=(I, 3))
+    if confounded:
+        h = (-.3 * z + .2 * v + .2 * s)[:, None] + np.sqrt(.83) * h
+    gh = np.full(3, .4 if confounded else 0.)
+    lh = np.full(3, -.25 if confounded else 0.)
+    bh = np.full(3, .25 if confounded else 0.)
+    m = rng.binomial(1, expit(-2 - .45*z - v - .3*s + h @ gh))
+    ell = -4 + .4*z + .3*s + .3*v - .3*m + h @ lh + .7*rng.normal(size=I)
+    counts = rng.poisson(1000*np.exp(ell))
+    display = .5*z + np.sqrt(.75)*rng.normal(size=I)
+    d = display if job["scenario"] == "display" else z
+    idx = np.sort(rng.choice(I, int(I*COVERAGE), replace=False))
+    bias = .8 if job["scenario"] == "valence_bias" else .2
+    e = d[idx] + bias*v[idx] + .5*rng.normal(size=len(idx))
+    vo = v + .1*rng.normal(size=I)
+    arousal = s + rng.normal(size=I)
+    proxy_noise = rng.normal(size=(I, 3))
+    # Fixed random-effects draws across fitted specifications.
+    group = .1*rng.normal(size=(G, 2))
+    participant = .1*rng.normal(size=(P, 2))
+    slopes = (group[:, None, :] + participant[None, :, :]).reshape(G*P, 2)
+    item = .2*rng.normal(size=I)
+    content = .35*rng.normal(size=(G, I))
+    base = np.repeat(content + item, P, axis=0)
+    t = dict(z=z, v=v, s=s, h=h, m=m, ell=ell, base=base,
+             bz=slopes[:, 0].copy(), bm=slopes[:, 1], bf=.3, bv=-.5, bs=.1,
+             bh=bh, g0=-2., gz=-.45, gv=-1., gs=-.3, gh=gh,
+             f0=-4., lz=.4, ls=.3, lv=.3, lm=-.3, lh=lh, sig_f=.7)
+
+    def objective(bz):
+        t["bz"] = bz + slopes[:, 0]
+        return contrasts(t)["h2"] - job["target"]
+
+    direct = brentq(objective, -4, 4, xtol=1e-9)
+    t["bz"] = direct + slopes[:, 0]
+    truth = contrasts(t)
+    truths = dict(h2_prevalence_bridge=truth["h2"],
+                  h1_fixed_usage=truth["h1_fixed_usage"], b_z=direct,
+                  marking=truth["marking"])
+    if job["scenario"] == "display":
+        truths["h2_display"] = contrasts(t, delta=.5)["h2"]
+    eta = utilities(t)
+    logits = np.column_stack([eta, np.full(G*P, OUTSIDE)])
+    probabilities = np.exp(logits - logsumexp(logits, axis=1, keepdims=True))
+    y = np.stack([rng.multinomial(budget, p) for p in probabilities])
+    observed = dict(vo=vo, arousal=arousal, e=e, idx=idx.astype("int64"),
+                    m=m.astype("int64"), corpus=counts.astype("int64"),
+                    y=y.astype("int64"))
+    r = job["reliability"]
+    if r:
+        shift = (.3*m + .2*v)[:, None] if job["scenario"] == "differential" else 0.
+        observed["proxy"] = h + np.sqrt((1-r)/r)*proxy_noise + shift
+    return observed, truths, data_seed
+
+
+def build(G, budget, register, prior, mode):
+    """Three reusable graphs: joint, upstream E-only, downstream given L."""
+    import pymc as pm
+    import pytensor.tensor as pt
+
+    downstream = mode == "downstream"
+    upstream = mode == "upstream"
+    with pm.Model() as model:
+        if downstream:
+            z = pm.Data("z_fixed", np.zeros(I))
+            s = pm.Data("s_fixed", np.zeros(I))
+            v = pm.Data("v_fixed", np.zeros(I))
+            h = pm.Data("h_fixed", np.zeros((I, 3))) if register else pt.zeros((I, 3))
+        else:
+            z = pm.Normal("z", 0, 1, shape=I)
+            s = pm.Normal("s", 0, 1, shape=I)
+            v = pm.Normal("v", 0, 1, shape=I)
+            pm.Normal("valence_obs", v, .1, observed=pm.Data("vo", np.zeros(I)))
+            pm.Normal("arousal_obs", s, 1, observed=pm.Data("arousal", np.zeros(I)))
+            idx = pm.Data("idx", np.arange(int(I*COVERAGE), dtype="int64"))
+            pm.Normal("indicator_obs", z[idx] + pm.Normal("e_v", 0, prior)*v[idx],
+                      .5, observed=pm.Data("e", np.zeros(int(I*COVERAGE))))
+            if register:
+                coefficients = pm.Normal("h_coef", 0, prior, shape=(3, 3))
+                predictors = pt.stack([z, v, s], axis=1)
+                hs = pm.HalfNormal("h_sd", 1, shape=3)
+                h = pm.Deterministic(
+                    "h", predictors @ coefficients + hs*pm.Normal("h_raw", 0, 1, shape=(I, 3))
+                )
+                proxy = pm.Data("proxy", np.zeros((I, 3)))
+                error = pm.Data("proxy_error", np.array(1.))
+                pm.Normal("register_obs", h, error, observed=proxy)
+            else:
+                h = pt.zeros((I, 3))
+        if upstream:
+            return model
+
+        def coefficient(name):
+            return pm.Normal(name, 0, prior)
+
+        def register_coefficient(name):
+            return pm.Normal(name, 0, prior, shape=3) if register else pt.zeros(3)
+
+        g0, gz, gv, gs = [coefficient(k) for k in ("g0", "gz", "gv", "gs")]
+        gh = register_coefficient("gh")
+        m = pm.Data("m", np.zeros(I, dtype="int64"))
+        pm.Bernoulli("mark_obs", logit_p=g0 + gz*z + gv*v + gs*s + h @ gh, observed=m)
+        f0 = pm.Normal("f0", -4, 2)
+        lz, ls, lv, lm = [coefficient(k) for k in ("lz", "ls", "lv", "lm")]
+        lh = register_coefficient("lh")
+        sig_f = pm.HalfNormal("sig_f", 1)
+        ell = pm.Deterministic(
+            "ell", f0 + lz*z + ls*s + lv*v + lm*m + h @ lh
+            + sig_f*pm.Normal("ell_raw", 0, 1, shape=I)
+        )
+        pm.Poisson("corpus_obs", mu=1000*pt.exp(ell),
+                   observed=pm.Data("corpus", np.ones(I, dtype="int64")))
+        b_z, b_m, bf, bv, bs = [coefficient(k) for k in ("b_z", "b_m", "bf", "bv", "bs")]
+        bh = register_coefficient("bh")
+        group = pm.Deterministic(
+            "group", pm.HalfNormal("group_sd", .5, shape=2)
+            * pm.Normal("group_raw", 0, 1, shape=(G, 2))
+        )
+        participant = pm.Deterministic(
+            "participant", pm.HalfNormal("participant_sd", .5, shape=2)
+            * pm.Normal("participant_raw", 0, 1, shape=(P, 2))
+        )
+        slopes = (group[:, None, :] + participant[None, :, :]).reshape((G*P, 2))
+        bz = pm.Deterministic("bz", b_z + slopes[:, 0])
+        bm = pm.Deterministic("bm", b_m + slopes[:, 1])
+        item = pm.HalfNormal("item_sd", .5)*pm.Normal("item_raw", 0, 1, shape=I)
+
+exec
+/bin/zsh -lc "sed -n '240,580p' scripts/d1c/d1c.py" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+        item = pm.HalfNormal("item_sd", .5)*pm.Normal("item_raw", 0, 1, shape=I)
+        content = (pm.HalfNormal("content_sd", .5)
+                   * pm.Normal("content_raw", 0, 1, shape=(G, I)))
+        base = pm.Deterministic("base", pt.repeat(content + item, P, axis=0))
+        eta = base + bz[:, None]*z + bm[:, None]*m + bf*ell + bv*v + bs*s + h @ bh
+        logits = pt.concatenate([eta, pt.full((G*P, 1), OUTSIDE)], axis=1)
+        pm.Multinomial("production_obs", n=budget, p=pm.math.softmax(logits, axis=1),
+                       observed=pm.Data("y", np.zeros((G*P, I+1), dtype="int64")))
+    return model
+
+
+def sample(job, mode, data, sampling_seed):
+    import arviz as az
+    import nutpie
+
+    G, budget = DESIGNS[job["design"]]
+    register = bool(job["reliability"])
+    key = (G, budget, register, job["prior"], mode)
+    if key not in COMPILED:
+        model = build(G, budget, register, job["prior"], mode)
+        free_names = [rv.name for rv in model.free_RVs]
+        COMPILED[key] = (nutpie.compile_pymc_model(model, freeze_model=False), free_names)
+    compiled, free_names = COMPILED[key]
+    tr = nutpie.sample(compiled.with_data(**data), draws=DRAWS, tune=TUNE,
+                       chains=CHAINS, cores=1, seed=sampling_seed,
+                       target_accept=.95, progress_bar=False)
+    rh = az.rhat(tr, var_names=free_names)
+    bulk = az.ess(tr, var_names=free_names, method="bulk")
+    tail = az.ess(tr, var_names=free_names, method="tail")
+    rhat = max(float(np.max(rh[n])) for n in free_names)
+    ess = min(float(np.min(x[n])) for x in (bulk, tail) for n in free_names)
+    divergences = int(np.asarray(tr.sample_stats["diverging"]).sum())
+    finite = all(np.isfinite(np.asarray(x[n])).all()
+                 for x in (rh, bulk, tail) for n in free_names)
+    good = finite and rhat <= 1.01 and ess >= 100 and divergences == 0
+    return tr, dict(good=good, rhat=rhat, ess=ess, divergences=divergences,
+                    seed=sampling_seed, mode=mode)
+
+
+def flattened(tr, name):
+    x = np.asarray(tr.posterior[name])
+    return x.reshape((-1,) + x.shape[2:])
+
+
+def downstream_data(observed):
+    return {k: observed[k] for k in ("m", "corpus", "y")}
+
+
+def upstream_data(observed, r):
+    data = {k: observed[k] for k in ("vo", "arousal", "e", "idx")}
+    if r:
+        data.update(proxy=observed["proxy"], proxy_error=np.array(np.sqrt((1-r)/r)))
+    return data
+
+
+def posterior_contrasts(tr, observed, fixed, rng):
+    """Balanced subsampling across chains; preserve posterior dependence."""
+    names = ("bz", "bm", "bf", "bv", "bs", "base", "ell", "g0", "gz", "gv",
+             "gs", "f0", "lz", "ls", "lv", "lm", "sig_f", "b_z")
+    available = {name: flattened(tr, name) for name in names}
+    for name in ("bh", "gh", "lh", "z", "v", "s", "h"):
+        if name in tr.posterior:
+            available[name] = flattened(tr, name)
+    per_chain = tr.posterior.sizes["draw"]
+    picks = np.concatenate([
+        chain*per_chain + rng.choice(per_chain, POST_DRAWS//CHAINS, replace=False)
+        for chain in range(CHAINS)
+    ])
+    rows = []
+    for pick in picks:
+        t = {name: values[pick] for name, values in available.items()}
+        t.update(m=observed["m"])
+        if fixed is not None:
+            t.update({name.removesuffix("_fixed"): value for name, value in fixed.items()})
+        t.setdefault("h", np.zeros((I, 3)))
+        for name in ("bh", "gh", "lh"):
+            t.setdefault(name, np.zeros(3))
+        values = contrasts(t)
+        rows.append(dict(h2=values["h2"], h1_fixed_usage=values["h1_fixed_usage"],
+                         marking=values["marking"], b_z=float(t["b_z"])))
+    # Derived contrasts also require within-component chain diagnostics.
+    import arviz as az
+    diagnostic = az.from_dict(posterior={
+        name: np.array([row[name] for row in rows]).reshape(CHAINS, -1)
+        for name in rows[0]
+    })
+    # ESS at this small retained size is reported, not thresholded at 100.
+    rh = az.rhat(diagnostic)
+    finite = all(np.isfinite(np.asarray(rh[name])).all() for name in rows[0])
+    contrast_rhat = max(float(np.max(rh[name])) for name in rows[0])
+    return rows, finite and contrast_rhat <= 1.05, contrast_rhat
+
+
+def fit(job):
+    started = time.time()
+    observed, truths, data_seed = generate(job)
+    fit_seed = seed(2, job["cell"], job["rep"])
+    rng = np.random.default_rng(seed(3, job["cell"], job["rep"]))
+    upstream = upstream_data(observed, job["reliability"])
+    downstream = downstream_data(observed)
+    diagnostics, posterior = [], []
+    if job["feedback"] == "joint":
+        tr, diag = sample(job, "joint", dict(upstream, **downstream), fit_seed)
+        values, good, crhat = posterior_contrasts(tr, observed, None, rng)
+        diag.update(contrast_good=good, contrast_rhat=crhat)
+        diagnostics.append(diag)
+        posterior.extend(values)
+    else:
+        tr, diag = sample(job, "upstream", upstream, fit_seed)
+        diag.update(contrast_good=True, contrast_rhat=None)
+        diagnostics.append(diag)
+        latents = {k: flattened(tr, k) for k in ("z", "v", "s")}
+        if job["reliability"]:
+            latents["h"] = flattened(tr, "h")
+        # Independent uniform draws from the empirical upstream posterior.
+        # Draws are not weighted by downstream marginal likelihood.
+        picks = rng.integers(len(latents["z"]), size=CUT_DRAWS)
+        for component, pick in enumerate(picks):
+            fixed = {f"{k}_fixed": x[pick] for k, x in latents.items()}
+            component_seed = seed(4, job["cell"], job["rep"], component)
+            conditional, diag = sample(job, "downstream", dict(downstream, **fixed),
+                                       component_seed)
+            values, good, crhat = posterior_contrasts(conditional, observed, fixed, rng)
+            diag.update(contrast_good=good, contrast_rhat=crhat)
+            diagnostics.append(diag)
+            posterior.extend(values)
+    converged = all(d["good"] and d["contrast_good"] for d in diagnostics)
+    rows = []
+    for estimand, truth in truths.items():
+        source = "h2" if estimand.startswith("h2_") else estimand
+        x = np.array([row[source] for row in posterior])
+        lo50, hi50 = np.quantile(x, [.25, .75])
+        lo90, hi90 = np.quantile(x, [.05, .95])
+        threshold = BENCHMARKS[estimand]
+        direction = 1 if estimand == "h1_fixed_usage" else -1
+        support = lo90 > threshold if direction == 1 else hi90 < threshold
+        against = hi90 < threshold if direction == 1 else lo90 > threshold
+        meaningful_truth = direction*truth > direction*threshold
+        rows.append(dict(
+            **job, estimand=estimand, truth=truth, mean=x.mean(),
+            lo50=lo50, hi50=hi50, lo90=lo90, hi90=hi90,
+            coverage50=lo50 <= truth <= hi50, coverage90=lo90 <= truth <= hi90,
+            width50=hi50-lo50, width90=hi90-lo90, error=x.mean()-truth,
+            selected=(lo90 > 0 or hi90 < 0), meaningful_truth=meaningful_truth,
+            support=support, against=against, threshold=threshold,
+            p_direction=np.mean(direction*x > 0),
+            p_beyond=np.mean(direction*x > direction*threshold),
+            good=converged, data_seed=data_seed, fit_seed=fit_seed,
+            seconds=time.time()-started,
+        ))
+    return rows, dict(**job, status="converged" if converged else "diagnostic_failure",
+                      data_seed=data_seed, fit_seed=fit_seed,
+                      diagnostics=diagnostics, seconds=time.time()-started)
+
+
+def summarize(frame, failures):
+    records = []
+    keys = ["cell", "design", "scenario", "target", "feedback", "reliability",
+            "prior", "estimand"]
+
+    def statistic(record, name, values, binary=False):
+        values = np.asarray(values, dtype=float)
+        n = len(values)
+        mean = float(values.mean()) if n else np.nan
+        se = (np.sqrt(mean*(1-mean)/n) if n and binary else
+              values.std(ddof=1)/np.sqrt(n) if n > 1 else np.nan)
+        record.update({name: mean, name+"_mcse": se, name+"_n": n})
+
+    for key, group in frame.groupby(keys, sort=True):
+        record = dict(zip(keys, key))
+        x = group[group.good]
+        record.update(attempted=len(group), converged=len(x),
+                      diagnostic_failures=len(group)-len(x))
+        for name in ("coverage50", "coverage90"):
+            statistic(record, name, x[name], binary=True)
+        for name in ("width50", "width90"):
+            statistic(record, name, x[name])
+        statistic(record, "bias", x.error)
+        nonnull = x[np.abs(x.truth) > 1e-8]
+        selected = x[x.selected]
+        selected_nonnull = nonnull[nonnull.selected]
+        statistic(record, "sign_error", nonnull["mean"]*nonnull.truth < 0, True)
+        statistic(record, "selected_sign_error",
+                  selected_nonnull["mean"]*selected_nonnull.truth < 0, True)
+        statistic(record, "selected_exaggeration",
+                  np.abs(selected_nonnull["mean"]/selected_nonnull.truth))
+        statistic(record, "conditional_absolute_bias", np.abs(selected.error))
+        false_population = x[~x.meaningful_truth]
+        statistic(record, "false_meaningful_support", false_population.support, True)
+        records.append(record)
+    # Exceptions and convergence failures remain visible even in empty cells.
+    return pd.DataFrame(records), pd.DataFrame(failures)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser("pilot", help="two replicates of one baseline joint cell")
+    run = commands.add_parser("run")
+    run.add_argument("--reps", type=int, required=True)
+    run.add_argument("--workers", type=int, default=1)
+    args = parser.parse_args()
+    reps = 2 if args.command == "pilot" else args.reps
+    workers = 1 if args.command == "pilot" else args.workers
+    if reps < 1 or workers < 1:
+        parser.error("reps and workers must be positive")
+    selected_cells = list(cells())
+    if args.command == "pilot":
+        selected_cells = selected_cells[:1]
+    jobs = [dict(c, rep=rep) for c in selected_cells for rep in range(reps)]
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    output = ROOT / "results" / "d1c"
+    output.mkdir(parents=True, exist_ok=True)
+    (ROOT / "logs").mkdir(exist_ok=True)
+    raw_path = output / f"{args.command}-{stamp}-fits.csv"
+    summary_path = output / f"{args.command}-{stamp}-summary.csv"
+    failure_path = output / f"{args.command}-{stamp}-failures.csv"
+    started = time.time()
+    rows, failures = [], []
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        pending = {pool.submit(fit, job): job for job in jobs}
+        for future in as_completed(pending):
+            job = pending[future]
+            try:
+                result, status = future.result()
+                rows.extend(result)
+                failures.append(status)
+                pd.DataFrame(result).to_csv(raw_path, mode="a",
+                                            header=not raw_path.exists(), index=False)
+                print(job["cell"], job["rep"], status["status"],
+                      round(status["seconds"], 1), "seconds", flush=True)
+            except Exception as exc:
+                failures.append(dict(**job, status="exception", error=repr(exc),
+                                     fit_seed=seed(2, job["cell"], job["rep"])))
+                print(job, repr(exc), flush=True)
+    if rows:
+        summary, failed = summarize(pd.DataFrame(rows), failures)
+        summary.to_csv(summary_path, index=False)
+    else:
+        failed = pd.DataFrame(failures)
+    # Diagnostic detail is retained in JSON; flatten failure CSV for inspection.
+    failed.drop(columns=["diagnostics"], errors="ignore").to_csv(failure_path, index=False)
+    packages = {}
+    for package in ("numpy", "pandas", "scipy", "pymc", "pytensor", "nutpie", "arviz"):
+        try:
+            packages[package] = version(package)
+        except PackageNotFoundError:
+            packages[package] = None
+
+    def git(*arguments):
+        return subprocess.run(["git", *arguments], cwd=ROOT, capture_output=True,
+                              text=True, check=False).stdout.strip()
+
+    log = dict(timestamp=stamp, script="scripts/d1c/d1c.py", args=vars(args),
+               root_seed=SEED, python=sys.version, platform=platform.platform(),
+               packages=packages, git_sha=git("rev-parse", "HEAD"),
+               git_dirty=bool(git("status", "--porcelain")),
+               sampler=dict(draws=DRAWS, tune=TUNE, chains=CHAINS, cores=1,
+                            cut_draws=CUT_DRAWS, contrast_draws=POST_DRAWS),
+               pytensor_flags=os.environ.get("PYTENSOR_FLAGS"),
+               cells=selected_cells, statuses=failures,
+               outputs=[str(p.relative_to(ROOT)) for p in
+                        (raw_path, summary_path, failure_path) if p.exists()],
+               elapsed_seconds=time.time()-started)
+    path = ROOT / "logs" / f"d1c-{stamp}.json"
+    path.write_text(json.dumps(log, indent=2, default=str))
+    print("log:", path.relative_to(ROOT))
+
+
+if __name__ == "__main__":
+    main()
+
+exec
+/bin/zsh -lc 'cat /Users/brettreynolds/.codex/skills/crosscheck/SKILL.md' in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+---
+name: crosscheck
+description: Resync with MCP shared memory, session log, and handoff files. Use at session start, after context compression, before task switches, or when state seems inconsistent.
+---
+
+# Cross-System State Check
+
+Run this to sync with other agents via MCP shared memory, session log, and handoff files.
+
+## Steps
+
+1. **MCP shared memory (primary coordination channel):**
+```
+mcp__shared-memory__read_memory tags=["to:pm"] OR tags=["status:blocked"] OR tags=["status:question"]
+```
+Check for:
+- Messages directed to PM (tag: `to:pm`)
+- Blocked agents needing decisions (tag: `status:blocked`)
+- Scope questions needing answers (tag: `status:question`)
+- Recent session summaries (tag: `session-summary`)
+
+2. **Recent session log entries:**
+```bash
+tail -15 Project-Management/session-log.jsonl | grep -v '^#'
+```
+
+3. **Recent HANDOFF files (last 48 hours):**
+```bash
+find . -name "HANDOFF*.md" -mtime -2 -type f 2>/dev/null
+```
+
+4. **If any HANDOFF files found, read them and summarize:**
+   - What system left the handoff
+   - What task state was handed off
+   - What the next system needs to know
+
+5. **Report to user:**
+   > "Cross-system check: [N] MCP messages, [M] log entries, [P] handoffs. [Summary if relevant, or 'Nothing requiring attention.']"
+
+## When to Run
+
+- **Session start** -- see what other systems did
+- **After context compression** -- recover lost coordination context (you may have forgotten MCP exists)
+- **Before task switch** -- check for messages before starting new work
+- **When confused** -- if state seems inconsistent, other agents may have changed things
+- **After Brett mentions working in another system** -- Antigravity, Codex, Claude Desktop, etc.
+
+## Post-Compression Recovery
+
+If you've been working for a while and aren't sure if you've checked MCP recently, you probably haven't. Context compression loses MCP instructions first. Run this command to resync.
+
+ succeeded in 14960ms:
+{'design': 'uwa', 'scenario': 'baseline', 'target': 0.0, 'feedback': 'joint', 'reliability': 0.0, 'prior': 1.0, 'cell': 0, 'rep': 0} CompileError("Compilation failed (return status=1):\n/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1/bin/clang++ -dynamiclib -g -Wno-c++11-narrowing -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -fPIC -undefined dynamic_lookup -ld64 -I/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/lib/python3.14/site-packages/numpy/_core/include -I/opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/include/python3.14 -I/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/lib/python3.14/site-packages/pytensor/link/c/c_code -L/opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/lib -fvisibility=hidden -o /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/pytensor/compiledir_macOS-26.6.2-arm64-arm-64bit-Mach-O-arm-3.14.8-64/lazylinker_ext/lazylinker_ext.so /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/pytensor/compiledir_macOS-26.6.2-arm64-arm-64bit-Mach-O-arm-3.14.8-64/lazylinker_ext/mod.cpp\nclang++: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\nclang++: error: unable to make temporary file: Operation not permitted\n")
+{'design': 'uwa', 'scenario': 'baseline', 'target': 0.0, 'feedback': 'joint', 'reliability': 0.0, 'prior': 1.0, 'cell': 0, 'rep': 1} CompileError("Compilation failed (return status=1):\n/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1/bin/clang++ -dynamiclib -g -Wno-c++11-narrowing -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -fPIC -undefined dynamic_lookup -ld64 -I/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/lib/python3.14/site-packages/numpy/_core/include -I/opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/include/python3.14 -I/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/lib/python3.14/site-packages/pytensor/link/c/c_code -L/opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/lib -fvisibility=hidden -o /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/pytensor/compiledir_macOS-26.6.2-arm64-arm-64bit-Mach-O-arm-3.14.8-64/lazylinker_ext/lazylinker_ext.so /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/pytensor/compiledir_macOS-26.6.2-arm64-arm-64bit-Mach-O-arm-3.14.8-64/lazylinker_ext/mod.cpp\nclang++: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\nclang++: error: unable to make temporary file: Operation not permitted\n")
+
+You can find the C code in this temporary file: /tmp/pytensor_compilation_error_1my95td7
+
+You can find the C code in this temporary file: /tmp/pytensor_compilation_error__rivczi1
+log: logs/d1c-20261010T005646227622Z.json
+
+exec
+/bin/zsh -lc 'cat scripts/d1/bin/clang++; printenv PYTENSOR_FLAGS TMPDIR' in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+#!/bin/sh
+# Compiler wrapper for pytensor on macOS with Xcode 27-era toolchains.
+# pytensor (cmodule.py, compile_args) appends "-ld64" on macOS >= 15 to select
+# Apple's classic linker; that flag dates from Xcode 15 and is no longer
+# recognised (clang reads it as "-l d64"). This wrapper drops it and calls
+# clang++ with everything else unchanged. Use via PYTENSOR_FLAGS="cxx=<this file>". It is named clang++ because pytensor recognises the compiler by filename.
+for arg do
+  shift
+  [ "$arg" = "-ld64" ] && continue
+  set -- "$@" "$arg"
+done
+exec /usr/bin/clang++ "$@"
+base_compiledir=/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.cache/pytensor,cxx=/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1/bin/clang++
+
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py')
+s=p.read_text(); s=s.replace('if sys.platform == \"darwin\":','''# Keep compiler scratch and caches inside the authorized output tree.
+SCRATCH = ROOT / \"logs\" / \"d1c-cache\"
+SCRATCH.mkdir(parents=True, exist_ok=True)
+os.environ[\"TMPDIR\"] = str(SCRATCH)
+flags = [flag for flag in os.environ.get(\"PYTENSOR_FLAGS\", \"\").split(\",\")
+         if flag and not flag.startswith((\"base_compiledir=\", \"compiledir=\"))]
+flags.append(f\"base_compiledir={SCRATCH / 'pytensor'}\")
+os.environ[\"PYTENSOR_FLAGS\"] = \",\".join(flags)
+if sys.platform == \"darwin\":'''); p.write_text(s)
+PY
+.venv/bin/python scripts/d1c/d1c.py pilot" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+codex
+The first run failed before sampling: clang couldn’t create temporary files in the sandbox’s default location. I’ve redirected compiler scratch files and the PyTensor cache into `logs/d1c-cache/` and restarted the pilot. The model is unchanged.
+exec
+/bin/zsh -lc 'rg --files logs results/d1c | tail -15' in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 163ms:
+logs/strandA-20261007-142431.json
+logs/d2-pilot-stdout.txt
+logs/strandA-20261007-142430.json
+logs/d1-param-check-stdout.txt
+logs/d1-20261009-134952.json
+logs/strandA-20261007-142607.json
+logs/d1-20261007-153125.json
+logs/d1-local-chunks-stdout.txt
+logs/d1-20261007-153719.json
+logs/d1c-cache/xcrun_db
+logs/d1c-cache/pytensor/compiledir_macOS-26.6.2-arm64-arm-64bit-Mach-O-arm-3.14.8-64/__init__.py
+logs/d1c-cache/pytensor/compiledir_macOS-26.6.2-arm64-arm-64bit-Mach-O-arm-3.14.8-64/lazylinker_ext/lazylinker_ext.so.dSYM/Contents/Info.plist
+logs/d1c-cache/pytensor/compiledir_macOS-26.6.2-arm64-arm-64bit-Mach-O-arm-3.14.8-64/lazylinker_ext/mod.cpp
+logs/d1c-cache/pytensor/compiledir_macOS-26.6.2-arm64-arm-64bit-Mach-O-arm-3.14.8-64/lazylinker_ext/__init__.py
+logs/d1c-cache/pytensor/compiledir_macOS-26.6.2-arm64-arm-64bit-Mach-O-arm-3.14.8-64/lazylinker_ext/lazylinker_ext.so.dSYM/Contents/Resources/Relocations/aarch64/lazylinker_ext.so.yml
+
+exec
+/bin/zsh -lc "ls -lt logs/d1c-cache; .venv/bin/python - <<'PY'
+import inspect, nutpie
+print(inspect.signature(nutpie.compile_pymc_model))
+print(inspect.signature(nutpie.sample))
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 4784ms:
+total 416
+-rw-------@ 1 brettreynolds  staff   7412 Oct  9 20:57 tmp4mac74w8
+-rw-------@ 1 brettreynolds  staff    650 Oct  9 20:57 tmp27uxipkb
+-rw-------@ 1 brettreynolds  staff    331 Oct  9 20:57 tmp3svias05
+-rw-------@ 1 brettreynolds  staff   1048 Oct  9 20:57 tmpryono15e
+-rw-------@ 1 brettreynolds  staff  39891 Oct  9 20:57 tmpbqs95emt
+-rw-------@ 1 brettreynolds  staff    306 Oct  9 20:57 tmp4bklvjs_
+-rw-------@ 1 brettreynolds  staff    642 Oct  9 20:57 tmp_gppz1sg
+-rw-------@ 1 brettreynolds  staff    657 Oct  9 20:57 tmpb2tp4y_r
+-rw-------@ 1 brettreynolds  staff    657 Oct  9 20:57 tmpls9kr1ju
+-rw-------@ 1 brettreynolds  staff    360 Oct  9 20:57 tmppn3r3qyi
+-rw-------@ 1 brettreynolds  staff    360 Oct  9 20:57 tmph6kr__b1
+-rw-------@ 1 brettreynolds  staff   6967 Oct  9 20:57 tmpa460paz6
+-rw-------@ 1 brettreynolds  staff    645 Oct  9 20:57 tmphxg0uh38
+-rw-------@ 1 brettreynolds  staff    645 Oct  9 20:57 tmp11sp1mnm
+-rw-------@ 1 brettreynolds  staff    307 Oct  9 20:57 tmp3l25qdui
+-rw-------@ 1 brettreynolds  staff    645 Oct  9 20:57 tmp478wjaw5
+-rw-------@ 1 brettreynolds  staff   1239 Oct  9 20:57 tmplsv0jnbt
+-rw-------@ 1 brettreynolds  staff    644 Oct  9 20:57 tmp899wd59j
+-rw-------@ 1 brettreynolds  staff  12260 Oct  9 20:57 tmpnrf3cdgg
+-rw-------@ 1 brettreynolds  staff    504 Oct  9 20:57 tmp4sevv_fl
+-rw-------@ 1 brettreynolds  staff    506 Oct  9 20:57 tmp48zeo8m7
+-rw-------@ 1 brettreynolds  staff    337 Oct  9 20:57 tmp20dz066z
+-rw-------@ 1 brettreynolds  staff    513 Oct  9 20:57 tmpch2g3_9k
+-rw-------@ 1 brettreynolds  staff    652 Oct  9 20:57 tmp7he35omu
+-rw-------@ 1 brettreynolds  staff    164 Oct  9 20:57 tmptddp99h4
+-rw-------@ 1 brettreynolds  staff   1512 Oct  9 20:57 tmpknokn5ra
+-rw-------@ 1 brettreynolds  staff    768 Oct  9 20:57 tmp972qffx5
+-rw-------@ 1 brettreynolds  staff    474 Oct  9 20:57 tmp2wbr0n82
+-rw-------@ 1 brettreynolds  staff    314 Oct  9 20:57 tmpiuu2rinj
+-rw-------@ 1 brettreynolds  staff    693 Oct  9 20:57 tmpyblk0z48
+-rw-------@ 1 brettreynolds  staff    650 Oct  9 20:57 tmpo5snansr
+-rw-------@ 1 brettreynolds  staff    332 Oct  9 20:57 tmphthseef5
+-rw-------@ 1 brettreynolds  staff   1069 Oct  9 20:57 tmpy6lqrxu6
+-rw-------@ 1 brettreynolds  staff   1238 Oct  9 20:57 tmpdy8mcp2w
+-rw-------@ 1 brettreynolds  staff   1226 Oct  9 20:57 tmpdzadyqcg
+-rw-------@ 1 brettreynolds  staff    208 Oct  9 20:57 tmptu_b7jjj
+-rw-------@ 1 brettreynolds  staff    164 Oct  9 20:57 tmp9kmylc3z
+-rw-------@ 1 brettreynolds  staff    202 Oct  9 20:57 tmpz2vpvnaw
+drwxr-xr-x@ 4 brettreynolds  staff    128 Oct  9 20:57 pytensor
+-rw-------@ 1 brettreynolds  staff    499 Oct  9 20:57 xcrun_db
+(model: 'pm.Model', *, backend: Literal['numba', 'jax'] = 'numba', gradient_backend: Literal['pytensor', 'jax'] = 'pytensor', initial_points: dict[ForwardRef('Variable') | str, numpy.ndarray | float | int] | None = None, jitter_rvs: set['TensorVariable'] | None = None, default_initialization_strategy: Literal['support_point', 'prior'] = 'support_point', var_names: collections.abc.Iterable[str] | None = None, freeze_model: bool | None = None, **kwargs) -> nutpie.sample.CompiledModel
+(compiled_model: nutpie.sample.CompiledModel, *, draws: int | None = None, tune: int | None = None, chains: int | None = None, cores: int | None = None, seed: int | None = None, save_warmup: bool = True, progress_bar: bool = True, sampler: Literal['nuts', 'mclmc'] = 'nuts', adaptation: Literal['diag', 'draw_diag', 'low_rank', 'flow'] = 'diag', init_mean: numpy.ndarray | None = None, return_raw_trace: bool = False, blocking: bool = True, progress_callback: Any | None = None, progress_template: str | None = None, progress_style: str | None = None, progress_rate: int = 100, zarr_store: _lib.store.S3Store | _lib.store.LocalStore | _lib.store.HTTPStore | _lib.store.GCSStore | _lib.store.AzureStore | None = None, store_unconstrained: bool = False, **kwargs) -> xarray.core.datatree.DataTree | nutpie.sample._BackgroundSampler
+
+codex
+The pilot is still compiling. I also found that it would store the repeated group-by-participant utility matrix for every draw, including warmup, creating several gigabytes of unnecessary output. I’m changing trace storage to reconstruct that matrix only when computing contrasts; the likelihood and priors stay the same.
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py'); s=p.read_text().replace('base = pm.Deterministic(\"base\", pt.repeat(content + item, P, axis=0))','base = pt.repeat(content + item, P, axis=0)')
+s=s.replace('cores=1, seed=sampling_seed,','cores=1, seed=sampling_seed, save_warmup=False,')
+s=s.replace('\"bs\", \"base\", \"ell\",','\"bs\", \"item_sd\", \"item_raw\", \"content_sd\", \"content_raw\", \"ell\",')
+s=s.replace('t.update(m=observed[\"m\"])','t[\"base\"] = np.repeat(t[\"content_sd\"]*t[\"content_raw\"]\\n                              + t[\"item_sd\"]*t[\"item_raw\"], P, axis=0)\\n        t.update(m=observed[\"m\"])')
+p.write_text(s)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+ exited 130 in 54987ms:
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/d1c.py", line 518, in <module>
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/d1c.py", line 469, in main
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/concurrent/futures/_base.py", line 237, in as_completed
+    waiter.event.wait(wait_timeout)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 670, in wait
+    signaled = self._cond.wait(timeout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 369, in wait
+    waiter.acquire()
+    ~~~~~~~~~~~~~~^^
+KeyboardInterrupt
+
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text();s=s.replace('    if key not in COMPILED:\\n','    compile_started = time.perf_counter()\\n    if key not in COMPILED:\\n        print(f\"compile {key}\", flush=True)\\n');s=s.replace('    tr = nutpie.sample(', '    compile_seconds = time.perf_counter() - compile_started\\n    sample_started = time.perf_counter()\\n    print(f\"sample {key}; compile {compile_seconds:.1f}s\", flush=True)\\n    tr = nutpie.sample(');s=s.replace('    rh = az.rhat(tr, var_names=free_names)','    sampling_seconds = time.perf_counter() - sample_started\\n    print(f\"sample done {key}: {sampling_seconds:.1f}s\", flush=True)\\n    rh = az.rhat(tr, var_names=free_names)');s=s.replace('seed=sampling_seed, mode=mode)','seed=sampling_seed, mode=mode, compile_seconds=compile_seconds,\\n                    sampling_seconds=sampling_seconds)');p.write_text(s)
+PY
+.venv/bin/python scripts/d1c/d1c.py pilot" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+exec
+/bin/zsh -lc "rg -n 'def compile_pymc_model|var_names|log_likelihood' .venv/lib/python3.14/site-packages/nutpie/compile_pymc.py | head -25" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+203:        var_names = self.shape_info[0]
+208:        var_types = ["float64"] * len(var_names)
+212:            var_names, var_types, var_shapes, dim_sizes, dims
+275:    var_names: Iterable[str] | None = None,
+301:        var_names=var_names,
+415:    var_names: Iterable[str] | None = None,
+446:        var_names=var_names,
+523:def compile_pymc_model(
+534:    var_names: Iterable[str] | None = None,
+559:    var_names : list[str] | None
+612:            var_names=var_names,
+620:            var_names=var_names,
+675:    var_names: Iterable[str] | None = None,
+703:    var_names:
+821:    if var_names is not None:
+822:        names = set(var_names)
+
+exec
+/bin/zsh -lc "sed -n '550,570p' .venv/lib/python3.14/site-packages/nutpie/compile_pymc.py; sed -n '804,840p' .venv/lib/python3.14/site-packages/nutpie/compile_pymc.py" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+        The set (or list or tuple) of random variables for which a U(-1, +1)
+        jitter should be added to the initial value. Only available for
+        variables that have a transform or real-valued support.
+    default_initialization_strategy : str
+        Which of { "support_point", "prior" } to prefer if the initval setting
+        for an RV is None.
+    initial_points : dict
+        Initial value (strategies) to use instead of what's specified in
+        `Model.initial_values`.
+    var_names : list[str] | None
+        A list of variables to store in the trace. If None, store all variables.
+    freeze_model : bool | None
+        Freeze all dimensions and shared variables to treat them as compile time
+        constants.
+
+    Returns
+    -------
+    compiled_model : CompiledPyMCModel
+        A compiled model object.
+
+    """
+            logp_fn_pt = compile_pymc((joined,), (logp, grad), mode=mode)
+    else:
+        (logp,) = clone_replace([logp], replacements)
+        with model:
+            logp_fn_pt = compile_pymc((joined,), (logp,), mode=mode)
+
+    reparameterized_names = [
+        model.rvs_to_values[var].name
+        for var in model.free_RVs
+        if model.rvs_to_transforms.get(var) is not None
+    ]
+
+    # Make function that computes remaining variables for the trace
+    remaining_rvs = [
+        var for var in model.unobserved_value_vars if var.name not in joined_names
+    ]
+
+    if var_names is not None:
+        names = set(var_names)
+        remaining_rvs = [var for var in remaining_rvs if var.name in names]
+
+    all_names = joined_names.copy()
+    all_slices = joined_slices.copy()
+    all_shapes = joined_shapes.copy()
+    count = num_free_vars
+    identity_free = list(variables)
+
+    for var in remaining_rvs:
+        all_names.append(var.name)
+        shape = cast(tuple[int, ...], shapes[var.name])
+        all_shapes.append(shape)
+        length = prod(shape)
+        all_slices.append(slice(count, count + length))
+        count += length
+
+    num_expanded = count
+
+
+codex
+I’ve added separate compilation and sampling timers. For the grid estimate, I’ll measure the three computational variants—joint, measurement-only upstream, and conditional downstream—with and without register controls, for both response designs. A cut cell costs one upstream fit plus eight downstream fits.
+exec
+/bin/zsh -lc 'git diff -- scripts/d1c/d1c.py' in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+diff --git a/scripts/d1c/d1c.py b/scripts/d1c/d1c.py
+index 7353220..200638b 100644
+--- a/scripts/d1c/d1c.py
++++ b/scripts/d1c/d1c.py
+@@ -7,6 +7,14 @@ import sys
+ from pathlib import Path
+ 
+ ROOT = Path(__file__).resolve().parents[2]
++# Keep compiler scratch and caches inside the authorized output tree.
++SCRATCH = ROOT / "logs" / "d1c-cache"
++SCRATCH.mkdir(parents=True, exist_ok=True)
++os.environ["TMPDIR"] = str(SCRATCH)
++flags = [flag for flag in os.environ.get("PYTENSOR_FLAGS", "").split(",")
++         if flag and not flag.startswith(("base_compiledir=", "compiledir="))]
++flags.append(f"base_compiledir={SCRATCH / 'pytensor'}")
++os.environ["PYTENSOR_FLAGS"] = ",".join(flags)
+ if sys.platform == "darwin":
+     os.environ.setdefault(
+         "PYTENSOR_FLAGS", f"cxx={ROOT / 'scripts/d1/bin/clang++'}"
+@@ -240,7 +248,7 @@ def build(G, budget, register, prior, mode):
+         item = pm.HalfNormal("item_sd", .5)*pm.Normal("item_raw", 0, 1, shape=I)
+         content = (pm.HalfNormal("content_sd", .5)
+                    * pm.Normal("content_raw", 0, 1, shape=(G, I)))
+-        base = pm.Deterministic("base", pt.repeat(content + item, P, axis=0))
++        base = pt.repeat(content + item, P, axis=0)
+         eta = base + bz[:, None]*z + bm[:, None]*m + bf*ell + bv*v + bs*s + h @ bh
+         logits = pt.concatenate([eta, pt.full((G*P, 1), OUTSIDE)], axis=1)
+         pm.Multinomial("production_obs", n=budget, p=pm.math.softmax(logits, axis=1),
+@@ -255,14 +263,21 @@ def sample(job, mode, data, sampling_seed):
+     G, budget = DESIGNS[job["design"]]
+     register = bool(job["reliability"])
+     key = (G, budget, register, job["prior"], mode)
++    compile_started = time.perf_counter()
+     if key not in COMPILED:
++        print(f"compile {key}", flush=True)
+         model = build(G, budget, register, job["prior"], mode)
+         free_names = [rv.name for rv in model.free_RVs]
+         COMPILED[key] = (nutpie.compile_pymc_model(model, freeze_model=False), free_names)
+     compiled, free_names = COMPILED[key]
++    compile_seconds = time.perf_counter() - compile_started
++    sample_started = time.perf_counter()
++    print(f"sample {key}; compile {compile_seconds:.1f}s", flush=True)
+     tr = nutpie.sample(compiled.with_data(**data), draws=DRAWS, tune=TUNE,
+-                       chains=CHAINS, cores=1, seed=sampling_seed,
++                       chains=CHAINS, cores=1, seed=sampling_seed, save_warmup=False,
+                        target_accept=.95, progress_bar=False)
++    sampling_seconds = time.perf_counter() - sample_started
++    print(f"sample done {key}: {sampling_seconds:.1f}s", flush=True)
+     rh = az.rhat(tr, var_names=free_names)
+     bulk = az.ess(tr, var_names=free_names, method="bulk")
+     tail = az.ess(tr, var_names=free_names, method="tail")
+@@ -273,7 +288,8 @@ def sample(job, mode, data, sampling_seed):
+                  for x in (rh, bulk, tail) for n in free_names)
+     good = finite and rhat <= 1.01 and ess >= 100 and divergences == 0
+     return tr, dict(good=good, rhat=rhat, ess=ess, divergences=divergences,
+-                    seed=sampling_seed, mode=mode)
++                    seed=sampling_seed, mode=mode, compile_seconds=compile_seconds,
++                    sampling_seconds=sampling_seconds)
+ 
+ 
+ def flattened(tr, name):
+@@ -294,7 +310,7 @@ def upstream_data(observed, r):
+ 
+ def posterior_contrasts(tr, observed, fixed, rng):
+     """Balanced subsampling across chains; preserve posterior dependence."""
+-    names = ("bz", "bm", "bf", "bv", "bs", "base", "ell", "g0", "gz", "gv",
++    names = ("bz", "bm", "bf", "bv", "bs", "item_sd", "item_raw", "content_sd", "content_raw", "ell", "g0", "gz", "gv",
+              "gs", "f0", "lz", "ls", "lv", "lm", "sig_f", "b_z")
+     available = {name: flattened(tr, name) for name in names}
+     for name in ("bh", "gh", "lh", "z", "v", "s", "h"):
+@@ -308,6 +324,8 @@ def posterior_contrasts(tr, observed, fixed, rng):
+     rows = []
+     for pick in picks:
+         t = {name: values[pick] for name, values in available.items()}
++        t["base"] = np.repeat(t["content_sd"]*t["content_raw"]
++                              + t["item_sd"]*t["item_raw"], P, axis=0)
+         t.update(m=observed["m"])
+         if fixed is not None:
+             t.update({name.removesuffix("_fixed"): value for name, value in fixed.items()})
+
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text();s=s.replace('    return tr, dict(good=good,','    worst_rhat = max(free_names, key=lambda n: float(np.max(rh[n])))\\n    worst_ess = min(free_names, key=lambda n: min(float(np.min(x[n])) for x in (bulk, tail)))\\n    return tr, dict(worst_rhat=worst_rhat, worst_ess=worst_ess, good=good,');p.write_text(s)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 238ms:
+exec
+/bin/zsh -lc "rg -n 'progress_callback|finished|num_steps' .venv/lib/python3.14/site-packages/nutpie/sample.py | head -25" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+314:        <span id="active-chains">{{ finished_chains }}</span>
+325:        value="{{ total_finished_draws }}">
+343:                            value="{{ chain.finished_draws }}">
+346:                    <td>{{ chain.finished_draws }}</td>
+349:                    <td>{{ chain.latest_num_steps }}</td>
+487:    _chains_finished: int
+501:        progress_callback=None,
+591:            progress_callback,
+597:        """Wait until sampling is finished and return the trace.
+602:        not finished at this point.
+704:    def is_finished(self):
+705:        return self._sampler.is_finished()
+741:    progress_callback: Any | None = None,
+765:    progress_callback: Any | None = None,
+790:    progress_callback: Any | None = None,
+814:    progress_callback: Any | None = None,
+838:    progress_callback: Any | None = None,
+942:    progress_callback: callable(list[ChainProgress]) | None, default=None
+947:        - ``finished_draws`` – number of draws completed so far
+952:        - ``latest_num_steps`` – leapfrog steps in the last trajectory
+953:        - ``total_num_steps`` – cumulative leapfrog steps
+1081:        progress_callback=progress_callback,
+
+exec
+/bin/zsh -lc "sed -n '938,960p' .venv/lib/python3.14/site-packages/nutpie/sample.py" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+        This is only exposed for experimentation. Common HTML
+        for the progress bar (eg CSS).
+    progress_rate: int, default=500
+        Rate in ms at which the progress should be updated.
+    progress_callback: callable(list[ChainProgress]) | None, default=None
+        An optional callback function that is called periodically with the
+        current progress of all chains. It receives a list of
+        ``nutpie.ChainProgress`` objects, one per chain, each exposing:
+
+        - ``finished_draws`` – number of draws completed so far
+        - ``total_draws`` – total draws to produce (tune + draws)
+        - ``divergences`` – number of divergent transitions so far
+        - ``tuning`` – whether the chain is still in the warmup phase
+        - ``started`` – whether the chain has started
+        - ``latest_num_steps`` – leapfrog steps in the last trajectory
+        - ``total_num_steps`` – cumulative leapfrog steps
+        - ``step_size`` – current step size
+        - ``runtime_ms`` – wall-clock time spent sampling (milliseconds)
+        - ``divergent_draws`` – list of draw indices that diverged
+
+        The callback fires at the same rate as the progress bar
+        (``progress_rate`` ms). It runs on a background thread, so it must
+        be thread-safe. Exceptions raised inside it are printed to stderr
+
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text();s=s.replace('    tr = nutpie.sample(compiled.with_data(**data)', '''    last_progress = [time.perf_counter()]
+
+    def progress(chains):
+        now = time.perf_counter()
+        if now - last_progress[0] >= 45:
+            counts = [c.finished_draws for c in chains]
+            print(f\"sampling {key}: draws {counts}\", flush=True)
+            last_progress[0] = now
+
+    tr = nutpie.sample(compiled.with_data(**data)''');s=s.replace('target_accept=.95, progress_bar=False)', 'target_accept=.95, progress_bar=False, progress_callback=progress)');p.write_text(s)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+codex
+Compilation is still running, so I don’t yet have convergence results. The timing output will separate compilation from sampling, allowing the grid estimate to account for graph reuse within each worker.
+exec
+/bin/zsh -lc 'ls -lt logs/d1c-cache/pytensor/compiledir*/lazylinker_ext/lazylinker_ext.so' in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+-rwxr-xr-x@ 1 brettreynolds  staff  72848 Oct  9 20:57 logs/d1c-cache/pytensor/compiledir_macOS-26.6.2-arm64-arm-64bit-Mach-O-arm-3.14.8-64/lazylinker_ext/lazylinker_ext.so
+
+exec
+/bin/zsh -lc "cat > scripts/d1c/time_variants.py <<'PY'
+#"'!/usr/bin/env python3
+"""Time each D1c computational graph at the registered sampler sizes.
+
+Representative baseline data, prior SD 1, register reliability .8 (when used).
+A downstream benchmark conditions on one upstream posterior draw; the full
+cut still uses eight separately normalized downstream fits in d1c.py.
+"""
+import json
+import time
+from datetime import datetime, timezone
+from importlib.metadata import version
+
+import numpy as np
+import pandas as pd
+
+import d1c
+
+
+def main():
+    stamp = datetime.now(timezone.utc).strftime('"'%Y%m%dT%H%M%S%fZ')
+    output = d1c.ROOT / 'results/d1c' / f'timings-{stamp}.csv'
+    log = d1c.ROOT / 'logs' / f'd1c-timings-{stamp}.json'
+    records = []
+    for design in d1c.DESIGNS:
+        for reliability in (0., .8):
+            job = next(c for c in d1c.cells() if c['design'] == design
+                       and c['scenario'] == 'baseline' and c['target'] == 0.
+                       and c['feedback'] == 'joint' and c['reliability'] == reliability
+                       and c['prior'] == 1.)
+            job['rep'] = 0
+            observed, truths, data_seed = d1c.generate(job)
+            upstream = d1c.upstream_data(observed, reliability)
+            downstream = d1c.downstream_data(observed)
+            fixed = None
+            for mode in ('upstream', 'downstream', 'joint'):
+                started = time.perf_counter()
+                try:
+                    data = (upstream if mode == 'upstream' else
+                            dict(downstream, **fixed) if mode == 'downstream' else
+                            dict(upstream, **downstream))
+                    trace, diagnostic = d1c.sample(
+                        job, mode, data, d1c.seed(5, job['cell'],
+                                                ('upstream', 'downstream', 'joint').index(mode)))
+                    contrast_seconds = 0.
+                    if mode == 'upstream':
+                        fixed = {f'{k}_fixed': d1c.flattened(trace, k)[0]
+                                 for k in ('z', 'v', 's')}
+                        if reliability:
+                            fixed['h_fixed'] = d1c.flattened(trace, 'h')[0]
+                    else:
+                        contrast_started = time.perf_counter()
+                        values, good, crhat = d1c.posterior_contrasts(
+                            trace, observed, fixed if mode == 'downstream' else None,
+                            np.random.default_rng(d1c.seed(6, job['cell'])))
+                        contrast_seconds = time.perf_counter() - contrast_started
+                        diagnostic.update(contrast_good=good, contrast_rhat=crhat)
+                    record = dict(design=design, reliability=reliability, prior=1.,
+                                  mode=mode, data_seed=data_seed, **diagnostic,
+                                  contrast_seconds=contrast_seconds,
+                                  total_seconds=time.perf_counter()-started)
+                    del trace
+                except Exception as exc:
+                    record = dict(design=design, reliability=reliability,
+                                  prior=1., mode=mode, error=repr(exc),
+                                  total_seconds=time.perf_counter()-started)
+                records.append(record)
+                pd.DataFrame(records).to_csv(output, index=False)
+                log.write_text(json.dumps(dict(
+                    timestamp=stamp, records=records,
+                    sampler=dict(draws=d1c.DRAWS, tune=d1c.TUNE, chains=d1c.CHAINS,
+                                 cores=1, cut_draws=d1c.CUT_DRAWS),
+                    packages={p: version(p) for p in
+                              ('pymc', 'nutpie', 'pytensor', 'numpy', 'arviz')},
+                    root_seed=d1c.SEED, pytensor_flags=d1c.os.environ['PYTENSOR_FLAGS'],
+                    note='Wall time under concurrent CPU load; prior 1 and measured reliability .8.'
+                ), indent=2))
+                print(record, flush=True)
+    frame = pd.DataFrame(records)
+    if 'sampling_seconds' not in frame or len(frame.dropna(subset=['sampling_seconds'])) "'!= 12:
+        raise RuntimeError('"'Incomplete benchmark; inspect timing CSV and JSON')
+    # 5 scenarios x 2 targets x 2 priors x 40 replicates for each
+    # design-feedback-reliability stratum. Reliability .5 uses the measured
+    # graph timing at .8; prior 2.5 uses timing at prior 1.
+    seconds = 0.
+    for design in d1c.DESIGNS:
+        for reliability in (0., .5, .8):
+            subset = frame[(frame.design == design) &
+                           (frame.reliability == (0. if reliability == 0. else .8))]
+            costs = {row['mode']: row['total_seconds']-row['compile_seconds']
+                     for row in subset.to_dict('records')}
+            seconds += 5*2*2*40*(costs['joint']+costs['upstream']+8*costs['downstream'])
+    # Each worker builds each shape/register/prior/mode once. Prior 2.5
+    # assumed to have the same compilation cost as prior 1.
+    compile_seconds = 3*2*float(frame.compile_seconds.sum())
+    estimate = dict(grid_cells=len(list(d1c.cells())), replicates_per_cell=40,
+                    workers=3, serial_fit_seconds=seconds,
+                    compilation_cpu_seconds=compile_seconds,
+                    estimated_wall_hours=(seconds+compile_seconds)/3/3600,
+                    assumptions='Warm graph reuse, three effective worker cores; .5 approximated by .8, prior 2.5 by 1; baseline timing across scenarios.')
+    path = d1c.ROOT / 'results/d1c' / f'grid-time-{stamp}.json'
+    path.write_text(json.dumps(estimate, indent=2))
+    print(estimate, flush=True)
+
+
+if __name__ == '__main__':
+    main()
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+codex
+The baseline joint model compiled in 109 seconds and is now sampling. I’ve added a benchmark runner that will use the full registered sampler sizes and report its extrapolation assumptions: baseline timings, prior SD 1, and reliability .8 for measured-register fits.
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text();s=s.replace('''os.environ[\"PYTENSOR_FLAGS\"] = \",\".join(flags)
+if sys.platform == \"darwin\":
+    os.environ.setdefault(
+        \"PYTENSOR_FLAGS\", f\"cxx={ROOT / 'scripts/d1/bin/clang++'}\"
+    )''','''if sys.platform == \"darwin\" and not any(flag.startswith(\"cxx=\") for flag in flags):
+    flags.append(f\"cxx={ROOT / 'scripts/d1/bin/clang++'}\")
+os.environ[\"PYTENSOR_FLAGS\"] = \",\".join(flags)''');p.write_text(s)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+codex
+The first baseline fit is still sampling. I’m keeping the pilot and benchmarks sequential to limit extra CPU contention. No sampler exception has appeared so far.
+codex
+The first fit has been sampling for about three minutes. Once it finishes, I’ll check the estimates against the generated truths and inspect diagnostics across the full latent-variable model.
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/time_variants.py');s=p.read_text().replace(\"                                  mode=mode, data_seed=data_seed, **diagnostic,\", \"                                  data_seed=data_seed, **diagnostic,\");p.write_text(s)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+codex
+Sampling is continuing without an error, but this model appears costly. Each likelihood evaluation includes 400 competing words for every participant–group pair, plus the outside option. The runtime estimate will reflect that cost.
+codex
+I haven’t changed the sampler settings or diagnostic thresholds. The first fit still needs to finish before I can judge convergence. Its elapsed time may imply a substantial grid runtime.
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/time_variants.py');s=p.read_text().replace('import numpy as np\\nimport pandas as pd\\n\\nimport d1c','import d1c\\n\\nimport numpy as np\\nimport pandas as pd');p.write_text(s)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 36ms:
+codex
+The first fit is still running. Later fits will report chain progress every 45 seconds, so their tuning and sampling stages will be visible. All compilation and sampler scratch files are now under `logs/d1c-cache/`.
+exec
+/bin/zsh -lc "rg -n 'InferenceData|DataTree|from_dict|_extract' .venv/lib/python3.14/site-packages/nutpie/sample.py | head -25" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+125:        idata = arviz.from_dict(
+136:        idata = arviz.from_dict(
+160:            idata = idata.assign(**{k: xr.DataTree(v) for k, v in groups.items()})
+608:        return self._extract(results)
+610:    def _extract(self, results):
+693:        return self._extract(results)
+711:        return self._extract(results)
+747:) -> xr.DataTree: ...
+772:) -> xr.DataTree: ...
+820:) -> xr.DataTree: ...
+845:) -> xr.DataTree | _BackgroundSampler:
+975:    trace : xr.DataTree:
+976:        An Xarray ``DataTree`` object that contains the samples.
+
+codex
+The first fit has sampled for roughly eight minutes and is still running. I’ll let it finish rather than shorten the requested sampler settings. The benchmark runner is ready to start once the pilot is validated.
+codex
+There’s still no completed fit or sampler exception. I also found that contrast R-hat is currently calculated from just 25 randomly reordered draws per chain. I’ll correct that to use ordered draws, so the convergence check retains chain structure.
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text();s=s.replace('    competitors = denominator[:, None] - np.exp(eta)\\n','''    competitors = denominator[:, None] - np.exp(eta)
+    log_competitors = np.log(competitors)
+    offset = t[\"base\"] + t[\"bv\"]*t[\"v\"] + t[\"bs\"]*t[\"s\"] + t[\"h\"] @ t[\"bh\"]
+''');s=s.replace('''            for node, weight in zip(NODES, WEIGHTS):
+                focal = utilities(t, z, marking, mean + node * t[\"sig_f\"])
+                # Stable logistic focal/(focal + competitors).
+                probability += weight * mass * expit(focal - np.log(competitors))''','''            focal = (offset + t[\"bz\"][:, None]*z + t[\"bm\"][:, None]*marking
+                     + t[\"bf\"]*mean - log_competitors)
+            for node, weight in zip(NODES, WEIGHTS):
+                # Exact same quadrature; reuse its node-independent utility.
+                probability += weight * mass * expit(focal + t[\"bf\"]*node*t[\"sig_f\"])''');s=s.replace('np.log(competitors))','log_competitors)')
+s=s.replace('    for pick in picks:\\n', '    for pick in range(CHAINS*per_chain):\\n');s=s.replace('.reshape(CHAINS, -1)', '.reshape(CHAINS, per_chain)');s=s.replace('    # ESS at this small retained size is reported, not thresholded at 100.\\n','');s=s.replace('    return rows, finite and contrast_rhat <= 1.05, contrast_rhat','''    bulk, tail = az.ess(diagnostic, method=\"bulk\"), az.ess(diagnostic, method=\"tail\")
+    contrast_ess = min(float(np.min(x[name])) for x in (bulk, tail) for name in rows[0])
+    finite = finite and all(np.isfinite(np.asarray(x[name])).all()
+                            for x in (bulk, tail) for name in rows[0])
+    print(f\"contrasts: R-hat {contrast_rhat:.4f}, ESS {contrast_ess:.1f}\", flush=True)
+    return [rows[pick] for pick in picks], finite and contrast_rhat <= 1.01 and contrast_ess >= 100, contrast_rhat''');p.write_text(s)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 504ms:
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text().replace('contrast_ess >= 100, contrast_rhat','contrast_ess >= 100, contrast_rhat, contrast_ess');s=s.replace('values, good, crhat = posterior_contrasts','values, good, crhat, cess = posterior_contrasts');s=s.replace('diag.update(contrast_good=good, contrast_rhat=crhat)','diag.update(contrast_good=good, contrast_rhat=crhat, contrast_ess=cess)');s=s.replace('cut_draws=CUT_DRAWS, contrast_draws=POST_DRAWS)','cut_draws=CUT_DRAWS, contrast_draws=POST_DRAWS,\\n                            contrast_diagnostic_draws=CHAINS*DRAWS)');p.write_text(s)
+p=Path('scripts/d1c/time_variants.py');s=p.read_text().replace('values, good, crhat = d1c.posterior_contrasts','values, good, crhat, cess = d1c.posterior_contrasts').replace('diagnostic.update(contrast_good=good, contrast_rhat=crhat)','diagnostic.update(contrast_good=good, contrast_rhat=crhat, contrast_ess=cess)');p.write_text(s)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 24ms:
+codex
+I’ve corrected contrast diagnostics to use every retained draw in chain order, with the same R-hat ≤ 1.01 and ESS ≥ 100 requirements as the sampled parameters. The current process is still running the earlier code, so a fresh pilot will be needed to validate this correction.
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text();s=s.replace('''        ell = pm.Deterministic(
+            \"ell\", f0 + lz*z + ls*s + lv*v + lm*m + h @ lh
+            + sig_f*pm.Normal(\"ell_raw\", 0, 1, shape=I)
+        )''','''        # Corpus counts directly inform ell: center this latent normal rather
+        # than coupling its 400 residuals to every usage-regression coefficient.
+        ell = pm.Normal(\"ell\", f0 + lz*z + ls*s + lv*v + lm*m + h @ lh,
+                        sig_f, shape=I)''');s=s.replace('''        pm.Multinomial(\"production_obs\", n=budget, p=pm.math.softmax(logits, axis=1),
+                       observed=pm.Data(\"y\", np.zeros((G*P, I+1), dtype=\"int64\")))''','''        y = pm.Data(\"y\", np.zeros((G*P, I+1), dtype=\"int64\"))
+        # Exact multinomial log likelihood, omitting only the data-constant
+        # factorial term. Work directly on logits, avoiding log(softmax()).
+        pm.Potential(\"production_logp\", pt.sum(y[:, :-1]*eta)
+                     + OUTSIDE*pt.sum(y[:, -1])
+                     - budget*pt.sum(pm.math.logsumexp(logits, axis=1)))''');p.write_text(s)
+PY
+.venv/bin/python scripts/d1c/d1c.py pilot" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+codex
+I stopped the earlier run to apply the diagnostic correction and address its long runtime. I’ve centered the count-informed latent usage variable and written the multinomial likelihood directly on logits. Both preserve the probability model; the restarted pilot will test whether they improve sampling.
+ exited 130 in 829095ms:
+compile (40, 1, False, 1.0, 'joint')
+sample (40, 1, False, 1.0, 'joint'); compile 108.8s
+/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/lib/python3.14/site-packages/arviz_base/base.py:131: UserWarning: Found chain dimension to be longer than draw dimension, check dimensions are correctly named.
+  warnings.warn(
+sample done (40, 1, False, 1.0, 'joint'): 684.0s
+sample (40, 1, False, 1.0, 'joint'); compile 0.0s
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/d1c.py", line 479, in main
+    args = parser.parse_args()
+                      ~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/concurrent/futures/_base.py", line 237, in as_completed
+    waiter.event.wait(wait_timeout)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 670, in wait
+    signaled = self._cond.wait(timeout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 369, in wait
+    waiter.acquire()
+    ~~~~~~~~~~~~~~^^
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/d1c.py", line 528, in <module>
+    return subprocess.run(["git", *arguments], cwd=ROOT, capture_output=True,
+    ^^
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/d1c.py", line 477, in main
+    run.add_argument("--reps", type=int, required=True)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/concurrent/futures/_base.py", line 673, in __exit__
+    self.shutdown(wait=True)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/concurrent/futures/process.py", line 965, in shutdown
+    self._executor_manager_thread.join()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 1133, in join
+    self._os_thread_handle.join(timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyboardInterrupt
+/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/lib/python3.14/site-packages/arviz_base/base.py:131: UserWarning: Found chain dimension to be longer than draw dimension, check dimensions are correctly named.
+  warnings.warn(
+sample done (40, 1, False, 1.0, 'joint'): 17.5s
+
+exec
+/bin/zsh -lc ".venv/bin/python - <<'PY'
+import ast, json, subprocess
+from pathlib import Path
+import sys
+sys.path.insert(0, 'scripts/d1c')
+import d1c
+import numpy as np
+from scipy.special import gammaln, logsumexp
+from scipy.stats import multinomial
+old = subprocess.run(['git', 'show', 'HEAD:scripts/d1c/d1c.py'], capture_output=True, text=True, check=True).stdout
+nodes = [n for n in ast.parse(old).body if isinstance(n, ast.FunctionDef) and n.name in ('utilities', 'contrasts')]
+namespace = dict(d1c.__dict__)
+exec(compile(ast.Module(body=nodes, type_ignores=[]), '<original-contrasts>', 'exec'), namespace)
+rng = np.random.default_rng(102)
+I, rows = 17, 13
+z, v, s, ell = rng.normal(size=(4,I))
+t = dict(z=z, v=v, s=s, ell=ell, h=rng.normal(size=(I,3)), m=rng.binomial(1,.2,I), base=rng.normal(size=(rows,I)), bz=rng.normal(size=rows), bm=rng.normal(size=rows), bf=.3, bv=-.5, bs=.1, bh=np.full(3,.25), g0=-2., gz=-.45, gv=-1., gs=-.3, gh=np.full(3,.4), f0=-4., lz=.4, ls=.3, lv=.3, lm=-.3, lh=np.full(3,-.25), sig_f=.7)
+differences = {str(delta): {k: abs(d1c.contrasts(t,delta)[k]-namespace['contrasts'](t,delta)[k]) for k in ('h2','h1_fixed_usage','marking')} for delta in (1.,.5)}
+likelihood_errors = {}
+logits = rng.normal(size=(20,401)); logits[:,-1] = d1c.OUTSIDE
+p = np.exp(logits-logsumexp(logits,axis=1,keepdims=True))
+for budget in (1,6):
+    y = np.array([rng.multinomial(budget,row) for row in p])
+    direct = np.sum(y*logits) - budget*np.sum(logsumexp(logits,axis=1))
+    constant = np.sum(gammaln(budget+1)-gammaln(y+1).sum(axis=1))
+    likelihood_errors[str(budget)] = abs(direct+constant - multinomial.logpmf(y,budget,p).sum())
+assert max(v for values in differences.values() for v in values.values()) < 1e-12
+assert max(likelihood_errors.values()) < 1e-10
+record = dict(contrast_absolute_differences=differences, multinomial_absolute_differences=likelihood_errors, note='Numerical equivalence checks, not research data.')
+Path('logs/d1c-equivalence-20261009.json').write_text(json.dumps(record,indent=2))
+print(record)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 4826ms:
+{'contrast_absolute_differences': {'1.0': {'h2': np.float64(1.1102230246251565e-16), 'h1_fixed_usage': np.float64(0.0), 'marking': np.float64(0.0)}, '0.5': {'h2': np.float64(0.0), 'h1_fixed_usage': np.float64(0.0), 'marking': np.float64(0.0)}}, 'multinomial_absolute_differences': {'1': np.float64(0.0), '6': np.float64(0.0)}, 'note': 'Numerical equivalence checks, not research data.'}
+
+codex
+The equivalence checks passed: the logits likelihood matched the multinomial log probability to numerical precision, and the optimized quadrature matched the original contrasts within 1.2×10⁻¹⁶. The revised model compiled in 86 seconds and is now sampling.
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text().replace('print(f\"sampling {key}: draws {counts}\", flush=True)','print(f\"sampling {key}: draws {counts}; \"\\n                  f\"steps {[c.latest_num_steps for c in chains]}\", flush=True)');s=s.replace('    sampling_seconds = time.perf_counter() - sample_started','''    if tr.posterior.sizes.get(\"chain\") "'!= CHAINS or tr.posterior.sizes.get("draw") != DRAWS:
+        raise RuntimeError("Sampler returned an incomplete trace (possibly interrupted)")
+    sampling_seconds = time.perf_counter() - sample_started'"''');p.write_text(s)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 16ms:
+codex
+The revised fit is progressing very slowly through early warmup—19 iterations so far. I’m checking initialization and adaptation to see whether that startup cost will settle as the sampler learns parameter scales. The registered model and sampling targets remain in place.
+exec
+/bin/zsh -lc "rg -n 'initial_point|initial_mean|initialization|init_mean|with_data' .venv/lib/python3.14/site-packages/nutpie/compile_pymc.py | head -50; sed -n '1010,1045p' .venv/lib/python3.14/site-packages/nutpie/sample.py" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+53:        pymc.initial_point.make_initial_point_fn
+108:    initial_point_func: Callable[[SeedType], np.ndarray]
+140:    def with_data(self, **updates):
+171:        init_mean,
+178:        model = self._make_model(init_mean)
+189:    def _make_model(self, init_mean):
+231:            self.initial_point_func,
+274:    pymc_initial_point_fn: Callable[[SeedType], dict[str, np.ndarray]],
+292:        initial_point_fn,
+300:        pymc_initial_point_fn=pymc_initial_point_fn,
+358:        initial_point_func=initial_point_fn,
+414:    pymc_initial_point_fn: Callable[[SeedType], dict[str, np.ndarray]],
+437:        initial_point_fn,
+445:        pymc_initial_point_fn=pymc_initial_point_fn,
+511:        make_initial_point_fn=initial_point_fn,
+528:    initial_points: dict[Union["Variable", str], np.ndarray | float | int]
+531:    default_initialization_strategy: Literal[
+553:    default_initialization_strategy : str
+556:    initial_points : dict
+584:    from pymc.initial_point import make_initial_point_fn
+593:    if default_initialization_strategy == "support_point" and jitter_rvs is None:
+596:    initial_point_fn = make_initial_point_fn(
+598:        overrides=initial_points,
+599:        default_strategy=default_initialization_strategy,
+604:    initial_point_fn = _wrap_with_lock(initial_point_fn)
+611:            pymc_initial_point_fn=initial_point_fn,
+619:            pymc_initial_point_fn=initial_point_fn,
+640:    from pymc.initial_point import make_initial_point_fn
+643:    point = make_initial_point_fn(model=model, return_transformed=True)(0)
+674:    pymc_initial_point_fn: Callable[[SeedType], dict[str, np.ndarray]],
+700:    pymc_initial_point_fn: Callable
+702:        pymc.initial_point.make_initial_point_fn
+719:    initial_point_fn: Callable
+778:    initial_point_fn = _rv_dict_to_flat_array_wrapper(
+779:        pymc_initial_point_fn, names=joined_names, shapes=joined_shapes
+868:        initial_point_fn,
+            "`use_grad_based_mass_matrix=False`.",
+            FutureWarning,
+            stacklevel=2,
+        )
+
+    if sampler == "nuts":
+        if adaptation == "low_rank":
+            settings = _lib.PyNutsSettings.LowRank(seed)
+        elif adaptation == "flow":
+            settings = _lib.PyNutsSettings.Flow(seed)
+        elif adaptation in ("diag", "draw_diag"):
+            settings = _lib.PyNutsSettings.Diag(seed)
+            if adaptation == "draw_diag" or _use_grad_based is False:
+                settings.use_grad_based_mass_matrix = False
+        else:
+            raise ValueError(
+                f"Unknown adaptation strategy '{adaptation}'. "
+                f"Expected one of: 'diag', 'draw_diag', 'low_rank', 'flow'."
+            )
+    elif sampler == "mclmc":
+        if adaptation == "low_rank":
+            settings = _lib.PyMclmcSettings.LowRank(seed)
+        elif adaptation == "flow":
+            settings = _lib.PyMclmcSettings.Flow(seed)
+        elif adaptation in ("diag", "draw_diag"):
+            settings = _lib.PyMclmcSettings.Diag(seed)
+            if adaptation == "draw_diag" or _use_grad_based is False:
+                settings.use_grad_based_mass_matrix = False
+        else:
+            raise ValueError(
+                f"Unknown adaptation strategy '{adaptation}'. "
+                f"Expected one of: 'diag', 'draw_diag', 'low_rank', 'flow'."
+            )
+    else:
+        raise ValueError(
+            f"Unknown sampler '{sampler}'. Expected one of: 'nuts', 'mclmc'."
+
+codex
+Warmup has accelerated: the first chain moved from 32 to 102 iterations in the latest 45-second interval. The slow start appears to be easing as adaptation proceeds. I’ll use the completed wall time for the estimate.
+exec
+/bin/zsh -lc "rg -n 'def rhat|DataTree|return' .venv/lib/python3.14/site-packages/arviz_stats/sampling_diagnostics.py | head -35" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+31:    data : array-like, DataArray, Dataset, DataTree, DataArrayGroupBy, DatasetGroupBy, or idata-like
+74:    ndarray, DataArray, Dataset, DataTree
+109:        return get_array_function("ess")(
+121:        return data.map(
+134:        return data.azstats.ess(
+138:    if isinstance(data, xr.DataTree):
+144:        return data.azstats.ess(
+154:    return data.azstats.ess(sample_dims=sample_dims, method=method, relative=relative, prob=prob)
+157:def rhat(
+178:    data : array-like, DataArray, Dataset, DataTree, DataArrayGroupBy, DatasetGroupBy, or idata-like
+207:    ndarray, DataArray, Dataset, DataTree
+265:        return get_array_function("rhat")(
+275:        return data.map(
+286:        return data.azstats.rhat(sample_dims=sample_dims, method=method)
+288:    if isinstance(data, xr.DataTree):
+294:        return data.azstats.rhat(sample_dims=sample_dims, group=group, method=method)
+302:    return data.azstats.rhat(sample_dims=sample_dims, method=method)
+305:def rhat_nested(
+329:    data : array-like, DataArray, Dataset, DataTree, DataArrayGroupBy, DatasetGroupBy, or idata-like
+388:        return get_array_function("rhat_nested")(
+399:        return data.map(
+411:        return data.azstats.rhat_nested(
+415:    if isinstance(data, xr.DataTree):
+421:        return data.azstats.rhat_nested(
+431:    return data.azstats.rhat_nested(
+453:    data : array-like, DataArray, Dataset, DataTree, DataArrayGroupBy, DatasetGroupBy, or idata-like
+489:    ndarray, DataArray, Dataset, DataTree
+518:        return get_array_function("mcse")(
+530:        return data.map(
+543:        return data.azstats.mcse(
+547:    if isinstance(data, xr.DataTree):
+553:        return data.azstats.mcse(
+563:    return data.azstats.mcse(sample_dims=sample_dims, method=method, prob=prob, circular=circular)
+586:    data : array-like, DataArray, Dataset, DataTree, DataArrayGroupBy, DatasetGroupBy, or idata-like
+609:    ndarray, DataArray, Dataset, DataTree
+
+codex
+I found an API incompatibility that would fail after sampling: this ArviZ version returns `DataTree` objects, while the script expects diagnostic datasets. I’ll fix that access and check it on a small trace before restarting. I’ll also checkpoint completed pilot traces so later reporting fixes won’t require another fit.
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text();s=s.replace('    rh = az.rhat(tr, var_names=free_names)','    posterior = posterior_dataset(tr)\\n    rh = az.rhat(posterior, var_names=free_names)');s=s.replace('az.ess(tr, var_names=free_names,','az.ess(posterior, var_names=free_names,');s=s.replace('def flattened(tr, name):','''def posterior_dataset(tr):
+    \"\"\"Accept both current ArviZ DataTrees and older InferenceData objects.\"\"\"
+    posterior = tr.posterior
+    return posterior.to_dataset() if hasattr(posterior, \"to_dataset\") else posterior
+
+
+def flattened(tr, name):''');s=s.replace('    rh = az.rhat(diagnostic)','    diagnostic = posterior_dataset(diagnostic)\\n    rh = az.rhat(diagnostic)');p.write_text(s)
+PY
+.venv/bin/python - <<'PY'
+import sys
+sys.path.insert(0,'scripts/d1c')
+import d1c
+import arviz as az
+import numpy as np
+tr = az.from_dict(posterior={'x': np.random.default_rng(1).normal(size=(4,500,3))}, sample_stats={'diverging': np.zeros((4,500),dtype=bool)})
+ds = d1c.posterior_dataset(tr)
+print(type(tr).__name__, type(ds).__name__, az.rhat(ds)['x'].values, az.ess(ds,method='tail')['x'].values)
+print(d1c.flattened(tr,'x').shape, tr.posterior.sizes['draw'], int(np.asarray(tr.sample_stats['diverging']).sum()))
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ exited 1 in 6236ms:
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+TypeError: from_dict() got an unexpected keyword argument 'posterior'
+
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text(); start=s.index('    compile_started = time.perf_counter()',s.index('def sample('));end=s.index('    posterior = posterior_dataset(tr)',start)
+block=s[start:end]
+# Save complete traces before attempting diagnostics; reload only an identical
+# model, seed and sampler configuration.
+prefix='''    import hashlib
+    import inspect
+    import pickle
+
+    signature = repr((key, I, P, DRAWS, TUNE, CHAINS, .95,
+                      version(\"pymc\"), version(\"nutpie\"))) + inspect.getsource(build)
+    digest = hashlib.sha256(signature.encode()).hexdigest()[:16]
+    checkpoint = (ROOT / \"results\" / \"d1c\" / f\"trace-{digest}-{sampling_seed}.pickle\"
+                  if job.get(\"_checkpoint\") else None)
+    if checkpoint is not None and checkpoint.exists():
+        with checkpoint.open(\"rb\") as stream:
+            saved = pickle.load(stream)
+        tr, free_names = saved[\"trace\"], saved[\"free_names\"]
+        compile_seconds, sampling_seconds = saved[\"compile_seconds\"], saved[\"sampling_seconds\"]
+        print(f\"restored complete trace {checkpoint.name}\", flush=True)
+    else:
+'''
+indented=''.join('    '+line if line.strip() else line for line in block.splitlines(keepends=True))
+suffix='''        if checkpoint is not None:
+            checkpoint.parent.mkdir(parents=True, exist_ok=True)
+            with checkpoint.open(\"wb\") as stream:
+                pickle.dump(dict(trace=tr, free_names=free_names,
+                                 compile_seconds=compile_seconds,
+                                 sampling_seconds=sampling_seconds), stream,
+                            protocol=pickle.HIGHEST_PROTOCOL)
+            print(f\"checkpoint {checkpoint.name}\", flush=True)
+'''
+s=s[:start]+prefix+indented+suffix+s[end:];s=s.replace('    jobs = [dict(c, rep=rep) for c in selected_cells for rep in range(reps)]','''    jobs = [dict(c, rep=rep) for c in selected_cells for rep in range(reps)]
+    if args.command == \"pilot\":
+        for job in jobs:
+            job[\"_checkpoint\"] = True''');p.write_text(s)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 21ms:
+exec
+/bin/zsh -lc "sed -n '113,140p' .venv/lib/python3.14/site-packages/nutpie/sample.py; sed -n '275,365p' scripts/d1c/d1c.py" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 0ms:
+    uc_data_posterior = {
+        name: data_posterior.pop(name)
+        for name in reparameterized_names
+        if name in data_posterior
+    }
+    uc_data_tune = {
+        name: data_tune.pop(name) for name in reparameterized_names if name in data_tune
+    }
+
+    arviz_version = version("arviz")
+    use_datatree = tuple(map(int, arviz_version.split(".")[:2])) >= (1, 0)
+    if use_datatree:
+        idata = arviz.from_dict(
+            {
+                "posterior": data_posterior,
+                "sample_stats": stats_posterior,
+                "warmup_posterior": data_tune,
+                "warmup_sample_stats": stats_tune,
+            },
+            dims=dims,
+            **kwargs,
+        )
+    else:
+        idata = arviz.from_dict(
+            **{
+                "posterior": data_posterior,
+                "sample_stats": stats_posterior,
+                "warmup_posterior": data_tune,
+    signature = repr((key, I, P, DRAWS, TUNE, CHAINS, .95,
+                      version("pymc"), version("nutpie"))) + inspect.getsource(build)
+    digest = hashlib.sha256(signature.encode()).hexdigest()[:16]
+    checkpoint = (ROOT / "results" / "d1c" / f"trace-{digest}-{sampling_seed}.pickle"
+                  if job.get("_checkpoint") else None)
+    if checkpoint is not None and checkpoint.exists():
+        with checkpoint.open("rb") as stream:
+            saved = pickle.load(stream)
+        tr, free_names = saved["trace"], saved["free_names"]
+        compile_seconds, sampling_seconds = saved["compile_seconds"], saved["sampling_seconds"]
+        print(f"restored complete trace {checkpoint.name}", flush=True)
+    else:
+        compile_started = time.perf_counter()
+        if key not in COMPILED:
+            print(f"compile {key}", flush=True)
+            model = build(G, budget, register, job["prior"], mode)
+            free_names = [rv.name for rv in model.free_RVs]
+            COMPILED[key] = (nutpie.compile_pymc_model(model, freeze_model=False), free_names)
+        compiled, free_names = COMPILED[key]
+        compile_seconds = time.perf_counter() - compile_started
+        sample_started = time.perf_counter()
+        print(f"sample {key}; compile {compile_seconds:.1f}s", flush=True)
+        last_progress = [time.perf_counter()]
+
+        def progress(chains):
+            now = time.perf_counter()
+            if now - last_progress[0] >= 45:
+                counts = [c.finished_draws for c in chains]
+                print(f"sampling {key}: draws {counts}; "
+                      f"steps {[c.latest_num_steps for c in chains]}", flush=True)
+                last_progress[0] = now
+
+        tr = nutpie.sample(compiled.with_data(**data), draws=DRAWS, tune=TUNE,
+                           chains=CHAINS, cores=1, seed=sampling_seed, save_warmup=False,
+                           target_accept=.95, progress_bar=False, progress_callback=progress)
+        if tr.posterior.sizes.get("chain") != CHAINS or tr.posterior.sizes.get("draw") != DRAWS:
+            raise RuntimeError("Sampler returned an incomplete trace (possibly interrupted)")
+        sampling_seconds = time.perf_counter() - sample_started
+        print(f"sample done {key}: {sampling_seconds:.1f}s", flush=True)
+        if checkpoint is not None:
+            checkpoint.parent.mkdir(parents=True, exist_ok=True)
+            with checkpoint.open("wb") as stream:
+                pickle.dump(dict(trace=tr, free_names=free_names,
+                                 compile_seconds=compile_seconds,
+                                 sampling_seconds=sampling_seconds), stream,
+                            protocol=pickle.HIGHEST_PROTOCOL)
+            print(f"checkpoint {checkpoint.name}", flush=True)
+    posterior = posterior_dataset(tr)
+    rh = az.rhat(posterior, var_names=free_names)
+    bulk = az.ess(posterior, var_names=free_names, method="bulk")
+    tail = az.ess(posterior, var_names=free_names, method="tail")
+    rhat = max(float(np.max(rh[n])) for n in free_names)
+    ess = min(float(np.min(x[n])) for x in (bulk, tail) for n in free_names)
+    divergences = int(np.asarray(tr.sample_stats["diverging"]).sum())
+    finite = all(np.isfinite(np.asarray(x[n])).all()
+                 for x in (rh, bulk, tail) for n in free_names)
+    good = finite and rhat <= 1.01 and ess >= 100 and divergences == 0
+    worst_rhat = max(free_names, key=lambda n: float(np.max(rh[n])))
+    worst_ess = min(free_names, key=lambda n: min(float(np.min(x[n])) for x in (bulk, tail)))
+    return tr, dict(worst_rhat=worst_rhat, worst_ess=worst_ess, good=good, rhat=rhat, ess=ess, divergences=divergences,
+                    seed=sampling_seed, mode=mode, compile_seconds=compile_seconds,
+                    sampling_seconds=sampling_seconds)
+
+
+def posterior_dataset(tr):
+    """Accept both current ArviZ DataTrees and older InferenceData objects."""
+    posterior = tr.posterior
+    return posterior.to_dataset() if hasattr(posterior, "to_dataset") else posterior
+
+
+def flattened(tr, name):
+    x = np.asarray(tr.posterior[name])
+    return x.reshape((-1,) + x.shape[2:])
+
+
+def downstream_data(observed):
+    return {k: observed[k] for k in ("m", "corpus", "y")}
+
+
+def upstream_data(observed, r):
+    data = {k: observed[k] for k in ("vo", "arousal", "e", "idx")}
+    if r:
+        data.update(proxy=observed["proxy"], proxy_error=np.array(np.sqrt((1-r)/r)))
+    return data
+
+
+def posterior_contrasts(tr, observed, fixed, rng):
+    """Balanced subsampling across chains; preserve posterior dependence."""
+    names = ("bz", "bm", "bf", "bv", "bs", "item_sd", "item_raw", "content_sd", "content_raw", "ell", "g0", "gz", "gv",
+             "gs", "f0", "lz", "ls", "lv", "lm", "sig_f", "b_z")
+    available = {name: flattened(tr, name) for name in names}
+
+exec
+/bin/zsh -lc "python3 - <<'PY'
+from pathlib import Path
+p=Path('scripts/d1c/d1c.py');s=p.read_text().replace('''    diagnostic = az.from_dict(posterior={
+        name: np.array([row[name] for row in rows]).reshape(CHAINS, per_chain)
+        for name in rows[0]
+    })
+    diagnostic = posterior_dataset(diagnostic)''','''    import xarray as xr
+    diagnostic = xr.Dataset({
+        name: ((\"chain\", \"draw\"),
+               np.array([row[name] for row in rows]).reshape(CHAINS, per_chain))
+        for name in rows[0]
+    })''');p.write_text(s)
+PY
+.venv/bin/python - <<'PY'
+import sys
+sys.path.insert(0,'scripts/d1c')
+import d1c
+import arviz as az
+import numpy as np
+tr = az.from_dict({'posterior': {'x': np.random.default_rng(1).normal(size=(4,500,3))}, 'sample_stats': {'diverging': np.zeros((4,500),dtype=bool)}})
+ds = d1c.posterior_dataset(tr)
+print(type(tr).__name__, type(ds).__name__, az.rhat(ds)['x'].values, az.ess(ds,method='tail')['x'].values)
+print(d1c.flattened(tr,'x').shape, tr.posterior.sizes['draw'], int(np.asarray(tr.sample_stats['diverging']).sum()))
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 5124ms:
+DataTree Dataset [1.00279493 0.99960422 1.00245627] [1903.80676387 1840.26421746 1651.96215345]
+(2000, 3) 500 0
+
+exec
+/bin/zsh -lc '.venv/bin/python scripts/d1c/d1c.py pilot' in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+codex
+The ArviZ compatibility check passed: diagnostics now receive an `xarray.Dataset`, and trace flattening and divergence counting work with the installed `DataTree` format. The corrected full-size pilot is running. Completed pilot traces will be saved under `results/d1c/` before diagnostics run.
+ exited 130 in 630467ms:
+compile (40, 1, False, 1.0, 'joint')
+sample (40, 1, False, 1.0, 'joint'); compile 86.3s
+sampling (40, 1, False, 1.0, 'joint'): draws [8, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [13, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [19, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [32, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [102, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [187, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [286, 0, 0, 0]
+sampling (40, 1, False, 1.0, 'joint'): draws [384, 0, 0, 0]
+/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/lib/python3.14/site-packages/arviz_base/base.py:131: UserWarning: Found chain dimension to be longer than draw dimension, check dimensions are correctly named.
+  warnings.warn(
+sample done (40, 1, False, 1.0, 'joint'): 402.7s
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/d1c.py", line 499, in main
+    rows, failures = [], []
+                      ^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/concurrent/futures/_base.py", line 237, in as_completed
+    waiter.event.wait(wait_timeout)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 670, in wait
+    signaled = self._cond.wait(timeout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 369, in wait
+    waiter.acquire()
+    ~~~~~~~~~~~~~~^^
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/d1c.py", line 549, in <module>
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/d1c.py", line 497, in main
+    failure_path = output / f"{args.command}-{stamp}-failures.csv"
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/concurrent/futures/_base.py", line 673, in __exit__
+    self.shutdown(wait=True)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/concurrent/futures/process.py", line 965, in shutdown
+    self._executor_manager_thread.join()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 1133, in join
+    self._os_thread_handle.join(timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyboardInterrupt
+sample (40, 1, False, 1.0, 'joint'); compile 0.0s
+Exception ignored on threading shutdown:
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 1577, in _shutdown
+    atexit_call()
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 1548, in <lambda>
+    _threading_atexits.append(lambda: func(*arg, **kwargs))
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/concurrent/futures/process.py", line 106, in _python_exit
+    t.join()
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/threading.py", line 1133, in join
+    self._os_thread_handle.join(timeout)
+KeyboardInterrupt: 
+sample done (40, 1, False, 1.0, 'joint'): 49.9s
+Process SpawnProcess-1:
+Exception ignored in atexit callback <function _exit_function at 0x105a266c0>:
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/util.py", line 428, in _exit_function
+    p.join()
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/process.py", line 156, in join
+    res = self._popen.wait(timeout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/popen_fork.py", line 44, in wait
+Traceback (most recent call last):
+    return self.poll(os.WNOHANG if timeout == 0.0 else 0)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/popen_fork.py", line 28, in poll
+    pid, sts = os.waitpid(self.pid, flag)
+KeyboardInterrupt: 
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/process.py", line 320, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/concurrent/futures/process.py", line 243, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/queues.py", line 101, in get
+    res = self._recv_bytes()
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/connection.py", line 226, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/connection.py", line 451, in _recv_bytes
+    buf = self._recv(4)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/connection.py", line 416, in _recv
+    chunk = read(handle, to_read)
+KeyboardInterrupt
+
+exec
+/bin/zsh -lc ".venv/bin/python - <<'PY'
+import arviz as az, numpy as np, pickle
+tr=az.from_dict({'posterior': {'x': np.zeros((4,500,3))}})
+print('DataTree contains variables:', 'x' in tr.posterior)
+restored=pickle.loads(pickle.dumps(tr,protocol=pickle.HIGHEST_PROTOCOL))
+print('Checkpoint roundtrip:', restored.posterior.sizes)
+PY" in /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes
+ succeeded in 5958ms:
+DataTree contains variables: True
+Checkpoint roundtrip: Frozen(ChainMap({'chain': 4, 'draw': 500, 'x_dim_0': 3}, {}))
+

@@ -7,10 +7,16 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-if sys.platform == "darwin":
-    os.environ.setdefault(
-        "PYTENSOR_FLAGS", f"cxx={ROOT / 'scripts/d1/bin/clang++'}"
-    )
+# Keep compiler scratch and caches inside the authorized output tree.
+SCRATCH = ROOT / "logs" / "d1c-cache"
+SCRATCH.mkdir(parents=True, exist_ok=True)
+os.environ["TMPDIR"] = str(SCRATCH)
+flags = [flag for flag in os.environ.get("PYTENSOR_FLAGS", "").split(",")
+         if flag and not flag.startswith(("base_compiledir=", "compiledir="))]
+flags.append(f"base_compiledir={SCRATCH / 'pytensor'}")
+if sys.platform == "darwin" and not any(flag.startswith("cxx=") for flag in flags):
+    flags.append(f"cxx={ROOT / 'scripts/d1/bin/clang++'}")
+os.environ["PYTENSOR_FLAGS"] = ",".join(flags)
 # Avoid nested BLAS parallelism inside the process pool.
 for name in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
     os.environ.setdefault(name, "1")
@@ -74,6 +80,8 @@ def contrasts(t, delta=1.):
     eta = utilities(t)
     denominator = np.exp(eta).sum(axis=1) + np.exp(OUTSIDE)
     competitors = denominator[:, None] - np.exp(eta)
+    log_competitors = np.log(competitors)
+    offset = t["base"] + t["bv"]*t["v"] + t["bs"]*t["s"] + t["h"] @ t["bh"]
 
     def averaged_probability(z):
         pm = expit(t["g0"] + t["gz"] * z + t["gv"] * t["v"]
@@ -84,18 +92,19 @@ def contrasts(t, delta=1.):
                     + t["lv"] * t["v"] + t["lm"] * marking
                     + t["h"] @ t["lh"])
             mass = pm if marking else 1 - pm
+            focal = (offset + t["bz"][:, None]*z + t["bm"][:, None]*marking
+                     + t["bf"]*mean - log_competitors)
             for node, weight in zip(NODES, WEIGHTS):
-                focal = utilities(t, z, marking, mean + node * t["sig_f"])
-                # Stable logistic focal/(focal + competitors).
-                probability += weight * mass * expit(focal - np.log(competitors))
+                # Exact same quadrature; reuse its node-independent utility.
+                probability += weight * mass * expit(focal + t["bf"]*node*t["sig_f"])
         return probability
 
     p0 = averaged_probability(t["z"])
     p1 = averaged_probability(t["z"] + delta)
     h2 = np.mean(np.log(p1) - np.log(p0))
     # Marking held at each level, usage held at its current latent value.
-    a = expit(utilities(t, marking=0.) - np.log(competitors))
-    b = expit(utilities(t, marking=1.) - np.log(competitors))
+    a = expit(utilities(t, marking=0.) - log_competitors)
+    b = expit(utilities(t, marking=1.) - log_competitors)
     h1 = np.mean(np.log(b) - np.log(a))
     mark0 = (t["g0"] + t["gz"] * t["z"] + t["gv"] * t["v"]
              + t["gs"] * t["s"] + t["h"] @ t["gh"])
@@ -218,10 +227,10 @@ def build(G, budget, register, prior, mode):
         lz, ls, lv, lm = [coefficient(k) for k in ("lz", "ls", "lv", "lm")]
         lh = register_coefficient("lh")
         sig_f = pm.HalfNormal("sig_f", 1)
-        ell = pm.Deterministic(
-            "ell", f0 + lz*z + ls*s + lv*v + lm*m + h @ lh
-            + sig_f*pm.Normal("ell_raw", 0, 1, shape=I)
-        )
+        # Corpus counts directly inform ell: center this latent normal rather
+        # than coupling its 400 residuals to every usage-regression coefficient.
+        ell = pm.Normal("ell", f0 + lz*z + ls*s + lv*v + lm*m + h @ lh,
+                        sig_f, shape=I)
         pm.Poisson("corpus_obs", mu=1000*pt.exp(ell),
                    observed=pm.Data("corpus", np.ones(I, dtype="int64")))
         b_z, b_m, bf, bv, bs = [coefficient(k) for k in ("b_z", "b_m", "bf", "bv", "bs")]
@@ -240,11 +249,15 @@ def build(G, budget, register, prior, mode):
         item = pm.HalfNormal("item_sd", .5)*pm.Normal("item_raw", 0, 1, shape=I)
         content = (pm.HalfNormal("content_sd", .5)
                    * pm.Normal("content_raw", 0, 1, shape=(G, I)))
-        base = pm.Deterministic("base", pt.repeat(content + item, P, axis=0))
+        base = pt.repeat(content + item, P, axis=0)
         eta = base + bz[:, None]*z + bm[:, None]*m + bf*ell + bv*v + bs*s + h @ bh
         logits = pt.concatenate([eta, pt.full((G*P, 1), OUTSIDE)], axis=1)
-        pm.Multinomial("production_obs", n=budget, p=pm.math.softmax(logits, axis=1),
-                       observed=pm.Data("y", np.zeros((G*P, I+1), dtype="int64")))
+        y = pm.Data("y", np.zeros((G*P, I+1), dtype="int64"))
+        # Exact multinomial log likelihood, omitting only the data-constant
+        # factorial term. Work directly on logits, avoiding log(softmax()).
+        pm.Potential("production_logp", pt.sum(y[:, :-1]*eta)
+                     + OUTSIDE*pt.sum(y[:, -1])
+                     - budget*pt.sum(pm.math.logsumexp(logits, axis=1)))
     return model
 
 
@@ -255,25 +268,78 @@ def sample(job, mode, data, sampling_seed):
     G, budget = DESIGNS[job["design"]]
     register = bool(job["reliability"])
     key = (G, budget, register, job["prior"], mode)
-    if key not in COMPILED:
-        model = build(G, budget, register, job["prior"], mode)
-        free_names = [rv.name for rv in model.free_RVs]
-        COMPILED[key] = (nutpie.compile_pymc_model(model, freeze_model=False), free_names)
-    compiled, free_names = COMPILED[key]
-    tr = nutpie.sample(compiled.with_data(**data), draws=DRAWS, tune=TUNE,
-                       chains=CHAINS, cores=1, seed=sampling_seed,
-                       target_accept=.95, progress_bar=False)
-    rh = az.rhat(tr, var_names=free_names)
-    bulk = az.ess(tr, var_names=free_names, method="bulk")
-    tail = az.ess(tr, var_names=free_names, method="tail")
+    import hashlib
+    import inspect
+    import pickle
+
+    signature = repr((key, I, P, DRAWS, TUNE, CHAINS, .95,
+                      version("pymc"), version("nutpie"))) + inspect.getsource(build)
+    digest = hashlib.sha256(signature.encode()).hexdigest()[:16]
+    checkpoint = (ROOT / "results" / "d1c" / f"trace-{digest}-{sampling_seed}.pickle"
+                  if job.get("_checkpoint") else None)
+    if checkpoint is not None and checkpoint.exists():
+        with checkpoint.open("rb") as stream:
+            saved = pickle.load(stream)
+        tr, free_names = saved["trace"], saved["free_names"]
+        compile_seconds, sampling_seconds = saved["compile_seconds"], saved["sampling_seconds"]
+        print(f"restored complete trace {checkpoint.name}", flush=True)
+    else:
+        compile_started = time.perf_counter()
+        if key not in COMPILED:
+            print(f"compile {key}", flush=True)
+            model = build(G, budget, register, job["prior"], mode)
+            free_names = [rv.name for rv in model.free_RVs]
+            COMPILED[key] = (nutpie.compile_pymc_model(model, freeze_model=False), free_names)
+        compiled, free_names = COMPILED[key]
+        compile_seconds = time.perf_counter() - compile_started
+        sample_started = time.perf_counter()
+        print(f"sample {key}; compile {compile_seconds:.1f}s", flush=True)
+        last_progress = [time.perf_counter()]
+
+        def progress(chains):
+            now = time.perf_counter()
+            if now - last_progress[0] >= 45:
+                counts = [c.finished_draws for c in chains]
+                print(f"sampling {key}: draws {counts}; "
+                      f"steps {[c.latest_num_steps for c in chains]}", flush=True)
+                last_progress[0] = now
+
+        tr = nutpie.sample(compiled.with_data(**data), draws=DRAWS, tune=TUNE,
+                           chains=CHAINS, cores=1, seed=sampling_seed, save_warmup=False,
+                           target_accept=.95, progress_bar=False, progress_callback=progress)
+        if tr.posterior.sizes.get("chain") != CHAINS or tr.posterior.sizes.get("draw") != DRAWS:
+            raise RuntimeError("Sampler returned an incomplete trace (possibly interrupted)")
+        sampling_seconds = time.perf_counter() - sample_started
+        print(f"sample done {key}: {sampling_seconds:.1f}s", flush=True)
+        if checkpoint is not None:
+            checkpoint.parent.mkdir(parents=True, exist_ok=True)
+            with checkpoint.open("wb") as stream:
+                pickle.dump(dict(trace=tr, free_names=free_names,
+                                 compile_seconds=compile_seconds,
+                                 sampling_seconds=sampling_seconds), stream,
+                            protocol=pickle.HIGHEST_PROTOCOL)
+            print(f"checkpoint {checkpoint.name}", flush=True)
+    posterior = posterior_dataset(tr)
+    rh = az.rhat(posterior, var_names=free_names)
+    bulk = az.ess(posterior, var_names=free_names, method="bulk")
+    tail = az.ess(posterior, var_names=free_names, method="tail")
     rhat = max(float(np.max(rh[n])) for n in free_names)
     ess = min(float(np.min(x[n])) for x in (bulk, tail) for n in free_names)
     divergences = int(np.asarray(tr.sample_stats["diverging"]).sum())
     finite = all(np.isfinite(np.asarray(x[n])).all()
                  for x in (rh, bulk, tail) for n in free_names)
     good = finite and rhat <= 1.01 and ess >= 100 and divergences == 0
-    return tr, dict(good=good, rhat=rhat, ess=ess, divergences=divergences,
-                    seed=sampling_seed, mode=mode)
+    worst_rhat = max(free_names, key=lambda n: float(np.max(rh[n])))
+    worst_ess = min(free_names, key=lambda n: min(float(np.min(x[n])) for x in (bulk, tail)))
+    return tr, dict(worst_rhat=worst_rhat, worst_ess=worst_ess, good=good, rhat=rhat, ess=ess, divergences=divergences,
+                    seed=sampling_seed, mode=mode, compile_seconds=compile_seconds,
+                    sampling_seconds=sampling_seconds)
+
+
+def posterior_dataset(tr):
+    """Accept both current ArviZ DataTrees and older InferenceData objects."""
+    posterior = tr.posterior
+    return posterior.to_dataset() if hasattr(posterior, "to_dataset") else posterior
 
 
 def flattened(tr, name):
@@ -294,7 +360,7 @@ def upstream_data(observed, r):
 
 def posterior_contrasts(tr, observed, fixed, rng):
     """Balanced subsampling across chains; preserve posterior dependence."""
-    names = ("bz", "bm", "bf", "bv", "bs", "base", "ell", "g0", "gz", "gv",
+    names = ("bz", "bm", "bf", "bv", "bs", "item_sd", "item_raw", "content_sd", "content_raw", "ell", "g0", "gz", "gv",
              "gs", "f0", "lz", "ls", "lv", "lm", "sig_f", "b_z")
     available = {name: flattened(tr, name) for name in names}
     for name in ("bh", "gh", "lh", "z", "v", "s", "h"):
@@ -306,8 +372,10 @@ def posterior_contrasts(tr, observed, fixed, rng):
         for chain in range(CHAINS)
     ])
     rows = []
-    for pick in picks:
+    for pick in range(CHAINS*per_chain):
         t = {name: values[pick] for name, values in available.items()}
+        t["base"] = np.repeat(t["content_sd"]*t["content_raw"]
+                              + t["item_sd"]*t["item_raw"], P, axis=0)
         t.update(m=observed["m"])
         if fixed is not None:
             t.update({name.removesuffix("_fixed"): value for name, value in fixed.items()})
@@ -319,15 +387,21 @@ def posterior_contrasts(tr, observed, fixed, rng):
                          marking=values["marking"], b_z=float(t["b_z"])))
     # Derived contrasts also require within-component chain diagnostics.
     import arviz as az
-    diagnostic = az.from_dict(posterior={
-        name: np.array([row[name] for row in rows]).reshape(CHAINS, -1)
+    import xarray as xr
+    diagnostic = xr.Dataset({
+        name: (("chain", "draw"),
+               np.array([row[name] for row in rows]).reshape(CHAINS, per_chain))
         for name in rows[0]
     })
-    # ESS at this small retained size is reported, not thresholded at 100.
     rh = az.rhat(diagnostic)
     finite = all(np.isfinite(np.asarray(rh[name])).all() for name in rows[0])
     contrast_rhat = max(float(np.max(rh[name])) for name in rows[0])
-    return rows, finite and contrast_rhat <= 1.05, contrast_rhat
+    bulk, tail = az.ess(diagnostic, method="bulk"), az.ess(diagnostic, method="tail")
+    contrast_ess = min(float(np.min(x[name])) for x in (bulk, tail) for name in rows[0])
+    finite = finite and all(np.isfinite(np.asarray(x[name])).all()
+                            for x in (bulk, tail) for name in rows[0])
+    print(f"contrasts: R-hat {contrast_rhat:.4f}, ESS {contrast_ess:.1f}", flush=True)
+    return [rows[pick] for pick in picks], finite and contrast_rhat <= 1.01 and contrast_ess >= 100, contrast_rhat, contrast_ess
 
 
 def fit(job):
@@ -340,8 +414,8 @@ def fit(job):
     diagnostics, posterior = [], []
     if job["feedback"] == "joint":
         tr, diag = sample(job, "joint", dict(upstream, **downstream), fit_seed)
-        values, good, crhat = posterior_contrasts(tr, observed, None, rng)
-        diag.update(contrast_good=good, contrast_rhat=crhat)
+        values, good, crhat, cess = posterior_contrasts(tr, observed, None, rng)
+        diag.update(contrast_good=good, contrast_rhat=crhat, contrast_ess=cess)
         diagnostics.append(diag)
         posterior.extend(values)
     else:
@@ -359,8 +433,8 @@ def fit(job):
             component_seed = seed(4, job["cell"], job["rep"], component)
             conditional, diag = sample(job, "downstream", dict(downstream, **fixed),
                                        component_seed)
-            values, good, crhat = posterior_contrasts(conditional, observed, fixed, rng)
-            diag.update(contrast_good=good, contrast_rhat=crhat)
+            values, good, crhat, cess = posterior_contrasts(conditional, observed, fixed, rng)
+            diag.update(contrast_good=good, contrast_rhat=crhat, contrast_ess=cess)
             diagnostics.append(diag)
             posterior.extend(values)
     converged = all(d["good"] and d["contrast_good"] for d in diagnostics)
@@ -447,6 +521,9 @@ def main():
     if args.command == "pilot":
         selected_cells = selected_cells[:1]
     jobs = [dict(c, rep=rep) for c in selected_cells for rep in range(reps)]
+    if args.command == "pilot":
+        for job in jobs:
+            job["_checkpoint"] = True
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     output = ROOT / "results" / "d1c"
     output.mkdir(parents=True, exist_ok=True)
@@ -495,7 +572,8 @@ def main():
                packages=packages, git_sha=git("rev-parse", "HEAD"),
                git_dirty=bool(git("status", "--porcelain")),
                sampler=dict(draws=DRAWS, tune=TUNE, chains=CHAINS, cores=1,
-                            cut_draws=CUT_DRAWS, contrast_draws=POST_DRAWS),
+                            cut_draws=CUT_DRAWS, contrast_draws=POST_DRAWS,
+                            contrast_diagnostic_draws=CHAINS*DRAWS),
                pytensor_flags=os.environ.get("PYTENSOR_FLAGS"),
                cells=selected_cells, statuses=failures,
                outputs=[str(p.relative_to(ROOT)) for p in
