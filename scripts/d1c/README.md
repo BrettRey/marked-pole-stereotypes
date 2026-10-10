@@ -501,3 +501,28 @@ authorized HF trial and USD 10 budget, not a diagnostic-triggered rerun.
 Until billed durations are confirmed, conservatively reserve .72 for each
 submission (1.44 total). The scientific runner and all model settings remain
 unchanged.
+
+## Collection while the three components run (2026-10-10)
+
+Brett asked to make useful progress while he is away. Add a read-only monitor
+of the three existing assignments, with durable local collection and a
+resource/diagnostic report. It may fetch the cloud branch and download the
+HF output directory; it must not submit, restart or cancel model jobs. Keep
+the full grid stopped and components 3–7 unassigned. Poll once per minute,
+retain network errors as monitoring errors, and stop when all three assigned
+jobs have finished or stopped. A missing completion record is never a result.
+
+Before accepting a component, verify the checkpoint manifest and record
+digests, archive hash and array schema; confirm cell 10/replicate 0, the shared
+upstream archive and specification, assigned component seed, sampler budget,
+and exactly 16,000 draws for each scalar contrast. Retain diagnostic failures
+alongside passes. Copy verified compact artifacts into the collection
+folder and report conditional intervals separately, with no pooled cut or
+calibration claim. No new scientific model fit is involved.
+
+Report wall time, compile/sample time, available peak memory and HF provider
+running time. Convert the latter to a clearly labelled compute-charge
+estimate, not a billing-account observation. Preserve the .72 active-job
+ceiling and USD 10 total authorization. Timing comparisons are descriptive:
+the machines fit different fixed upstream draws, with different compilation
+environments and local contention, so these are not matched speed trials.

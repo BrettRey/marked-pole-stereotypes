@@ -1,0 +1,13 @@
+saved component upstream: /var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmpq1c97r6s/upstream
+saved component downstream-001: /var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmpq1c97r6s/checkpoints
+.saved component upstream: /var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmpv5jw634l/upstream
+.saved component upstream: /var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmphymbae4t/upstream
+saved component downstream-001: /var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmphymbae4t/checkpoints
+saved component downstream-001: /var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmphymbae4t/checkpoints
+.saved component upstream: /var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmp00dm3911/upstream
+saved component downstream-001: /var/folders/tq/7kfdnyd52zz82t095tvgbljc0000gp/T/tmp00dm3911/checkpoints
+.
+----------------------------------------------------------------------
+Ran 4 tests in 0.286s
+
+OK
