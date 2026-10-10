@@ -14,8 +14,8 @@
     },
     "participant_structure": {
       "status": "unresolved",
-      "known": "UWA and Nicolas assessed separately, with participant dependence and differing response budgets",
-      "required": "Sourced participant–group incidence and response budgets by dataset, with provenance and an outcome-access record if necessary",
+      "known": "Existing source-study response structure only: UWA and Nicolas assessed separately, preserving dependencies in their published records; no new human participants or judges",
+      "required": "Sourced respondent–group incidence and response budgets from the existing datasets, with provenance and an outcome-access record if necessary; this is metadata verification, not recruitment",
       "value": null,
       "source": "analysis_plan.md: H2 details; scripts/d1c/README.md: Design and reporting order"
     },
@@ -36,7 +36,7 @@
     "estimands": {
       "status": "defined_with_dependencies",
       "known": "H2 marginal predictive association and exploratory H1 fixed-usage marking comparison; prevalence and perceived display separate",
-      "required": "Bind averaging populations to the frozen vocabulary and participant structure",
+      "required": "Bind averaging populations to the frozen vocabulary and existing source-study response structure",
       "source": "analysis_plan.md: H2 details and H1 details; scripts/d1c/README.md: Estimands and truth"
     },
     "effect_ranges": {
@@ -56,7 +56,7 @@
     "l1_l2": {
       "status": "dependency",
       "known": "D2b evaluates model-judged estimands after the lexical frame is frozen",
-      "required": "Realized L1/L2 frame dimensions and the existing D2b stress assumptions",
+      "required": "Realized L1/L2 frame dimensions, fixed model families, wording variants and repeated judgments, and the existing D2b stress assumptions; no new human judges",
       "source": "scripts/d2/README.md: D2b additions"
     }
   },

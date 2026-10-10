@@ -70,7 +70,7 @@ fields with the present 400-word/40%-coverage placeholders.
 | Input | What must be recorded |
 |---|---|
 | Vocabulary | Frozen eligibility rule, denominator size and version/hash |
-| Participant structure | Participant–group incidence and response budgets for each dataset, preserving repeated responses |
+| Existing source-study response structure | Respondent–group incidence and response budgets already present in the published UWA/Nicolas records; no new human participants or judges |
 | Measurement coverage | Which eligible words have which instruments, including overlap and missingness |
 | Measurement assumptions | Reliability, shared model-judge error, bias and transport assumptions; sensitivity values where unknown |
 | Estimands | Their events, denominators and averaging populations; perceived display and prevalence kept distinct |

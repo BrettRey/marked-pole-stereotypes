@@ -6,6 +6,14 @@ It does not generate empirical inputs, fit models or submit compute jobs.
 Empirical-design calibration remains pending; `inputs.json` records the known
 requirements and unresolved inputs without substituting provisional values.
 
+No new human participants or judges are involved. All new judgments use the
+model protocol. The registry's `participant_structure` field means the
+response structure already present in the published UWA and Nicolas data
+used for H2/H1, not a recruitment requirement. L1/L2 assessment instead needs
+the lexical frame and model protocol's families, wordings and repetitions.
+The historical D1c count of 12 refers to artificial respondent units in an
+engineering simulation, not people recruited for this project.
+
 ## Reporting
 
 The initial adapter accepts complete `scripts/d1c/d1c.py` pilot/run outputs:

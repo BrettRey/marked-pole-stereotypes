@@ -29,8 +29,11 @@ remain unset; the simulation's numerical effect values do not supply them.
 See the reviewed [implementation plan](notes/design-informativeness-plan-2026-10-10.md)
 and [assessment specification](scripts/design_assessment/README.md).
 
-The empirical-design assessment requires frozen vocabulary, participant
-structure and measurement coverage, with documented sensitivity assumptions.
+The empirical-design assessment requires frozen vocabulary, existing
+source-study response structure and measurement coverage, with documented
+sensitivity assumptions. No new human participants or judges are required:
+response structure here means dependencies already present in the published
+UWA and Nicolas records. New judgments come from the fixed model protocol.
 Use independent simulated datasets and report Monte Carlo uncertainty and
 fit failures. Set replication from the required precision and a documented
 compute budget before launch. Sampler draws and conditional cut components
