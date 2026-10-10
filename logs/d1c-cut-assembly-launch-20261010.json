@@ -1,0 +1,15 @@
+{
+  "pid": 8472,
+  "source_commit": "77f5b0ac3a3b67f5c81b8b34b7124ed76f948b2c",
+  "started_at": "2026-10-10T21:59:14.025435+00:00",
+  "command": [
+    "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/.venv/bin/python",
+    "-u",
+    "scripts/d1c/assemble_cut.py",
+    "--source",
+    "77f5b0ac3a3b67f5c81b8b34b7124ed76f948b2c",
+    "--watch"
+  ],
+  "stdout": "logs/d1c-cut-assembly-20261010-stdout.txt",
+  "scope": "Reporting only; assemble the existing eight components; no model fits or job submissions"
+}
