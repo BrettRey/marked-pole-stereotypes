@@ -10,9 +10,9 @@ source:
 - STATUS.md
 - notes/project-brief.md
 next_action: >-
-  One volunteer M5/16-GB Mac has passed readiness. Its single archived timing
-  fit is assigned and awaits manual launch; a second host awaits hardware
-  details. HF Pro is active.
+  One volunteer M5/16-GB Mac is running its single archived timing fit, as
+  reported by Brett; await its receipt before assigning more work. A second
+  host awaits hardware details. HF Pro is active.
   Replicated D1c waits for frozen empirical inputs and a new launch budget.
   Norman pass X is repaired; the Vision/column-parser pilot produced zero
   complete numeric rows, so wave 1 remains stopped pending a revised method.
@@ -29,7 +29,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. HF jobs and monitor have ended; combined compute estimate USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design and directional reporting are adopted; replication and the lexical production budget remain deferred in notes/next-stage-decisions-2026-10-11.md. Norman X is repaired (218/239 pilot rows exact); Vision yields no complete numeric rows, so wave 1 remains stopped. One volunteer Mac has a single archived timing fit assigned, awaiting manual launch; a second awaits hardware details. HF Pro activation is verified; Jobs concurrency remains unverified. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
+<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. HF jobs and monitor have ended; combined compute estimate USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design and directional reporting are adopted; replication and the lexical production budget remain deferred in notes/next-stage-decisions-2026-10-11.md. Norman X is repaired (218/239 pilot rows exact); Vision yields no complete numeric rows, so wave 1 remains stopped. One volunteer Mac is reported running its single archived timing fit; await the receipt. A second host awaits hardware details. HF Pro activation is verified; Jobs concurrency remains unverified. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
 
 ## State
 
@@ -37,7 +37,7 @@ Scaffolded 2026-10-07 from Brett's brief (`notes/project-brief.md`, verbatim). T
 
 Recovery completed 2026-10-11 at 12:14 UTC: 16/16 baseline configurations, all 80 module diagnostics passing, zero divergences. Both recovered archives pass independent hash, shape and summary checks. All eight joint/cut comparisons share their data seeds; cut b_z means are 17–65% of joint means. H2 intervals cover all sixteen truths, across only four generated datasets. Combined HF compute is estimated at USD 2.3845, not an invoice. Jobs and monitor have stopped. See the [final report](results/d1c/baseline-recovery-20261011/REPORT.md).
 
-Volunteer environment receipt checked 2026-10-11: all eight reported checks pass, all 38 package versions and the requirements hash match, and the source commit contains the expected checker. This confirms the supplied environment report, not sampling throughput. One archived timing fit is now assigned, awaiting manual launch; it is excluded from calibration. See the [first-job specification](scripts/volunteer/FIRST-JOB.md) and [verification record](logs/volunteer-001-readiness-verification-20261011.json). Personal host details stay private.
+Volunteer environment receipt checked 2026-10-11: all eight reported checks pass, all 38 package versions and the requirements hash match, and the source commit contains the expected checker. This confirms the supplied environment report, not sampling throughput. Brett reports that the assigned archived timing fit is running. The completion receipt is pending; this repeat is excluded from calibration. See the [first-job specification](scripts/volunteer/FIRST-JOB.md) and [verification record](logs/volunteer-001-readiness-verification-20261011.json). Personal host details stay private.
 
 ## Next action
 
