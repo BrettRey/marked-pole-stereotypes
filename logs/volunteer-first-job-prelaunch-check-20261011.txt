@@ -1,0 +1,11 @@
+PASS apple_silicon_macos
+PASS python_version
+PASS memory_at_least_16_gib
+PASS setup_disk_at_least_5_gib
+PASS pinned_packages
+PASS source_files_clean
+PASS compiler_present
+PASS imports_and_scalar_compile
+Readiness report: /Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/volunteer-readiness.json
+No study batch has been run. Initial worker limit: one.
+PASS published assignment: volunteer-001-timing-20261011; cell 12, rep 0; one worker; no fit started
