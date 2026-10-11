@@ -1,0 +1,138 @@
+test_recover_baseline (unittest.loader._FailedTest.test_recover_baseline) ... ERROR
+test_baseline_batch (unittest.loader._FailedTest.test_baseline_batch) ... ERROR
+test_paired_batch (unittest.loader._FailedTest.test_paired_batch) ... ERROR
+test_run_component (unittest.loader._FailedTest.test_run_component) ... ERROR
+test_assignments_are_disjoint_and_cover_the_cut (test_hf_batch.BatchTests.test_assignments_are_disjoint_and_cover_the_cut) ... ok
+test_execution_failure_stops_dispatch_but_finishes_running_peer (test_hf_batch.BatchTests.test_execution_failure_stops_dispatch_but_finishes_running_peer) ... ok
+test_supervisor_replacement_preserves_independent_heartbeat_worker (test_hf_batch.BatchTests.test_supervisor_replacement_preserves_independent_heartbeat_worker) ... ok
+test_two_slots_and_no_repeat_after_completion (test_hf_batch.BatchTests.test_two_slots_and_no_repeat_after_completion) ... ok
+test_cache_never_falls_back_to_fit (test_assemble_cut.AssemblyTests.test_cache_never_falls_back_to_fit) ... ok
+test_damaged_archive_is_rejected (test_assemble_cut.AssemblyTests.test_damaged_archive_is_rejected) ... ok
+test_missing_component_stops_before_replay_and_output (test_assemble_cut.AssemblyTests.test_missing_component_stops_before_replay_and_output) ... ok
+test_nonfinite_draws_are_not_silently_removed (test_assemble_cut.AssemblyTests.test_nonfinite_draws_are_not_silently_removed) ... ok
+test_publication_retains_failure_and_refuses_overwrite (test_assemble_cut.AssemblyTests.test_publication_retains_failure_and_refuses_overwrite) ... ok
+test_register_covariate_axis_cannot_be_lost (test_assemble_cut.AssemblyTests.test_register_covariate_axis_cannot_be_lost) ... ok
+test_replay_equal_weight_mixture_preserves_failed_component (test_assemble_cut.AssemblyTests.test_replay_equal_weight_mixture_preserves_failed_component) ... ok
+test_wrong_regenerated_data_seed_stops_publication (test_assemble_cut.AssemblyTests.test_wrong_regenerated_data_seed_stops_publication) ... ok
+
+======================================================================
+ERROR: test_recover_baseline (unittest.loader._FailedTest.test_recover_baseline)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_recover_baseline
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 407, in from_name
+    return next(iter(cls.discover(name=name)))
+StopIteration
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/test_recover_baseline.py", line 9, in <module>
+    import recover_baseline as recovery
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/recover_baseline.py", line 15, in <module>
+    import baseline_batch as batch
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/baseline_batch.py", line 23, in <module>
+    import paired_batch as paired
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/paired_batch.py", line 33, in <module>
+    SCIENTIFIC_PATHS = tuple(grid.specification(1, 4000, 2000, 8000)["sources"])
+                             ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/grid.py", line 78, in specification
+    packages={package: version(package) for package in packages},
+                       ~~~~~~~^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 987, in version
+    return distribution(distribution_name).version
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 960, in distribution
+    return Distribution.from_name(distribution_name)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 409, in from_name
+    raise PackageNotFoundError(name)
+importlib.metadata.PackageNotFoundError: No package metadata was found for pymc
+
+
+======================================================================
+ERROR: test_baseline_batch (unittest.loader._FailedTest.test_baseline_batch)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_baseline_batch
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 407, in from_name
+    return next(iter(cls.discover(name=name)))
+StopIteration
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/test_baseline_batch.py", line 13, in <module>
+    import baseline_batch as batch
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/baseline_batch.py", line 23, in <module>
+    import paired_batch as paired
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/paired_batch.py", line 33, in <module>
+    SCIENTIFIC_PATHS = tuple(grid.specification(1, 4000, 2000, 8000)["sources"])
+                             ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/grid.py", line 78, in specification
+    packages={package: version(package) for package in packages},
+                       ~~~~~~~^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 987, in version
+    return distribution(distribution_name).version
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 960, in distribution
+    return Distribution.from_name(distribution_name)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 409, in from_name
+    raise PackageNotFoundError(name)
+importlib.metadata.PackageNotFoundError: No package metadata was found for pymc
+
+
+======================================================================
+ERROR: test_paired_batch (unittest.loader._FailedTest.test_paired_batch)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_paired_batch
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 407, in from_name
+    return next(iter(cls.discover(name=name)))
+StopIteration
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/test_paired_batch.py", line 13, in <module>
+    import paired_batch as batch
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/paired_batch.py", line 33, in <module>
+    SCIENTIFIC_PATHS = tuple(grid.specification(1, 4000, 2000, 8000)["sources"])
+                             ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/grid.py", line 78, in specification
+    packages={package: version(package) for package in packages},
+                       ~~~~~~~^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 987, in version
+    return distribution(distribution_name).version
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 960, in distribution
+    return Distribution.from_name(distribution_name)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/metadata/__init__.py", line 409, in from_name
+    raise PackageNotFoundError(name)
+importlib.metadata.PackageNotFoundError: No package metadata was found for pymc
+
+
+======================================================================
+ERROR: test_run_component (unittest.loader._FailedTest.test_run_component)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_run_component
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/brettreynolds/projects/LLM-CLI-projects/papers/development/marked-pole-stereotypes/scripts/d1c/test_run_component.py", line 11, in <module>
+    import xarray as xr
+ModuleNotFoundError: No module named 'xarray'
+
+
+----------------------------------------------------------------------
+Ran 16 tests in 1.841s
+
+FAILED (errors=4)
