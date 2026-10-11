@@ -11,8 +11,9 @@ source:
 - notes/project-brief.md
 next_action: >-
   Review notes/next-stage-decisions-2026-10-11.md: joint/cut reporting,
-  a reduced HF simulation proposal and directional falsifiers. Complete the
-  two already-authorized recovery fits; the 240-cell grid stays stopped.
+  a reduced HF simulation proposal and directional falsifiers. Consult the
+  completed recovery record; all 16 baseline fits are finished and the
+  240-cell grid stays stopped.
   Six-pair lexical review is complete; full coding and commonness collection
   await the frame/model/budget specification. Resume Norman's parser and
   Vision pilot next, preserving its values firewall. Run state lives in reports
@@ -28,16 +29,18 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; the 16-configuration baseline has 14 complete and two authorized recovery fits running. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design, falsifier wording and lexical budget are proposed in notes/next-stage-decisions-2026-10-11.md. Norman parser/Vision work remains next. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
+<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. HF jobs and monitor have ended; combined compute estimate USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design, falsifier wording and lexical budget are proposed in notes/next-stage-decisions-2026-10-11.md. Norman parser/Vision work remains next. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
 
 ## State
 
 Scaffolded 2026-10-07 from Brett's brief (`notes/project-brief.md`, verbatim). The UWA paper is in the portfolio `literature/` as `unkelbach_weitzel_alves_2026_why_most_stereotypes_are_negative.{pdf,md}` (24 pp.; CC BY-NC-ND 4.0), read in full 2026-10-07. A ChatGPT deep-research report on markedness and stereotype negativity (`~/Downloads/deep-research-report(37).md`, 2026-10-07) is unverified LLM output, not a source. Strand A has run (2026-10-07; see item 4). Ingram et al. 2016 datasets downloaded; no strand B outcome data downloaded or opened; analysis plan not yet fixed.
 
+Recovery completed 2026-10-11 at 12:14 UTC: 16/16 baseline configurations, all 80 module diagnostics passing, zero divergences. Both recovered archives pass independent hash, shape and summary checks. All eight joint/cut comparisons share their data seeds; cut b_z means are 17–65% of joint means. H2 intervals cover all sixteen truths, across only four generated datasets. Combined HF compute is estimated at USD 2.3845, not an invoice. Jobs and monitor have stopped. See the [final report](results/d1c/baseline-recovery-20261011/REPORT.md).
+
 ## Next action
 
 1. Review the [next-stage decisions](notes/next-stage-decisions-2026-10-11.md) and [completed six-pair review](notes/lexical-six-pair-report-2026-10-11.md).
-2. Collect the two already-authorized HF recovery fits; see the [live report](results/d1c/baseline-recovery-20261011/REPORT.md). No full-grid restart.
+2. The authorized baseline batch is complete: [final report](results/d1c/baseline-recovery-20261011/REPORT.md) and [independent recovery checks](logs/d1c-recovery-final-readcheck-20261011.json). No full-grid restart.
 3. Resume Norman's pass-X parser repair and Vision pilot on pages 40–41 under the existing [handoff](HANDOFF-TO-CODEX.md), before further simulation expansion.
 4. Before full lexical coding, fix the source coverage, discovery audit, model/version and allowance budget. Before commonness collection, also settle pair weighting and release targets/descriptions.
 5. Integrate agreed plan amendments before FIXED. Empirical-design calibration waits for the frozen frame and actual source response structure.

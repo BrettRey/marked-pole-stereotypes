@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-11T12:12:02.344849+00:00",
+  "cell": 12,
+  "archive_sha256": "0599e273bbc644187a854467f9517fd91d93f3792c171a1136fb62fe5e50041f",
+  "checked_estimands": [
+    "b_z",
+    "h1_fixed_usage",
+    "h2",
+    "marking"
+  ],
+  "shapes_dtypes_finiteness_and_summary_arithmetic": "pass",
+  "new_fits": 0,
+  "python": "3.14.8",
+  "numpy": "2.5.3"
+}

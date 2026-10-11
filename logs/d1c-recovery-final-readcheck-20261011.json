@@ -1,0 +1,96 @@
+{
+  "checked_at": "2026-10-11T12:17:01.407591+00:00",
+  "source": "results/d1c/baseline-recovery-20261011/results.json",
+  "source_sha256": "7c8b98b161795dea52e3cac4f32b07a28b33fd5cb03c5f07b452caaffe4c9a10",
+  "completed_configurations": 16,
+  "diagnostic_modules": 80,
+  "all_diagnostics_pass": true,
+  "divergences": 0,
+  "max_rhat": 1.0081060997440632,
+  "new_recovered_array_checks": [
+    {
+      "cell": 0,
+      "sha256": "b68e6f62b05080d5a35a3ded71593e51746f82d08210ca75091ef6f6ce8a3944",
+      "saved_array_shape_dtype_finiteness_and_summary_checks": "pass"
+    },
+    {
+      "cell": 12,
+      "sha256": "0599e273bbc644187a854467f9517fd91d93f3792c171a1136fb62fe5e50041f",
+      "saved_array_shape_dtype_finiteness_and_summary_checks": "pass"
+    }
+  ],
+  "new_recovered_rows": [
+    {
+      "cell": 0,
+      "b_z_mean": -0.12672432052278793,
+      "b_z_truth": -0.10868058799601256,
+      "h1_error": -0.3300354302096062,
+      "all_four_90_intervals_cover": true
+    },
+    {
+      "cell": 12,
+      "b_z_mean": -0.28369600573493375,
+      "b_z_truth": -0.2329346103316603,
+      "h1_error": -0.4528122331209446,
+      "all_four_90_intervals_cover": true
+    }
+  ],
+  "all_paired_b_z_ratios": [
+    {
+      "joint": 0,
+      "cut": 6,
+      "cut_over_joint_b_z": 0.6516609260665994
+    },
+    {
+      "joint": 4,
+      "cut": 10,
+      "cut_over_joint_b_z": 0.17204801335086492
+    },
+    {
+      "joint": 12,
+      "cut": 18,
+      "cut_over_joint_b_z": 0.5721170433421329
+    },
+    {
+      "joint": 16,
+      "cut": 22,
+      "cut_over_joint_b_z": 0.41841018373298405
+    },
+    {
+      "joint": 120,
+      "cut": 126,
+      "cut_over_joint_b_z": 0.24037979425378933
+    },
+    {
+      "joint": 124,
+      "cut": 130,
+      "cut_over_joint_b_z": 0.2742391339406977
+    },
+    {
+      "joint": 132,
+      "cut": 138,
+      "cut_over_joint_b_z": 0.3239200352120552
+    },
+    {
+      "joint": 136,
+      "cut": 142,
+      "cut_over_joint_b_z": 0.3749266734433695
+    }
+  ],
+  "h2_covered": 16,
+  "recovery_estimated_compute_usd": 0.107,
+  "combined_estimated_compute_usd": 2.3845,
+  "provider_jobs": [
+    {
+      "cell": 0,
+      "stage": "COMPLETED"
+    },
+    {
+      "cell": 12,
+      "stage": "COMPLETED"
+    }
+  ],
+  "new_fits": 0,
+  "python": "3.14.8",
+  "numpy": "2.5.3"
+}
