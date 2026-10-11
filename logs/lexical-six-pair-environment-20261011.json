@@ -1,0 +1,11 @@
+{
+  "python": "3.14.8",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "requests": "2.34.2",
+    "jsonschema": "4.26.0"
+  },
+  "codex_cli": "codex-cli 0.161.0",
+  "claude_cli": "2.1.296 (Claude Code)",
+  "note": "Environment recorded during the fixed run; no dependency changes since launch."
+}

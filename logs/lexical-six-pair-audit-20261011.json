@@ -1,0 +1,9 @@
+{
+  "detail_sha256": "b844cb45a51bcf3c9045dc09f28a092550b8c8e9238f5fe39ba38c70661a8ccf",
+  "finished_at": "2026-10-11T11:51:04.294524+00:00",
+  "no_model_calls": true,
+  "preparation_sha256": "c3f532434e4a66d6c49d5535c6e369bb4d6c5256f1d7cb5eea132be821663493",
+  "primary_rules_sha256": "26652091e9bed7520ebfa042c9cc0a38983c0fc6218df0b6633feeba0772e77a",
+  "script_sha256": "b4ec13fed695519b50bb18950a76f7d8c0bd86c7bce17f73ed54b0e3a9cfc9cf",
+  "source_commit": "a856cf7ba2b2270130d19e96f3b96e828a68a9ec"
+}

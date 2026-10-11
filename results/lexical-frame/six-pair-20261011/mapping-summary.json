@@ -1,0 +1,32 @@
+{
+  "commonness_observations": 0,
+  "created_at": "2026-10-11T11:35:42.294449+00:00",
+  "description_presentations": 0,
+  "forms": 40,
+  "frame_frozen": false,
+  "input_hashes": {
+    "private/lexical_frame/audit-20261010/word-audit.json": "a9f105545c2d71c6b75f6dcf25bf605610eae922b11f3ae3762a267a471bcee0",
+    "private/lexical_frame/coding-20261010-v1/claude/words-01/answer.json": "7e9843cf0f05c8472649ac5f14dbee53f64cece5a8debe0f2917895d704c2f8f",
+    "private/lexical_frame/coding-20261010-v1/claude/words-02/answer.json": "2676920f7e1dbb5ca5751cdb3fcad56e34106b31178dda89c1c1f183c4c0ecdb",
+    "private/lexical_frame/coding-20261010-v1/claude/words-03/answer.json": "fd76eda7d28e20a3fbf9bd3bf3d9ab9a800700cd6b974a41a89c2c14bc77ea50",
+    "private/lexical_frame/coding-20261010-v1/claude/words-04/answer.json": "94ac8d80ac1fd13446226568eec153b31d6a09694920b5316ce28fdb85ac2548",
+    "private/lexical_frame/coding-20261010-v1/codex/words-01/answer.json": "ea6fe10ec6b0accc02ab8db6eeef11ad580979f9cd66459e07629a35d1819853",
+    "private/lexical_frame/coding-20261010-v1/codex/words-02/answer.json": "f72eaf5274b3efb0cc7ff58ce6573fd699870ae8c439590619a331b60114de16",
+    "private/lexical_frame/coding-20261010-v1/codex/words-03/answer.json": "d77b75b7d62548ca625c5dc765473024a40dd0c8ebd37f32c77548ef7adfb6bf",
+    "private/lexical_frame/coding-20261010-v1/codex/words-04/answer.json": "c7badf47c1bb655258ce1656f48928089f9f8c87a6586eee00d42af71b9c7b27",
+    "private/lexical_frame/pilot-20261010-v2/terms.json": "a6cf4392c7a2df5d727a8ef14cecb63a099b1e460d6139090573c13e49c3ec45"
+  },
+  "limitation": "Mapping demonstrates separate layers; lexical identity, temporal assignment and applicability outside the six reviewed pairs remain prospective release gates.",
+  "mapping_sha256": "49eebb3654e1755987aec6c4d400fb4bd696dc42f7bafafaa1d4cd80157a9620",
+  "old_form_specifications": {
+    "eligible": 25,
+    "ineligible": 4,
+    "not_admitted_no_attested_adjective": 9,
+    "unresolved": 2
+  },
+  "old_sense_records_preserved": 93,
+  "operational_interpretation_records": 52,
+  "provisional_adjective_identity_records": 31,
+  "source_commit": "feb1e9a24f30c4593817396f4e4ec560ef075c3d",
+  "source_entry_links": 59
+}

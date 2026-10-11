@@ -1,0 +1,553 @@
+[
+  {
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:33:58.341257+00:00",
+    "elapsed_seconds": 113.98840045882389,
+    "exit_code": 0,
+    "family": "codex",
+    "pair_id": "attentive--inattentive",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "259d7f07dc16c79f84804b11d4d62523b7ee8e2dd242e4bf0990b0377125829f",
+    "python": "3.14.8",
+    "reported_tokens_used": 19666,
+    "requested_model": "gpt-6.1-sol",
+    "returned_model": "gpt-6.1-sol",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:32:04.339826+00:00",
+    "status": "validated",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "validation_errors": []
+  },
+  {
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:37:04.370557+00:00",
+    "elapsed_seconds": 300.0179237499833,
+    "exit_code": "timeout",
+    "family": "claude",
+    "pair_id": "attentive--inattentive",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "259d7f07dc16c79f84804b11d4d62523b7ee8e2dd242e4bf0990b0377125829f",
+    "python": "3.14.8",
+    "requested_model": "claude-sonnet-4-6",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:32:04.339497+00:00",
+    "status": "failed",
+    "subscription_route": true,
+    "timeout_seconds": 300
+  },
+  {
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:35:23.860015+00:00",
+    "elapsed_seconds": 85.50163579219952,
+    "exit_code": 0,
+    "family": "codex",
+    "pair_id": "attentive--unattentive",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "50def18ae1592c2cc417a3537dca3f8e8acf24eb7dbc6b918f4d3294ebb2e685",
+    "python": "3.14.8",
+    "reported_tokens_used": 19070,
+    "requested_model": "gpt-6.1-sol",
+    "returned_model": "gpt-6.1-sol",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:33:58.358403+00:00",
+    "status": "validated",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "validation_errors": []
+  },
+  {
+    "api_equivalent_usd": 0.1750857,
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:37:43.196251+00:00",
+    "elapsed_seconds": 139.3160284999758,
+    "exit_code": 0,
+    "family": "claude",
+    "model_usage": {
+      "claude-sonnet-4-6": {
+        "cacheCreationInputTokens": 3055,
+        "cacheReadInputTokens": 4649,
+        "canonicalModel": "claude-sonnet-4-6",
+        "contextWindow": 200000,
+        "costBasis": "list",
+        "costUSD": 0.1750857,
+        "inputTokens": 2,
+        "maxOutputTokens": 32000,
+        "outputTokens": 10357,
+        "provider": "firstParty",
+        "thinkingTokens": 8007,
+        "webSearchRequests": 0
+      }
+    },
+    "pair_id": "attentive--unattentive",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "50def18ae1592c2cc417a3537dca3f8e8acf24eb7dbc6b918f4d3294ebb2e685",
+    "python": "3.14.8",
+    "requested_model": "claude-sonnet-4-6",
+    "returned_model": "claude-sonnet-4-6",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:35:23.880249+00:00",
+    "status": "validated",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "tools": [
+      "StructuredOutput"
+    ],
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3055,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 3055,
+      "cache_read_input_tokens": 4649,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 2,
+      "iterations": [
+        {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 3055,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 3055,
+          "cache_read_input_tokens": 4649,
+          "input_tokens": 2,
+          "output_tokens": 10357,
+          "type": "message"
+        }
+      ],
+      "output_tokens": 10357,
+      "output_tokens_details": {
+        "thinking_tokens": 8007
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    },
+    "validation_errors": []
+  },
+  {
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:39:35.988402+00:00",
+    "elapsed_seconds": 151.61652891663834,
+    "exit_code": 0,
+    "family": "codex",
+    "pair_id": "friendly--unfriendly",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "f2745519b1574b2ba6904fb75099d81186ab96560e26d35b0550494042682e87",
+    "python": "3.14.8",
+    "reported_tokens_used": 10139,
+    "requested_model": "gpt-6.1-sol",
+    "returned_model": "gpt-6.1-sol",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:37:04.371964+00:00",
+    "status": "needs_evidence_review",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "validation_errors": [
+      "complement scope without complementarity",
+      "complement scope without complementarity",
+      "complement scope without complementarity",
+      "complement scope without complementarity"
+    ]
+  },
+  {
+    "api_equivalent_usd": 0.2687817,
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:41:25.680197+00:00",
+    "elapsed_seconds": 222.47097254078835,
+    "exit_code": 0,
+    "family": "claude",
+    "model_usage": {
+      "claude-sonnet-4-6": {
+        "cacheCreationInputTokens": 4606,
+        "cacheReadInputTokens": 4649,
+        "canonicalModel": "claude-sonnet-4-6",
+        "contextWindow": 200000,
+        "costBasis": "list",
+        "costUSD": 0.2687817,
+        "inputTokens": 2,
+        "maxOutputTokens": 32000,
+        "outputTokens": 15983,
+        "provider": "firstParty",
+        "thinkingTokens": 12801,
+        "webSearchRequests": 0
+      }
+    },
+    "pair_id": "friendly--unfriendly",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "f2745519b1574b2ba6904fb75099d81186ab96560e26d35b0550494042682e87",
+    "python": "3.14.8",
+    "requested_model": "claude-sonnet-4-6",
+    "returned_model": "claude-sonnet-4-6",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:37:43.209336+00:00",
+    "status": "needs_evidence_review",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "tools": [
+      "StructuredOutput"
+    ],
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4606,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 4606,
+      "cache_read_input_tokens": 4649,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 2,
+      "iterations": [
+        {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 4606,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 4606,
+          "cache_read_input_tokens": 4649,
+          "input_tokens": 2,
+          "output_tokens": 15983,
+          "type": "message"
+        }
+      ],
+      "output_tokens": 15983,
+      "output_tokens_details": {
+        "thinking_tokens": 12801
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    },
+    "validation_errors": [
+      "invalid quote wikt:92444713:en:a:1",
+      "invalid quote wikt:92960669:en:a:1",
+      "invalid quote wikt:92444713:en:a:1",
+      "invalid quote wikt:92960669:en:a:1"
+    ]
+  },
+  {
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:41:13.259502+00:00",
+    "elapsed_seconds": 97.25831708312035,
+    "exit_code": 0,
+    "family": "codex",
+    "pair_id": "happy--unhappy",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "e8a1e7826a4efe700c8ade7d52550a427094eff1e2bb0fa9981b76465ec555e5",
+    "python": "3.14.8",
+    "reported_tokens_used": 20126,
+    "requested_model": "gpt-6.1-sol",
+    "returned_model": "gpt-6.1-sol",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:39:36.000936+00:00",
+    "status": "validated",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "validation_errors": []
+  },
+  {
+    "api_equivalent_usd": 0.26580269999999995,
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:44:44.230679+00:00",
+    "elapsed_seconds": 210.94777866685763,
+    "exit_code": 0,
+    "family": "claude",
+    "model_usage": {
+      "claude-sonnet-4-6": {
+        "cacheCreationInputTokens": 4912,
+        "cacheReadInputTokens": 4649,
+        "canonicalModel": "claude-sonnet-4-6",
+        "contextWindow": 200000,
+        "costBasis": "list",
+        "costUSD": 0.26580269999999995,
+        "inputTokens": 2,
+        "maxOutputTokens": 32000,
+        "outputTokens": 15662,
+        "provider": "firstParty",
+        "thinkingTokens": 12670,
+        "webSearchRequests": 0
+      }
+    },
+    "pair_id": "happy--unhappy",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "e8a1e7826a4efe700c8ade7d52550a427094eff1e2bb0fa9981b76465ec555e5",
+    "python": "3.14.8",
+    "requested_model": "claude-sonnet-4-6",
+    "returned_model": "claude-sonnet-4-6",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:41:13.268770+00:00",
+    "status": "validated",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "tools": [
+      "StructuredOutput"
+    ],
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4912,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 4912,
+      "cache_read_input_tokens": 4649,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 2,
+      "iterations": [
+        {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 4912,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 4912,
+          "cache_read_input_tokens": 4649,
+          "input_tokens": 2,
+          "output_tokens": 15662,
+          "type": "message"
+        }
+      ],
+      "output_tokens": 15662,
+      "output_tokens_details": {
+        "thinking_tokens": 12670
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    },
+    "validation_errors": []
+  },
+  {
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:43:08.061579+00:00",
+    "elapsed_seconds": 102.36879325006157,
+    "exit_code": 0,
+    "family": "codex",
+    "pair_id": "kind--unkind",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "5dd74985da90479d09595932b2181b04f49f3781a4a99848e63aae9f934b1ec7",
+    "python": "3.14.8",
+    "reported_tokens_used": 20362,
+    "requested_model": "gpt-6.1-sol",
+    "returned_model": "gpt-6.1-sol",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:41:25.692772+00:00",
+    "status": "validated",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "validation_errors": []
+  },
+  {
+    "api_equivalent_usd": 0.2597547,
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:46:46.178199+00:00",
+    "elapsed_seconds": 218.09138091700152,
+    "exit_code": 0,
+    "family": "claude",
+    "model_usage": {
+      "claude-sonnet-4-6": {
+        "cacheCreationInputTokens": 4189,
+        "cacheReadInputTokens": 4649,
+        "canonicalModel": "claude-sonnet-4-6",
+        "contextWindow": 200000,
+        "costBasis": "list",
+        "costUSD": 0.2597547,
+        "inputTokens": 2,
+        "maxOutputTokens": 32000,
+        "outputTokens": 15548,
+        "provider": "firstParty",
+        "thinkingTokens": 12902,
+        "webSearchRequests": 0
+      }
+    },
+    "pair_id": "kind--unkind",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "5dd74985da90479d09595932b2181b04f49f3781a4a99848e63aae9f934b1ec7",
+    "python": "3.14.8",
+    "requested_model": "claude-sonnet-4-6",
+    "returned_model": "claude-sonnet-4-6",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:43:08.072132+00:00",
+    "status": "validated",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "tools": [
+      "StructuredOutput"
+    ],
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4189,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 4189,
+      "cache_read_input_tokens": 4649,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 2,
+      "iterations": [
+        {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 4189,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 4189,
+          "cache_read_input_tokens": 4649,
+          "input_tokens": 2,
+          "output_tokens": 15548,
+          "type": "message"
+        }
+      ],
+      "output_tokens": 15548,
+      "output_tokens_details": {
+        "thinking_tokens": 12902
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    },
+    "validation_errors": []
+  },
+  {
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:45:52.445243+00:00",
+    "elapsed_seconds": 68.20233037462458,
+    "exit_code": 0,
+    "family": "codex",
+    "pair_id": "patient--impatient",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "0f2a83b6273d8823179c30fa6f44630349584a49caf84c6af2998f20194f2d07",
+    "python": "3.14.8",
+    "reported_tokens_used": 18070,
+    "requested_model": "gpt-6.1-sol",
+    "returned_model": "gpt-6.1-sol",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:44:44.242489+00:00",
+    "status": "validated",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "validation_errors": []
+  },
+  {
+    "api_equivalent_usd": 0.1509087,
+    "attempt": 1,
+    "commonness_or_ratings_input": false,
+    "completed_at": "2026-10-11T11:47:42.626139+00:00",
+    "elapsed_seconds": 110.17142333416268,
+    "exit_code": 0,
+    "family": "claude",
+    "model_usage": {
+      "claude-sonnet-4-6": {
+        "cacheCreationInputTokens": 3708,
+        "cacheReadInputTokens": 4649,
+        "canonicalModel": "claude-sonnet-4-6",
+        "contextWindow": 200000,
+        "costBasis": "list",
+        "costUSD": 0.1509087,
+        "inputTokens": 2,
+        "maxOutputTokens": 32000,
+        "outputTokens": 8484,
+        "provider": "firstParty",
+        "thinkingTokens": 6947,
+        "webSearchRequests": 0
+      }
+    },
+    "pair_id": "patient--impatient",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "prompt_sha256": "0f2a83b6273d8823179c30fa6f44630349584a49caf84c6af2998f20194f2d07",
+    "python": "3.14.8",
+    "requested_model": "claude-sonnet-4-6",
+    "returned_model": "claude-sonnet-4-6",
+    "schema_sha256": "1ac9dcb7473366ec7b30cc32f5830e49b2c5b2ae9c6c535184dcf06584f9eaff",
+    "seed": "model seed unavailable; no resampling or retries",
+    "source_commit": "a5a720eec44c3b5a4f625d22048c02a40238c4aa",
+    "started_at": "2026-10-11T11:45:52.454388+00:00",
+    "status": "needs_evidence_review",
+    "subscription_route": true,
+    "timeout_seconds": 300,
+    "tools": [
+      "StructuredOutput"
+    ],
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3708,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 3708,
+      "cache_read_input_tokens": 4649,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 2,
+      "iterations": [
+        {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 3708,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 3708,
+          "cache_read_input_tokens": 4649,
+          "input_tokens": 2,
+          "output_tokens": 8484,
+          "type": "message"
+        }
+      ],
+      "output_tokens": 8484,
+      "output_tokens_details": {
+        "thinking_tokens": 6947
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    },
+    "validation_errors": [
+      "complement scope without complementarity",
+      "complement scope without complementarity"
+    ]
+  }
+]

@@ -1,0 +1,114 @@
+{
+  "attempt_statuses": {
+    "failed": 1,
+    "needs_evidence_review": 3,
+    "validated": 8
+  },
+  "attempts": 12,
+  "claude_cost_accounting_complete": false,
+  "codex_reported_tokens_used": 107433,
+  "commonness_observations": 0,
+  "completed_claude_api_equivalent_usd": 1.1203335,
+  "distinct_forms": 11,
+  "failures": [
+    {
+      "exit_code": "timeout",
+      "family": "claude",
+      "pair_id": "attentive--inattentive"
+    }
+  ],
+  "finished_at": "2026-10-11T11:51:04.292857+00:00",
+  "frame_frozen": false,
+  "gold_standard_claimed": false,
+  "hf_compute_used_for_this_stage": false,
+  "inference_wall_seconds": 938.286642,
+  "missed_pair_recall_estimated": false,
+  "model_target_reading_counts_not_independent_pairs": {
+    "contrary_within_recorded_domain": 4,
+    "overlap_possible": 4,
+    "unresolved": 43
+  },
+  "pairs": 6,
+  "primary_pair_dispositions": [
+    {
+      "disposition": "retained_alignment_reading_unresolved",
+      "pair_id": "attentive--inattentive",
+      "summary": "Four proposals remain compatible with cognitive attention or care interpretations. Degree sufficiency and due-care standards must be kept explicit; no exact complementary reading is established."
+    },
+    {
+      "disposition": "retained_alignment_reading_unresolved",
+      "pair_id": "kind--unkind",
+      "summary": "Considerate/helpful nature versus deficient kindness or humane feeling remains supported. The degree boundary and exhaustive division are not established."
+    },
+    {
+      "disposition": "retained_alignment_reading_unresolved",
+      "pair_id": "friendly--unfriendly",
+      "summary": "Friendlike character and hostile/inimical opposition have supported branches. Helpful inclination versus lack of friendship inclination remains unresolved as a direct alignment. Conditional applicability does not establish a conditional complement."
+    },
+    {
+      "disposition": "unresolved_alignment",
+      "pair_id": "attentive--unattentive",
+      "summary": "The adjective pair remains provisionally attested, but the single negative cross-reference does not select a cognitive-attention, care or courtesy interpretation. Neither saved alignment is released for a primary comparison."
+    },
+    {
+      "disposition": "retained_alignment_reading_unresolved",
+      "pair_id": "patient--impatient",
+      "summary": "Endurance versus irritability is retained in a relevant trying/delay context; broad WordNet impatience also includes restlessness and can overlap with even temper. Eagerness is rejected as this opposite. Conditional applicability does not establish complementarity."
+    },
+    {
+      "disposition": "retained_alignment_reading_unresolved",
+      "pair_id": "happy--unhappy",
+      "summary": "Experiential joy/pleasure versus distress or sadness is retained for the state task. Satisfaction with a specified object is a distinct supported branch. Enduring character and exact complementarity are not established."
+    }
+  ],
+  "primary_review_time": "unmetered; overlaps service time; not included in call-cost extrapolation",
+  "primary_rules_sha256": "26652091e9bed7520ebfa042c9cc0a38983c0fc6218df0b6633feeba0772e77a",
+  "primary_saved_dispositions": {
+    "rejected": 1,
+    "retained": 12,
+    "unresolved": 3
+  },
+  "purchased_api_credits": false,
+  "quote_audit_counts": {
+    "exact_source_substring": 88,
+    "verified_wiki_display_substring": 4
+  },
+  "returned_additional_alignment_records": 6,
+  "returned_saved_alignment_records": 28,
+  "saved_candidate_alignments": 16,
+  "script_sha256": "b4ec13fed695519b50bb18950a76f7d8c0bd86c7bce17f73ed54b0e3a9cfc9cf",
+  "source_commit": "a856cf7ba2b2270130d19e96f3b96e828a68a9ec",
+  "source_quote_references_checked": 92,
+  "subscription_route": true,
+  "summed_call_seconds": 1819.9515135842375,
+  "validation_issues": [
+    {
+      "errors": [
+        "complement scope without complementarity",
+        "complement scope without complementarity",
+        "complement scope without complementarity",
+        "complement scope without complementarity"
+      ],
+      "family": "codex",
+      "pair_id": "friendly--unfriendly"
+    },
+    {
+      "errors": [
+        "invalid quote wikt:92444713:en:a:1",
+        "invalid quote wikt:92960669:en:a:1",
+        "invalid quote wikt:92444713:en:a:1",
+        "invalid quote wikt:92960669:en:a:1"
+      ],
+      "family": "claude",
+      "pair_id": "friendly--unfriendly"
+    },
+    {
+      "errors": [
+        "complement scope without complementarity",
+        "complement scope without complementarity"
+      ],
+      "family": "claude",
+      "pair_id": "patient--impatient"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "observed_at": "2026-10-11T12:00:22.283744+00:00",
+  "launch_authorized": false,
+  "proposal": "8 cells: both designs, baseline/register, H2 truth -.10, joint/cut, register omitted, prior SD 1",
+  "original_cell_ids": [
+    12,
+    18,
+    60,
+    66,
+    132,
+    138,
+    180,
+    186
+  ],
+  "fresh_replicates_per_cell": 100,
+  "unique_generated_datasets": 400,
+  "fit_configurations": 800,
+  "component_fits": 4000,
+  "components": [
+    {
+      "design": "uwa",
+      "mode": "upstream",
+      "per_rep_count": 2,
+      "seconds": 109.95159662194783,
+      "observations": 3,
+      "source": "results/d1c/baseline-batch-20261010/collected/modules/c022-upstream/runtime.json",
+      "source_sha256": "484d320f26ce4ac1208315d54290ded30f901f3f21d8a0183db25faed39918e9"
+    },
+    {
+      "design": "uwa",
+      "mode": "downstream",
+      "per_rep_count": 16,
+      "seconds": 8256.212774231972,
+      "observations": 24,
+      "source": "results/d1c/baseline-batch-20261010/collected/modules/c022-downstream-003/runtime.json",
+      "source_sha256": "5100fb6b09c28a3f3e687e56fe489dfe511faf545b61362efa251c47579e7986"
+    },
+    {
+      "design": "uwa",
+      "mode": "joint",
+      "per_rep_count": 2,
+      "seconds": 8031.128602190991,
+      "observations": 1,
+      "source": "results/d1c/baseline-batch-20261010/collected/modules/c016-joint/runtime.json",
+      "source_sha256": "2ac41bf18bcac8d540153803474f2e47113a630889ba0916910f7c6125fc9a6f"
+    },
+    {
+      "design": "nicolas",
+      "mode": "upstream",
+      "per_rep_count": 2,
+      "seconds": 111.38462180900387,
+      "observations": 3,
+      "source": "results/d1c/baseline-batch-20261010/collected/modules/c142-upstream/runtime.json",
+      "source_sha256": "3879786ca996cf2800272456b180de41320e8167cee3a7fa9ff2177c043be1bb"
+    },
+    {
+      "design": "nicolas",
+      "mode": "downstream",
+      "per_rep_count": 16,
+      "seconds": 9219.426702515222,
+      "observations": 24,
+      "source": "results/d1c/baseline-batch-20261010/collected/modules/c126-downstream-005/runtime.json",
+      "source_sha256": "065e1b89e8883b92938b397e06a08a587c91332c904fe03854d96fa46a8aa3f3"
+    },
+    {
+      "design": "nicolas",
+      "mode": "joint",
+      "per_rep_count": 2,
+      "seconds": 8313.890994883026,
+      "observations": 3,
+      "source": "results/d1c/baseline-batch-20261010/collected/modules/c120-joint/runtime.json",
+      "source_sha256": "3fa565095f1d838c24cf85f9fc380dc00f7f6165ef4b96e90383dbfa835564d6"
+    }
+  ],
+  "worker_hours": 8687.303979415696,
+  "workers_per_machine": 2,
+  "planning_machines": 20,
+  "ideal_elapsed_hours": 217.1825994853924,
+  "hourly_usd": 0.03,
+  "rate_source": "logs/d1c-baseline-batch-launch-20261010.json",
+  "rate_source_sha256": "520163f8c422c1204cbcbb58d07ca6cab7b65628304ae54f2f3e6e87fc71901a",
+  "estimated_compute_usd": 130.30955969123542,
+  "planning_allowance_with_50_percent_overhead": 195.46433953685312,
+  "proposed_new_budget_cap_usd": 200,
+  "mcse_at_90_percent": 0.030000000000000002,
+  "worst_case_mcse": 0.05,
+  "limitations": [
+    "Extrapolates baseline component timings to register stress, which is not timed on HF.",
+    "Uses observed maximum component times, not a guaranteed bound.",
+    "Assumes two workers per machine and ideal load balancing; queueing, dependencies, failures, exports and startup add overhead.",
+    "Proposed $200 cap is new authorization, separate from current $15 batch; this log submits no jobs.",
+    "100 attempted replicates yield lower effective precision if diagnostics fail; failures are reported and not automatically replaced."
+  ]
+}
