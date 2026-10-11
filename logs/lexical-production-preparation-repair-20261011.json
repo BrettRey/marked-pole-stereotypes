@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-10-11T17:14:15.043217+00:00",
+  "initial_source_commit": "b68037aba386999cb15155b4908a627c2a7db9d7",
+  "failed_stage": "initial packet preparation, before instrument freeze",
+  "error": "ValueError: Cached extracted definitions differ from pinned page",
+  "diagnosed_cause": "Missing-page records intentionally have parsed=null; verifier incorrectly attempted dictionary-revision parsing.",
+  "scientific_jobs_started": 0,
+  "source_retrievals_to_repeat": 0,
+  "neutral_route_checks_to_repeat": 0,
+  "cache_sha256_before_correction": "88341949fdad4e465dee0ae637869537b0d87dadf2fa0e4452bbe13a4d692269",
+  "correction_verification_pending": false,
+  "cache_sha256_after_correction": "88341949fdad4e465dee0ae637869537b0d87dadf2fa0e4452bbe13a4d692269",
+  "source_cache_unchanged": true,
+  "production_tests_passed": 72,
+  "corrected_evidence_script_sha256": "9c45a74853ac21f0f437af411b68072b25658e761340d805f916bbbe8a7b8539"
+}

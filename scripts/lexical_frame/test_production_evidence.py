@@ -1,5 +1,6 @@
 """Mechanical fixtures only; no fixture is an empirical lexical observation."""
 import copy
+import hashlib
 import json
 import unittest
 from unittest.mock import patch
@@ -10,7 +11,7 @@ from datetime import datetime, timezone
 import requests
 
 from production_evidence import (Retriever, _assemble_item, _retry_after, _collect, supplement_packet, digest,
-    parse_wiktionary, select_forms, verify_pinned, build_packets, VERSION)
+    parse_wiktionary, select_forms, verify_pinned, build_packets, _read_cache, VERSION)
 
 
 def page(text, title='fixture', revision=123):
@@ -230,6 +231,44 @@ class SelectionTests(unittest.TestCase):
 
 
 class CollectionAndSupplementTests(unittest.TestCase):
+    def test_reload_missing_invalid_pages_checks_raw_parent_and_no_parse(self):
+        missing = {'title': 'fixture-missing', 'missing': True, 'ns': 0}
+        invalid = {'title': 'fixture-invalid', 'invalid': True, 'invalidreason': 'Fixture title invalid'}
+        ordinary = page('==English==\n===Adjective===\n# Actual fixture definition.', 'fixture-ordinary')
+        response_payload = payload([missing, invalid, ordinary])
+        cache = Retriever(Session(Response(response_payload)), persist=False).fetch_group(
+            ['fixture-missing', 'fixture-invalid', 'fixture-ordinary'])
+        with tempfile.TemporaryDirectory() as folder:
+            out = Path(folder)
+            raw_path = out / 'response.json'
+            raw_path.write_text(json.dumps(response_payload))
+            source = {'id': 'lexical_prod_response_fixture',
+                      'sha256': hashlib.sha256(raw_path.read_bytes()).hexdigest(), 'local_path': 'response.json'}
+            for entry in cache.values():
+                entry['request_sources'] = [source]
+            cache_path = out / 'cache.json'
+            cache_path.write_text(json.dumps(cache))
+            with patch('production_evidence.ROOT', out), patch('production_evidence._provenance', return_value=[source]):
+                loaded = _read_cache(out)
+                self.assertIsNone(loaded['fixture-missing']['parsed'])
+                self.assertIsNone(loaded['fixture-invalid']['parsed'])
+                self.assertEqual(loaded['fixture-missing']['status'], 'missing')
+                self.assertEqual(loaded['fixture-invalid']['status'], 'ambiguous')
+                self.assertEqual(loaded['fixture-ordinary']['parsed'], parse_wiktionary(ordinary))
+                # A locally edited missing result cannot masquerade as response evidence.
+                tampered = copy.deepcopy(cache)
+                tampered['fixture-missing']['page']['title'] = 'different-title'
+                cache_path.write_text(json.dumps(tampered))
+                with self.assertRaisesRegex(ValueError, 'absent from registered parent'):
+                    _read_cache(out)
+                # Nor can missing/invalid pages acquire invented parsed records.
+                for title in ('fixture-missing', 'fixture-invalid', 'fixture-ordinary'):
+                    tampered = copy.deepcopy(cache)
+                    tampered[title]['parsed'] = {'definitions': []}
+                    cache_path.write_text(json.dumps(tampered))
+                    with self.assertRaisesRegex(ValueError, 'extracted definitions differ'):
+                        _read_cache(out)
+
     def test_frozen_initial_packets_ignore_later_augmented_cache(self):
         form = {'word': 'adjfixture', 'form_id': 'id', 'original_spellings': ['adjfixture'],
                 'dictionary_lookup_alias': None, 'case_variant_group': False}

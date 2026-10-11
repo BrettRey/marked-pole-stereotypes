@@ -1,0 +1,31 @@
+{
+  "recorded_at": "2026-10-11T17:06:25.165907+00:00",
+  "source_commit": "b68037aba386999cb15155b4908a627c2a7db9d7",
+  "python": "3.14.8",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "requests": "2.34.2",
+    "jsonschema": "4.26.0"
+  },
+  "production_tests_passed": 71,
+  "script_hashes": {
+    "scripts/lexical_frame/production-word-prompt.txt": "02d24c773a85329a74f1654abeac7c39a73afbb21db180f2a88d7528eb5355d5",
+    "scripts/lexical_frame/production_evidence.py": "5b2ba3658e899a73a8b47ede0e227e16511336810794660ce9359e84d23a72c5",
+    "scripts/lexical_frame/production_report.py": "b13b6b13a38a67559b48d3b249435c9fee66f82c39a1e312f55957e2780bf195",
+    "scripts/lexical_frame/production_runner.py": "61fae9871c55b2c00bb06bd79ce398738dbc3f678631814ba532a0e3feb0d7de",
+    "scripts/lexical_frame/production_schema.py": "637573faba231b831178107c68ff5103e6915d14d81d5fdaa2d1dcfc01cfdc8a",
+    "scripts/lexical_frame/test_production_evidence.py": "5fb962dfdc05663bdac4f76213842f0e28bb6d38317aa5d3f1ed193c98233e0f",
+    "scripts/lexical_frame/test_production_report.py": "6d8ec2688ca708acc1b2b4a39dc0d8e12329465e28a0e80db0a9cfa529caaa83",
+    "scripts/lexical_frame/test_production_runner.py": "c919670a516ea9b7bd38054910e7ab535450d9de7277bed38e021e895b922264",
+    "scripts/lexical_frame/test_production_schema.py": "5b719728df177ff354a3832c2cae5cfc9336821efb1e4c9bd3735fe5ddb817b5"
+  },
+  "selection_sha256": "761e77858a19627fb47bd2bcacc171f295ef47d5b1762e175a02e671df730d58",
+  "forms_selected": 200,
+  "homogeneous_packets": 20,
+  "scientific_job_limit": 80,
+  "scientific_jobs_started": 0,
+  "route_checks_started": 2,
+  "collection_started": true,
+  "instrument_not_yet_frozen": true,
+  "raw_sources_and_judge_answers_private": true
+}

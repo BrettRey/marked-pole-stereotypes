@@ -1,0 +1,20 @@
+{
+  "already_cached": 11,
+  "cache_sha256": "88341949fdad4e465dee0ae637869537b0d87dadf2fa0e4452bbe13a4d692269",
+  "category_gap_forms": 10296,
+  "completed_at": "2026-10-11T17:10:09.880169+00:00",
+  "new_title_attempts": 10285,
+  "python": "3.14.8",
+  "rating_or_commonness_values_read": false,
+  "requests": "2.34.2",
+  "script_sha256": "5b2ba3658e899a73a8b47ede0e227e16511336810794660ce9359e84d23a72c5",
+  "source_commit": "b68037aba386999cb15155b4908a627c2a7db9d7",
+  "started_at": "2026-10-11T17:05:50.737567+00:00",
+  "statuses": {
+    "ambiguous": 20,
+    "missing": 38,
+    "retrieved": 10238
+  },
+  "stop_reason": null,
+  "unattempted_titles": 0
+}

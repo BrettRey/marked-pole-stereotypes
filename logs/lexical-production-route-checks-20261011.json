@@ -1,0 +1,99 @@
+{
+  "recorded_at": "2026-10-11T17:07:29.870094+00:00",
+  "route_checks": {
+    "codex": {
+      "status": "passed",
+      "source_commit": "b68037aba386999cb15155b4908a627c2a7db9d7",
+      "started_at": "2026-10-11T17:05:50.828501+00:00",
+      "completed_at": "2026-10-11T17:05:55.646896+00:00",
+      "elapsed_seconds": 4.8181071248836815,
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "cli_version": "0.161.0",
+      "cli_version_output": "codex-cli 0.161.0",
+      "reasoning_effort": "high",
+      "tools": null,
+      "api_key_source": null,
+      "assistant_models": null,
+      "num_turns": null,
+      "usage": {
+        "reported_total_tokens": 13846
+      },
+      "api_equivalent_usd": null,
+      "internal_retries": null,
+      "schema_repairs": null,
+      "internal_request_observability": "Unknown: this CLI text route exposes no complete request or schema-repair ledger.",
+      "instrument_errors": [],
+      "route_problem": null,
+      "observed_assistant_message_count": 0,
+      "observed_request_id_count": 0
+    },
+    "claude": {
+      "status": "passed",
+      "source_commit": "b68037aba386999cb15155b4908a627c2a7db9d7",
+      "started_at": "2026-10-11T17:05:55.711350+00:00",
+      "completed_at": "2026-10-11T17:05:58.488428+00:00",
+      "elapsed_seconds": 2.7769608749076724,
+      "requested_model": "claude-sonnet-5-5",
+      "returned_model": "claude-sonnet-5-5",
+      "cli_version": "2.1.296",
+      "cli_version_output": "2.1.296 (Claude Code)",
+      "reasoning_effort": null,
+      "tools": [
+        "StructuredOutput"
+      ],
+      "api_key_source": "none",
+      "assistant_models": [
+        "claude-sonnet-5-5"
+      ],
+      "num_turns": 2,
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 1566,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 1566,
+        "cache_read_input_tokens": 967,
+        "fallback_credit": null,
+        "inference_geo": "global",
+        "input_tokens": 2,
+        "iterations": [
+          {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 1566,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 1566,
+            "cache_read_input_tokens": 967,
+            "input_tokens": 2,
+            "output_tokens": 52,
+            "type": "message"
+          }
+        ],
+        "output_tokens": 52,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 0
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      },
+      "api_equivalent_usd": 0.0068847,
+      "internal_retries": null,
+      "schema_repairs": null,
+      "internal_request_observability": "Distinct assistant message/request IDs are observed lower bounds; hidden retries and schema repairs remain unknown.",
+      "instrument_errors": [],
+      "route_problem": null,
+      "observed_assistant_message_count": 1,
+      "observed_request_id_count": 1
+    }
+  },
+  "scientific_jobs": 0,
+  "automatic_scientific_reruns": false,
+  "underlying_requests_are_not_dispatched_jobs": true,
+  "schema_repair_observability": "The Claude CLI exposes its StructuredOutput serializer and two client turns with one assistant message in this neutral check. Neither route provides a complete underlying-request/retry/repair ledger; absence of an exposed repair event is not proof that repairs are disabled.",
+  "same_observability_recorded_for_scientific_jobs": true
+}

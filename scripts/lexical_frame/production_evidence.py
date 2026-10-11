@@ -511,12 +511,31 @@ def _read_cache(out=OUT):
                 raise ValueError('Derived page is absent from registered parent responses')
         else:
             page = entry.get('page')
-            if page and entry.get('sources'):
-                source = registry[entry['sources'][0]['id']]
-                if json.loads((ROOT / source['local_path']).read_text()) != page:
-                    raise ValueError('Cached page differs from registered source')
-        if page and entry.get('parsed') != parse_wiktionary(page):
+            if page:
+                # Missing/invalid API results have no revision and therefore no
+                # derived page artifact. Their exact result still must occur in
+                # a registered raw response; absence is never invented locally.
+                parents = [r['id'] for r in entry.get('request_sources', [])
+                           if r['id'].startswith('lexical_prod_response_')]
+                if parents:
+                    if not any(digest(page) in parent_pages.get(parent, set()) for parent in parents):
+                        raise ValueError('Cached page is absent from registered parent responses')
+                elif entry.get('sources'):
+                    source = registry[entry['sources'][0]['id']]
+                    if json.loads((ROOT / source['local_path']).read_text()) != page:
+                        raise ValueError('Cached page differs from registered source')
+                else:
+                    raise ValueError('Cached page lacks registered provenance')
+        # fetch_group deliberately does not parse missing/invalid pages. Keep
+        # that distinct from an ordinary page whose revision data are defective.
+        nonlexical_result = page is None or 'missing' in page or 'invalid' in page
+        expected_parsed = None if nonlexical_result else parse_wiktionary(page)
+        if entry.get('parsed') != expected_parsed:
             raise ValueError('Cached extracted definitions differ from pinned page')
+        if page and 'missing' in page and entry.get('status') != 'missing':
+            raise ValueError('Cached missing-page disposition differs from source result')
+        if page and 'invalid' in page and 'missing' not in page and entry.get('status') != 'ambiguous':
+            raise ValueError('Cached invalid-page disposition differs from source result')
     return cache
 
 
