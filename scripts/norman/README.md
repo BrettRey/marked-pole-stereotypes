@@ -113,3 +113,36 @@ pixels before the shared crop geometry; add a regression fixture for that API
 boundary and retain private tracebacks for any subsequent V failure. No V values
 were scored, and no model-quality acceptance decision was made. Publish these
 setup corrections and 12 passing tests before rerunning the same four halves.
+
+
+## After pilot 3 (2026-10-11): X repaired, V not accepted
+
+The corrected attempt completed all four X and four V calls in 82.6 seconds.
+X supplied a schema-valid answer for every half-page and reproduced 218 of 239
+fully readable gold rows exactly (224 complete rows). All four transcript
+headers identify gpt-6.1-sol and display effort `none`; the request omits effort,
+so no resolved provider effort is inferred from that header. The four calls
+used 40,831 reported tokens. This single check does not establish improvement
+over the older 212/239 result. No command-execution markers were found.
+
+V detected 39 blocks across the four halves, but the column parser yielded
+zero complete numeric rows. V=X and V=A therefore have zero comparable rows.
+This does not meet the existing acceptance requirement and says nothing about
+Vision's general OCR accuracy. The present Vision/parser combination is not
+a replacement for B. Wave 1 remains unlaunched; no further tuning or broader
+page run follows automatically. A redesigned numeric parser or a different
+second engine would require a separately agreed next step.
+
+With the current pilot X output, X=A agrees on 119 rows, all correct. The
+saved B output agrees with X on 159 rows, of which 158 are correct. A's numeric
+transcriptions were reused; its item-ID alignment uses current X, as the
+existing reconciliation rule specifies. Its current 123/239 exact-row count
+is not a new independent Tesseract run or a direct replication of the earlier
+97/239 score. B reproduces 163/239 rows exactly. Missing gold values exclude
+one of 240 rows; no rows are excluded for engine failure.
+
+The counts-only report is `logs/norman-pilot3-scores-20261011.json`, with source
+commit and input hashes. Runtime/environment and attempt counts are in
+`logs/norman-extract-20261011-085730.json`. Source values, incomplete blocks and
+all attempts stay in `data/raw/norman1967/`. The setup-failure record is retained
+separately. Other pages' extracted values remain uninspected and unjoined.

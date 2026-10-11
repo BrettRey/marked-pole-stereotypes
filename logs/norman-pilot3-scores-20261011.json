@@ -1,0 +1,61 @@
+{
+  "at": "2026-10-11T12:58:03.455302+00:00",
+  "pages": [
+    40,
+    41
+  ],
+  "gold_rows": 239,
+  "excluded_gold_rows": 1,
+  "source_commit": "ecdee18e7dc36a121ca90c000793052752af8280",
+  "engines": {
+    "A": {
+      "exact": 123,
+      "complete": 140,
+      "gold_denominator": 239
+    },
+    "B": {
+      "exact": 163,
+      "complete": 179,
+      "gold_denominator": 239
+    },
+    "X": {
+      "exact": 218,
+      "complete": 224,
+      "gold_denominator": 239
+    },
+    "V": {
+      "exact": 0,
+      "complete": 0,
+      "gold_denominator": 239
+    }
+  },
+  "agreements": {
+    "V=X": {
+      "rows": 0,
+      "correct": 0,
+      "wrong": 0
+    },
+    "V=A": {
+      "rows": 0,
+      "correct": 0,
+      "wrong": 0
+    },
+    "X=A": {
+      "rows": 119,
+      "correct": 119,
+      "wrong": 0
+    },
+    "B=X": {
+      "rows": 159,
+      "correct": 158,
+      "wrong": 1
+    }
+  },
+  "input_sha256": {
+    "gold": "88f26cab5a42b95081053f39f25b8ff37a11d32d0a03efc75aa2cf335e0ef0f5",
+    "A": "e8eac93131a9f60a9126852c25597a4a71bc790bbdd819bd2390be294e6f42a8",
+    "B": "5843b74f77605cbbb8a0f57c05d06ace1807265e5165ad0a1ed7fec3e9e5f52d",
+    "X": "89351d18741ff7f6c04d9b93583b6cb367ff3c492cc308a06b6a3ede82bdebf2",
+    "V": "31e2c53465aead7d7c1aea35f4837ca964e70463b82cc076e16fc5e9f690f462"
+  }
+}

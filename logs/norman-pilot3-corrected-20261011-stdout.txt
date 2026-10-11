@@ -1,0 +1,9 @@
+[X 1/4] page 40F: ok
+[X 2/4] page 40M: ok
+[X 3/4] page 41M: ok
+[X 4/4] page 41F: ok
+[V 1/4] page 40M: ok
+[V 2/4] page 40F: ok
+[V 3/4] page 41M: ok
+[V 4/4] page 41F: ok
+log: logs/norman-extract-20261011-085730.json

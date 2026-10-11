@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-10-11T08:57:30",
+  "script": "scripts/norman/extract.py",
+  "command": "pilot",
+  "argv": [
+    "scripts/norman/extract.py",
+    "pilot",
+    "--pages",
+    "40,41",
+    "--passes",
+    "X,V"
+  ],
+  "pdf_sha256": "fdbbce54d27a2a8054957cbc0393bd1369ddcd77833bc7568139bf45ed33bc78",
+  "tesseract": "tesseract 5.5.3",
+  "model_b": "z-ai/glm-5.3-flash",
+  "model_c": "claude subagent (adjudication of disputes; see README)",
+  "prompt_sha256": "837b39ba6e4e431e584f244a72f305cebc9370c4b2686f98f32c59e7490f9ef9",
+  "dpi": 300,
+  "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "code_commit": "ecdee18e7dc36a121ca90c000793052752af8280",
+  "codex": "codex-cli 0.161.0",
+  "model_x": "gpt-6.1-sol",
+  "requested_effort_x": null,
+  "expected_header_effort_x": "none",
+  "macos": "26.6.2",
+  "packages": {
+    "Pillow": "11.3.0",
+    "pyobjc-framework-Vision": "12.2.2"
+  },
+  "pages": [
+    40,
+    41
+  ],
+  "counts": {
+    "X": {
+      "attempted": 4,
+      "failed": 0,
+      "reused": 0
+    },
+    "V": {
+      "attempted": 4,
+      "failed": 0,
+      "reused": 0
+    }
+  },
+  "elapsed": 82.6
+}
