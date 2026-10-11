@@ -29,3 +29,15 @@ Colab fitting stays unlaunched until account access and the displayed consumptio
 Keep Yoko's current timing run. Additional volunteer environments are optional; their hardware descriptions alone are not throughput measurements. Use included Colab units where they buy useful completed work without extra payment, then HF for additional parallel capacity. Compare elapsed time and failure-adjusted cost per valid component, including setup and idle time. Preserve distinct logical module IDs and a central assignment record; a hardware repeat is not an additional independent simulated dataset.
 
 More machines shorten wall time but do not reduce the required number of fits. The preliminary 4,000-module design budget is dominated by 3,200 conditional fits. Better packing may lower its HF cost; included Colab capacity may lower additional cash cost. Neither change resolves the still-unfrozen empirical specification or justifies launching that full design now.
+
+## After the first Colab sign-in attempt (2026-10-11)
+
+The stock 0.7.4 CLI received only identity scopes and rejected the narrower grant before saving a token. Its partial-consent handling is also reported in [upstream issue 116](https://github.com/googlecolab/google-colab-cli/issues/116). The local `colab_access.py` entry point requests identity and Colab access, omitting the optional Cloud and Drive scopes. It uses a separate `colab-only-token.json` credential file, applies the same narrower scope list during refresh, and retains ordinary scope validation. No token contents are logged or committed. The launcher sets a private file-creation mask.
+
+Use the entry point consistently for subsequent project commands:
+
+```bash
+uvx --from google-colab-cli==0.7.4 python scripts/compute/colab_access.py --auth oauth2 usage
+```
+
+The user must approve the Colab permission on Google's consent screen and paste the returned authorization code into their own Terminal. A successful balance query, not browser identity sign-in alone, confirms readiness. This correction does not change the running HF benchmark source, sampler or assignments.

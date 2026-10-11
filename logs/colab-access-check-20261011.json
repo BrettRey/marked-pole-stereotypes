@@ -1,0 +1,14 @@
+{
+  "cli_version": "0.7.4",
+  "entry_point_help": "PASS",
+  "requested_scopes": [
+    "openid",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/colaboratory"
+  ],
+  "separate_token_filename": "colab-only-token.json",
+  "file_creation_mask": "0077",
+  "credential_contents_read": false,
+  "network_authentication_attempted": false
+}
