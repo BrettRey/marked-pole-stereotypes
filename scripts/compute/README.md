@@ -22,7 +22,7 @@ Google's [AI Pro help](https://support.google.com/googleone/answer/14534406?hl=e
 
 The official [Colab CLI](https://github.com/googlecolab/google-colab-cli), locally checked at 0.7.4, supports CPU sessions, usage reporting, remote execution and file download. CLI authentication is not yet available in this session. Query `colab usage` after signing in, record the account balance and rate, then allocate at most one CPU runtime for this check. Do not buy credits or select a GPU. Measure actual CPU/RAM and rate before starting the fit. A GPU allocation does not accelerate this unchanged CPU sampler.
 
-Colab fitting stays unlaunched until account access and the displayed consumption rate permit a finite compute-unit allowance. The initial proposed bound is the lesser of 10 available units and six hours at the displayed rate; the controller's time limit must be reduced if necessary before launch. The source must be published after any such setting change. Run availability and safe artifact retrieval must be checked before assigning batches to ephemeral Colab storage.
+Colab fitting requires verified account access, available units and the displayed consumption rate. The account now reports 400 available units; Brett rejected the analyst-imposed 10-unit trial allowance, which is withdrawn. The available balance is the compute pool, with no additional credit purchase authorized. The prepared timing fit retains its six-hour stop. The first standard CPU runtime reports .08 units/hour, so six hours of fitting costs .48 units, plus setup and export time. Run availability and safe artifact retrieval must be checked before assigning batches to ephemeral Colab storage.
 
 ## Allocation after the checks
 
@@ -41,3 +41,5 @@ uvx --from google-colab-cli==0.7.4 python scripts/compute/colab_access.py --auth
 ```
 
 The user must approve the Colab permission on Google's consent screen and paste the returned authorization code into their own Terminal. A successful balance query, not browser identity sign-in alone, confirms readiness. This correction does not change the running HF benchmark source, sampler or assignments.
+
+After successful sign-in (2026-10-11): the balance query confirms 400 units and no pre-existing runtime. The assigned standard CPU runtime has two logical CPUs, 13,605,822,464 bytes RAM and an available C++ compiler. `run_colab_timing.py` owns only `Brett-colab-timing1`, runs the published bootstrap, polls its receipt, downloads the finished archive, verifies its manifest and hashes, and releases that runtime after success or failure. It never starts a replacement fit. The local lifecycle limit is six hours forty minutes, covering the six-hour fit limit plus bounded setup/export. The original 10-unit proposal is not an active restriction.
