@@ -22,6 +22,7 @@ import signal
 import subprocess
 import sys
 import time
+import traceback
 import uuid
 import platform
 import importlib.metadata
@@ -204,6 +205,8 @@ def pass_a(p: int, side: str, png: Path) -> list[dict]:
 def pass_columns(png: Path, words: list[dict], ocr, *, repair_digits: bool) -> list[dict]:
     """Shared crop geometry; each engine independently locates headings and reads digits."""
     from PIL import Image
+    words = [dict(token, **{key: int(round(token[key])) for key in ("left", "top", "w", "h")})
+             for token in words]
     means = [t for t in words if re.match(r"^[MHN]E[AE]?[NM]", t["text"].upper())]
     items = [t for t in words if re.match(r"^IT[EF]M", t["text"].upper())]
     if not means:
@@ -298,7 +301,11 @@ def pass_v(png: Path) -> tuple[list | None, dict]:
         return blocks or None, dict(meta, elapsed_seconds=time.monotonic() - t0)
     except Exception as error:
         # Error details are saved privately; public summaries retain only failure counts.
-        return None, dict(meta, error=type(error).__name__, elapsed_seconds=time.monotonic() - t0)
+        error_path = RAW / "passV-errors" / (png.stem + "-" + uuid.uuid4().hex + ".txt")
+        error_path.parent.mkdir(parents=True, exist_ok=True)
+        error_path.write_text(traceback.format_exc())
+        return None, dict(meta, error=type(error).__name__, error_path=str(error_path.relative_to(ROOT)),
+                          elapsed_seconds=time.monotonic() - t0)
 
 
 # ------------------------------------------------------------------ passes B and C: vision models
@@ -368,6 +375,7 @@ def parse_x_answer(answer: str, stdout: str, stderr: str, returncode: int) -> tu
     model = re.search(r"(?m)^model:\s*(\S+)", stderr)
     effort = re.search(r"(?m)^reasoning effort:\s*(\S+)", stderr)
     meta = dict(model=model.group(1) if model else None, effort=effort.group(1) if effort else None,
+                requested_effort=None, effort_note="historical wrapper omission; header is not a resolved provider setting",
                 tokens=int(tokens[-1].replace(",", "")) if tokens else None, returncode=returncode)
     if returncode:
         return None, dict(meta, error="process failed")
@@ -604,7 +612,7 @@ def write_log(cmd: str, extra: dict):
                prompt_sha256=PROMPT_SHA, dpi=DPI, python=sys.version,
                code_commit=sh(["git", "rev-parse", "HEAD"], cwd=ROOT).strip(),
                codex=sh(["/opt/homebrew/bin/codex", "--version"]).strip(),
-               model_x="gpt-6.1-sol", effort_x="none", macos=platform.mac_ver()[0],
+               model_x="gpt-6.1-sol", requested_effort_x=None, expected_header_effort_x="none", macos=platform.mac_ver()[0],
                packages={name: importlib.metadata.version(name) for name in
                          ("Pillow", "pyobjc-framework-Vision") if importlib.util.find_spec("Vision")}, **extra)
     path = ROOT / "logs" / f"norman-extract-{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"

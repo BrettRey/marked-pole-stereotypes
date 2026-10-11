@@ -1,0 +1,9 @@
+[X 1/4] page 40F: FAILED
+[X 2/4] page 40M: FAILED
+[X 3/4] page 41M: FAILED
+[X 4/4] page 41F: FAILED
+[V 1/4] page 40M: FAILED
+[V 2/4] page 40F: FAILED
+[V 3/4] page 41M: FAILED
+[V 4/4] page 41F: FAILED
+log: logs/norman-extract-20261011-085428.json

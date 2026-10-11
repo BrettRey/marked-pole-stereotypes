@@ -95,3 +95,21 @@ The 11 regression tests exercise stream parsing, final-message priority, schema
 and instrument failures, append-only failure recovery, selected-pass isolation,
 and incomplete-value reconciliation. These are software fixtures, not research
 observations. See `logs/norman-repair-tests-20261011.txt`.
+
+### Pilot 3 setup correction (2026-10-11)
+
+The first published attempt (8dc05b4) returned no transcriptions: four X calls
+were rejected before inference because the API does not accept an explicitly
+requested reasoning effort `none` for gpt-6.1-sol. The historical wrapper had
+omitted that parameter; its CLI header's `none` was not evidence of a resolved
+provider effort. Restore the omission, keep the model explicit and record both
+requested effort (unset) and reported header (none). This restores the original
+request semantics rather than silently choosing a new effort. Keep all four
+failures and make one corrected attempt per pilot half-page.
+
+V's first four attempts failed because its fractional pixel coordinates reached
+a Pillow crop-stack size that requires integers. Round engine coordinates to
+pixels before the shared crop geometry; add a regression fixture for that API
+boundary and retain private tracebacks for any subsequent V failure. No V values
+were scored, and no model-quality acceptance decision was made. Publish these
+setup corrections and 12 passing tests before rerunning the same four halves.

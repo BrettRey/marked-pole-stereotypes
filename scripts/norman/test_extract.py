@@ -76,6 +76,16 @@ class ExtractionTests(unittest.TestCase):
         rows = ex.reconcile_page(40, "M", None, None, X=[b], V=[copy.deepcopy(b)])
         self.assertTrue(all(r["source"] == "flagged" for r in rows))
 
+    def test_fractional_engine_coordinates_can_create_crops(self):
+        from PIL import Image
+        words = [dict(text="MEAN", left=200.4, top=180.7, w=55.3, h=20.2)]
+        with tempfile.TemporaryDirectory() as tmp:
+            png = Path(tmp) / "fixture.png"
+            Image.new("L", (500, 600), 255).save(png)
+            rows = ex.pass_columns(png, words, lambda image: [], repair_digits=False)
+        self.assertEqual(len(rows), 1)
+        self.assertFalse(rows[0]["complete"])
+
 
 if __name__ == "__main__":
     unittest.main()
