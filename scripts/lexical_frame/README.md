@@ -265,3 +265,30 @@ The review command records completed analyst work; it isn't a request for anothe
 After category-gap retrieval 1 (2026-10-11): all 10,285 outstanding titles were attempted, with no systemic stop. Including eleven cached category-gap entries, the fixed queue contains 10,238 retrieved entries, 38 missing entries and twenty ambiguous cases. Their unresolved status is retained. Both neutral subscription-route checks passed with the requested model identities and client versions; their exposed internal activity and usage are recorded separately from scientific jobs.
 
 Initial packet preparation then stopped before dispatch because cache verification tried to parse a missing-page result as though it contained a dictionary revision. The corrective reader distinguishes explicit missing/invalid page records, checks them against their registered raw response, and still requires exact re-parsing for real entries. The cached source bytes and lexical evidence are preserved; this is a preparation/verification correction before the scientific instrument freeze. No source retrieval or model call is repeated. The original preparation failure and corrected verification are logged.
+
+
+### First-packet hold and approved v1.1 correction
+
+The v1 instrument froze at `49a0284`. Both first initial jobs returned, with Codex mechanically valid and Claude `needs_review`: nine forms each failed the coverage and supplement-request rules. Input booleans had presented prereview source availability as a completed dynamic evidence decision. The source audit also found case-only WordNet matches that needed explicit lookup mappings. Exact source lemmas were preserved, and the operational selection was unchanged. Source-review annotations remain separate from original answers.
+
+Brett approved [v1.1](../../notes/lexical-production-instrument-review-2026-10-11.md): omit those two model-facing booleans, clarify decision order and expose exact-case/case-only lookup relations. Preserve the original frozen instrument, source evidence and selected IDs. The two original scientific jobs remain in the cumulative eighty-job ledger. Seven valid supplement requests already produced a genuinely augmented first packet; its still-unattempted revised slots provide the successor's first real output check. A new prompt alone never authorizes an evidence-revision job or a retry. Both neutral route checks are reused, with runtime identity/version checks still enforced per job.
+
+V1 source blobs, prompt, report compiler, instrument and original hold record are archived under the private production record. Future jobs must identify their actual instrument and model-input hash. Reports separate versions as well as strata, families and rounds. The WordNet stratum retains its original case-insensitive retrieval definition; neither that route nor a case-only match establishes lexical identity or psychological eligibility.
+
+The approved successor uses explicit version selection. Freeze only after publishing its source and tests. The hold-clearance note records completed instrument checks and the existing approval; it is not a new permission request.
+
+```bash
+python3 scripts/lexical_frame/production_runner.py freeze --instrument-version v1.1
+python3 scripts/lexical_frame/production_runner.py clear-hold --instrument-version v1.1 --review-note /absolute/path/to/completed-instrument-check.md
+python3 scripts/lexical_frame/production_runner.py first --instrument-version v1.1 --notify
+```
+
+After actual source review of both successor first-packet assessments:
+
+```bash
+python3 scripts/lexical_frame/production_runner.py review --instrument-version v1.1 --review-note /absolute/path/to/completed-successor-source-review.md
+python3 scripts/lexical_frame/production_runner.py continue --instrument-version v1.1 --notify
+python3 scripts/lexical_frame/production_report.py --write
+```
+
+Do not change the published source commit between freezing the successor and starting its continuation stage. The successor links the immutable original instrument, original first-job manifests and genuine first augmentation. The report keeps original and revised responses, corrected-input hashes, qualifications and missing counterparts visible. Original model records are never overwritten by source-review annotations.

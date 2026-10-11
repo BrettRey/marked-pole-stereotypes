@@ -36,6 +36,7 @@ VERSIONS = {'codex': '0.161.0', 'claude': '2.1.296'}
 JOB_SECONDS = 900
 MAX_JOBS = 80
 LICENSES = ('WORDNET-LICENSE.txt', 'WIKTIONARY-LICENSE.txt')
+INSTRUMENT_VERSIONS = ('v1', 'v1.1')
 _LOCK = threading.RLock()
 
 
@@ -113,6 +114,46 @@ def model_packet(packet):
     return {'packet_id': packet['packet_id'],
             'items': [_strip({key: val for key, val in item.items() if key in allowed})
                       for item in packet['items']]}
+
+
+def instrument_path(root, version='v1'):
+    if version not in INSTRUMENT_VERSIONS:
+        raise ValueError('Unknown instrument version: ' + str(version))
+    return Path(root) / ('frozen-instrument.json' if version == 'v1'
+                         else 'frozen-instrument-v1.1.json')
+
+
+def version_of(record):
+    """Legacy scientific manifests and frozen records predate explicit versioning."""
+    version = record.get('instrument_version', 'v1')
+    if version not in INSTRUMENT_VERSIONS:
+        raise ValueError('Unknown recorded instrument version: ' + str(version))
+    return version
+
+
+def instrument_prompt(version='v1'):
+    if version == 'v1':
+        from production_schema import prompt_text
+    elif version == 'v1.1':
+        from production_instrument_v11 import prompt_text
+    else:
+        raise ValueError('Unknown instrument version: ' + str(version))
+    return prompt_text()
+
+
+def presented_packet(packet, version='v1'):
+    envelope = model_packet(packet)
+    if version == 'v1.1':
+        from production_instrument_v11 import transform_model_packet
+        return transform_model_packet(envelope)
+    if version != 'v1':
+        raise ValueError('Unknown instrument version: ' + str(version))
+    return envelope
+
+
+def first_review_path(root, family, version='v1'):
+    directory = 'first-review' if version == 'v1' else 'first-review-v1.1'
+    return Path(root) / directory / (family + '.json')
 
 
 def evidence_fingerprint(packet):
@@ -350,13 +391,47 @@ def preflight(family, root=RUN_ROOT, execute=execute_once, source_commit=None):
     return meta
 
 
-def freeze(packets, root=RUN_ROOT, source_commit=None):
-    from production_schema import PRODUCTION_SCHEMA, prompt_text
+def _successor_first_packet(packets, root):
+    """Bind v1.1's first check to existing v1 attempts and actual new evidence."""
+    packet = packets[0]
+    packet_id = packet['packet_id']
+    manifests = {}
+    initial_jobs = {}
+    for family in MODELS:
+        identifier = job_id(family, packet_id, 'initial')
+        path = root / 'jobs' / identifier / 'manifest.json'
+        meta = read_json(path)
+        if not meta or version_of(meta) != 'v1' or meta.get('status') in (
+                'running', 'running_or_interrupted', 'reserved', 'pending'):
+            raise RuntimeError('v1.1 requires both existing terminal v1 first-packet attempts')
+        if meta.get('packet_sha256') != digest(packet):
+            raise RuntimeError('Original first-packet job is not bound to the frozen evidence')
+        initial_jobs[family] = identifier
+        manifests[family] = sha(path)
+    aug_path = root / 'augmentation' / (packet_id + '.json')
+    augmented = read_json(aug_path, {})
+    supplied = augmented.get('packet')
+    if (augmented.get('status') != 'frozen' or not augmented.get('changed') or
+            not supplied or supplied.get('packet_id') != packet_id or
+            [i['item_id'] for i in supplied.get('items', [])] != [i['item_id'] for i in packet['items']] or
+            evidence_fingerprint(supplied) == evidence_fingerprint(packet)):
+        raise RuntimeError('v1.1 first check requires the already frozen, genuinely augmented first packet')
+    return {'packet_id': packet_id, 'initial_job_ids': initial_jobs,
+            'initial_job_manifest_sha256': manifests,
+            'augmentation_sha256': digest(augmented),
+            'augmentation_file_sha256': sha(aug_path),
+            'augmented_packet_sha256': digest(supplied),
+            'model_input_sha256': digest(presented_packet(supplied, 'v1.1')),
+            'gate_round': 'revised'}
+
+
+def freeze(packets, root=RUN_ROOT, source_commit=None, instrument_version='v1'):
+    from production_schema import PRODUCTION_SCHEMA
     root = Path(root)
-    target = root / 'frozen-instrument.json'
+    target = instrument_path(root, instrument_version)
     if target.exists():
         frozen = read_json(target)
-        verify_frozen(frozen, packets, root)
+        verify_frozen(frozen, packets, root, instrument_version)
         return frozen
     commit = source_commit or published_source()
     if len(packets) != 20 or any(len(p['items']) != 10 for p in packets):
@@ -368,40 +443,93 @@ def freeze(packets, root=RUN_ROOT, source_commit=None):
         raise ValueError('Production allocation or unique item accounting differs from the adopted design')
     if len({p['packet_id'] for p in packets}) != 20:
         raise ValueError('Packet IDs must be unique')
-    routes = {family: read_json(root / 'preflight' / family / 'manifest.json') for family in MODELS}
+    parent = None
+    parent_path = instrument_path(root, 'v1')
+    if instrument_version == 'v1.1':
+        parent = read_json(parent_path)
+        if parent is None or version_of(parent) != 'v1':
+            raise RuntimeError('v1.1 requires the original immutable v1 instrument')
+        expected = {'packets': {p['packet_id']: digest(p) for p in packets},
+                    'packet_order': [p['packet_id'] for p in packets],
+                    'models': MODELS, 'cli_versions': VERSIONS,
+                    'schema_sha256': digest(PRODUCTION_SCHEMA),
+                    'scientific_job_limit': MAX_JOBS,
+                    'elapsed_limit_per_job_seconds': JOB_SECONDS,
+                    'initial_assessments': 40, 'revised_evidence_rounds_max': 1,
+                    'licenses': {name: sha(root / name) for name in LICENSES}}
+        changed = [key for key, value in expected.items() if parent.get(key) != value]
+        if changed:
+            raise RuntimeError('Successor would change adopted evidence, routes or limits: ' + ', '.join(changed))
+        routes = copy.deepcopy(parent['routes'])
+        expected_slots = {job_id(f, packets[0]['packet_id'], 'initial') for f in MODELS}
+        if {path.name for path in (root / 'jobs').glob('*')} != expected_slots:
+            raise RuntimeError('Freeze v1.1 before either planned revised slot or any further production slot is attempted')
+    else:
+        routes = {family: read_json(root / 'preflight' / family / 'manifest.json') for family in MODELS}
     if any(value is None for value in routes.values()):
         raise RuntimeError('Complete the two planned neutral route checks before freezing')
-    code = {path.name: sha(path) for path in (HERE / 'production_runner.py', HERE / 'production_evidence.py', HERE / 'production_schema.py')}
-    frozen = {'frozen_at': now(), 'source_commit': commit, 'models': MODELS, 'cli_versions': VERSIONS,
-              'schema_sha256': digest(PRODUCTION_SCHEMA), 'prompt_sha256': hashlib.sha256(prompt_text().encode()).hexdigest(),
-              'code_sha256': code, 'packets': {p['packet_id']: digest(p) for p in packets},
+    code_names = ['production_runner.py', 'production_evidence.py', 'production_schema.py']
+    if instrument_version == 'v1.1':
+        code_names.append('production_instrument_v11.py')
+    frozen = {'frozen_at': now(), 'source_commit': commit, 'instrument_version': instrument_version,
+              'models': MODELS, 'cli_versions': VERSIONS,
+              'schema_sha256': digest(PRODUCTION_SCHEMA),
+              'prompt_sha256': hashlib.sha256(instrument_prompt(instrument_version).encode()).hexdigest(),
+              'code_sha256': {name: sha(HERE / name) for name in code_names},
+              'packets': {p['packet_id']: digest(p) for p in packets},
               'packet_order': [p['packet_id'] for p in packets],
+              'model_input_sha256': {p['packet_id']: digest(presented_packet(p, instrument_version)) for p in packets},
               'licenses': {name: sha(root / name) for name in LICENSES}, 'routes': routes,
               'scientific_job_limit': MAX_JOBS, 'elapsed_limit_per_job_seconds': JOB_SECONDS,
               'internal_requests': 'Not bounded by the job count; exposed requests, turns, retries, and usage are recorded, otherwise unknown.',
               'python': platform.python_version(), 'platform': platform.platform(),
               'initial_assessments': 40, 'revised_evidence_rounds_max': 1}
+    if parent is not None:
+        frozen.update(parent_instrument_version='v1',
+                      parent_instrument_sha256=digest(parent),
+                      parent_instrument_file_sha256=sha(parent_path),
+                      successor_first_packet=_successor_first_packet(packets, root))
     atomic_json(target, frozen)
     return frozen
 
 
-def verify_frozen(frozen, packets, root):
-    from production_schema import PRODUCTION_SCHEMA, prompt_text
+def verify_frozen(frozen, packets, root, instrument_version=None):
+    from production_schema import PRODUCTION_SCHEMA
+    version = version_of(frozen)
     errors = []
+    if instrument_version is not None and version != instrument_version:
+        errors.append('selected instrument version')
     if frozen['packets'] != {p['packet_id']: digest(p) for p in packets}:
         errors.append('packet hashes')
     if frozen['packet_order'] != [p['packet_id'] for p in packets]:
         errors.append('packet order')
     if frozen['schema_sha256'] != digest(PRODUCTION_SCHEMA):
         errors.append('schema')
-    if frozen['prompt_sha256'] != hashlib.sha256(prompt_text().encode()).hexdigest():
+    if frozen['prompt_sha256'] != hashlib.sha256(instrument_prompt(version).encode()).hexdigest():
         errors.append('prompt')
+    if 'model_input_sha256' in frozen and frozen['model_input_sha256'] != {
+            p['packet_id']: digest(presented_packet(p, version)) for p in packets}:
+        errors.append('model-facing input hashes')
     for name, expected in frozen['code_sha256'].items():
         if sha(HERE / name) != expected:
             errors.append(name)
     for name, expected in frozen['licenses'].items():
         if sha(Path(root) / name) != expected:
             errors.append(name)
+    if version == 'v1.1':
+        parent_path = instrument_path(root, 'v1')
+        parent = read_json(parent_path)
+        if (parent is None or frozen.get('parent_instrument_version') != 'v1' or
+                digest(parent) != frozen.get('parent_instrument_sha256') or
+                sha(parent_path) != frozen.get('parent_instrument_file_sha256')):
+            errors.append('immutable parent instrument binding')
+        elif any(frozen.get(key) != parent.get(key) for key in (
+                'packets', 'packet_order', 'models', 'cli_versions', 'schema_sha256',
+                'routes', 'licenses', 'scientific_job_limit', 'elapsed_limit_per_job_seconds',
+                'initial_assessments', 'revised_evidence_rounds_max')):
+            errors.append('successor evidence/routes/limits differ from parent')
+        if _successor_first_packet(packets, Path(root)) != frozen.get('successor_first_packet'):
+            errors.append('existing first-packet attempts or augmented evidence changed')
     if errors:
         raise RuntimeError('Frozen instrument changed: ' + ', '.join(errors))
 
@@ -414,8 +542,9 @@ def job_id(family, packet_id, round_name):
 
 def run_job(family, packet, round_name, frozen, root=RUN_ROOT, execute=execute_once,
             validator=None):
-    from production_schema import PRODUCTION_SCHEMA, prompt_text, validate
+    from production_schema import PRODUCTION_SCHEMA, validate
     root = Path(root)
+    version = version_of(frozen)
     identifier = job_id(family, packet['packet_id'], round_name)
     if packet['packet_id'] not in frozen.get('packets', {}):
         raise ValueError('Packet is outside the frozen production selection')
@@ -425,23 +554,39 @@ def run_job(family, packet, round_name, frozen, root=RUN_ROOT, execute=execute_o
         augmented = read_json(root / 'augmentation' / (packet['packet_id'] + '.json'), {})
         if not augmented.get('changed') or digest(augmented.get('packet')) != digest(packet):
             raise ValueError('Revised job lacks the one frozen, genuinely augmented packet')
+    envelope = presented_packet(packet, version)
+    model_input_hash = digest(envelope)
+    if round_name == 'initial' and 'model_input_sha256' in frozen:
+        if model_input_hash != frozen['model_input_sha256'].get(packet['packet_id']):
+            raise ValueError('Initial model input differs from its frozen presentation')
+    if version == 'v1.1' and packet['packet_id'] == frozen['packet_order'][0]:
+        first = frozen['successor_first_packet']
+        if round_name != 'revised' or model_input_hash != first['model_input_sha256']:
+            raise ValueError('v1.1 first-packet check must use its planned, augmented revised slot')
+    context = {'job_id': identifier, 'family': family, 'packet_id': packet['packet_id'],
+               'round': round_name, 'instrument_version': version,
+               'instrument_sha256': digest(frozen), 'source_commit': frozen['source_commit'],
+               'packet_sha256': digest(packet), 'model_input_sha256': model_input_hash,
+               'evidence_sha256': evidence_fingerprint(packet)}
     directory = root / 'jobs' / identifier
     with _LOCK:
         if len(list((root / 'jobs').glob('*'))) >= MAX_JOBS:
             raise RuntimeError('The 80 dispatched scientific job limit is reached')
         directory.mkdir(parents=True, exist_ok=False)
         # Reservation is durable before spawning: a restart cannot replay it.
-        atomic_json(directory / 'reserved.json', {'job_id': identifier, 'reserved_at': now()})
-    prompt = prompt_text() + '\n\nEvidence packet:\n' + json.dumps(model_packet(packet), ensure_ascii=False, sort_keys=True)
+        atomic_json(directory / 'reserved.json', {**context, 'reserved_at': now()})
+        atomic_json(directory / 'model-input.json', envelope)
+    prompt = instrument_prompt(version) + '\n\nEvidence packet:\n' + json.dumps(envelope, ensure_ascii=False, sort_keys=True)
     for name in LICENSES:
         prompt += '\n\n' + name + '\n' + (root / name).read_text()
     meta, answer = execute(family, directory, prompt, PRODUCTION_SCHEMA)
+    meta.update(context)
     meta.update(job_id=identifier, packet_id=packet['packet_id'], round=round_name,
                 stratum=packet['stratum'], item_ids=[x['item_id'] for x in packet['items']],
                 form_count=len(packet['items']), source_commit=frozen['source_commit'],
                 instrument_sha256=digest(frozen), packet_sha256=digest(packet),
                 evidence_sha256=evidence_fingerprint(packet), is_scientific_job=True,
-                evidence_bytes=len(json.dumps(model_packet(packet), ensure_ascii=False).encode()),
+                evidence_bytes=len(json.dumps(envelope, ensure_ascii=False).encode()),
                 adjective_sense_count=sum(s.get('pos') in ('a', 's', 'adjective') for x in packet['items'] for s in x.get('dictionary_senses', [])),
                 assessment_role='successive assessment; not an independent replication', substantive_review_complete=False)
     if meta['status'] == 'returned':
@@ -462,7 +607,8 @@ def load_job(root, family, packet_id, round_name, recover=False):
     meta = read_json(directory / 'manifest.json')
     if meta is not None:
         return meta
-    started = read_json(directory / 'started.json', {})
+    started = {**read_json(directory / 'reserved.json', {}),
+               **read_json(directory / 'started.json', {})}
     if not recover:
         return {**started, 'family': family, 'packet_id': packet_id, 'round': round_name,
                 'job_id': directory.name, 'status': 'running', 'is_scientific_job': True}
@@ -527,21 +673,28 @@ def augment_after_barrier(packet, initial, supplement, root=RUN_ROOT, request_re
     return record
 
 
-def approve_first(family, note_path, packets, root=RUN_ROOT, reviewer='Codex analyst'):
+def approve_first(family, note_path, packets, root=RUN_ROOT, reviewer='Codex analyst',
+                  instrument_version='v1'):
     """Root analyst records an actual source-support review, not mere parse success."""
     root = Path(root)
+    frozen = read_json(instrument_path(root, instrument_version))
+    if frozen is None or version_of(frozen) != instrument_version:
+        raise RuntimeError('The selected instrument must be frozen before its first review')
     packet_id = packets[0]['packet_id']
     candidates = [load_job(root, family, packet_id, name) for name in ('revised', 'initial')]
-    selected = next((meta for meta in candidates if meta and meta['status'] == 'mechanically_valid'), None)
+    selected = next((meta for meta in candidates if meta and meta['status'] == 'mechanically_valid'
+                     and version_of(meta) == instrument_version
+                     and meta.get('instrument_sha256') == digest(frozen)), None)
     if selected is None:
-        raise RuntimeError('No mechanically valid first-packet assessment to review')
+        raise RuntimeError('No mechanically valid first-packet assessment under the selected instrument to review')
     note = Path(note_path)
     if not note.is_file() or not note.read_text().strip():
         raise ValueError('A substantive source-support review note is required')
     record = {'family': family, 'job_id': selected['job_id'], 'reviewer': reviewer,
+              'instrument_version': instrument_version, 'instrument_sha256': digest(frozen),
               'reviewed_at': now(), 'note_path': str(note.resolve()), 'note_sha256': sha(note),
               'approved_for_ramp': True, 'coverage': 'all first-packet scope, grouping, and temporal assignments'}
-    atomic_json(root / 'first-review' / (family + '.json'), record)
+    atomic_json(first_review_path(root, family, instrument_version), record)
     return record
 
 
@@ -563,7 +716,7 @@ def event(root, kind, data=None, public_root=PUBLIC_ROOT, notify=False):
                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
-def summary(packets, root=RUN_ROOT, public_root=PUBLIC_ROOT):
+def summary(packets, root=RUN_ROOT, public_root=PUBLIC_ROOT, instrument_version='v1'):
     root = Path(root)
     rows = []
     aggregates = {}
@@ -577,6 +730,7 @@ def summary(packets, root=RUN_ROOT, public_root=PUBLIC_ROOT):
             usable = [meta for meta in assessments if meta['status'] == 'mechanically_valid']
             current = next((meta for meta in assessments if meta['round'] == final_round), None)
             families[family] = {'assessment_statuses': {m['round']: m['status'] for m in assessments},
+                                'assessment_instrument_versions': {m['round']: version_of(m) for m in assessments},
                                 'retained_usable_job_id': usable[-1]['job_id'] if usable else None,
                                 'current_evidence_complete': bool(current and current['status'] == 'mechanically_valid'),
                                 'missing_usable_assessment': not bool(usable)}
@@ -586,7 +740,8 @@ def summary(packets, root=RUN_ROOT, public_root=PUBLIC_ROOT):
                     'mechanically_valid_jobs': 0, 'terminal_jobs': 0, 'running_jobs': 0,
                     'elapsed_seconds': 0, 'api_equivalent_usd_observed': None,
                     'priced_job_count': 0, 'unpriced_job_count': 0,
-                    'usage_observations': [], 'substantive_review_seconds': None})
+                    'usage_observations': [], 'instrument_versions': [], 'substantive_review_seconds': None})
+                group['instrument_versions'] = sorted(set(group['instrument_versions']) | {version_of(meta)})
                 group['dispatched_jobs'] += 1
                 group['forms_attempted'] += len(packet['items'])
                 group['mechanically_valid_jobs'] += meta['status'] == 'mechanically_valid'
@@ -598,7 +753,8 @@ def summary(packets, root=RUN_ROOT, public_root=PUBLIC_ROOT):
                     group['priced_job_count'] += 1
                 else:
                     group['unpriced_job_count'] += 1
-                group['usage_observations'].append({'job_id': meta['job_id'], 'usage': meta.get('usage'),
+                group['usage_observations'].append({'job_id': meta['job_id'], 'instrument_version': version_of(meta),
+                    'model_input_sha256': meta.get('model_input_sha256'), 'usage': meta.get('usage'),
                     'partial_observed_usage': meta.get('partial_observed_usage'),
                     'evidence_bytes': meta.get('evidence_bytes'), 'stdout_bytes': meta.get('stdout_bytes'),
                     'answer_bytes': meta.get('answer_bytes'),
@@ -610,31 +766,37 @@ def summary(packets, root=RUN_ROOT, public_root=PUBLIC_ROOT):
                      'supplement_unavailable_forms': len(aug.get('unavailable_item_ids', [])),
                      'families': families, 'completed_both_current_assessments':
                      all(info['current_evidence_complete'] for info in families.values())})
-    result = {'updated_at': now(), 'selected_forms': sum(len(p['items']) for p in packets),
+    result = {'updated_at': now(), 'active_instrument_version': instrument_version,
+              'selected_forms': sum(len(p['items']) for p in packets),
               'dispatched_scientific_jobs': len(list((root / 'jobs').glob('*'))),
               'terminal_scientific_jobs': sum(g['terminal_jobs'] for g in aggregates.values()),
               'running_scientific_jobs': sum(g['running_jobs'] for g in aggregates.values()),
               'job_limit': MAX_JOBS, 'packets': rows, 'workload_by_stratum_family_round': aggregates,
-              'continuation_note': 'Use stratum-specific workload and actual remaining counts after completed work is excluded; no pooled balanced-batch projection. Review and pair-stage costs remain separate.'}
+              'continuation_note': 'These cumulative workload groups can contain successive instrument versions, identified in each assessment and usage observation. Estimate continuation separately by instrument version and stratum using actual remaining counts; no pooled balanced-batch projection. Review and pair-stage costs remain separate.'}
     atomic_json(root / 'dispatch-status.json', result)
     atomic_json(Path(public_root) / 'dispatch-status.json', result)
     return result
 
 
 def run_stage(stage, packets, root=RUN_ROOT, public_root=PUBLIC_ROOT, notify=False,
-              job_runner=run_job, supplement=None):
+              job_runner=run_job, supplement=None, instrument_version='v1'):
     """Packet-local barriers; real queued jobs alone explore accepted concurrency."""
     from production_evidence import supplement_packet
     root = Path(root)
-    frozen = read_json(root / 'frozen-instrument.json')
+    frozen = read_json(instrument_path(root, instrument_version))
     if frozen is None:
         raise RuntimeError('Freeze the instrument before scientific dispatch')
-    verify_frozen(frozen, packets, root)
+    verify_frozen(frozen, packets, root, instrument_version)
     if stage not in ('first', 'continue'):
         raise ValueError(stage)
     work = packets[:1] if stage == 'first' else packets
-    if read_json(root / 'instrument-hold.json', {}).get('active'):
+    hold = read_json(root / 'instrument-hold.json', {})
+    if hold.get('active'):
         raise RuntimeError('A durable instrument hold requires analyst inspection and clear-hold before dispatch')
+    if instrument_version == 'v1.1':
+        if (not hold.get('cleared_at') or not hold.get('review_note') or
+                not hold.get('note_sha256') or sha(hold['review_note']) != hold['note_sha256']):
+            raise RuntimeError('v1.1 requires explicit, documented analyst clearance of the original hold')
     route_state = read_json(root / 'route-state.json', {})
     capacities = {family: 1 for family in MODELS}
     available = {}
@@ -644,13 +806,18 @@ def run_stage(stage, packets, root=RUN_ROOT, public_root=PUBLIC_ROOT, notify=Fal
         if stage == 'first':
             state.pop('hold', None)
         if stage == 'continue' and available[family]:
-            review = read_json(root / 'first-review' / (family + '.json'))
-            if not review or not review.get('approved_for_ramp'):
+            review = read_json(first_review_path(root, family, instrument_version))
+            if (not review or not review.get('approved_for_ramp') or
+                    version_of(review) != instrument_version or
+                    (instrument_version == 'v1.1' and review.get('instrument_sha256') != digest(frozen))):
                 available[family] = False
                 state['hold'] = 'first-packet substantive review required'
             else:
                 reviewed_job = load_job(root, family, packets[0]['packet_id'], review['job_id'].split('__')[1])
-                if not reviewed_job or reviewed_job['job_id'] != review['job_id'] or reviewed_job['status'] != 'mechanically_valid':
+                if (not reviewed_job or reviewed_job['job_id'] != review['job_id'] or
+                        reviewed_job['status'] != 'mechanically_valid' or
+                        version_of(reviewed_job) != instrument_version or
+                        (instrument_version == 'v1.1' and reviewed_job.get('instrument_sha256') != digest(frozen))):
                     raise RuntimeError('First review does not identify a valid first-packet assessment')
                 if sha(review['note_path']) != review['note_sha256']:
                     raise RuntimeError('First-packet substantive review note changed')
@@ -710,6 +877,7 @@ def run_stage(stage, packets, root=RUN_ROOT, public_root=PUBLIC_ROOT, notify=Fal
                 state['peak_concurrent_jobs'] = max(state.get('peak_concurrent_jobs', 0),
                     sum(info[0] == family for info in active.values()))
                 event(root, 'job_dispatched', {'family': family, 'packet_id': packet['packet_id'],
+                    'instrument_version': instrument_version,
                     'round': round_name, 'concurrent_family_jobs': sum(info[0] == family for info in active.values())}, public_root)
             if not active:
                 if pending and not held:
@@ -767,15 +935,17 @@ def run_stage(stage, packets, root=RUN_ROOT, public_root=PUBLIC_ROOT, notify=Fal
                 atomic_json(root / 'route-state.json', route_state)
                 event(root, 'job_terminal', {'family': family, 'packet_id': packet['packet_id'],
                     'round': round_name, 'status': meta['status']}, public_root)
-                summary(packets, root, public_root)
+                summary(packets, root, public_root, instrument_version)
             # On a hold finish active jobs but retain the pending-slot count.
     atomic_json(root / 'route-state.json', route_state)
-    result = summary(packets, root, public_root)
+    result = summary(packets, root, public_root, instrument_version)
     result['stage'] = stage
     result['instrument_hold'] = held
     result['pending_dispatch_slots'] = len(pending)
-    atomic_json(root / (stage + '-stage.json'), result)
-    event(root, 'stage_complete', {'stage': stage, 'scientific_jobs': result['dispatched_scientific_jobs'],
+    stage_name = stage + '-stage' + ('' if instrument_version == 'v1' else '-v1.1') + '.json'
+    atomic_json(root / stage_name, result)
+    event(root, 'stage_complete', {'stage': stage, 'instrument_version': instrument_version,
+          'scientific_jobs': result['dispatched_scientific_jobs'],
           'instrument_hold': held, 'pending_dispatch_slots': len(pending)}, public_root, notify)
     return result
 
@@ -798,6 +968,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('stage', choices=('preflight', 'freeze', 'first', 'review', 'continue', 'status', 'clear-hold'))
     parser.add_argument('--family', choices=(*MODELS, 'both'), default='both')
+    parser.add_argument('--instrument-version', choices=INSTRUMENT_VERSIONS, default='v1')
     parser.add_argument('--root', type=Path, default=RUN_ROOT)
     parser.add_argument('--public-root', type=Path, default=PUBLIC_ROOT)
     parser.add_argument('--review-note', type=Path)
@@ -810,26 +981,30 @@ def main():
                 parser.error('clear-hold requires --review-note with the defect assessment')
             result = clear_hold(args.review_note, args.root)
         elif args.stage == 'preflight':
+            if args.instrument_version != 'v1':
+                parser.error('v1.1 inherits the two completed route checks; no new neutral probes are authorized')
             result = {family: preflight(family, args.root) for family in families}
         else:
             from production_evidence import build_packets
             packets = build_packets()
             if args.stage == 'freeze':
-                result = freeze(packets, args.root)
+                result = freeze(packets, args.root, instrument_version=args.instrument_version)
             elif args.stage in ('first', 'continue'):
                 # published_source verifies this checked-out implementation is
                 # committed and published before any scientific invocation.
                 commit = published_source()
-                frozen = read_json(args.root / 'frozen-instrument.json', {})
+                frozen = read_json(instrument_path(args.root, args.instrument_version), {})
                 if frozen.get('source_commit') != commit:
                     raise RuntimeError('Source commit differs from frozen instrument')
-                result = run_stage(args.stage, packets, args.root, args.public_root, args.notify)
+                result = run_stage(args.stage, packets, args.root, args.public_root, args.notify,
+                                   instrument_version=args.instrument_version)
             elif args.stage == 'review':
                 if not args.review_note:
                     parser.error('review requires --review-note with the completed source-support review')
-                result = {family: approve_first(family, args.review_note, packets, args.root) for family in families}
+                result = {family: approve_first(family, args.review_note, packets, args.root,
+                          instrument_version=args.instrument_version) for family in families}
             else:
-                result = summary(packets, args.root, args.public_root)
+                result = summary(packets, args.root, args.public_root, args.instrument_version)
         print(json.dumps({'stage': args.stage, 'recorded': True,
                           'status': {f: r.get('status') for f, r in result.items() if f in MODELS} if isinstance(result, dict) else None}, sort_keys=True))
 

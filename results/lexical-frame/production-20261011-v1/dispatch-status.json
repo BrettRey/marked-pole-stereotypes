@@ -1,0 +1,578 @@
+{
+  "continuation_note": "Use stratum-specific workload and actual remaining counts after completed work is excluded; no pooled balanced-batch projection. Review and pair-stage costs remain separate.",
+  "dispatched_scientific_jobs": 2,
+  "job_limit": 80,
+  "packets": [
+    {
+      "augmentation_status": "frozen",
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {
+            "initial": "needs_review"
+          },
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {
+            "initial": "mechanically_valid"
+          },
+          "current_evidence_complete": false,
+          "missing_usable_assessment": false,
+          "retained_usable_job_id": "wnadj-01__initial__codex"
+        }
+      },
+      "final_evidence_round": "revised",
+      "form_count": 10,
+      "packet_id": "wnadj-01",
+      "stratum": "wordnet_adjective",
+      "supplement_requested_forms": 7,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "wnadj-02",
+      "stratum": "wordnet_adjective",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "wnadj-03",
+      "stratum": "wordnet_adjective",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "wnadj-04",
+      "stratum": "wordnet_adjective",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "wnadj-05",
+      "stratum": "wordnet_adjective",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "wnadj-06",
+      "stratum": "wordnet_adjective",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "wnadj-07",
+      "stratum": "wordnet_adjective",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "wnadj-08",
+      "stratum": "wordnet_adjective",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "wnadj-09",
+      "stratum": "wordnet_adjective",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "wnadj-10",
+      "stratum": "wordnet_adjective",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "gap-01",
+      "stratum": "category_gap",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "gap-02",
+      "stratum": "category_gap",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "gap-03",
+      "stratum": "category_gap",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "gap-04",
+      "stratum": "category_gap",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "gap-05",
+      "stratum": "category_gap",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "gap-06",
+      "stratum": "category_gap",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "gap-07",
+      "stratum": "category_gap",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "gap-08",
+      "stratum": "category_gap",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "gap-09",
+      "stratum": "category_gap",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    },
+    {
+      "augmentation_status": null,
+      "completed_both_current_assessments": false,
+      "families": {
+        "claude": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        },
+        "codex": {
+          "assessment_statuses": {},
+          "current_evidence_complete": false,
+          "missing_usable_assessment": true,
+          "retained_usable_job_id": null
+        }
+      },
+      "final_evidence_round": "initial",
+      "form_count": 10,
+      "packet_id": "gap-10",
+      "stratum": "category_gap",
+      "supplement_requested_forms": 0,
+      "supplement_unavailable_forms": 0
+    }
+  ],
+  "running_scientific_jobs": 0,
+  "selected_forms": 200,
+  "terminal_scientific_jobs": 2,
+  "updated_at": "2026-10-11T17:23:55.918082+00:00",
+  "workload_by_stratum_family_round": {
+    "wordnet_adjective/claude/initial": {
+      "api_equivalent_usd_observed": 0.424458,
+      "dispatched_jobs": 1,
+      "elapsed_seconds": 215.70276208315045,
+      "forms_attempted": 10,
+      "mechanically_valid_jobs": 0,
+      "priced_job_count": 1,
+      "running_jobs": 0,
+      "substantive_review_seconds": null,
+      "terminal_jobs": 1,
+      "unpriced_job_count": 0,
+      "usage_observations": [
+        {
+          "adjective_sense_count": 31,
+          "answer_bytes": 69315,
+          "evidence_bytes": 20058,
+          "job_id": "wnadj-01__initial__claude",
+          "partial_observed_usage": null,
+          "stdout_bytes": 285867,
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 17451,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 17451,
+            "cache_read_input_tokens": 0,
+            "fallback_credit": null,
+            "inference_geo": "global",
+            "input_tokens": 2,
+            "iterations": [
+              {
+                "cache_creation": {
+                  "ephemeral_1h_input_tokens": 17451,
+                  "ephemeral_5m_input_tokens": 0
+                },
+                "cache_creation_input_tokens": 17451,
+                "cache_read_input_tokens": 0,
+                "input_tokens": 2,
+                "output_tokens": 35465,
+                "type": "message"
+              }
+            ],
+            "output_tokens": 35465,
+            "output_tokens_details": {
+              "thinking_tokens": 16705
+            },
+            "server_tool_use": {
+              "web_fetch_requests": 0,
+              "web_search_requests": 0
+            },
+            "service_tier": "standard",
+            "speed": "standard"
+          }
+        }
+      ]
+    },
+    "wordnet_adjective/codex/initial": {
+      "api_equivalent_usd_observed": null,
+      "dispatched_jobs": 1,
+      "elapsed_seconds": 448.5331267500296,
+      "forms_attempted": 10,
+      "mechanically_valid_jobs": 1,
+      "priced_job_count": 0,
+      "running_jobs": 0,
+      "substantive_review_seconds": null,
+      "terminal_jobs": 1,
+      "unpriced_job_count": 1,
+      "usage_observations": [
+        {
+          "adjective_sense_count": 31,
+          "answer_bytes": 77650,
+          "evidence_bytes": 20058,
+          "job_id": "wnadj-01__initial__codex",
+          "partial_observed_usage": null,
+          "stdout_bytes": 77651,
+          "usage": {
+            "reported_total_tokens": 42079
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "recorded_at": "2026-10-11T17:35:43.465713+00:00",
+  "instrument_version": "v1",
+  "source_commit": "49a02841513358c77f0e9d149fa0615d26909620",
+  "instrument_file_sha256": "52c5d5a09686717e9052ff7f95d87a85c348fac01824d0463efa2d6b4fd4b959",
+  "selected_forms": 200,
+  "initial_forms_attempted": 10,
+  "initial_forms_unattempted": 190,
+  "scientific_jobs_dispatched": 2,
+  "scientific_job_limit_cumulative": 80,
+  "jobs": {
+    "wnadj-01__initial__claude": {
+      "status": "needs_review",
+      "returned_model": "claude-sonnet-5-5",
+      "elapsed_seconds": 215.70276208315045,
+      "validation_errors": [
+        "lex-e21655b52e12: required evidence gap cannot be complete coverage",
+        "lex-e21655b52e12: supplement request inconsistent with trigger or fixed evidence already attempted/supplied",
+        "lex-d2708d7d0c20: required evidence gap cannot be complete coverage",
+        "lex-d2708d7d0c20: supplement request inconsistent with trigger or fixed evidence already attempted/supplied",
+        "lex-dfd8dfaae038: required evidence gap cannot be complete coverage",
+        "lex-dfd8dfaae038: supplement request inconsistent with trigger or fixed evidence already attempted/supplied",
+        "lex-4361cc01e665: required evidence gap cannot be complete coverage",
+        "lex-4361cc01e665: supplement request inconsistent with trigger or fixed evidence already attempted/supplied",
+        "lex-1869c9d2a11e: required evidence gap cannot be complete coverage",
+        "lex-1869c9d2a11e: supplement request inconsistent with trigger or fixed evidence already attempted/supplied",
+        "lex-19818c00e27a: required evidence gap cannot be complete coverage",
+        "lex-19818c00e27a: supplement request inconsistent with trigger or fixed evidence already attempted/supplied",
+        "lex-99f6460a8231: required evidence gap cannot be complete coverage",
+        "lex-99f6460a8231: supplement request inconsistent with trigger or fixed evidence already attempted/supplied",
+        "lex-2fcce22b01d7: required evidence gap cannot be complete coverage",
+        "lex-2fcce22b01d7: supplement request inconsistent with trigger or fixed evidence already attempted/supplied",
+        "lex-7dbcca8956a4: required evidence gap cannot be complete coverage",
+        "lex-7dbcca8956a4: supplement request inconsistent with trigger or fixed evidence already attempted/supplied"
+      ],
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 17451,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 17451,
+        "cache_read_input_tokens": 0,
+        "fallback_credit": null,
+        "inference_geo": "global",
+        "input_tokens": 2,
+        "iterations": [
+          {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 17451,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 17451,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 2,
+            "output_tokens": 35465,
+            "type": "message"
+          }
+        ],
+        "output_tokens": 35465,
+        "output_tokens_details": {
+          "thinking_tokens": 16705
+        },
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 0
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      },
+      "api_equivalent_usd": 0.424458,
+      "internal_request_observability": "Distinct assistant message/request IDs are observed lower bounds; hidden retries and schema repairs remain unknown.",
+      "manifest_sha256": "92036337e012a8d6bbdd477d2a0f3102b85ae8121528ab8db2bace3819be532c",
+      "answer_sha256": "629506a01270e3a6be03ea3134c6bcb35f00cf745ba0ce35a94a16f9fe86042e"
+    },
+    "wnadj-01__initial__codex": {
+      "status": "mechanically_valid",
+      "returned_model": "gpt-6.1-sol",
+      "elapsed_seconds": 448.5331267500296,
+      "validation_errors": [],
+      "usage": {
+        "reported_total_tokens": 42079
+      },
+      "api_equivalent_usd": null,
+      "internal_request_observability": "Unknown: this CLI text route exposes no complete request or schema-repair ledger.",
+      "manifest_sha256": "6cab499d2ca8ecb20a1db47f533512f6efa3bc67b3e025ee179c5423a3d44900",
+      "answer_sha256": "298f7df637bcef3d26dd8e97d8dbd2006ce7aeabd71cb6fcbea61cc291a14103"
+    }
+  },
+  "source_review_components": {
+    "wnadj-01__initial__claude": {
+      "component_sha256": "49cdaaf799c40e3ebd0fde6147689f52bf944361d3dfc50ffa7eb8bd848530eb",
+      "started_at": "2026-10-11T17:23:28+00:00",
+      "completed_at": "2026-10-11T17:30:36.630167+00:00",
+      "reviewed_items": 10,
+      "reviewed_interpretation_records": 31,
+      "dispositions": {
+        "supported": 21,
+        "qualified": 9,
+        "rejected": 1
+      }
+    },
+    "wnadj-01__initial__codex": {
+      "component_sha256": "8e23718e476e6b45accbd24ade86cbf95b538a18b2469dec2c9fe7e2a77c0d62",
+      "started_at": "2026-10-11T17:24:33+00:00",
+      "completed_at": "2026-10-11T17:31:11.951086+00:00",
+      "reviewed_items": 10,
+      "reviewed_interpretation_records": 35,
+      "dispositions": {
+        "supported": 29,
+        "qualified": 6,
+        "rejected": 0
+      }
+    }
+  },
+  "source_review_is_separate_annotation_not_adjudication": true,
+  "supplement_requested_forms": 7,
+  "augmented_packet_frozen": true,
+  "revised_jobs_dispatched": 0,
+  "augmentation_file_sha256": "d357487aac60e6743a53c8987220f4a84d09bb06e31ce6d5f870f051b3d04f1d",
+  "hold_reason": "Premature model-facing coverage flags conflict with dynamic assessment; case-only WordNet matches need explicit lookup relations.",
+  "source_audit": {
+    "selected_forms_checked": 200,
+    "case_only_matched_forms": 10,
+    "case_only_records": 12,
+    "case_only_adjective_records": 3,
+    "supplementary_adjective_sections_inspected": 13,
+    "supplementary_adjective_definitions_inspected": 22,
+    "scope": "bounded selected packet structural inspection, not a full-inventory lexical audit",
+    "sha256": "d5ddd4b4c8d71bf7f38112c085c5bfb2a08ed4bae514ef6ec68d3911e1f0721c"
+  },
+  "v11_approved_at": "2026-10-11T17:30:14.872204+00:00",
+  "v11_approval": "Explicit approval of notes/lexical-production-instrument-review-2026-10-11.md",
+  "no_failed_job_replayed": true,
+  "new_neutral_checks_planned": 0,
+  "archive_manifest_sha256": "53099577bb77caab6c157b52f12cdffd3713a118a1808978422dbf768ecd9ea1",
+  "cost_limits": "API-equivalent usage is not an invoice or remaining subscription allowance; analyst model usage was not separately metered."
+}

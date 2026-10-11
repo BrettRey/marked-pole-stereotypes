@@ -284,5 +284,185 @@ class RunnerTests(unittest.TestCase):
         self.assertFalse(runner.read_json(self.root / 'instrument-hold.json')['active'])
 
 
+class SuccessorRunnerTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+        self.public = self.root / 'public'
+        self.packets = []
+        for n in range(20):
+            value = packet(f"{'wnadj' if n < 10 else 'gap'}-{n % 10 + 1:02d}")
+            value['stratum'] = 'wordnet_adjective' if n < 10 else 'category_gap'
+            first_item = value['items'][0]
+            first_item['word'] = 'mosaic'
+            first_item['dictionary_senses'][0].update(sense_id='wn31:a:100', lemmas=['Mosaic'])
+            value['items'] = [{**copy.deepcopy(first_item), 'item_id': f'item-{n}-{i}'} for i in range(10)]
+            self.packets.append(value)
+            runner.atomic_json(self.root / 'packets' / (value['packet_id'] + '.json'), value)
+        for name in runner.LICENSES:
+            (self.root / name).write_text('test-only control-flow fixture licence')
+        for family in runner.MODELS:
+            runner.atomic_json(self.root / 'preflight' / family / 'manifest.json', {'family': family, 'status': 'passed'})
+        self.original = runner.freeze(self.packets, self.root, source_commit='original-published-commit')
+        # Exercise the existing legacy format, whose absent version means v1.
+        self.original.pop('instrument_version')
+        runner.atomic_json(runner.instrument_path(self.root), self.original)
+        first = self.packets[0]
+        for family in runner.MODELS:
+            identifier = runner.job_id(family, first['packet_id'], 'initial')
+            runner.atomic_json(self.root / 'jobs' / identifier / 'manifest.json', {
+                'job_id': identifier, 'family': family, 'packet_id': first['packet_id'], 'round': 'initial',
+                'status': 'mechanically_valid' if family == 'codex' else 'needs_review',
+                'packet_sha256': runner.digest(first), 'source_commit': self.original['source_commit'],
+                'instrument_sha256': runner.digest(self.original), 'elapsed_seconds': .01})
+            runner.atomic_json(self.root / 'jobs' / identifier / 'answer.json', {'fixture': 'old answer'})
+        augmented = copy.deepcopy(first)
+        augmented['items'][0]['dictionary_senses'].append({'sense_id': 'wikt:200:en:L3',
+            'pos': 'a', 'gloss': 'new fixed-source evidence', 'lemmas': ['mosaic']})
+        self.augmentation = {'status': 'frozen', 'changed': True, 'packet': augmented,
+                             'requested_item_ids': [first['items'][0]['item_id']]}
+        runner.atomic_json(self.root / 'augmentation' / (first['packet_id'] + '.json'), self.augmentation)
+        runner.atomic_json(self.root / 'instrument-hold.json', {'active': True})
+        self.note = self.root / 'analyst-review.md'
+        self.note.write_text('Completed bounded instrument/source review for the named successor assessments.')
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def freeze_successor(self):
+        return runner.freeze(self.packets, self.root, source_commit='successor-published-commit', instrument_version='v1.1')
+
+    def fake_execute(self, family, directory, prompt, schema):
+        reserved = runner.read_json(directory / 'reserved.json')
+        envelope = runner.read_json(directory / 'model-input.json')
+        self.assertEqual(reserved['instrument_version'], 'v1.1')
+        self.assertEqual(reserved['model_input_sha256'], runner.digest(envelope))
+        self.assertNotIn('supplement_required', envelope['items'][0]['coverage'])
+        self.assertNotIn('review_complete', envelope['items'][0]['coverage'])
+        self.assertEqual(envelope['items'][0]['dictionary_senses'][0]['lookup_relation']['relation'], 'case_only')
+        self.assertIn(runner.instrument_prompt('v1.1'), prompt)
+        runner.atomic_json(directory / 'answer.json', {'fixture': 'new answer'})
+        return {'status': 'returned', 'elapsed_seconds': .01}, {'fixture': 'new answer'}
+
+    def job(self, family, data, round_name, frozen, root):
+        return runner.run_job(family, data, round_name, frozen, root,
+                              execute=self.fake_execute, validator=lambda *_: [])
+
+    def test_successor_freeze_keeps_original_records_immutable_and_binds_presentation(self):
+        immutable = {p: p.read_bytes() for p in self.root.rglob('*') if p.is_file() and
+                     ('packets' in p.parts or 'jobs' in p.parts or 'augmentation' in p.parts or p.name == 'frozen-instrument.json')}
+        successor = self.freeze_successor()
+        self.assertEqual(successor['parent_instrument_sha256'], runner.digest(self.original))
+        self.assertEqual(successor['parent_instrument_file_sha256'], runner.sha(runner.instrument_path(self.root)))
+        self.assertEqual(successor['packets'], self.original['packets'])
+        self.assertEqual(successor['packet_order'], self.original['packet_order'])
+        self.assertEqual(successor['routes'], self.original['routes'])
+        self.assertEqual(successor['scientific_job_limit'], 80)
+        self.assertIn('production_instrument_v11.py', successor['code_sha256'])
+        self.assertNotEqual(successor['prompt_sha256'], self.original['prompt_sha256'])
+        self.assertEqual(successor['model_input_sha256'][self.packets[0]['packet_id']],
+                         runner.digest(runner.presented_packet(self.packets[0], 'v1.1')))
+        self.assertEqual(self.freeze_successor(), successor)
+        runner.verify_frozen(successor, self.packets, self.root, 'v1.1')
+        for path, contents in immutable.items():
+            self.assertEqual(path.read_bytes(), contents)
+        # Editing only whitespace in the original frozen record still breaks the
+        # immutable file binding, even though its parsed JSON value is unchanged.
+        with runner.instrument_path(self.root).open('a') as handle:
+            handle.write(' ')
+        with self.assertRaisesRegex(RuntimeError, 'parent instrument'):
+            runner.verify_frozen(successor, self.packets, self.root, 'v1.1')
+
+    def test_successor_rejects_redrawn_selection_and_non_evidence_revision(self):
+        changed = copy.deepcopy(self.packets)
+        changed[1]['items'][0]['word'] = 'replacement'
+        with self.assertRaisesRegex(RuntimeError, 'Successor would change'):
+            runner.freeze(changed, self.root, source_commit='new', instrument_version='v1.1')
+        self.augmentation['packet'] = copy.deepcopy(self.packets[0])
+        self.augmentation['packet']['items'][0]['coverage']['supplement'] = 'missing'
+        runner.atomic_json(self.root / 'augmentation' / (self.packets[0]['packet_id'] + '.json'), self.augmentation)
+        with self.assertRaisesRegex(RuntimeError, 'genuinely augmented'):
+            self.freeze_successor()
+        self.assertFalse(runner.instrument_path(self.root, 'v1.1').exists())
+
+    def test_successor_model_input_reserved_before_execute_and_interruption_retains_version(self):
+        successor = self.freeze_successor()
+        meta = self.job('codex', self.augmentation['packet'], 'revised', successor, self.root)
+        self.assertEqual(meta['instrument_version'], 'v1.1')
+        self.assertEqual(meta['model_input_sha256'], successor['successor_first_packet']['model_input_sha256'])
+        self.assertEqual(meta['packet_sha256'], runner.digest(self.augmentation['packet']))
+        with self.assertRaises(FileExistsError):
+            self.job('codex', self.augmentation['packet'], 'revised', successor, self.root)
+        other = self.packets[1]
+        def fail_after_reservation(family, directory, prompt, schema):
+            runner.atomic_json(directory / 'started.json', {'started_at': 'test-start'})
+            raise RuntimeError('Mock dispatcher interruption before final manifest')
+        with self.assertRaises(RuntimeError):
+            runner.run_job('claude', other, 'initial', successor, self.root,
+                           execute=fail_after_reservation, validator=lambda *_: [])
+        interrupted = runner.load_job(self.root, 'claude', other['packet_id'], 'initial', recover=True)
+        self.assertEqual(interrupted['instrument_version'], 'v1.1')
+        self.assertEqual(interrupted['instrument_sha256'], runner.digest(successor))
+        self.assertEqual(interrupted['model_input_sha256'], successor['model_input_sha256'][other['packet_id']])
+        self.assertEqual(interrupted['status'], 'interrupted')
+        with self.assertRaises(FileExistsError):
+            self.job('claude', other, 'initial', successor, self.root)
+
+    def test_successor_cumulative_cap_includes_original_slots(self):
+        successor = self.freeze_successor()
+        for n in range(78):
+            (self.root / 'jobs' / f'other-reserved-slot-{n}').mkdir()
+        self.assertEqual(len(list((self.root / 'jobs').glob('*'))), 80)
+        with self.assertRaisesRegex(RuntimeError, '80 dispatched'):
+            self.job('codex', self.packets[1], 'initial', successor, self.root)
+
+    def test_successor_first_uses_only_planned_revised_slots_and_version_aware_gate(self):
+        successor = self.freeze_successor()
+        original_jobs = {p:p.read_bytes() for p in (self.root / 'jobs').rglob('*') if p.is_file()}
+        with self.assertRaisesRegex(RuntimeError, 'selected instrument'):
+            runner.approve_first('codex', self.note, self.packets, self.root, instrument_version='v1.1')
+        with self.assertRaisesRegex(RuntimeError, 'durable instrument hold'):
+            runner.run_stage('first', self.packets, self.root, self.public,
+                             job_runner=self.job, instrument_version='v1.1')
+        runner.clear_hold(self.note, self.root)
+        seen = []
+        def job(family, data, round_name, frozen, root):
+            seen.append((family, data['packet_id'], round_name, runner.version_of(frozen)))
+            return self.job(family, data, round_name, frozen, root)
+        result = runner.run_stage('first', self.packets, self.root, self.public, job_runner=job,
+            supplement=lambda *_: self.fail('Existing augmentation must be reused'), instrument_version='v1.1')
+        self.assertEqual(set(seen), {(f, 'wnadj-01', 'revised', 'v1.1') for f in runner.MODELS})
+        self.assertEqual(result['dispatched_scientific_jobs'], 4)
+        self.assertEqual(result['active_instrument_version'], 'v1.1')
+        for path, contents in original_jobs.items():
+            self.assertEqual(path.read_bytes(), contents)
+        # No active-version review means no release of the other nineteen packets.
+        runner.run_stage('continue', self.packets, self.root, self.public,
+            job_runner=lambda *_: self.fail('Unreviewed successor route dispatched'), instrument_version='v1.1')
+        for family in runner.MODELS:
+            approval = runner.approve_first(family, self.note, self.packets, self.root, instrument_version='v1.1')
+            self.assertEqual(approval['job_id'], f'wnadj-01__revised__{family}')
+            self.assertEqual(approval['instrument_version'], 'v1.1')
+            self.assertEqual(approval['instrument_sha256'], runner.digest(successor))
+        # A resumed first stage cannot replay either consumed revision slot.
+        runner.run_stage('first', self.packets, self.root, self.public,
+            job_runner=lambda *_: self.fail('Revised job replayed'), instrument_version='v1.1')
+        result = runner.run_stage('continue', self.packets, self.root, self.public,
+                                 job_runner=job, instrument_version='v1.1')
+        self.assertEqual(result['dispatched_scientific_jobs'], 42)
+        self.assertEqual(len(seen), 40)  # two revisions plus thirty-eight new initials
+        self.assertTrue(all(version == 'v1.1' for _, _, _, version in seen))
+        self.assertFalse(any(pid == 'wnadj-01' and rnd == 'initial' for _, pid, rnd, _ in seen))
+        first_row = result['packets'][0]['families']['codex']
+        self.assertEqual(first_row['assessment_instrument_versions'], {'initial': 'v1', 'revised': 'v1.1'})
+
+    def test_successor_first_requires_explicit_hold_clearance_not_a_deleted_hold(self):
+        self.freeze_successor()
+        (self.root / 'instrument-hold.json').unlink()
+        with self.assertRaisesRegex(RuntimeError, 'explicit, documented'):
+            runner.run_stage('first', self.packets, self.root, self.public,
+                             job_runner=self.job, instrument_version='v1.1')
+
+
 if __name__ == '__main__':
     unittest.main()

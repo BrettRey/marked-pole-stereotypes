@@ -1,0 +1,49 @@
+{
+  "checked_at": "2026-10-11T17:39:05.531173+00:00",
+  "selected_initial_forms": 200,
+  "initial_packets": 20,
+  "genuine_augmented_packets": 1,
+  "original_instrument_packets_answers_manifests_unchanged": true,
+  "original_schema_prompt_evidence_builder_unchanged": true,
+  "presentations_preserve_all_source_text_ids_and_order": true,
+  "premature_flags_removed_from_all_presentations": true,
+  "initial_wordnet_lookup_relation_counts": {
+    "exact_case": 669,
+    "case_only": 12
+  },
+  "model_input_sha256_by_packet_round": {
+    "wnadj-01/initial": "079ba60d622b3ab4f4c91a0967b4e3b243cb107701e6fc07278b424f4dcf6087",
+    "wnadj-02/initial": "2a8a2e6173aa7c40007472d754e46e0db78199f2166b53bfaa2a5b30d6fb5038",
+    "wnadj-03/initial": "aa6e88f3d32d829799f79a461c221abb352307f1676d58af0f87074ffdedb874",
+    "wnadj-04/initial": "6b3199a622dea65894618f3b7f8ea45484c729727240c3adf32225f4b85117b1",
+    "wnadj-05/initial": "557f4ea343a347d426f5598c1e453dbf586d657b9a245031e46b60cdc571df83",
+    "wnadj-06/initial": "a13d325ad5ec969168e7e3f96e62c0cab7d565ed469e466244db53158551e1e5",
+    "wnadj-07/initial": "9c2d96dbe1f43d26ff83b4fadd71c377d90af1a835e53aa64a5845c41c9c0a6e",
+    "wnadj-08/initial": "875a35e7e5050dd70e0573a64a3f2ac9d487e62bc5c8b9506b59dc9fc03a4a18",
+    "wnadj-09/initial": "00d15de0e52e71208a74f774537bbcfc9788ffeee90962feef1dfcafd110f218",
+    "wnadj-10/initial": "18451234f5ebeda3c65709dba1568ae244bd5971c37bf037374591f0b4d51710",
+    "gap-01/initial": "a773ba07276940f5e355a0c931be81d466ef6e9c08a1b85d2c6b6993a2834f22",
+    "gap-02/initial": "3d94d2ab031f132fdd323bc95e70ecf7c63840b29a2783fa538c2a48cc9b6e39",
+    "gap-03/initial": "df3cef2d3dccb66117e06066751e38eae0e6b12503b74e069899fd6c0f8e63c1",
+    "gap-04/initial": "d69338e01b075111e8250db7a2b29814e4b6ce37917dacfe65c092c8e24b8590",
+    "gap-05/initial": "7ed7fc16aa53a46c8fb01c4bf0506ee899f3e4bd1ce9c98c3449ddf4c3b65051",
+    "gap-06/initial": "5b08b9ed90be69f485ad7c8db1b549d364624a38e516454bf058e33e652025ac",
+    "gap-07/initial": "3c758f183e0dd3ac7b5d6b8d227091645f4fbb2257f92232006556a4cea57974",
+    "gap-08/initial": "2cc701bf1a04be688983b9b841a5449ff3ce824a060310ea75fb0005efb87bb6",
+    "gap-09/initial": "e64c6deb9ae0b3ddb165fb58fb4301ce5ab328ae03ae44f69e09cb4b1e236b4d",
+    "gap-10/initial": "389d3c8bf0e1fd70682fbf29ef9a16ed2f295ea0b027df7337c09c09174e0133",
+    "wnadj-01/revised": "e46a3c68cf5e70f100b81c574df7001a4868e118408b43da853ed845e1864589"
+  },
+  "scientific_jobs_added": 0,
+  "route_checks_added": 0,
+  "combined_tests_pending": false,
+  "combined_tests": {
+    "command": "python3 -m unittest discover -s scripts/lexical_frame -p 'test_production*.py' -v",
+    "passed": 95,
+    "failed": 0,
+    "log": "logs/lexical-production-v11-tests-20261011.txt",
+    "log_sha256": "ba6ec4473b3224ad1ff9994348a09a7366b2feb9f06559f5cc79b33f4f7f71f8",
+    "python": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O"
+  }
+}

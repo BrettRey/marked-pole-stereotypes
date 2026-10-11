@@ -1,0 +1,7 @@
+{"at": "2026-10-11T17:16:07.459848+00:00", "concurrent_family_jobs": 1, "family": "codex", "kind": "job_dispatched", "packet_id": "wnadj-01", "round": "initial"}
+{"at": "2026-10-11T17:16:07.460904+00:00", "concurrent_family_jobs": 1, "family": "claude", "kind": "job_dispatched", "packet_id": "wnadj-01", "round": "initial"}
+{"at": "2026-10-11T17:19:43.263773+00:00", "family": "claude", "kind": "instrument_hold", "packet_id": "wnadj-01"}
+{"at": "2026-10-11T17:19:43.268538+00:00", "family": "claude", "kind": "job_terminal", "packet_id": "wnadj-01", "round": "initial", "status": "needs_review"}
+{"at": "2026-10-11T17:23:36.056033+00:00", "family": "codex", "kind": "job_terminal", "packet_id": "wnadj-01", "round": "initial", "status": "mechanically_valid"}
+{"at": "2026-10-11T17:23:55.914365+00:00", "kind": "augmented_packet_frozen", "packet_id": "wnadj-01", "requested_forms": 7}
+{"at": "2026-10-11T17:23:55.918954+00:00", "instrument_hold": true, "kind": "stage_complete", "pending_dispatch_slots": 2, "scientific_jobs": 2, "stage": "first"}
