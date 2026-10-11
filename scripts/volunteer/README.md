@@ -1,6 +1,7 @@
 # Prepare one Apple Silicon Mac
 
-This prepares a MacBook Air M5 with 16 GB for one simulation worker. It checks
+This prepares an Apple Silicon Mac with at least 16 GB for one simulation worker,
+including the M2 and M5 volunteer Macs. It checks
 the environment only. The replicated assessment still waits for the frozen
 empirical inputs and an assigned batch. Don't run the archived full-grid commands.
 
