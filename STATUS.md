@@ -12,8 +12,9 @@ source:
 next_action: >-
   Two HF packing checks are running (two versus three workers, USD .72
   maximum new compute); collect their results before changing concurrency.
-  Colab timing code is prepared; account sign-in, unit balance and CPU rate
-  remain unchecked. Await the volunteer Mac timing receipt.
+  Colab CPU timing started at 15:49 UTC from published source b524a9a;
+  the account has 400 compute units and this runtime costs .08 units/hour.
+  Collect its verified archive and await the volunteer Mac timing receipt.
   Replicated D1c waits for frozen empirical inputs and a new launch budget.
   Norman pass X is repaired; the Vision/column-parser pilot produced zero
   complete numeric rows, so wave 1 remains stopped pending a revised method.
@@ -30,7 +31,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. The baseline HF jobs and monitor have ended; their combined compute estimate is USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design and directional reporting are adopted; replication and the lexical production budget remain deferred in notes/next-stage-decisions-2026-10-11.md. Norman X is repaired (218/239 pilot rows exact); Vision yields no complete numeric rows, so wave 1 remains stopped. One volunteer Mac is reported running its single archived timing fit; await the receipt. M1 and M2 Macs, both with 16 GB, await environment readiness; Windows setup is not being pursued. Two bounded HF packing benchmarks are running; new compute ceiling USD .72. Colab timing is prepared but unlaunched pending account access; its balance and CPU unit rate are unknown. HF Pro activation is verified; maximum Jobs concurrency remains unverified. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
+<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. The baseline HF jobs and monitor have ended; their combined compute estimate is USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design and directional reporting are adopted; replication and the lexical production budget remain deferred in notes/next-stage-decisions-2026-10-11.md. Norman X is repaired (218/239 pilot rows exact); Vision yields no complete numeric rows, so wave 1 remains stopped. One volunteer Mac is reported running its single archived timing fit; await the receipt. M1 and M2 Macs, both with 16 GB, await environment readiness; Windows setup is not being pursued. Two bounded HF packing benchmarks are running; new compute ceiling USD .72. Colab CPU timing started at 15:49 UTC; 400 units available, observed rate .08 units/hour, no extra 10-unit allowance. HF Pro activation is verified; maximum Jobs concurrency remains unverified. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
 
 ## State
 
@@ -40,7 +41,9 @@ Recovery completed 2026-10-11 at 12:14 UTC: 16/16 baseline configurations, all 8
 
 Volunteer environment receipt checked 2026-10-11: all eight reported checks pass, all 38 package versions and the requirements hash match, and the source commit contains the expected checker. This confirms the supplied environment report, not sampling throughput. Brett reports that the assigned archived timing fit is running. The completion receipt is pending; this repeat is excluded from calibration. See the [first-job specification](scripts/volunteer/FIRST-JOB.md) and [verification record](logs/volunteer-001-readiness-verification-20261011.json). Personal host details stay private.
 
-Compute checks started 2026-10-11 at 14:15 UTC under the existing USD 15 cap. Two machines repeat the same six archived conditional fits at two versus three workers, with a combined USD .72 timeout ceiling and no calibration replicates added. The [specification](scripts/compute/README.md), [launch receipt](logs/compute-packing-launch-20261011.json) and [live local report](results/compute/packing-20261011/REPORT.md) preserve the assignment. Colab's single-fit runner is prepared, but neither account access nor a runtime is available yet. No credit purchase or GPU allocation has been made.
+Compute checks started 2026-10-11 at 14:15 UTC under the existing USD 15 cap. Two machines repeat the same six archived conditional fits at two versus three workers, with a combined USD .72 timeout ceiling and no calibration replicates added. The [specification](scripts/compute/README.md), [launch receipt](logs/compute-packing-launch-20261011.json) and [live local report](results/compute/packing-20261011/REPORT.md) preserve the assignment.
+
+Colab account access and CPU preflight passed. Its single archived joint fit started at 15:49 UTC from published source `b524a9a`, using the fixed scientific code, Python and package versions. The initial balance is 400 units; this two-vCPU runtime costs .08 units/hour. No separate 10-unit allowance applies. The [controller status](results/compute/colab-timing-20261011/status.json) records progress; the controller retrieves and verifies the final archive, then releases its runtime. No credit purchase or GPU allocation has been made. This hardware repeat is excluded from calibration.
 
 ## Next action
 
