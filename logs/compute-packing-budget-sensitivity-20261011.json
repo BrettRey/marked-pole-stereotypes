@@ -1,0 +1,55 @@
+{
+  "at": "2026-10-11T14:18:04.958237+00:00",
+  "launch_authorized": false,
+  "original_budget_source": "logs/d1c-reduced-budget-preview-20261011.json",
+  "original_budget_sha256": "acfff023d6133af1feb639ec882f181acfe0bc7a72f4d9cb299b265a46ad4db7",
+  "worker_hours_by_mode": {
+    "upstream": 12.296456579497317,
+    "downstream": 7766.950878554308,
+    "joint": 908.0566442818898
+  },
+  "scenarios": [
+    {
+      "conditional_workers": 2,
+      "joint_and_upstream_workers": 2,
+      "worker_speed_assumed_unchanged": true,
+      "packing_validated": true,
+      "machine_hours": 4343.651989707847,
+      "compute_usd": 130.3095596912354,
+      "allowance_50_percent_overhead_usd": 195.46433953685312,
+      "ideal_hours_at_machines": {
+        "10": 434.3651989707847,
+        "20": 217.18259948539236,
+        "27": 160.87599961880915
+      }
+    },
+    {
+      "conditional_workers": 3,
+      "joint_and_upstream_workers": 2,
+      "worker_speed_assumed_unchanged": true,
+      "packing_validated": false,
+      "machine_hours": 3049.1601766154627,
+      "compute_usd": 91.47480529846388,
+      "allowance_50_percent_overhead_usd": 137.21220794769582,
+      "ideal_hours_at_machines": {
+        "10": 304.9160176615463,
+        "20": 152.45800883077314,
+        "27": 112.93185839316529
+      }
+    }
+  ],
+  "colab": {
+    "documented_ai_pro_ccus": 200,
+    "account_balance": null,
+    "cpu_ccu_per_hour": null,
+    "throughput": null,
+    "additional_purchase_authorized": false,
+    "launched": false
+  },
+  "limitations": [
+    "Three-worker speed and memory feasibility are under test; these are conditional forecasts, not measured savings.",
+    "Machine counts are scenarios, not verified account concurrency limits.",
+    "Source timings are baseline maxima, with unmeasured extrapolation to register stress.",
+    "The 400-dataset design remains deferred; this calculation submits no jobs."
+  ]
+}
