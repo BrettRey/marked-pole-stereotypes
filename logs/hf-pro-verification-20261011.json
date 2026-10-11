@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-11T13:23:25.460415+00:00",
+  "source": "Authenticated HfApi.whoami read-only query",
+  "pro_active": true,
+  "billing_enabled": true,
+  "cpu_upgrade_usd_per_machine_hour": 0.03,
+  "price_source": "https://huggingface.co/docs/hub/en/jobs-pricing",
+  "benefit_source": "https://huggingface.co/docs/hub/en/pro",
+  "account_credit_balance_verified": false,
+  "account_credit_balance_usd": null,
+  "simultaneous_jobs_limit_verified": false,
+  "simultaneous_jobs_limit": null,
+  "jobs_launched": 0,
+  "interpretation": "Pro activation verified. Published docs include monthly compute credits, but this query does not establish balance or Jobs concurrency. Keep gross runtime/cost projections until measured capacity is known."
+}

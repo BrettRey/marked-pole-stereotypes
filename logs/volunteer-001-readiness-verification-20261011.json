@@ -1,0 +1,18 @@
+{
+  "verified_at": "2026-10-11T13:22:52.554186+00:00",
+  "host_id": "volunteer-001",
+  "provenance": "user-supplied remote readiness report; not an independently observed remote run",
+  "host_report_timestamp": "2026-10-11T13:14:50.128548+00:00",
+  "host_report_sha256": "dd997ce9ae4ab93d79c399aa21102852144edcb35e6121372a92ff97a596af6a",
+  "reported_checks_passed": 8,
+  "expected_package_count": 38,
+  "exact_package_match": true,
+  "requirements_sha256": "6ec4bc8696b330b4b38d26697c9e1910db8527c7fa10aa540ad8d75d31b15206",
+  "source_commit": "23a019c3fef5a32982474dc78309e6946debda85",
+  "source_requirements_match": true,
+  "preflight_source_match": true,
+  "initial_worker_limit": 1,
+  "assigned_batch": null,
+  "measured_sampling_throughput": null,
+  "reporting_note": "30.54 seconds is environment-check time, not a sampler benchmark; personal host mapping stays private"
+}
