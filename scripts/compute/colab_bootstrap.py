@@ -25,7 +25,7 @@ def main():
     project = Path("/content/marked-pole-compute")
     if project.exists():
         raise FileExistsError("This runtime was already prepared; inspect rather than restart")
-    subprocess.run([sys.executable, "-m", "pip", "install", "uv==0.9.7"], check=True, timeout=180)
+    subprocess.run([sys.executable, "-m", "pip", "install", "uv==0.13.0"], check=True, timeout=180)
     subprocess.run(["git", "clone", "https://github.com/BrettRey/marked-pole-stereotypes.git", str(project)],
                    check=True, timeout=180)
     subprocess.run(["git", "checkout", "--quiet", source], cwd=project, check=True, timeout=60)
