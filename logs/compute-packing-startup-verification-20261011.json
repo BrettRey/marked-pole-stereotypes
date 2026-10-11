@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-11T14:21:48.948761+00:00",
+  "check": "Both published controllers running and exporting; 5 workers active; no completed-fit claim",
+  "arms": [
+    {
+      "profile": "hf-three",
+      "job_id": "6acb99e3fee2c90070196f61",
+      "provider_stage": "RUNNING",
+      "workers": 3,
+      "active": 3,
+      "controller_state": "running",
+      "source_commit": "fa40d95263ecd66ad0bd4d7d902e5d9c72c688a9",
+      "elapsed_seconds": 300.98255647100086,
+      "peak_sampled_rss_bytes": 3164745728,
+      "monitor_error": null
+    },
+    {
+      "profile": "hf-two",
+      "job_id": "6acb99e3095c57808931f12b",
+      "provider_stage": "RUNNING",
+      "workers": 2,
+      "active": 2,
+      "controller_state": "running",
+      "source_commit": "fa40d95263ecd66ad0bd4d7d902e5d9c72c688a9",
+      "elapsed_seconds": 301.05322604899993,
+      "peak_sampled_rss_bytes": 2113925120,
+      "monitor_error": null
+    }
+  ],
+  "source_commit": "fa40d95263ecd66ad0bd4d7d902e5d9c72c688a9",
+  "maximum_new_compute_usd": 0.72,
+  "monitor_source_commit": "3772d88",
+  "automatic_model_retries": 0,
+  "calibration_replicates_added": 0,
+  "colab_started": false,
+  "colab_blocker": "No authenticated CLI account or working browser/native computer connection",
+  "volunteer_run_unchanged": true
+}
