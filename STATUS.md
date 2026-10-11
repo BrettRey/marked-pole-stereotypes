@@ -10,7 +10,8 @@ source:
 - STATUS.md
 - notes/project-brief.md
 next_action: >-
-  Prepare the authorized one-worker setup on the family MacBook Air.
+  Run scripts/volunteer/README.md on the family MacBook Air and inspect its
+  readiness report before assigning one simulation worker.
   Replicated D1c waits for frozen empirical inputs and a new launch budget.
   Norman pass X is repaired; the Vision/column-parser pilot produced zero
   complete numeric rows, so wave 1 remains stopped pending a revised method.
