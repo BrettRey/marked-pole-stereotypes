@@ -124,6 +124,23 @@ def worker(profile, component, base):
 
 
 def rss_for_groups(pids):
+    if sys.platform.startswith("linux"):
+        total = 0
+        # Minimal Docker images need not contain ps/procps.
+        for process in Path("/proc").iterdir():
+            if not process.name.isdigit():
+                continue
+            try:
+                fields = (process / "stat").read_text().rsplit(")", 1)[1].split()
+                if int(fields[2]) not in pids:
+                    continue
+                for line in (process / "status").read_text().splitlines():
+                    if line.startswith("VmRSS:"):
+                        total += int(line.split()[1])*1024
+                        break
+            except (FileNotFoundError, ProcessLookupError, PermissionError):
+                pass  # The process may exit between the two reads.
+        return total
     listing = subprocess.run(["ps", "-axo", "pgid=,rss="], check=True, capture_output=True,
                              text=True, timeout=10).stdout
     return sum(int(rss)*1024 for group, rss in (line.split() for line in listing.splitlines())
