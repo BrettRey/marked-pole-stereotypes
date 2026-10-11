@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from import_sources import ROOT, now, published_source, sha, write_json
 from six_pair_review import OUT, MODELS, validate
+from audit_pilot import wiki_display
 
 def reading(target):
     both,neither=target['can_both'],target['can_neither']
@@ -16,12 +17,13 @@ def reading(target):
 def assemble(rules):
     preparation=json.loads((OUT/'preparation.json').read_text())
     manifests=[];pair_records=[];evidence_count=0;all_saved=[];all_additional=[]
-    failures=[];validation_issues=[];model_readings=Counter()
+    failures=[];validation_issues=[];model_readings=Counter();quote_audit=[]
     primary={r['pair_id']:r for r in rules['pairs']}
     for name,digest in sorted(preparation['packet_hashes'].items()):
         packet_path=OUT/'packets'/name
         if sha(packet_path)!=digest: raise ValueError('Modified packet '+name)
         packet=json.loads(packet_path.read_text());pid=packet['pair_id']
+        source_senses={(e['word'],s['sense_id']):s for e in packet['dictionary_entries'] for s in e['dictionary_senses']}
         adjudication=primary[pid]
         wanted={r['proposal_id'] for r in packet['saved_proposals']}
         if {r['proposal_id'] for r in adjudication['saved_proposals']}!=wanted:
@@ -48,6 +50,14 @@ def assemble(rules):
                 for key,rows in [('saved_alignments',all_saved),('additional_alignments',all_additional)]:
                     for a in answer[key]:
                         evidence_count+=len(a['evidence'])
+                        for e in a['evidence']:
+                            gloss=source_senses[e['word'],e['sense_id']]['gloss']
+                            if e['quote'] and e['quote'] in gloss:kind='exact_source_substring'
+                            elif e['quote'] and e['sense_id'].startswith('wikt:') and e['quote'] in wiki_display(gloss):
+                                kind='verified_wiki_display_substring'
+                            else:kind='unresolved_quote'
+                            quote_audit.append({'family':family,'pair_id':pid,'proposal_id':a['proposal_id'],
+                                **e,'audit_status':kind,'original_gloss':gloss})
                         rows.append({'family':family,'pair_id':pid,**a})
                         for t in a['targets']:model_readings[reading(t)]+=1
                 additional_keys={a['proposal_id'] for a in answer['additional_alignments']}
@@ -62,6 +72,7 @@ def assemble(rules):
         'failures':failures,'validation_issues':validation_issues,
         'returned_saved_alignment_records':len(all_saved),'returned_additional_alignment_records':len(all_additional),
         'source_quote_references_checked':evidence_count,
+        'quote_audit_counts':dict(Counter(x['audit_status'] for x in quote_audit)),
         'model_target_reading_counts_not_independent_pairs':dict(model_readings),
         'primary_saved_dispositions':dict(Counter(a['disposition'] for a in primary_saved)),
         'primary_pair_dispositions':[{k:p[k] for k in ('pair_id','disposition','summary')} for p in rules['pairs']],
@@ -75,7 +86,7 @@ def assemble(rules):
         'primary_review_time':'unmetered; overlaps service time; not included in call-cost extrapolation',
         'commonness_observations':0,'frame_frozen':False,
         'missed_pair_recall_estimated':False,'gold_standard_claimed':False}
-    return summary,{'pairs':pair_records,'summary':summary}
+    return summary,{'pairs':pair_records,'summary':summary,'quote_audit':quote_audit}
 
 def main():
     commit=published_source()
