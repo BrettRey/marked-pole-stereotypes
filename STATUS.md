@@ -12,7 +12,7 @@ source:
 next_action: >-
   One volunteer M5/16-GB Mac is running its single archived timing fit, as
   reported by Brett; await its receipt before assigning more work. A second
-  host awaits hardware details. HF Pro is active.
+  Windows i7/16-GB host awaits a WSL/environment check. HF Pro is active.
   Replicated D1c waits for frozen empirical inputs and a new launch budget.
   Norman pass X is repaired; the Vision/column-parser pilot produced zero
   complete numeric rows, so wave 1 remains stopped pending a revised method.
@@ -29,7 +29,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. HF jobs and monitor have ended; combined compute estimate USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design and directional reporting are adopted; replication and the lexical production budget remain deferred in notes/next-stage-decisions-2026-10-11.md. Norman X is repaired (218/239 pilot rows exact); Vision yields no complete numeric rows, so wave 1 remains stopped. One volunteer Mac is reported running its single archived timing fit; await the receipt. A second host awaits hardware details. HF Pro activation is verified; Jobs concurrency remains unverified. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
+<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. HF jobs and monitor have ended; combined compute estimate USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design and directional reporting are adopted; replication and the lexical production budget remain deferred in notes/next-stage-decisions-2026-10-11.md. Norman X is repaired (218/239 pilot rows exact); Vision yields no complete numeric rows, so wave 1 remains stopped. One volunteer Mac is reported running its single archived timing fit; await the receipt. A second Windows i7/16-GB host awaits a WSL/environment check. HF Pro activation is verified; Jobs concurrency remains unverified. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
 
 ## State
 
