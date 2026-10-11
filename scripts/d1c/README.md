@@ -570,3 +570,44 @@ bucket, and stream progress to provider logs. One provider attempt and a
 USD 2.16 across all three submissions, including the cancelled setup attempt.
 The collector must count the new job's cost once, check all eight assignments,
 and preserve verified completed results without treating a partial cut as full.
+
+
+## Adopted reduced assessment (2026-10-11; deferred)
+
+Brett approved the eight-configuration question in
+`notes/next-stage-decisions-2026-10-11.md`. The full 240-cell generator and
+historical results remain available for reproduction; they are not the next
+launch. Retain original cell IDs 12, 18, 60, 66, 132, 138, 180 and 186: both
+response structures, baseline/register stress, joint/cut, H2 target −0.10,
+register omitted from the fitted model and prior scale 1. Every configuration
+includes the additional commonness indicator. The retained confirmatory pipeline
+requires that indicator; the tested frequency-only pipeline did not yield a
+usable converged analysis. This is not a general identification theorem.
+
+After the empirical frame, response structure and measurement coverage are
+frozen, instantiate those inputs and cost 100 fresh datasets per design/scenario
+combination, paired across joint and cut: 400 datasets, 800 configurations. This
+is a coarse performance assessment. At 90/100 covered, the exact 95% binomial
+interval is about 82.4–95.1%. No larger replication count follows automatically.
+The earlier USD 15 authorization covers the completed baseline work only; the
+new launch and its expenditure remain deferred.
+
+For each estimand show joint and cut means, separate equal-tailed 50%/90%
+intervals, and cut-minus-joint differences. Show generating b_z separately from
+the generating H2 contrast and identify shared datasets. The span of the two
+means is a sensitivity range, not a credible interval or bound on truth.
+
+Report both-pass, joint-only-pass, cut-only-pass and neither-pass counts. Paired
+error/recovery/width differences use only both-pass datasets, with that denominator.
+Each method's conditional summaries use its own successful subset, explicitly
+identified. A cut passes only if its upstream fit and all eight downstream fits
+pass; dropping or renormalizing components is prohibited. Failed fits remain
+failures. The target is performance of this finite approximation.
+
+Prospective empirical reporting uses the directional convention in
+`analysis_plan.md`, with posterior sign probabilities and no substantive magnitude
+benchmark. Historical outputs retain their original definitions. The eight-cell
+experiment does not assess null false-positive rates, measured-register correction,
+the display/prevalence bridge or prior robustness. Joint/cut agreement does not
+establish the common-cause mechanism. No running or completed sampler is changed
+by this amendment.

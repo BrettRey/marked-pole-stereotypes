@@ -4,8 +4,8 @@
 Transcription only. Outside `pilot`, values are never printed: summaries report counts.
 
     python3 scripts/norman/extract.py pages                 # list table pages and separators
-    python3 scripts/norman/extract.py pilot --pages 40,41   # all passes on pages free of negated terms
-    python3 scripts/norman/extract.py run --workers 6       # render, pass A, pass B on all table pages
+    python3 scripts/norman/extract.py pilot --pages 40,41   # bounded X,V check
+    python3 scripts/norman/extract.py run --workers 4 --first 0 --count 60  # X,V wave 1 after acceptance
     python3 scripts/norman/extract.py passC                 # local model on pages with disagreements
     python3 scripts/norman/extract.py reconcile             # merge, range checks, summary counts
 """
@@ -18,9 +18,14 @@ import hashlib
 import json
 import os
 import re
+import signal
 import subprocess
 import sys
 import time
+import uuid
+import platform
+import importlib.metadata
+import importlib.util
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -193,8 +198,12 @@ def pass_a(p: int, side: str, png: Path) -> list[dict]:
     """Revised after pilot 1 (geometric, column by column). Blocks are located from ITEM lines and MEAN
     headings; for each of the N, MEAN and S.D. columns, the five-row band under every heading is cropped,
     stacked, and read by one digits-only Tesseract run; tokens map back to blocks and rows by position."""
+    return pass_columns(png, _tsv(png, False), _ocr_digits, repair_digits=True)
+
+
+def pass_columns(png: Path, words: list[dict], ocr, *, repair_digits: bool) -> list[dict]:
+    """Shared crop geometry; each engine independently locates headings and reads digits."""
     from PIL import Image
-    words = _tsv(png, False)
     means = [t for t in words if re.match(r"^[MHN]E[AE]?[NM]", t["text"].upper())]
     items = [t for t in words if re.match(r"^IT[EF]M", t["text"].upper())]
     if not means:
@@ -213,23 +222,83 @@ def pass_a(p: int, side: str, png: Path) -> list[dict]:
         stack = Image.new("L", (x1 - x0, len(heads) * (band_h + gap)), 255)
         for i, y in enumerate(heads):
             stack.paste(im.crop((x0, y + 28, x1, y + 28 + band_h)), (0, i * (band_h + gap)))
-        cols[c] = _ocr_digits(stack)
+        cols[c] = ocr(stack)
     blocks = []
     for i, y in enumerate(heads):
         lo, hi = i * (band_h + gap), i * (band_h + gap) + band_h
         vals = {}
         for c in bands:
             toks = sorted((t for t in cols[c] if lo <= t["top"] + t["h"] / 2 <= hi), key=lambda t: t["top"])
-            vals[c] = [_fix_decimal(t["text"], c) for t in toks]
+            vals[c] = [(_fix_decimal(t["text"], c) if repair_digits else t["text"]) for t in toks]
         line = sorted([t for t in words if y - 110 <= t["top"] <= y - 25 and t["left"] < xm - 100], key=lambda t: t["left"])
         item = next((re.sub(r"\D", "", t["text"]) for t in line if len(re.sub(r"\D", "", t["text"])) == 5), None)
         term = " ".join(t["text"] for t in line if re.fullmatch(r"[A-Za-z'\-]{2,}", t["text"])
                         and t["text"].upper() not in ("ITEM", "NO", "NU")) or None
         ok = all(len(vals[c]) == 5 for c in bands)
-        rws = {t: ([vals["N"][k], _dp_fix(vals["M"][k], t, 2.0), _dp_fix(vals["S"][k], t, 1.5)] if ok else None)
+        rws = {t: ([vals["N"][k],
+                    _dp_fix(vals["M"][k], t, 2.0) if repair_digits else vals["M"][k],
+                    _dp_fix(vals["S"][k], t, 1.5) if repair_digits else vals["S"][k]] if ok else None)
                for k, t in enumerate(TASKS)}
         blocks.append(dict(item_no=item, term=term, rows=rws, complete=ok))
     return blocks
+
+
+def _vision_tokens(img) -> list[dict]:
+    """Local Apple Vision, accurate level, no language correction; top-left pixel coordinates."""
+    import io
+    import objc
+    import Vision
+    from Foundation import NSData, NSMakeRange
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    payload = buf.getvalue()
+    with objc.autorelease_pool():
+        req = Vision.VNRecognizeTextRequest.alloc().init()
+        req.setRecognitionLevel_(Vision.VNRequestTextRecognitionLevelAccurate)
+        req.setUsesLanguageCorrection_(False)
+        req.setRecognitionLanguages_(["en-US"])
+        data = NSData.dataWithBytes_length_(payload, len(payload))
+        handler = Vision.VNImageRequestHandler.alloc().initWithData_options_(data, {})
+        ok, error = handler.performRequests_error_([req], None)
+        if not ok:
+            raise RuntimeError("Apple Vision request failed")
+        tokens = []
+        for obs in req.results() or []:
+            candidates = obs.topCandidates_(1)
+            if not candidates:
+                continue
+            candidate = candidates[0]
+            line = str(candidate.string())
+            for match in re.finditer(r"\S+", line):
+                # Vision uses UTF-16 offsets, even when Python indexes code points.
+                start = len(line[:match.start()].encode("utf-16-le")) // 2
+                length = len(match.group().encode("utf-16-le")) // 2
+                box, error = candidate.boundingBoxForRange_error_(NSMakeRange(start, length), None)
+                if box is None:
+                    continue
+                rect = box.boundingBox()
+                tokens.append(dict(text=match.group(), left=rect.origin.x * img.width,
+                                   top=(1 - rect.origin.y - rect.size.height) * img.height,
+                                   w=rect.size.width * img.width, h=rect.size.height * img.height))
+        return tokens
+
+
+def pass_v(png: Path) -> tuple[list | None, dict]:
+    from PIL import Image
+    t0 = time.monotonic()
+    meta = dict(engine="Apple Vision", recognition_level="accurate", language_correction=False,
+                pyobjc_vision=importlib.metadata.version("pyobjc-framework-Vision"),
+                macos=platform.mac_ver()[0], geometric_parser="column-v1", digit_repairs=False)
+    try:
+        with Image.open(png) as image:
+            words = _vision_tokens(image.convert("L"))
+        blocks = pass_columns(png, words, _vision_tokens, repair_digits=False)
+        if not blocks:
+            meta["error"] = "no blocks detected"
+        return blocks or None, dict(meta, elapsed_seconds=time.monotonic() - t0)
+    except Exception as error:
+        # Error details are saved privately; public summaries retain only failure counts.
+        return None, dict(meta, error=type(error).__name__, elapsed_seconds=time.monotonic() - t0)
 
 
 # ------------------------------------------------------------------ passes B and C: vision models
@@ -270,20 +339,68 @@ def pass_b(png: Path, key: str, retries: int = 2) -> tuple[list | None, dict]:
     return None, dict(error=err)
 
 
-def pass_x(png: Path, prompt_file: Path) -> tuple[list | None, dict]:
-    """Codex vision (read-only wrapper with -i), added after pilot 2; the answer follows the last 'codex' line."""
-    out = subprocess.run([str(ROOT / "scripts" / "codex-ro-images.sh"), str(ROOT), str(prompt_file), str(png)],
-                         capture_output=True, text=True, timeout=900).stdout
-    lines = out.splitlines()
-    starts = [i for i, l in enumerate(lines) if l.strip() == "codex"]
-    if not starts:
-        return None, dict(error="no answer")
-    body = "\n".join(lines[starts[-1] + 1:]).split("tokens used")[0]
-    tok = next((lines[i + 1].strip() for i, l in enumerate(lines) if l.startswith("tokens used") and i + 1 < len(lines)), None)
+def validate_blocks(blocks) -> list:
+    if not isinstance(blocks, list) or not blocks:
+        raise ValueError("answer must be a nonempty block list")
+    seen = set()
+    for block in blocks:
+        if not isinstance(block, dict) or not {"item_no", "term", "rows"} <= block.keys():
+            raise ValueError("block fields missing")
+        item = block["item_no"]
+        if item is not None and (not isinstance(item, str) or not re.fullmatch(r"\d{5}", item) or item in seen):
+            raise ValueError("invalid or duplicate item number")
+        if item is not None:
+            seen.add(item)
+        if block["term"] is not None and not isinstance(block["term"], str):
+            raise ValueError("term must be string or null")
+        rows = block["rows"]
+        if not isinstance(rows, dict) or set(rows) != set(TASKS):
+            raise ValueError("five task rows required")
+        for row in rows.values():
+            if row is not None and (not isinstance(row, list) or len(row) != 3 or
+                                    any(v is not None and not isinstance(v, str) for v in row)):
+                raise ValueError("row must have three strings/nulls or be null")
+    return blocks
+
+
+def parse_x_answer(answer: str, stdout: str, stderr: str, returncode: int) -> tuple[list | None, dict]:
+    tokens = re.findall(r"tokens used\s*\n\s*([\d,]+)", stderr + "\n" + stdout)
+    model = re.search(r"(?m)^model:\s*(\S+)", stderr)
+    effort = re.search(r"(?m)^reasoning effort:\s*(\S+)", stderr)
+    meta = dict(model=model.group(1) if model else None, effort=effort.group(1) if effort else None,
+                tokens=int(tokens[-1].replace(",", "")) if tokens else None, returncode=returncode)
+    if returncode:
+        return None, dict(meta, error="process failed")
+    if meta["model"] != "gpt-6.1-sol" or meta["effort"] != "none":
+        return None, dict(meta, error="instrument header mismatch")
     try:
-        return _json_list(body), dict(model="codex", tokens=tok)
-    except json.JSONDecodeError as e:
-        return None, dict(error=repr(e)[:200], tokens=tok)
+        return validate_blocks(_json_list(answer or stdout)), meta
+    except (ValueError, TypeError):
+        return None, dict(meta, error="invalid or empty JSON answer")
+
+
+def pass_x(png: Path, prompt_file: Path) -> tuple[list | None, dict]:
+    """One attempt; retain separate streams and use Codex's final-message file."""
+    dest = RAW / "passX-attempts" / (png.stem + "-" + uuid.uuid4().hex)
+    dest.mkdir(parents=True)
+    answer_path = dest / "answer.txt"
+    env = dict(os.environ, NORMAN_CODEX_LAST_MESSAGE=str(answer_path))
+    t0 = time.monotonic()
+    with (dest / "stdout.txt").open("w") as stdout, (dest / "stderr.txt").open("w") as stderr:
+        proc = subprocess.Popen([str(ROOT / "scripts" / "codex-ro-images.sh"), str(ROOT),
+                                 str(prompt_file), str(png)], stdout=stdout, stderr=stderr,
+                                env=env, start_new_session=True)
+        try:
+            returncode = proc.wait(timeout=900)
+        except subprocess.TimeoutExpired:
+            os.killpg(proc.pid, signal.SIGKILL)
+            returncode = proc.wait()
+    blocks, meta = parse_x_answer(answer_path.read_text() if answer_path.exists() else "",
+                                 (dest / "stdout.txt").read_text(), (dest / "stderr.txt").read_text(), returncode)
+    meta.update(attempt_path=str(dest.relative_to(ROOT)), elapsed_seconds=time.monotonic() - t0,
+                prompt_sha256=hashlib.sha256(prompt_file.read_bytes()).hexdigest(),
+                image_sha256=hashlib.sha256(png.read_bytes()).hexdigest())
+    return blocks, meta
 
 
 def pass_c(png: Path) -> tuple[list | None, dict]:
@@ -358,54 +475,37 @@ def align_blocks(A, B):
     return out
 
 
-def reconcile_page(p, side, A, B, C=None, X=None, X2=None) -> list[dict]:
-    """After pilot 2: accept a value when two different model families agree (Codex X with GLM B or with
-    Tesseract A; or A with B). Unresolved rows take a second, zoomed Codex read X2, accepted if it matches
-    any of A, B or X."""
-    A = align_blocks(A, X or B)
-    a, b, c = rows_of(A), rows_of(B), rows_of(C) if C else {}
-    x, x2 = rows_of(X) if X else {}, rows_of(X2) if X2 else {}
-    if x:
-        out = []
-        for k in sorted(set(a) | set(b) | set(x)):
-            va, vb, vx, v2 = (d.get(k) for d in (a, b, x, x2))
-            rec = dict(page=p, side=side, item_no=k[0], task=k[1], term_a=va[3] if va else None,
-                       term_b=(vx or vb or (None,) * 4)[3])
-            chosen, source = None, "flagged"
-            for u, w, lab in ((vx, vb, "X=B"), (vx, va, "X=A"), (va, vb, "A=B")):
-                if u and w and u[:3] == w[:3]:
-                    chosen, source = u[:3], lab
-                    break
-            if chosen is None and v2:
-                for u, lab in ((vx, "X2=X"), (vb, "X2=B"), (va, "X2=A")):
-                    if u and u[:3] == v2[:3]:
-                        chosen, source = v2[:3], lab
-                        break
-            if chosen:
-                rec.update(N=chosen[0], MEAN=chosen[1], SD=chosen[2], source=source, range_ok=in_range(k[1], *chosen))
-            else:
-                rec.update(N=None, MEAN=None, SD=None, source="flagged", range_ok=False)
-            out.append(rec)
-        return out
-    keys = sorted(set(a) | set(b) | set(c))
+def reconcile_page(p, side, A, B, C=None, X=None, X2=None, V=None) -> list[dict]:
+    """Cross-engine agreement; historical B remains usable alongside its replacement V."""
+    A = align_blocks(A, X or B or V)
+    engines = {name: rows_of(blocks) for name, blocks in
+               (("A", A), ("B", B), ("C", C), ("X", X), ("X2", X2), ("V", V))}
+    keys = sorted(set().union(*(set(rows) for rows in engines.values())))
+    pairs = (("X", "V"), ("X", "B"), ("X", "A"), ("A", "V"), ("A", "B"),
+             ("B", "V"), ("A", "C"), ("B", "C"))
     out = []
-    for k in keys:
-        va, vb, vc = a.get(k), b.get(k), c.get(k)
-        rec = dict(page=p, side=side, item_no=k[0], task=k[1],
-                   term_a=va[3] if va else None, term_b=vb[3] if vb else None)
+    for key in keys:
+        values = {name: rows.get(key) for name, rows in engines.items()}
+        term = next((values[name][3] for name in ("X", "B", "V", "C", "A") if values[name]), None)
+        rec = dict(page=p, side=side, item_no=key[0], task=key[1],
+                   term_a=values["A"][3] if values["A"] else None, term_b=term)
         chosen, source = None, "flagged"
-        if va and vb and va[:3] == vb[:3]:
-            chosen, source = va[:3], "A=B"
-        elif vc:
-            for x, lab in ((va, "A"), (vb, "B")):
-                if x and x[:3] == vc[:3]:
-                    chosen, source = vc[:3], f"{lab}=C"
+        for first, second in pairs:
+            u, v = values[first], values[second]
+            if u and v and None not in u[:3] and u[:3] == v[:3]:
+                chosen, source = u[:3], first + "=" + second
+                break
+        if chosen is None and values["X2"]:
+            for name in ("X", "B", "V", "A"):
+                u, v = values[name], values["X2"]
+                if u and None not in u[:3] and u[:3] == v[:3]:
+                    chosen, source = v[:3], "X2=" + name
                     break
-        if chosen:
-            rec.update(N=chosen[0], MEAN=chosen[1], SD=chosen[2], source=source,
-                       range_ok=in_range(k[1], *chosen))
-        else:
+        if chosen is None:
             rec.update(N=None, MEAN=None, SD=None, source="flagged", range_ok=False)
+        else:
+            rec.update(N=chosen[0], MEAN=chosen[1], SD=chosen[2], source=source,
+                       range_ok=in_range(key[1], *chosen))
         out.append(rec)
     return out
 
@@ -417,7 +517,9 @@ def load_jsonl(path: Path) -> dict:
     if path.exists():
         for line in path.read_text().splitlines():
             r = json.loads(line)
-            d[(r["page"], r["side"])] = r
+            key = (r["page"], r["side"])
+            if r.get("blocks") is not None or key not in d or d[key].get("blocks") is None:
+                d[key] = r
     return d
 
 
@@ -426,53 +528,58 @@ def append_jsonl(path: Path, rec: dict):
         fh.write(json.dumps(rec) + "\n")
 
 
-def run_passes(pages: list[int], workers: int, do_c: bool = False):
+def run_passes(pages: list[int], workers: int, passes=("X", "V")):
+    """Each invocation makes at most one attempt per missing/failed half-page and selected engine."""
+    if not 1 <= workers <= 4:
+        raise ValueError("workers must be between 1 and 4")
+    if not set(passes) <= {"A", "B", "C", "X", "V"}:
+        raise ValueError("unknown pass")
     RAW.mkdir(parents=True, exist_ok=True)
-    A_path, B_path, C_path = RAW / "passA.jsonl", RAW / "passB.jsonl", RAW / "passC.jsonl"
-    doneA, doneB, doneC = load_jsonl(A_path), load_jsonl(B_path), load_jsonl(C_path)
-    key = _key()
-    jobs = []
-    for p in pages:
-        vis = render_vision(p)
-        for side, png in render(p).items():
-            if (p, side) not in doneA:
-                append_jsonl(A_path, dict(page=p, side=side, blocks=pass_a(p, side, png)))
-            jobs.append((p, side, vis[side]))
-    todo_b = [j for j in jobs if (j[0], j[1]) not in doneB]
-    with ThreadPoolExecutor(max_workers=workers) as ex:
-        futs = {ex.submit(pass_b, png, key): (p, side) for p, side, png in todo_b}
-        for i, f in enumerate(as_completed(futs), 1):
-            p, side = futs[f]
-            blocks, meta = f.result()
-            append_jsonl(B_path, dict(page=p, side=side, blocks=blocks, meta=meta))
-            print(f"[B {i}/{len(todo_b)}] page {p}{side}: {'ok' if blocks is not None else 'FAILED'}", flush=True)
-    X_path = RAW / "passX.jsonl"
-    doneX = load_jsonl(X_path)
+    jobs = [(p, side, png) for p in pages for side, png in render(p).items()]
     prompt_file = RAW / "prompt_x.md"
     prompt_file.write_text(PROMPT + " Do not run any commands; read the attached image directly.")
-    todo_x = [(p, side) for p, side, _ in jobs if (p, side) not in doneX]
-    with ThreadPoolExecutor(max_workers=4) as ex:
-        futs = {ex.submit(pass_x, IMG / f"p{p:03d}_{side}.png", prompt_file): (p, side) for p, side in todo_x}
-        for i, f in enumerate(as_completed(futs), 1):
-            p, side = futs[f]
-            blocks, meta = f.result()
-            append_jsonl(X_path, dict(page=p, side=side, blocks=blocks, meta=meta))
-            print(f"[X {i}/{len(todo_x)}] page {p}{side}: {'ok' if blocks is not None else 'FAILED'} {meta.get('tokens')}", flush=True)
-    if do_c:
-        for p, side, png in jobs:
-            if (p, side) not in doneC:
-                blocks, meta = pass_c(png)
-                append_jsonl(C_path, dict(page=p, side=side, blocks=blocks, meta=meta))
-                print(f"[C] page {p}{side}: {'ok' if blocks is not None else 'FAILED'}", flush=True)
+    counts = {}
+    for name in passes:
+        path = RAW / f"pass{name}.jsonl"
+        done = load_jsonl(path)
+        todo = [job for job in jobs if done.get(job[:2], {}).get("blocks") is None]
+        key = _key() if name == "B" else None
+        def run_one(job):
+            p, side, png = job
+            if name == "A":
+                return pass_a(p, side, png), {"engine": "Tesseract"}
+            if name == "B":
+                return pass_b(render_vision(p)[side], key)
+            if name == "C":
+                return pass_c(render_vision(p)[side])
+            if name == "V":
+                return pass_v(png)
+            return pass_x(png, prompt_file)
+        counts[name] = {"attempted": len(todo), "failed": 0, "reused": len(jobs) - len(todo)}
+        # Vision has local native state; run it sequentially. X uses the requested bound.
+        with ThreadPoolExecutor(max_workers=1 if name == "V" else workers) as executor:
+            futures = {executor.submit(run_one, job): job[:2] for job in todo}
+            for i, future in enumerate(as_completed(futures), 1):
+                p, side = futures[future]
+                try:
+                    blocks, meta = future.result()
+                except Exception as error:
+                    blocks, meta = None, {"error": type(error).__name__}
+                append_jsonl(path, dict(page=p, side=side, blocks=blocks, meta=meta,
+                                       attempted_at=datetime.now().isoformat(timespec="seconds")))
+                counts[name]["failed"] += blocks is None
+                print(f"[{name} {i}/{len(todo)}] page {p}{side}: {'ok' if blocks is not None else 'FAILED'}", flush=True)
+    return counts
 
 
 def reconcile_all() -> list[dict]:
     A, B, C = load_jsonl(RAW / "passA.jsonl"), load_jsonl(RAW / "passB.jsonl"), load_jsonl(RAW / "passC.jsonl")
     Xp, X2 = load_jsonl(RAW / "passX.jsonl"), load_jsonl(RAW / "passX2.jsonl")
+    V = load_jsonl(RAW / "passV.jsonl")
     rows = []
-    for k in sorted(set(A) | set(B) | set(Xp)):
+    for k in sorted(set(A) | set(B) | set(Xp) | set(V)):
         rows += reconcile_page(k[0], k[1], A.get(k, {}).get("blocks"), B.get(k, {}).get("blocks"),
-                               C.get(k, {}).get("blocks"), Xp.get(k, {}).get("blocks"), X2.get(k, {}).get("blocks"))
+                               C.get(k, {}).get("blocks"), Xp.get(k, {}).get("blocks"), X2.get(k, {}).get("blocks"), V.get(k, {}).get("blocks"))
     cols = ["page", "side", "item_no", "task", "term_a", "term_b", "N", "MEAN", "SD", "source", "range_ok"]
     with (RAW / "reconciled.csv").open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols)
@@ -494,7 +601,12 @@ def write_log(cmd: str, extra: dict):
     log = dict(timestamp=datetime.now().isoformat(timespec="seconds"), script="scripts/norman/extract.py",
                command=cmd, argv=sys.argv, pdf_sha256=hashlib.sha256(PDF.read_bytes()).hexdigest(),
                tesseract=sh(["tesseract", "--version"]).splitlines()[0], model_b=MODEL_B, model_c=MODEL_C,
-               prompt_sha256=PROMPT_SHA, dpi=DPI, **extra)
+               prompt_sha256=PROMPT_SHA, dpi=DPI, python=sys.version,
+               code_commit=sh(["git", "rev-parse", "HEAD"], cwd=ROOT).strip(),
+               codex=sh(["/opt/homebrew/bin/codex", "--version"]).strip(),
+               model_x="gpt-6.1-sol", effort_x="none", macos=platform.mac_ver()[0],
+               packages={name: importlib.metadata.version(name) for name in
+                         ("Pillow", "pyobjc-framework-Vision") if importlib.util.find_spec("Vision")}, **extra)
     path = ROOT / "logs" / f"norman-extract-{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
     path.write_text(json.dumps(log, indent=2, default=str))
     return path
@@ -506,8 +618,10 @@ def main():
     sub.add_parser("pages")
     p1 = sub.add_parser("pilot")
     p1.add_argument("--pages", required=True)
+    p1.add_argument("--passes", default="X,V")
     p2 = sub.add_parser("run")
-    p2.add_argument("--workers", type=int, default=6)
+    p2.add_argument("--workers", type=int, default=4)
+    p2.add_argument("--passes", default="X,V")
     p2.add_argument("--first", type=int, default=0, help="index of the first table page in this wave")
     p2.add_argument("--count", type=int, default=10_000, help="number of table pages in this wave")
     sub.add_parser("passC")
@@ -521,29 +635,22 @@ def main():
         return
     if args.cmd == "pilot":
         pages = [int(x) for x in args.pages.split(",")]
-        for p in pages:  # refuse pages with negated terms (firewall)
-            terms = [b["term"] or "" for side, png in render(p).items() for b in pass_a(p, side, png)]
-            bad = [t for t in terms if NEG.search(re.sub(r"[^A-Z]", "", t.upper()))]
-            if bad:
-                sys.exit(f"page {p} has terms with a negator; choose another pilot page")
-        run_passes(pages, workers=2, do_c=True)
-        rows = [r for r in reconcile_all() if r["page"] in pages]
-        A, B, C = (rows_of_page(n, pages) for n in ("passA", "passB", "passC"))
-        for k in sorted(set(A) | set(B) | set(C)):
-            print(k, "A", A.get(k), "| B", B.get(k), "| C", C.get(k))
-        print(json.dumps(summary(rows), indent=1))
-        print("log:", write_log("pilot", dict(pages=pages, elapsed=round(time.time() - t0, 1))).relative_to(ROOT))
+        if sorted(pages) != [40, 41]:
+            sys.exit("Only approved pilot pages 40 and 41 may be inspected")
+        counts = run_passes(pages, workers=2, passes=tuple(args.passes.split(",")))
+        print("log:", write_log("pilot", dict(pages=pages, counts=counts,
+                                              elapsed=round(time.time() - t0, 1))).relative_to(ROOT))
         return
     if args.cmd == "run":
         tp = table_pages()[args.first: args.first + args.count]
-        run_passes(tp, workers=args.workers)
-        print("log:", write_log("run", dict(pages=len(tp), elapsed=round(time.time() - t0, 1))).relative_to(ROOT))
+        counts = run_passes(tp, workers=args.workers, passes=tuple(args.passes.split(",")))
+        print("log:", write_log("run", dict(pages=len(tp), counts=counts, elapsed=round(time.time() - t0, 1))).relative_to(ROOT))
         return
     if args.cmd == "passC":
         rows = reconcile_all()
         need = sorted({r["page"] for r in rows if r["source"] == "flagged"})
         print(len(need), "pages with disagreements get pass C", flush=True)
-        run_passes(need, workers=1, do_c=True)
+        run_passes(need, workers=1, passes=("C",))
         print("log:", write_log("passC", dict(pages=need, elapsed=round(time.time() - t0, 1))).relative_to(ROOT))
         return
     if args.cmd == "disputes":

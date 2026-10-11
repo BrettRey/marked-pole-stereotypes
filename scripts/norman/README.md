@@ -37,3 +37,61 @@ Scored against a gold transcription of the four pilot half-pages (240 rows, by a
 ## Order of running
 
 Spec and code committed first; then a pilot on two pages whose terms contain no negator, with A, B and C compared by hand on those pages only; then the full run; then the audit.
+
+
+## Pass-X repair and Vision pilot specification (2026-10-11; prospective)
+
+Brett approved resuming this bounded handoff after the simulation and lexical
+protocol decisions. Keep the existing pages 40–41 gold and the values firewall.
+No new commonness judgments or human ratings are introduced.
+
+Pass X now writes its final answer using `--output-last-message`, retains stdout
+and stderr separately, records tokens and checks the model/effort header. Freeze
+the existing instrument explicitly as `gpt-6.1-sol`, effort `none`, with the same
+prompt and 300-dpi images; Codex CLI is 0.161.0 (the old handoff used 0.160.0).
+Record this software change. Empty/malformed answers, process failures, header
+mismatches and invalid block schemas remain failed attempts. One call per selected
+failed/missing half-page per invocation, no internal retries, 900-second timeout.
+Keep attempt records append-only and select the last non-null result; later failed
+attempts cannot hide an earlier success. Raw transcriptions and attempt streams
+stay under the excluded source-data directory, following the Norman-specific
+firewall and redistribution rule rather than the generic review-publication rule.
+
+Pass V uses local Apple Vision via `pyobjc-framework-Vision==12.2.2`, accurate
+recognition, `en-US`, language correction off; Pillow stays at 11.3.0. The
+preflight machine is macOS 26.6.2. It independently locates headers and recognizes
+values with Vision, using the existing per-column crop geometry. Unlike historical
+pass A, it makes no dropped-decimal or scale-based digit repairs. Shared crop
+geometry remains a possible source of correlated errors; agreement is checked
+against the gold rather than assumed correct.
+
+Run X and V only on the four pilot halves; reuse existing A and B. The scorer
+reports exact three-number rows among the 239 fully readable gold rows (one of
+240 is excluded), and correctness of V=X, V=A, X=A and B=X agreements. Compare
+V=X with the existing benchmark of one wrong row among 153 B=X agreements,
+considering both errors and the number of agreements. A small agreement subset
+is not evidence of comparable reliability. If the existing acceptance requirement
+is not met, report that before any wave; do not automatically tune and repeat.
+
+If accepted, run the first 60 table pages with four X workers and one local V
+worker, selecting passes X,V only. Reuse completed records; no OpenRouter key
+lookup, new B calls or local Gemma calls. Retain the historical B results for
+reconciliation. Add X=V and A=V to cross-engine agreement, keep unresolved and
+range-failing rows explicit, and require non-null numbers before counting agreement.
+Outside pages 40–41, public reports contain counts, timings, hashes and range
+summaries only. No extracted values are joined to morphology. Later waves and
+the third-engine audit remain separate work after wave 1 is checked.
+
+Commands (spec and code must be published first):
+
+```sh
+uv run --quiet --no-project --with pillow==11.3.0 --with pyobjc-framework-Vision==12.2.2 python scripts/norman/extract.py pilot --pages 40,41 --passes X,V
+uv run --quiet --no-project --with pillow==11.3.0 --with pyobjc-framework-Vision==12.2.2 python scripts/norman/score_pilot.py
+# Only after the pilot meets the existing acceptance requirement:
+uv run --quiet --no-project --with pillow==11.3.0 --with pyobjc-framework-Vision==12.2.2 python scripts/norman/extract.py run --first 0 --count 60 --workers 4 --passes X,V
+```
+
+The 11 regression tests exercise stream parsing, final-message priority, schema
+and instrument failures, append-only failure recovery, selected-pass isolation,
+and incomplete-value reconciliation. These are software fixtures, not research
+observations. See `logs/norman-repair-tests-20261011.txt`.

@@ -1,0 +1,10 @@
+No style violations found.
+
+============================================================
+AI VOICE CHECK
+============================================================
+
+  --- marked-pole-stereotypes.tex ---
+    Line 61: AI pattern: possible false range; verify the endpoints form a real scale
+      The source manifest identifies empirical inputs and their access conditions. Third-party source f...
+

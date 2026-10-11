@@ -1,5 +1,5 @@
 # Part 8: draft completion text for the analysis plan
-<!-- SUMMARY: Draft completion of the five unwritten plan sections, incorporating Brett's continuous-reporting direction and identifying remaining analyst work; analysis_plan.md unchanged · status: draft · updated: 2026-10-10 -->
+<!-- SUMMARY: Draft completion of the five unwritten plan sections; reporting, feedback and reduced-design decisions reconciled with analysis_plan.md after Brett's 2026-10-11 review; remaining empirical specification work stays open · status: draft · updated: 2026-10-11 -->
 
 This draft assembles the plan's unfinished sections in one place. It draws
 on `analysis_plan.md` and `DECISIONS.md` through 2026-10-10, including Brett's
@@ -186,8 +186,28 @@ normalized separately, so C, M and Y do not update L. An empirical model
 must specify its own measurement factors and shared parameters; inserting
 posterior means or stopping a gradient does not implement this distribution.
 
-**STILL OPEN:** complete D1b/D1c and the required frame-specific design
-checks; settle the indicator verdict; specify numerical priors, shared-bias
+The retained confirmatory analysis requires an additional commonness indicator.
+The tested frequency-only pipeline did not yield a usable converged analysis;
+adding an indicator does not by itself resolve confounding or transport problems.
+This is a decision about the retained pipeline, not a general identification theorem.
+
+Report joint and cut estimates together, with separate intervals and signed
+differences defined as cut minus joint. The range between their means is a
+sensitivity summary, not an interval claimed to contain the truth. The next
+D1c assessment retains eight configurations: two response structures, baseline
+or unmeasured-register stress, and joint or eight-component cut, at H2 target
+−0.10, prior scale 1 and omitted register control. Replication waits for frozen
+empirical inputs. The allocation is 100 fresh datasets in each of the four
+design/scenario combinations, each fitted by both methods.
+
+Report both-pass, joint-only-pass, cut-only-pass and neither-pass counts.
+Paired comparisons use the both-pass subset and report its size; each method's
+conditional performance uses its own successful subset. A cut fails if its
+upstream fit or any of its eight downstream components fails. Do not drop
+components and renormalize. This assesses the implemented approximation.
+
+**STILL OPEN:** complete the required frame-specific design
+checks; specify numerical priors, shared-bias
 bounds, bridge models, admissible multiverse combinations, scoring rules,
 predictive-check criteria, convergence budgets and retry rules. Simulation
 placeholders are not empirical priors. The plan requires calibrated
@@ -246,11 +266,21 @@ structure: independent samples and overlapping samples from a small society
 need not agree. Consensus is reported beside prevalence shifts and recovery.
 Observed consensus is not inverted into an estimate of true differences.
 
-**PROPOSED interval convention:** display the posterior median and
-equal-tailed 50% and 90% intervals, accompanied by the posterior or
-exceedance curve where useful. These intervals summarize uncertainty; they
-are not pass/fail boundaries. This presentation choice remains distinct
-from the agreed decision to leave substantive benchmarks unset.
+**Adopted directional convention, 2026-10-11:** display equal-tailed 50%
+and 90% intervals and the posterior probability of the predicted sign.
+A 90% interval wholly opposite the prediction counts against that
+specification's directional prediction; for a continuous posterior this
+corresponds to more than 95% probability of the opposite sign. An interval
+wholly in the predicted direction supports direction, not practical importance
+or mechanism. An interval spanning zero leaves direction unresolved; a narrow
+interval near zero does not establish absence or equivalence. Cut probabilities
+describe the implemented eight-component approximation, including near the boundary.
+
+For a fixed estimand and target population, call a directional contradiction
+robust across the prespecified set of admissible specifications only when every
+specification in that named set contradicts the prediction. Different constructs
+and populations retain separate findings; specification proportions are not
+probabilities. H1 remains exploratory. Substantive magnitude benchmarks remain unset.
 
 **STILL OPEN:** specify overlap and measurement-adequacy checks and the
 final strand A comparisons. A precisely estimated association cannot by
@@ -297,8 +327,9 @@ be described as prospective registration of those pilots.
 | What would count against | H2/L1/L2 estimands and predictions; settled strand A forward map; 2026-10-10 reporting decision in DECISIONS.md, which supersedes the earlier requirement to choose substantive cutoffs |
 | Seeds and environment | Project rules; `HANDOFF-TO-CODEX.md`; dated D1c records and `DECISIONS.md` |
 
-The draft leaves `analysis_plan.md` unchanged. Its later integration must
-also reconcile the older threshold rules elsewhere in that file. Numerical
+The adopted reporting, feedback, reduced-design and lexical-inventory decisions
+were reconciled with `analysis_plan.md` on 2026-10-11. Remaining empirical
+specification work stays open. Numerical
 results, external factual claims and citations already in the plan retain
 their existing source checks. The analyst handles that integration; Brett
 does not need to reconcile the files.

@@ -10,14 +10,12 @@ source:
 - STATUS.md
 - notes/project-brief.md
 next_action: >-
-  Review notes/next-stage-decisions-2026-10-11.md: joint/cut reporting,
-  a reduced HF simulation proposal and directional falsifiers. Consult the
-  completed recovery record; all 16 baseline fits are finished and the
-  240-cell grid stays stopped.
-  Six-pair lexical review is complete; full coding and commonness collection
-  await the frame/model/budget specification. Resume Norman's parser and
-  Vision pilot next, preserving its values firewall. Run state lives in reports
-  and logs; DECISIONS records scientific and scope decisions only.
+  Implement the approved Norman pass-X repair and pages-40–41 Vision check;
+  start wave 1 only if the existing acceptance requirement is met.
+  The adopted eight-cell D1c assessment waits for frozen empirical inputs
+  and a new launch budget. Baseline recovery and six-pair review are complete.
+  Prepare the lexical evidence inventory and capped production budget before
+  full coding; freeze the adjudicated frame before commonness collection.
 claim:
   argues: >-
     Stereotype content concentrates on the marked pole of evaluative oppositions, because rarity
@@ -29,7 +27,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. HF jobs and monitor have ended; combined compute estimate USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design, falsifier wording and lexical budget are proposed in notes/next-stage-decisions-2026-10-11.md. Norman parser/Vision work remains next. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
+<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. HF jobs and monitor have ended; combined compute estimate USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design and directional reporting are adopted; replication and the lexical production budget remain deferred in notes/next-stage-decisions-2026-10-11.md. Norman parser/Vision work remains next. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
 
 ## State
 
@@ -39,11 +37,11 @@ Recovery completed 2026-10-11 at 12:14 UTC: 16/16 baseline configurations, all 8
 
 ## Next action
 
-1. Review the [next-stage decisions](notes/next-stage-decisions-2026-10-11.md) and [completed six-pair review](notes/lexical-six-pair-report-2026-10-11.md).
+1. Implement the adopted [next-stage decisions](notes/next-stage-decisions-2026-10-11.md) and [completed six-pair review](notes/lexical-six-pair-report-2026-10-11.md).
 2. The authorized baseline batch is complete: [final report](results/d1c/baseline-recovery-20261011/REPORT.md) and [independent recovery checks](logs/d1c-recovery-final-readcheck-20261011.json). No full-grid restart.
 3. Resume Norman's pass-X parser repair and Vision pilot on pages 40–41 under the existing [handoff](HANDOFF-TO-CODEX.md), before further simulation expansion.
 4. Before full lexical coding, fix the source coverage, discovery audit, model/version and allowance budget. Before commonness collection, also settle pair weighting and release targets/descriptions.
-5. Integrate agreed plan amendments before FIXED. Empirical-design calibration waits for the frozen frame and actual source response structure.
+5. The accepted reporting amendments are integrated; complete the remaining empirical specification before FIXED. Empirical-design calibration waits for the frozen frame and actual source response structure.
 
 ## Prior task records
 
