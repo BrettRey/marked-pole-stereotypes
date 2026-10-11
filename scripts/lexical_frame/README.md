@@ -238,3 +238,25 @@ Eligibility, completeness and unresolved questions are separate fields. One supp
 Dispatch uses the fixed Codex and Claude subscription routes. A job is a bounded CLI invocation, potentially containing multiple underlying requests or structured-output repairs. Exposed internal activity and usage are recorded; lack of telemetry is unknown, not evidence of one request. The first production packet on each route must pass actual-output checks before concurrency rises. The packet-local initial-attempt barrier precedes a union of supplement requests; only new supplied evidence warrants the one allowed revised round. A failed initial attempt stays in the ledger even if the revised round later succeeds. Missing family assessments stay explicit.
 
 At most 80 scientific jobs and two neutral preflight jobs are authorized. No automatic rerun of a failed scientific job, paid API fallback or additional credit purchase is allowed. Unattempted work stays queued at quota exhaustion. API-equivalent pricing does not measure subscription allowance. The continuation report separates evidence strata and initial coding, evidence revisions and source-review effort; it excludes completed work by instrument/stage and includes remaining uncertainties. Pair discovery independent of the detector, unmatched/rejected audits, alignment, adjudication and pair weighting remain later work.
+
+
+Run the production stages after publication:
+
+```bash
+python3 scripts/lexical_frame/production_evidence.py selection
+python3 scripts/lexical_frame/production_evidence.py collect
+python3 scripts/lexical_frame/production_evidence.py packets
+python3 scripts/lexical_frame/production_runner.py preflight
+python3 scripts/lexical_frame/production_runner.py freeze
+python3 scripts/lexical_frame/production_runner.py first --notify
+```
+
+Dictionary collection and the neutral route checks are independent and may run concurrently. Initial packets remain immutable after supplementary cache changes. After actual source-support review of both returned first-packet assessments, record the analyst's review and continue:
+
+```bash
+python3 scripts/lexical_frame/production_runner.py review --review-note /absolute/path/to/completed-first-packet-review.md
+python3 scripts/lexical_frame/production_runner.py continue --notify
+python3 scripts/lexical_frame/production_report.py --write
+```
+
+The review command records completed analyst work; it isn't a request for another approval from Brett. Unavailable routes remain explicit. A systematic-defect hold needs a documented analyst assessment before `clear-hold`; clearing a hold cannot rerun an attempted job. The inventory compiler never manufactures source review or adjudicates by agreement. Its per-packet `source-review/*.json` records require actual item-level review, interpretation dispositions with source evidence, separate corrections and unresolved questions. A partial inventory stays explicitly incomplete until all 200 selected forms have been reviewed, including their technical failures.
