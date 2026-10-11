@@ -1,0 +1,11 @@
+No model fitting or cloud allocation in these checks.
+AST parse: 4 Python files passed.
+test_archived_upstream_hash_and_selected_shapes (test_benchmark.BenchmarkContract.test_archived_upstream_hash_and_selected_shapes) ... ok
+test_colab_matches_volunteer_archived_fit (test_benchmark.BenchmarkContract.test_colab_matches_volunteer_archived_fit) ... ok
+test_packing_arms_share_scientific_identity (test_benchmark.BenchmarkContract.test_packing_arms_share_scientific_identity) ... ok
+test_provider_ceiling_and_no_retry (test_benchmark.BenchmarkContract.test_provider_ceiling_and_no_retry) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.480s
+
+OK

@@ -1,0 +1,31 @@
+# Hardware checks for a mixed compute pool
+
+Specified 2026-10-11, before execution. Brett requested the fastest overall run for the least overall budget, allowing a blend of providers, and asked Codex to keep working while he was away. These bounded hardware checks use the existing USD 15 ceiling. The full empirical-design calibration remains deferred until its input specification is frozen.
+
+## Hugging Face: two versus three workers
+
+Two `cpu-upgrade` machines run concurrently. Each repeats components 0–5 of archived cell 142, replicate 0: the Nicolas-style baseline, target −0.1, reliability .8, prior 1, cut feedback. One machine uses two simultaneous workers; the other uses three. Six tasks fill an integer number of waves in both configurations. This is a comparison of these two machines, not replicated evidence about the provider's hardware distribution.
+
+The six fixed upstream selections come from the existing archived upstream fit, hash `28683a3209b6dfadb1054d1f8bbae142e4cf5a37816fd2cf902e4c0c6984af3e`. The runner reads that existing artifact from historical commit `b54f265f57197b81d6ba43f6c6701246052b1174`; it does not recommit draw archives. All model source hashes, package versions, data and sampling seeds, four chains, 2,000 warmup iterations, 4,000 retained draws per chain and all 16,000 contrast draws remain fixed. These repeats never enter the calibration totals or replace existing results.
+
+Each provider job has one attempt and a 12-hour timeout. The controller stops after 11.5 hours or sampled aggregate worker RSS reaches 28 GiB. A worker failure stops further queued starts; there are no model retries. Checkpoints and receipts export to the existing private HF bucket every 30 seconds, with storage failures isolated from fitting and a bounded final export retry. The sampling interval cannot guarantee interception of a sudden OOM; a killed job remains a failed benchmark.
+
+Maximum new compute: 2 × 12 × USD .03 = **USD .72**. Even retaining the old over-conservative USD 13.80 reservation, the ceiling is USD 14.52, below USD 15. Prior completed work's duration-based compute estimate is USD 2.3845, not an invoice. No further jobs are automatically launched by these checks.
+
+Report elapsed time, six-task makespan, completed fits per machine-hour, provider compute cost per completed fit, per-worker RSS and diagnostics, aggregate sampled RSS and any failures. Compare identical component seeds between arms. Three workers are usable only if all six archives validate and the original diagnostic requirements pass. Prefer the faster/cheaper observed arm; do not describe the expected 33% cost reduction as an observed result. Concurrent machine variation and this single dataset limit generalization. Joint fits retain the two-worker limit because their observed memory demands are higher.
+
+## Colab: one matched timing fit
+
+`colab-one` repeats archived cell 12, replicate 0, with one worker, the same assignment used for the volunteer Mac timing. It has a six-hour controller limit and 10 GiB sampled worker RSS limit. Source and package checks match the archived fit. The remote bootstrap uses an isolated Python 3.14.8 environment; the notebook kernel's Python version is irrelevant. It retains a ZIP with receipts and completed checkpoints for download. No Google or HF tokens are placed in the VM by this code.
+
+Google's [AI Pro help](https://support.google.com/googleone/answer/14534406?hl=en-en) states that eligible members get 200 Colab compute units; the [September announcement](https://developers.googleblog.com/colab-is-now-part-of-your-google-ai-plan/) says rollout is gradual and distinguishes Ultra background execution. The public evidence does not establish Brett's current balance, unit renewal date, CPU unit rate, machine availability or concurrent runtime limit. Google AI Pro must not be treated as Colab Pro+.
+
+The official [Colab CLI](https://github.com/googlecolab/google-colab-cli), locally checked at 0.7.4, supports CPU sessions, usage reporting, remote execution and file download. CLI authentication is not yet available in this session. Query `colab usage` after signing in, record the account balance and rate, then allocate at most one CPU runtime for this check. Do not buy credits or select a GPU. Measure actual CPU/RAM and rate before starting the fit. A GPU allocation does not accelerate this unchanged CPU sampler.
+
+Colab fitting stays unlaunched until account access and the displayed consumption rate permit a finite compute-unit allowance. The initial proposed bound is the lesser of 10 available units and six hours at the displayed rate; the controller's time limit must be reduced if necessary before launch. The source must be published after any such setting change. Run availability and safe artifact retrieval must be checked before assigning batches to ephemeral Colab storage.
+
+## Allocation after the checks
+
+Keep Yoko's current timing run. Additional volunteer environments are optional; their hardware descriptions alone are not throughput measurements. Use included Colab units where they buy useful completed work without extra payment, then HF for additional parallel capacity. Compare elapsed time and failure-adjusted cost per valid component, including setup and idle time. Preserve distinct logical module IDs and a central assignment record; a hardware repeat is not an additional independent simulated dataset.
+
+More machines shorten wall time but do not reduce the required number of fits. The preliminary 4,000-module design budget is dominated by 3,200 conditional fits. Better packing may lower its HF cost; included Colab capacity may lower additional cash cost. Neither change resolves the still-unfrozen empirical specification or justifies launching that full design now.
