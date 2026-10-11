@@ -1,0 +1,37 @@
+test_complement_requires_exhaustive_exclusive (test_audit.AuditChecks.test_complement_requires_exhaustive_exclusive) ... ok
+test_contrary_allows_neither (test_audit.AuditChecks.test_contrary_allows_neither) ... ok
+test_link_display (test_audit.AuditChecks.test_link_display) ... ok
+test_no_template_inference (test_audit.AuditChecks.test_no_template_inference) ... ok
+test_uncertainty_not_forced (test_audit.AuditChecks.test_uncertainty_not_forced) ... ok
+test_contrary_and_overlap_separate (test_audit_six_pairs.ReadingTests.test_contrary_and_overlap_separate) ... ok
+test_exhaustive_exclusive_keeps_domain_qualification (test_audit_six_pairs.ReadingTests.test_exhaustive_exclusive_keeps_domain_qualification) ... ok
+test_one_unknown_cannot_establish_contrary (test_audit_six_pairs.ReadingTests.test_one_unknown_cannot_establish_contrary) ... ok
+test_complete (test_coding.EvidenceChecks.test_complete) ... ok
+test_hallucinated_quote (test_coding.EvidenceChecks.test_hallucinated_quote) ... ok
+test_missing_sense (test_coding.EvidenceChecks.test_missing_sense) ... ok
+test_noneligible_group (test_coding.EvidenceChecks.test_noneligible_group) ... ok
+test_pair_evidence_wrong_word (test_coding.EvidenceChecks.test_pair_evidence_wrong_word) ... ok
+test_wrong_word_status (test_coding.EvidenceChecks.test_wrong_word_status) ... ok
+test_base_not_root (test_import.NormalizationTests.test_base_not_root) ... ok
+test_hyphenated_prefix_deduplicated (test_import.NormalizationTests.test_hyphenated_prefix_deduplicated) ... ok
+test_ids_independent_of_order (test_import.NormalizationTests.test_ids_independent_of_order) ... ok
+test_nominal_base_does_not_create_adjective_opposite (test_import.NormalizationTests.test_nominal_base_does_not_create_adjective_opposite) ... ok
+test_reversible_scope (test_import.NormalizationTests.test_reversible_scope) ... ok
+test_source_and_dictionary_absence_are_separate (test_import.NormalizationTests.test_source_and_dictionary_absence_are_separate) ... ok
+test_all_source_links_preserved (test_map_pilot_units.MappingTests.test_all_source_links_preserved) ... ok
+test_no_synset_or_presentation_inflation (test_map_pilot_units.MappingTests.test_no_synset_or_presentation_inflation) ... ok
+test_noun_and_adjective_are_distinct (test_map_pilot_units.MappingTests.test_noun_and_adjective_are_distinct) ... ok
+test_one_source_sense_can_require_split (test_map_pilot_units.MappingTests.test_one_source_sense_can_require_split) ... ok
+test_authorized_scope (test_six_pair_review.ValidationTests.test_authorized_scope) ... ok
+test_false_evidence_and_missing_pole_fail (test_six_pair_review.ValidationTests.test_false_evidence_and_missing_pole_fail) ... ok
+test_incompatible_domains_cannot_be_classified (test_six_pair_review.ValidationTests.test_incompatible_domains_cannot_be_classified) ... ok
+test_missing_or_mutated_proposal_fails (test_six_pair_review.ValidationTests.test_missing_or_mutated_proposal_fails) ... ok
+test_new_alignment_allowed_without_replacing_saved (test_six_pair_review.ValidationTests.test_new_alignment_allowed_without_replacing_saved) ... ok
+test_scope_requires_complementarity (test_six_pair_review.ValidationTests.test_scope_requires_complementarity) ... ok
+test_timeout_one_process_no_retry (test_six_pair_review.ValidationTests.test_timeout_one_process_no_retry) ... ok
+test_unknown_is_valid (test_six_pair_review.ValidationTests.test_unknown_is_valid) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.080s
+
+OK
