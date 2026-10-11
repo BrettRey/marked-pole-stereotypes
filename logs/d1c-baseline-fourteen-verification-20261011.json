@@ -1,0 +1,303 @@
+{
+  "completed_cells": [
+    4,
+    6,
+    10,
+    16,
+    18,
+    22,
+    120,
+    124,
+    126,
+    130,
+    132,
+    136,
+    138,
+    142
+  ],
+  "components_verified_now": 69,
+  "component_records": [
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c018-downstream-002/checkpoints/component-downstream-002.json",
+      "sha256": "63d253d0653d599a9d9a081382c8f992be50054dcecd40ea8c12306cb09b5162"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c018-downstream-005/checkpoints/component-downstream-005.json",
+      "sha256": "6032c2f85b5c273e45d5826906e2e95e48268aa4ea854acb1d84b0ade21aac39"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c138-downstream-001/checkpoints/component-downstream-001.json",
+      "sha256": "e984b586b588e7bfd4a1b641d46f2682853ad73a7674749e36f1a3f13d45b7c8"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c138-downstream-006/checkpoints/component-downstream-006.json",
+      "sha256": "6347b2a6ec3d4e21014c25feb92fe9da43b12d5bb4a34a64e2f491f8fc975e5c"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c016-joint/checkpoints/component-joint.json",
+      "sha256": "e762e4b87a79894edb39ba43064e5c5f9b7f19435b45d43a7de38e0b63be6317"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c018-downstream-004/checkpoints/component-downstream-004.json",
+      "sha256": "74d1f5ac2f9812bee6462a90172100939d500a4c445431470bbf73249f280bf9"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c018-upstream/checkpoints/component-upstream.json",
+      "sha256": "9b9b71959b85182e489353fa58a64e2e4ff4ae57fe93742cd76439aa63878475"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c136-joint/checkpoints/component-joint.json",
+      "sha256": "989b789eed8436f0e067edd88ecc143f4df91e357edca8e0c58e2339dce16f5f"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c018-downstream-003/checkpoints/component-downstream-003.json",
+      "sha256": "173e13746aaaa21a0050f53eda5f7630b6c5496e8b291d789e1a192020990a4d"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c138-downstream-007/checkpoints/component-downstream-007.json",
+      "sha256": "c5a36627d1d73c8d52714c2cdd9645f5ae58c6a56a7360795c41dd6d69ac47ec"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c138-downstream-000/checkpoints/component-downstream-000.json",
+      "sha256": "2eb5d95c078c5347a5d5c3fb229a371ca084eed16b9dd082ba9d40e568e9be1e"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c132-joint/checkpoints/component-joint.json",
+      "sha256": "9f8e5522025ceda634f922dbd481ef7b8ffd4fc23161c53c0dc28f01bd7ae9a2"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c138-upstream/checkpoints/component-upstream.json",
+      "sha256": "33ebe649b58631196a091bb6b9c4d3ce072a8094242f877c192060348c650cc4"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c006-downstream-005/checkpoints/component-downstream-005.json",
+      "sha256": "067d879f89c6119ea09ceace384f7eb7be79b5f2274c0581aba8101b0f289ff0"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c142-upstream/checkpoints/component-upstream.json",
+      "sha256": "28683a3209b6dfadb1054d1f8bbae142e4cf5a37816fd2cf902e4c0c6984af3e"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c006-downstream-002/checkpoints/component-downstream-002.json",
+      "sha256": "39d9a3f183dd72b3531495e271b117580f95a1d5e46c32413434bc0deb21e571"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c142-downstream-006/checkpoints/component-downstream-006.json",
+      "sha256": "2b62de4d710955c81a5c84795770d9740107bd24458eba62837471cd2e3e339c"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c022-downstream-000/checkpoints/component-downstream-000.json",
+      "sha256": "103a921075bbef6703b8e08ecaef1887f96bde36603ff5240f96d8874b23c46c"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c142-downstream-001/checkpoints/component-downstream-001.json",
+      "sha256": "721496cdf6247ad7c34851870998cb0c1ce5849d898c917b260a824795488da8"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c022-downstream-007/checkpoints/component-downstream-007.json",
+      "sha256": "3e1317a67684ff5cb43e509294788b1a06f49282b63089f54f698bd96639437f"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c126-downstream-006/checkpoints/component-downstream-006.json",
+      "sha256": "105e19460b8a9cadbc55586439fad861baf372407c329735655f4672a8b77126"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c126-downstream-001/checkpoints/component-downstream-001.json",
+      "sha256": "6a123def612f65df1b4d7b82df96634f11915f330c4191a8f1cbdb3d7aaf4b67"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c006-downstream-003/checkpoints/component-downstream-003.json",
+      "sha256": "133de020b247736e7bbe5f65a966f524eecc3de4a74a4634162b3433d0daa1dd"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c006-downstream-004/checkpoints/component-downstream-004.json",
+      "sha256": "f971e500cb66910f09392e02ce2b6723a434f6e4f94830f7175bcb8cef9bc38d"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c126-downstream-000/checkpoints/component-downstream-000.json",
+      "sha256": "efbd14e5c4df62e3c3b38e83816acf68b78d7752e0d994b7a2c61eab0e0db8ab"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c126-downstream-007/checkpoints/component-downstream-007.json",
+      "sha256": "9df22ff07259000fe7ec9f1be380cf6dc0f719d365b02d02b1d8aa6512839dd3"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c142-downstream-000/checkpoints/component-downstream-000.json",
+      "sha256": "2ae8ed20284154a23538aada00e8d84564134085fe743a4c2c414c79044fca90"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c022-downstream-006/checkpoints/component-downstream-006.json",
+      "sha256": "5c2cd0f1edbe404abd2b5ee4be112a4f985d6b95395496d58c4a2777a625fb02"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c142-downstream-007/checkpoints/component-downstream-007.json",
+      "sha256": "3b0136a95566487d1c5ebe20d18230f54265a83879aae97fb0c0303ff63b7f7d"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c022-downstream-001/checkpoints/component-downstream-001.json",
+      "sha256": "08516981412b87d781da76ec36bed320b7b01d791b42cb83b6b7c33ffffcd857"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c138-downstream-005/checkpoints/component-downstream-005.json",
+      "sha256": "16ac417aba01dc3432d530d54ebdcc38845c7467a8c933bf7a3a81e4232066a0"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c138-downstream-002/checkpoints/component-downstream-002.json",
+      "sha256": "783a2661fc89bf203de81983efab71f3cbe24d6620ed2d3419f58597458cc12f"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c018-downstream-006/checkpoints/component-downstream-006.json",
+      "sha256": "85a461ae9566425c544a612a7f09482e4097926023f32114a7f20d5fc3e52ba8"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c018-downstream-001/checkpoints/component-downstream-001.json",
+      "sha256": "179f6324d6c4c0e80f3c06ebedf18cd4cc75685999bb9e628930b1099a004606"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c138-downstream-003/checkpoints/component-downstream-003.json",
+      "sha256": "cd8fd108328df979d67c6882a441b3adcf61cb9b545f94e72afc02d24a8fc162"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c138-downstream-004/checkpoints/component-downstream-004.json",
+      "sha256": "d2af2a1ffd6ee9f0f987e78f8c170cefddb0f4741ca75aca3dce3c937be11595"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c006-upstream/checkpoints/component-upstream.json",
+      "sha256": "ce27589c9748d961e7ccdaf5f88a626b91b24dd7c0b2fc4538414bd10c60b2b0"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c018-downstream-000/checkpoints/component-downstream-000.json",
+      "sha256": "aaadf8e00b546db1edf0194149dfdad97c1c64817ffcec4b87d665dde2bee9cc"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c018-downstream-007/checkpoints/component-downstream-007.json",
+      "sha256": "b65f687a6c279e5bbe1f310464b54d8cfb4187abd9542b10be3eea756be7e766"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c120-joint/checkpoints/component-joint.json",
+      "sha256": "da527ef263effe5d660909109b0ad9b3c9aea6011310a410ff02c994e2a9e819"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c126-upstream/checkpoints/component-upstream.json",
+      "sha256": "31c342ea0080c4138377f0c3f83842b1d715b1fb81e4d1dd28326171a42e403d"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c142-downstream-002/checkpoints/component-downstream-002.json",
+      "sha256": "7a4377545616c667895de0162594d1e94493a9c92a14b7363be5009c8e1bfc2b"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c022-downstream-004/checkpoints/component-downstream-004.json",
+      "sha256": "2557f85a37475c31c1b14f6ed931dafafaccedcb900e03f0d61a437d76c85f1d"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c142-downstream-005/checkpoints/component-downstream-005.json",
+      "sha256": "8861169765dcccb44b8c3684ab82dfc5cb665bbf78a5ec9f7ce8bb7993d05089"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c022-downstream-003/checkpoints/component-downstream-003.json",
+      "sha256": "6bc9df99b28d1db70be1efd681a180f5d02719a77bea67a67d7e33ebccc4133a"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c126-downstream-002/checkpoints/component-downstream-002.json",
+      "sha256": "a5503c787399a07a3676e528ac7775ec3ad4cee33119ecfa30f49fb24f110fd0"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c126-downstream-005/checkpoints/component-downstream-005.json",
+      "sha256": "e1ffab3bec6c24f387a2b800d96e1434a7f2457e263de29bbb8a600024815ea4"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c006-downstream-001/checkpoints/component-downstream-001.json",
+      "sha256": "6306bf9ddd08e862ff49e0972d924e1710b0e443739e50ac76c1fb4d65ef4d46"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c006-downstream-006/checkpoints/component-downstream-006.json",
+      "sha256": "e90ba65e94bea0b11d554211ba23550137f8e2e4d993061fe2ddd20f4dda7f41"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c022-upstream/checkpoints/component-upstream.json",
+      "sha256": "8987df8fc2b79ad1ecf0de3330d0cb98079a63931cf9ad09ae6e9db128f856ee"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c126-downstream-004/checkpoints/component-downstream-004.json",
+      "sha256": "ec504c54b0e650c7080d8b735b9a2541faf75bb74a5d6178e909a396963a0f69"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c126-downstream-003/checkpoints/component-downstream-003.json",
+      "sha256": "1b1b797b0e9c2e1d16964888639231bc25ef8f4259f9bd721b4ff689be785139"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c142-downstream-004/checkpoints/component-downstream-004.json",
+      "sha256": "c7e80758b00ab210b54fddd02f3a1f5f7f8ac69567558e49e7b562e2366df92c"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c022-downstream-002/checkpoints/component-downstream-002.json",
+      "sha256": "b4753a26c034fbbf4ef381c12d06161f93f40ade6b5232ba8b3132ae950678ec"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c142-downstream-003/checkpoints/component-downstream-003.json",
+      "sha256": "94357f1dd55b012b089f7855fe9cefbb71b81216f302ab4cb1ed78ec7480d9bb"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c022-downstream-005/checkpoints/component-downstream-005.json",
+      "sha256": "afecd507d7b552e3ada615f7f4ec4ad6b104caa66f388322f351c82f4b933cab"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c006-downstream-007/checkpoints/component-downstream-007.json",
+      "sha256": "ee069a792fcc49711f506acefe0823a4d2864ee51f13b1c8ef42e2d82ad3b099"
+    },
+    {
+      "marker": "results/d1c/baseline-batch-20261010/collected/modules/c006-downstream-000/checkpoints/component-downstream-000.json",
+      "sha256": "a5e1edc7c691e2706aaf3246c63e4682504949d7aa484ee571cc2bfd234669f0"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/local/modules/joint-004/checkpoints/component-joint.json",
+      "sha256": "4e08e3945b4c24622aaae4d6500703dd1e363b597d6f85b5afe90077bab3719a"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/hf-complete/modules/upstream/checkpoints/component-upstream.json",
+      "sha256": "612060ef38ebb144aba577c408b15b0bba2339a84876cbfcff3e195a248e83d3"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/hf-complete/modules/downstream-004/checkpoints/component-downstream-004.json",
+      "sha256": "2d053867391487096d80c8b3b447d3c3e918904bf29292589d7709ea14dd0d0a"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/hf-complete/modules/downstream-003/checkpoints/component-downstream-003.json",
+      "sha256": "66223a91205974050cb42c292df171fc21d749bb6456f2c55215f66e242c81b0"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/hf-complete/modules/downstream-002/checkpoints/component-downstream-002.json",
+      "sha256": "e6152eb7de0b1994c7183559cd6bce1edaffe4892111fb3eee9958bae9bcc641"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/hf-complete/modules/downstream-005/checkpoints/component-downstream-005.json",
+      "sha256": "9250daeb5f2a2d5b500e94b8cb60f1e39419a2cd6f09a657463a12538bdab623"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/hf-complete/modules/downstream-000/checkpoints/component-downstream-000.json",
+      "sha256": "b7d7649b5b02cc5f0ce95354075ae9cbde2bfa29083111e237040f0c0c880e1d"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/hf-complete/modules/downstream-007/checkpoints/component-downstream-007.json",
+      "sha256": "3615c105f742e876636b2259f51a1bfc1168ac54cb13552ef4e1ca1fc0dae8d5"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/hf-complete/modules/downstream-006/checkpoints/component-downstream-006.json",
+      "sha256": "6cee282eda11490bc3fa251800c5fc40d567254d6c5577d16fefcec0d10e6d9c"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/hf-complete/modules/downstream-001/checkpoints/component-downstream-001.json",
+      "sha256": "faa7a04c7064ec0caffb0a7a46dca631b76a969bb42bb376f604bade2b687eb9"
+    },
+    {
+      "marker": "results/d1c/paired-batch-20261010/hf-joint/modules/joint-124/checkpoints/component-joint.json",
+      "sha256": "bb741506e943f061cb8aece202c5eded08f70c87cfbc6b81e340be8ae0d00628"
+    }
+  ],
+  "diagnostic_count_including_previously_verified_first_cut": 78,
+  "all_diagnostics_pass": true,
+  "divergences": 0,
+  "max_rhat": 1.0081060997440632,
+  "summary_checks": "means, medians and 50/90 percent intervals match saved arrays to 1e-14; six new cut arrays match all eight components exactly",
+  "estimated_compute_usd_before_recovery": 2.2775
+}

@@ -1,0 +1,7 @@
+{
+  "pid": 4435,
+  "source_commit": "36b9af1052e9377a0c5cc5078e2e9f6c9c9bc5d7",
+  "started_at": "2026-10-11T10:25:49.442664+00:00",
+  "stdout": "logs/d1c-baseline-recovery-monitor-20261011-stdout.txt",
+  "command": "recover_baseline.py --watch"
+}

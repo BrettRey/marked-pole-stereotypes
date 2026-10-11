@@ -5,7 +5,7 @@ title: 'The marked-pole hypothesis and the UWA model of stereotype negativity'
 stage: development
 external: none
 blocked_on: []
-updated: 2026-10-10
+updated: 2026-10-11
 source:
 - STATUS.md
 - notes/project-brief.md
@@ -36,22 +36,26 @@ next_action: 'Implementation runs in Codex tabs Brett drives (2026-10-09; HANDOF
   Independent verification confirms the component arrays and summary
   arithmetic. Twelve assembly/collection tests pass. This is one artificial
   dataset and an eight-component outer approximation, not calibration.
-  The 240-cell grid stays stopped. A new bounded comparison is now running from
-  47e55ad: UWA joint cell 4 on the Mac, Nicolas joint cell 124 on its own HF
-  machine, and Nicolas cut cell 130 across four HF machines. All five HF jobs
-  were accepted and are RUNNING; Mac sampling has started. The eight cut
-  components start after their shared upstream checkpoint is ready. There
-  is no local serial queue. Five eight-hour HF timeouts cap new compute at
-  USD 1.20 within the standing USD 10 budget. Monitor PID 77285 collects
-  outputs and assembles paired summaries without refitting. Nineteen tests
-  pass. Brett subsequently said max it out and raised total HF authorization
-  to USD 15. The 16-configuration baseline expansion is now launched from
-  94eb4e4: all 27 additional HF jobs were accepted, covering the remaining
-  six joints and six cuts. Combined capacity is 64 model workers across
-  32 HF machines plus the Mac; existing results and active fits are reused.
-  New jobs have 12-hour timeouts; conservative total compute reservations
-  are USD 13.08. All 32 tests pass. Monitor PID 99000 collects and assembles
-  results/d1c/baseline-batch-20261010/REPORT.md. No scope question remains.
+  The 240-cell grid stays stopped. The subsequent paired comparison from
+  47e55ad is complete, with all diagnostics passing; HF estimate USD .321.
+  The 16-configuration baseline expansion from 94eb4e4 ended with 14/16
+  complete. All 78 component/joint diagnostics in those configurations pass,
+  with zero divergences and maximum R-hat 1.0081061. Independent checks of
+  saved hashes, component arrays and summary arithmetic pass. The new
+  extension cost estimate is USD 1.7975; total before recovery USD 2.2775,
+  not an invoice. A bucket I/O error killed host joint-0 and interrupted
+  cells 0 and 12 before complete checkpoints existed. The original failure
+  log, partial exports and 14-result report are preserved. After diagnosing
+  the storage error, published bounded recovery at 36b9af1 within Brett’s
+  existing 16-cell/USD 15 authorization. Only cells 0 and 12 restart on two
+  separate HF machines, preserving the scientific source, seeds and sampler.
+  Both replacement jobs are RUNNING. Export I/O errors now leave the sampler
+  alive; completed diagnostic failures are never rerun. Thirty-eight tests
+  pass. Two 12-hour timeouts add at most USD .72, giving a conservative total
+  reservation of USD 13.80 below USD 15. Monitor PID 4435 collects and builds
+  results/d1c/baseline-recovery-20261011/REPORT.md. Check this report next.
+  Original batch sources and results remain unchanged; no full-grid restart
+  or calibration claim follows from the engineering batch.
   Diagnostic and timing detail for the completed first cut remains in
   results/d1c/parallel-components-20261010/REPORT.md. Design-assessment
   reporting and budget tools are
@@ -87,7 +91,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A done (conditional forward map retained); D1 grid done (indicator verdict after D1c); longer D1c baseline pilot passed both replicates; twelve-fit timing complete (four R-hat failures, zero divergences); initial 240-cell sweep stopped at Brett’s request and remains stopped. All eight distributed components of cell 10/replicate 0 are complete, verified and assembled: upstream and every downstream fit passed with zero divergences. Original report-only shape-check error corrected without any refit; 12 assembly/collection tests pass. Full report: results/d1c/complete-cut-20261010/REPORT.md. One artificial dataset does not establish calibration; empirical-design inputs and replication budget remain unresolved. The first queues ended; their HF compute estimate is USD .159, not an invoice. New parallel baseline comparison launched from 47e55ad: one Mac joint fit, one HF joint fit and four HF machines for the eight Nicolas cut components. All five HF jobs are RUNNING; new compute ceiling USD 1.20; 19 tests pass. Brett authorized the 16-cell baseline expansion and raised the HF budget to USD 15. All 27 additional jobs were accepted: 32 HF machines plus the Mac, capacity 64 workers. Total conservative compute ceiling USD 13.08; 32 tests pass. The full grid remains stopped. Lexical import and reviewed 40-form pilot complete (25 forms support eligible adjectives, six provisional prefix pairs); one revised pair recheck timed out; frame not frozen, no full coding or commonness collection. Design-assessment tools implemented; D1b preparatory only; Koch permission confirmed; D2 grid done; no new strand B outcome data opened · status: active · updated: 2026-10-10 -->
+<!-- SUMMARY: Strand A done; D1 verdict after D1c. Original 240-cell grid remains stopped. The distributed first cut and paired comparison are complete. The 16-cell baseline batch completed 14 configurations; all 78 component/joint diagnostics pass, zero divergences, maximum R-hat 1.00811. Bucket I/O failure interrupted cells 0 and 12 without complete checkpoints. Original records preserved. Bounded recovery from 36b9af1 now runs only those two fits on separate HF machines with unchanged science/seeds/sampler and resilient export handling; 38 tests pass. Recovery monitor PID 4435 writes results/d1c/baseline-recovery-20261011/REPORT.md. Estimated HF spending before recovery USD 2.2775, not an invoice; full conservative ceiling USD 13.80 under USD 15. One artificial dataset per design/target and eight outer draws do not establish calibration. Lexical import and reviewed 40-form pilot complete; frame unfrozen, no full coding or commonness collection. D1b preparatory; Koch permission confirmed; D2 complete; no new strand B outcome data opened · status: active · updated: 2026-10-11 -->
 
 ## State
 
@@ -106,9 +110,9 @@ Scaffolded 2026-10-07 from Brett's brief (`notes/project-brief.md`, verbatim). T
 
 9. Lexical frame: source import and the authorized 40-term pilot are complete. Anderson supplies 555 entries; Warriner supplies 13,915 rows/13,905 normalized forms; overlap is 378 and union 14,082. The source audit finds eligible adjective meanings under 25 pilot forms, excludes the supplied adjective meanings of four forms, and preserves two scope uncertainties plus nine forms with no attested adjective in the checked resources. Six provisional prefix pairs require interpretation/reading and target specification before collection. Both original model-family passes completed; the revised Claude pair screen timed out at 900 seconds, with no further retry. Brett reviewed `notes/lexical-frame-pilot-report-2026-10-10.md` in Roughdraft; the replies distinguish lexical category from function, identify uniform as a uni-/un- detector error, and separate the calibrated arm’s average-American wording from the description arm’s still-unsettled population/time targets. Full-vocabulary coding and commonness collection have not begun. Complete private audit tables and public aggregate accounting are linked from the report.
 
-10. Parallel continuation: after Brett asked to continue and challenged serial scheduling, launched the bounded comparison in `scripts/d1c/PAIRED-BATCH.md` from published source `47e55ad`. UWA joint cell 4 runs on the Mac; Nicolas joint cell 124 runs on its own HF machine; Nicolas cut cell 130 uses four other HF machines, with components 0–1, 2–3, 4–5 and 6–7 assigned respectively. The shared upstream fit runs once on machine 0. All five HF jobs were accepted and report RUNNING; Mac sampling started. Both joints are independent of the upstream work. The five eight-hour timeouts cap new compute at USD 1.20; conservative historical-plus-current reservations total USD 3.36 within the USD 10 authorization. Nineteen checks pass. The durable monitor (PID 77285) collects checkpoints and builds `results/d1c/paired-batch-20261010/REPORT.md`. Reuse the completed UWA cut. This first launcher did not restart the full grid; the subsequently authorized baseline expansion is recorded below.
+10. Parallel continuation: the bounded comparison from `47e55ad` is complete. UWA joint cell 4 finished on the Mac; Nicolas joint cell 124 and the eight-component cut for cell 130 finished on five HF machines. All diagnostics pass; all provider jobs, the Mac worker and original monitor ended. The report is `results/d1c/paired-batch-20261010/REPORT.md`; observed HF compute estimate USD .321, not an invoice. The completed UWA cut is reused. These are registered engineering comparisons, not replicated calibration.
 
-11. Baseline expansion: Brett said “max it out” and raised total HF authorization to USD 15. The fixed 16-cell baseline factorial now reuses completed cell 10 and active cells 4/124/130, and adds joint cells 0/12/16/120/132/136 plus cut cells 6/18/22/126/138/142. All 27 new HF jobs were accepted from published source `94eb4e4`; each has one attempt and a 12-hour timeout. Together with the existing five HF machines and Mac, peak useful concurrency is 64 model workers. The additional compute ceiling is USD 9.72; including the full historical and active ceilings gives USD 13.08, below USD 15. The 32-test suite passes, and existing sampler/active-run sources are unchanged. Launcher receipt: `logs/d1c-baseline-batch-launch-20261010.json`; monitor PID 99000; report `results/d1c/baseline-batch-20261010/REPORT.md`. Only each cut waits for its own shared upstream checkpoint. No completed or active fit is repeated. This resolves the scope question and continues the registered engineering comparison; it does not restart the remaining 240-cell sweep or establish calibration.
+11. Baseline expansion: Brett authorized the fixed 16-cell factorial and total HF spending of USD 15. The batch from `94eb4e4` ended with 14 configurations complete; all 78 component/joint diagnostics pass, zero divergences, maximum R-hat 1.0081061. All saved component hashes and reported summary arithmetic check out. Host `joint-0` failed at 01:46:51 UTC on 2026-10-11 with a bucket-write `OSError [Errno 5]`; the controller stopped cells 0 and 12 before either had a complete checkpoint. Preserve `results/d1c/baseline-batch-20261010/REPORT.md` and the partial exports/provider log under `results/d1c/baseline-recovery-20261011/original-failure/`. Observed extension compute USD 1.7975; with earlier jobs, USD 2.2775 before recovery, not an invoice. A diagnosed infrastructure recovery is published at `36b9af1`: only cells 0 and 12 run again, once each, on separate HF machines. Both jobs are RUNNING; the scientific code, data, seeds, sampler and original module signatures are unchanged. Export I/O retries no longer kill a live sampler. Thirty-eight tests pass. Maximum recovery cost USD .72; conservative total reservation USD 13.80 under USD 15. Receipt: `logs/d1c-baseline-recovery-launch-20261011.json`; monitor PID 4435; current combined report: `results/d1c/baseline-recovery-20261011/REPORT.md`. No completed fit or diagnostic failure is repeated. The full grid remains stopped.
 
 ## Blockers
 

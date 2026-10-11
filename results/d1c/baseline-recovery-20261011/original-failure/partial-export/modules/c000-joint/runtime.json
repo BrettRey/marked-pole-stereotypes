@@ -1,0 +1,1 @@
+{"host":"joint-0","job":{"cell":0,"design":"uwa","feedback":"joint","prior":1.0,"reliability":0.0,"rep":0,"scenario":"baseline","target":0.0},"mode":"joint","module":"c000-joint","pid":77,"source_commit":"94eb4e41ec22a4e00de7ef243e6da6985af7756a","started_at":"2026-10-10T23:52:47.790407+00:00","state":"running"}
