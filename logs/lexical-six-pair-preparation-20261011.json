@@ -1,0 +1,30 @@
+{
+  "commonness_or_ratings_input": false,
+  "created_at": "2026-10-11T11:31:42.446287+00:00",
+  "distinct_forms": 11,
+  "inputs": {
+    "data/raw/lexical_frame/wiktionary-six-pair-20261011.json": "9c5a0b3d7777a210f2266fa5e1c2d0470045bfac4d1105f363fe270189d13a7b",
+    "private/lexical_frame/audit-20261010/pair-audit.json": "3b9bd7e98fcbdd6167bb731b2b07b1ac3b4f8c2f058247114617a21b82035f6e",
+    "private/lexical_frame/pilot-20261010-v2/manifest.json": "d7b7ac08a1cc5122c8c4699c23b61ad7516df8b5acda2045ac1d86249c815239",
+    "private/lexical_frame/pilot-20261010-v2/terms.json": "a6cf4392c7a2df5d727a8ef14cecb63a099b1e460d6139090573c13e49c3ec45",
+    "scripts/lexical_frame/six-pair-prompt.txt": "05d28442ae5ac8a57e7872830bbf077023f49123b8ef8692da5fc4a4756cc460",
+    "scripts/lexical_frame/six_pair_review.py": "2a851e09fcb53d6078d195694c3fb31fb3d3a92e9bb405e016f2532c8d29b8db"
+  },
+  "maximum_calls": 12,
+  "maximum_concurrent": 2,
+  "new_supplements": 10,
+  "packet_hashes": {
+    "attentive--inattentive.json": "3f7cdd38db15b35d61e659eb9b2108e9ac1b2e867839afb75fe8561b7f0b71b6",
+    "attentive--unattentive.json": "a771c5201aa5c919290f069edfba4cb53e2319f11c98ce159d60d477d0355dc0",
+    "friendly--unfriendly.json": "518ec839e9b504003ef5c8b807cf82a86e052c0de2f424e3b6a9cf458bcd35b2",
+    "happy--unhappy.json": "798649f365e9dfbdba524bd88852bf96a256887b68d89450b3fd909d3d14d7df",
+    "kind--unkind.json": "3e430f15f8b3db7fdc641f7976a8e2aa022c6f90f6e05aced1a0d0b71bf10b05",
+    "patient--impatient.json": "6d6e5a1d581a304c17eeed33f42910b60111b53189e6e3a3cb42f23235b93869"
+  },
+  "pairs": 6,
+  "python": "3.14.8",
+  "requests_version": "2.34.2",
+  "saved_proposals": 16,
+  "source_commit": "6301f1f72cdeb54ebaa532a072b47dfd50a6a28f",
+  "timeout_seconds": 300
+}
