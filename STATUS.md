@@ -19,8 +19,9 @@ next_action: >-
   Replicated D1c waits for frozen empirical inputs and a new launch budget.
   Norman pass X is repaired; the Vision/column-parser pilot produced zero
   complete numeric rows, so wave 1 remains stopped pending a revised method.
-  Prepare the lexical evidence inventory and capped production budget before
-  full coding; freeze the adjudicated frame before commonness collection.
+  The lexical evidence inventory is complete: budget 10,285 outstanding
+  category-gap retrievals plus broader source-review triggers before full
+  coding; freeze the adjudicated frame before commonness collection.
 claim:
   argues: >-
     Stereotype content concentrates on the marked pole of evaluative oppositions, because rarity
@@ -32,7 +33,7 @@ claim:
 ---
 
 # STATUS
-<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. The baseline HF jobs and monitor have ended; their combined compute estimate is USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. Reduced HF design and directional reporting are adopted; replication and the lexical production budget remain deferred in notes/next-stage-decisions-2026-10-11.md. Norman X is repaired (218/239 pilot rows exact); Vision yields no complete numeric rows, so wave 1 remains stopped. One volunteer Mac is reported running its single archived timing fit; await the receipt. M1 and M2 Macs, both with 16 GB, await environment readiness; Windows setup is not being pursued. Two bounded HF packing benchmarks are running; new compute ceiling USD .72. Colab CPU timing started at 15:49 UTC; 400 units available, observed rate .08 units/hour, no extra 10-unit allowance. HF Pro activation is verified; maximum Jobs concurrency remains unverified. Persistent macOS event dialogs are active; Brett confirmed the first real completion alert. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
+<!-- SUMMARY: Strand A complete; analysis plan not FIXED. D1c's 240-cell grid stays stopped; all 16 baseline configurations are complete and all 80 module diagnostics pass, with zero divergences. The baseline HF jobs and monitor have ended; their combined compute estimate is USD 2.3845, not an invoice. Current run state: results/d1c/baseline-recovery-20261011/REPORT.md. Joint/cut differences require paired reporting and replicated assessment. Six-pair lexical review complete: 11 answers, one timeout, five pairs retain candidate alignments, no exact complement established. Full vocabulary and commonness collection unlaunched. The evidence inventory preserves all 14,082 candidate forms; 10,285 category-gap retrievals remain, with broader review triggers still to assess. Reduced HF design and directional reporting are adopted; replication and the lexical production budget remain deferred in notes/next-stage-decisions-2026-10-11.md. Norman X is repaired (218/239 pilot rows exact); Vision yields no complete numeric rows, so wave 1 remains stopped. One volunteer Mac is reported running its single archived timing fit; await the receipt. M1 and M2 Macs, both with 16 GB, await environment readiness; Windows setup is not being pursued. Two bounded HF packing benchmarks are running; new compute ceiling USD .72. Colab CPU timing started at 15:49 UTC; 400 units available, observed rate .08 units/hour, no extra 10-unit allowance. HF Pro activation is verified; maximum Jobs concurrency remains unverified. Persistent macOS event dialogs are active; Brett confirmed the first real completion alert. Draws stay local; summaries and hashes are public · status: active · updated: 2026-10-11 -->
 
 ## State
 
@@ -48,12 +49,14 @@ Colab account access and CPU preflight passed. Its single archived joint fit sta
 
 Local event alerts started at 16:11 UTC using `scripts/compute/watch_events.py`. Brett confirmed both the persistent-dialog test and the first real completion alert: HF-three component 2, archive verified and diagnostics passed. Events and acknowledgements are saved in `results/compute/event-watch-20261011/`. The watcher uses no model calls, groups waiting events, and keeps the Mac from idle-sleeping while the existing monitors run. It does not automatically wake a Codex turn.
 
+The existing-evidence inventory is complete from published source `9541fa0`. All 14,082 source forms and their IDs are preserved. Direct WordNet adjective evidence covers 3,786 forms; the pinned supplementary cache covers 21 forms, leaving 10,285 category-gap retrievals pending. The separate string detector finds 1,080 candidates, 457 with both forms in the sources. These are workload counts, not eligibility or validated-pair counts. No ratings were read, new sources retrieved or model calls made. See the [inventory manifest](logs/lexical-evidence-inventory-20261011.json) and [verification](logs/lexical-evidence-inventory-verification-20261011.json).
+
 ## Next action
 
 1. Implement the adopted [next-stage decisions](notes/next-stage-decisions-2026-10-11.md) and [completed six-pair review](notes/lexical-six-pair-report-2026-10-11.md).
 2. The authorized baseline batch is complete: [final report](results/d1c/baseline-recovery-20261011/REPORT.md) and [independent recovery checks](logs/d1c-recovery-final-readcheck-20261011.json). No full-grid restart.
 3. Norman's pass-X repair and bounded Vision pilot are complete: [counts](logs/norman-pilot3-scores-20261011.json), [interpretation](scripts/norman/README.md). Vision failed the acceptance requirement; wave 1 has not started. A revised numeric parser or second engine needs a separate next step.
-4. Before full lexical coding, fix the source coverage, discovery audit, model/version and allowance budget. Before commonness collection, also settle pair weighting and release targets/descriptions.
+4. Use the completed evidence inventory to budget outstanding supplementary retrievals, broader source-review triggers, two-family coding and independent discovery/rejection audits. Freeze the production model/version and allowance before full coding. Before commonness collection, also settle pair weighting and release targets/descriptions.
 5. The accepted reporting amendments are integrated; complete the remaining empirical specification before FIXED. Empirical-design calibration waits for the frozen frame and actual source response structure.
 
 ## Prior task records

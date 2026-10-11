@@ -1,0 +1,13 @@
+{
+  "all_source_forms_preserved": true,
+  "artifact_hashes_verified": 5,
+  "candidate_edge_identifiers_verified": 1080,
+  "checked_at": "2026-10-11T16:20:48.926002+00:00",
+  "input_hashes_verified": 6,
+  "matches_prior_direct_wordnet_adjective_count": true,
+  "new_model_calls": 0,
+  "new_retrievals": 0,
+  "result": "PASS",
+  "source_commit": "9541fa0e2bc0045046a6e2895f777bf8daec2829",
+  "source_form_count": 14082
+}

@@ -1,0 +1,111 @@
+{
+  "artifact_hashes": {
+    "WIKTIONARY-LICENSE.txt": "3333e7046aaec92a097390c13b97c668584ee027de2c51b7124576e14c26ec95",
+    "WORDNET-LICENSE.txt": "854b6be82518aa1dffd251d91109c78e81b974f6587b8addaa49fb22c8ed246d",
+    "form-evidence.jsonl": "5bbd3dbaf9b202b481bc5037364bc02bef6b9389f12dea2b64cf66d4fb62f4dc",
+    "sources.json": "738270d632af9a7984e855ee37b8a6974f2cadff5b1696564d464dc9d38d8764",
+    "string-candidates.jsonl": "4606d8cd3464ebfaadc04f652734a2358a95365abedc1d0c90bd7345929d9e1e"
+  },
+  "completed_at": "2026-10-11T16:19:25.300249+00:00",
+  "input_hashes": {
+    "data/manifests/sources.csv": "70e38ebb6857ba732dc10461799f84d6ae90d8ee7a07450efd7398fdbd315057",
+    "data/raw/lexical_frame/wn3.1.dict.tar.gz": "3f7d8be8ef6ecc7167d39b10d66954ec734280b5bdcd57f7d9eafe429d11c22a",
+    "notes/lexical-protocol-decisions-2026-10-11.md": "fda577c7cd8897b3e5c90282897bd2bdf0df58c80ef9218189ee3a4dd6cbc203",
+    "notes/next-stage-decisions-2026-10-11.md": "76db57a936918df7693827e395083d397ca8071ebf1a08b569080c1b66c5b128",
+    "private/lexical_frame/pilot-20261010/all_candidate_forms.json": "a9a233fd554197c2cab88da81e92ba096c55b94c298d0d1805c78196d7ef8bdc",
+    "private/lexical_frame/pilot-20261010/manifest.json": "40a1fb3ce0a679c6a8b0db039492e9edd77b4c49212fc42a3651738133bd56ca"
+  },
+  "python": "3.14.8",
+  "randomization": "none; deterministic sorting",
+  "requests": "2.34.2",
+  "script_hashes": {
+    "audit_pilot.py": "8a9511188290c08b5e567b0375b4a25dfcfd263cf59a67fc8244f3e4d1030b6b",
+    "audit_six_pairs.py": "b4ec13fed695519b50bb18950a76f7d8c0bd86c7bce17f73ed54b0e3a9cfc9cf",
+    "code_pilot.py": "0123100171fa5a3a01443be8259037f3cda7dff035610334b1d45ba48e12f9a7",
+    "evidence_inventory.py": "9c84cae91ff3fe55b02db8fd7d537e20fcd06eb50584257f0851439a51bd09db",
+    "finish_words.py": "0e47b3c153ccbc4755f2975bb27b22743baf8d69c80b367fcd9fda339bbb475e",
+    "import_sources.py": "ecbaccd8c6c76ecd46747291ddea9567e09ea264d8efa12e8fdb33b926564240",
+    "map_pilot_units.py": "50380ebdfc56150ce73ec0170179cc37d28ed7a0c78977f94743561b4e4a920b",
+    "prepare_pilot.py": "c22930cbe20e92caea1840c9486fe1d3e6a2b300d2668a089f9569c47dff0760",
+    "recheck_pairs.py": "d8f16698c436060241b08f6848aef45bde05efe7930fc9973e70cf31c148d501",
+    "resume_claude.py": "0db3ebc9845b336f6e90163c77f51dd202642c3bce0c6850180df3158742dcd4",
+    "six_pair_review.py": "2a851e09fcb53d6078d195694c3fb31fb3d3a92e9bb405e016f2532c8d29b8db",
+    "supplement_pilot.py": "c7d6843e5f0e7700bd15142935d9a2fff9ffe75db935af7f61fb91126a74bc49",
+    "test_audit.py": "38e8d8be4e2422161a3b0f179e890faad7ee149b07bab03c8de435a838bfe260",
+    "test_audit_six_pairs.py": "8e47d8c1c4f4d040da130199c9f77122cf5c4f1a03129cd08dd4e5c4d3649705",
+    "test_coding.py": "7977a81557f5d8ffcbb39b49d455f9a3f029cae9e9b9fdfc1a0e38a252c86acf",
+    "test_import.py": "f79b869cc7036e642ef8d8b5d149132a42c9e47c5b607c32d0258833721c15bc",
+    "test_map_pilot_units.py": "9009d9fe44788d558243692c89af0a2d58150793bfb721683e76640541dad8d2",
+    "test_six_pair_review.py": "e452c2bcdfd7c02c61d58e47a7fe1093ba59c2eef2be7e64e14342de7ac122c2",
+    "wordnet_source.py": "dfe59c41201198ca650b91b583db79bba4d0d2975da1c40e21f37b0d9a84f90e"
+  },
+  "source_commit": "9541fa0e2bc0045046a6e2895f777bf8daec2829",
+  "started_at": "2026-10-11T16:19:24.015892+00:00",
+  "summary": {
+    "cached_wiktionary_sources": 21,
+    "candidate_forms": 14082,
+    "case_variant_groups": 10,
+    "category_gap_with_cached_source_but_no_extracted_adjective": 9,
+    "dictionary_counts_are_eligibility_counts": false,
+    "direct_wordnet_adjective_evidence_rows": 8575,
+    "distinct_direct_wordnet_adjective_sense_ids": 6494,
+    "evidence_lengths": {
+      "cached_wiktionary_definition_characters": {
+        "maximum": 2100,
+        "median": 0.0,
+        "n": 14082,
+        "p95": 0,
+        "total": 12876
+      },
+      "wordnet_adjective_gloss_characters": {
+        "maximum": 3089,
+        "median": 0.0,
+        "n": 14082,
+        "p95": 393,
+        "total": 963239
+      }
+    },
+    "form_packet_utf8_bytes": {
+      "maximum": 15699,
+      "median": 1310.0,
+      "n": 14082,
+      "p95": 2799,
+      "total": 21588608
+    },
+    "forms_by_coverage": {
+      "alias_adjective_evidence": 2,
+      "cached_supplement": 21,
+      "cached_supplement_adjective": 12,
+      "category_gap_retrieval_pending": 10285,
+      "wordnet_adjective": 3786,
+      "wordnet_entry": 13678
+    },
+    "forms_with_lookup_alias": 2,
+    "forms_without_direct_wordnet_adjective": 10296,
+    "frame_frozen": false,
+    "independent_pair_discovery_audit_complete": false,
+    "model_calls": 0,
+    "new_retrievals": 0,
+    "rating_or_commonness_values_read": false,
+    "sense_ids_are_lexical_units": false,
+    "source_membership": {
+      "anderson1968": 177,
+      "anderson1968+warriner2013": 378,
+      "warriner2013": 13527
+    },
+    "source_rows": 14470,
+    "string_candidates": 1080,
+    "string_candidates_by_affix": {
+      "-less": 73,
+      "dis-": 160,
+      "il-": 15,
+      "im-": 98,
+      "in-": 398,
+      "ir-": 22,
+      "non-": 9,
+      "un-": 305
+    },
+    "string_candidates_with_both_direct_wordnet_adjectives": 227,
+    "string_candidates_with_both_source_forms": 457
+  }
+}
