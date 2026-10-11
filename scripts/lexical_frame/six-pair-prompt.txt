@@ -1,0 +1,70 @@
+Review the supplied lexical evidence for ONE proposed adjective pair. This is
+a sense-alignment and applicability audit, not a commonness or valence rating.
+Use only the supplied evidence. Do not infer etymology or consult other sources.
+Return compact JSON matching the schema. Keep reasons short and specific.
+
+Scope: personality, interpersonal behaviour, psychological states,
+dispositions and capacities. Extreme and temporary interpretations remain
+eligible. Physical-only, object-only, membership-only, institutional-status-only
+and record-only interpretations are outside scope. Adjective is a lexical
+category, not a syntactic function. A shared spelling is not proof of one word.
+
+Review EVERY saved alignment exactly once, preserving its proposal_id and its
+two source sense IDs. These are proposals, not endorsed or exhaustive choices.
+You may reject all. You may additionally propose supported alignments using
+other supplied adjective senses; assign local IDs new-01, new-02, etc. Do not
+enumerate every cross-product or duplicate a relation just for synonymous
+dictionary restatements. Distinguish source-supported interpretations from
+undecided homonymy/polysemy groupings; don't count synsets as lexical items.
+
+For each alignment, give short interpretation labels, supported/rejected/
+unresolved status, and evidence quotes from BOTH supplied sense records.
+Quotes must be nonempty exact substrings of their original glosses, preserving
+wiki markup when present. Supplementary senses may support new alignments or
+clarify existing ones; cite those separately where relevant. A supporting
+synonym doesn't by itself fix degree thresholds, time or applicability.
+
+Check scope and sense alignment BEFORE opposition. Don't coerce a temporary
+state into an enduring disposition to complete the pair. State which temporal
+targets the evidence supports: characteristic_capacity, temporary_state or
+unresolved. If both temporal targets are defensible, record separate targets;
+they are alternative analyses, not extra independent pairs. Rejected
+alignments should have no targets. An unresolved alignment may retain an
+unresolved target. Do not rate or predict which pole is more common.
+
+For each retained target, record the base and derived word's application
+domains and whether they match. Distinguish a predicate being false IN its
+domain from inapplicability because a situation or capacity is absent.
+Inapplicability does not establish the lexical opposite. Record any relevant
+situation, subgroup/capacity, degree threshold and respect in the shared_domain
+field, or state what remains undetermined. This must not invent a new lexical
+meaning or a threshold unsupported by the supplied evidence.
+
+Then ask can_both and can_neither for the SAME person, time, respect and the
+RECORDED SHARED DOMAIN, using yes/no/undetermined. Reasons must explain the
+semantic possibility or the evidential gap; dictionary 'not' or 'lack' alone
+does not prove exact complementarity. Do not infer historical derivation.
+Only answer no when the evidence supports exclusion/exhaustiveness in that
+domain; otherwise keep undetermined. A constructed exact complement unsupported
+by the lexical evidence is outside the primary lexical analysis. If the domains
+are incompatible, don't classify their opposition; retain undetermined.
+
+Record complement_scope as full_reference_domain, conditional_domain,
+unresolved or not_complementary. 'Full' requires established applicability over
+the reference population/temporal sampling domain, not merely absence of an
+explicit restriction. Even an internally complementary conditional pair does
+not exhaust the full population/person-moment domain.
+
+Reference for future description judgments: US residents of all ages, with
+2026 fixed as the reference context, not a request to reconstruct a measured
+2026 statistic. Characteristics/capacities concern people; states give every
+person equal weight then select a moment uniformly from that person's waking
+time in the reference context, including unusual as well as routine situations.
+The denominator remains that full population/sampling scheme. Conditional
+comparisons restricted to an applicable subgroup/situation would be separately
+identified. No commonness judgment is requested in this audit.
+
+Finally record lexical_identity_note (what is supported or still provisional
+about category-specific word and interpretation identities) and remaining_gap.
+Unknown is a valid finding. Valid source accounting, not agreement or a fixed
+number of accepted alignments, is the completion criterion.
