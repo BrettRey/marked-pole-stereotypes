@@ -9,7 +9,8 @@ from pathlib import Path
 import numpy as np
 from common import ROOT, dump, sha, summary, utc, environment
 from empirical import all_jobs, job_info
-from remote_batch import ALLOWED, verify_result
+from remote_batch import ALLOWED
+from verify_archive import verify_result, reconciled_register
 
 BASE = ROOT / 'private/h2-empirical-20261016'
 PUBLIC = ROOT / 'results/h2-empirical-20261016'
@@ -205,6 +206,9 @@ def collect_once():
         raise ValueError('Provider returned a different job')
     fetch('register.json', BASE/'observed-register.json')
     register = json.loads((BASE/'observed-register.json').read_text())
+    if PROVIDER_JOB == '6ad287a75ccb47ba0f7b5bda':
+        register = reconciled_register(BASE/'observed-register.json',
+            ROOT/'results/h2-recovery-20261016/original-reconciliation.json')
     if set(register['jobs']) != set(all_jobs()):
         raise ValueError('Unexpected assignment set')
     meta = json.loads((BASE/'inputs/bundle.json').read_text())
@@ -268,6 +272,7 @@ def collect_once():
     state=dict(at=utc(), provider_job=PROVIDER_JOB, provider_stage=stage, phase=register['phase'], counts=counts,
                running=running, failures=failures, collected=collected, cuts=cuts, terminal=terminal,
                collector_source_sha256=sha(Path(__file__)), input_bundle_sha256=sha(BASE/'inputs/bundle.json'),
+               verification_reconciliation_sha256=register.get('verification_reconciliation_sha256'),
                maximum_hf_usd=12, automatic_fit_retries=False,
                initial_timings=register.get('initial_timings'),
                attempt_history={job:{k:row[k] for k in ('attempt','previous_attempt','imported','original_archive') if k in row}

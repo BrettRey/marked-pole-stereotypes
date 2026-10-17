@@ -11,7 +11,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 from common import ROOT, dump, sha, utc
-from remote_batch import verify_result
+from verify_archive import verify_result, reconciled_register
 from launch_remote import IMAGE, BUCKET
 
 ORIGINAL_JOB='6ad287a75ccb47ba0f7b5bda'
@@ -27,7 +27,7 @@ git checkout --quiet "$1"
 python -c 'import platform; assert platform.python_version() == "3.14.8"'
 python -m venv .venv
 .venv/bin/python -m pip install --disable-pip-version-check -r requirements-h2.txt
-exec .venv/bin/python -u scripts/h2_production/recovery.py serve --inputs /bucket/h2-empirical-20261016/inputs --outputs /bucket/h2-recovery-20261016/outputs --original /bucket/h2-empirical-20261016/outputs --secrets-file /bucket/h2-recovery-20261016/capabilities.json --mode "$2" --deadline "$3" --port 8000
+exec .venv/bin/python -u scripts/h2_production/recovery.py serve --inputs /bucket/h2-empirical-20261016/inputs --outputs /bucket/h2-recovery-20261016/outputs --original /bucket/h2-empirical-20261016/outputs --secrets-file /bucket/h2-recovery-20261016/capabilities.json --mode "$2" --deadline "$3" --port 8000 --reconciliation /bucket/h2-recovery-20261016/original-reconciliation.json
 '''
 
 
@@ -82,11 +82,12 @@ def prepare(source, mode, account, proof, provider, now):
         content=subprocess.check_output(['git','show',source+':'+name],cwd=ROOT)
         if hashlib.sha256(content).hexdigest()!=digest:
             raise ValueError('Frozen execution source changed: '+name)
-    for name in ('recovery.py','launch_recovery.py','collect.py'):
+    for name in ('recovery.py','launch_recovery.py','collect.py','verify_archive.py'):
         path='scripts/h2_production/'+name
         if hashlib.sha256(subprocess.check_output(['git','show',source+':'+path],cwd=ROOT)).hexdigest()!=sha(ROOT/path):
             raise ValueError('Recovery source is not the published revision: '+name)
-    original_register=json.loads((ORIGINAL/'observed-register.json').read_text())
+    original_register=reconciled_register(ORIGINAL/'observed-register.json',
+        ROOT/'results/h2-recovery-20261016/original-reconciliation.json')
     for job,state in (('nicolas-s0-c0','failed'),('nicolas-s0-c1','complete')):
         folder=ORIGINAL/'collected'/job
         fit=verify_result(folder,meta)
@@ -138,6 +139,8 @@ def main():
     if args.mode=='mixed' and (set(capabilities)!={'claude-1'} or len(capabilities['claude-1'])<40):
         raise ValueError('Missing restricted recovery capability')
     cli('buckets','cp',str(BASE/'capabilities.json'),BUCKET+'/h2-recovery-20261016/capabilities.json')
+    cli('buckets','cp',str(ROOT/'results/h2-recovery-20261016/original-reconciliation.json'),
+        BUCKET+'/h2-recovery-20261016/original-reconciliation.json')
     record['state']='submitting'
     dump(RECEIPT,record)
     env=os.environ.copy();env.pop('HF_TOKEN',None)

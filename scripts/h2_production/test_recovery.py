@@ -17,7 +17,7 @@ from common import dump, sha, utc
 from empirical import all_jobs, job_info
 from recovery import (FIRST, IMPORTED, RecoveryRegistry, failure_receipt, finalize_child,
                       process_evidence, recovery_handler, supervise)
-from remote_batch import verify_result
+from verify_archive import verify_result
 from launch_recovery import PROBE_SHA, resource_budget, validate_lifecycle
 
 
@@ -92,8 +92,8 @@ class RecoveryTests(unittest.TestCase):
         folder=self.root/'outputs'/FIRST
         folder.mkdir()
         dump(folder/'manifest.json',{'operational_state_fixture':True})
-        fit=dict(state='complete',owner='claude-1',elapsed_seconds=1)
-        with patch('remote_batch.verify_result',return_value=fit):
+        fit=dict(state='complete',owner='claude-1',elapsed_seconds=1,bundle_sha256='bundle')
+        with patch('recovery.verify_result',return_value=fit):
             reg.finish(FIRST,'claude-1',folder)
         self.assertEqual(reg.data['phase'],'released')
         self.assertEqual(sum(r['state']=='unassigned' for r in reg.data['jobs'].values()),62)

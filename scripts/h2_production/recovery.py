@@ -17,7 +17,8 @@ from http.server import ThreadingHTTPServer
 from pathlib import Path
 from common import ROOT, dump, sha, utc
 from empirical import all_jobs, check_bundle, job_info
-from remote_batch import ALLOWED, CHUNK, Registry, handler, request, verify_result, worker_command
+from remote_batch import ALLOWED, CHUNK, Registry, handler, request, worker_command
+from verify_archive import verify_result, reconciled_register
 
 FIRST = 'nicolas-s0-c0'
 IMPORTED = 'nicolas-s0-c1'
@@ -44,12 +45,12 @@ def process_evidence(row, now=None, provider_stage='RUNNING'):
 
 
 class RecoveryRegistry(Registry):
-    def __init__(self, path, meta, original, mode, deadline, bundle_hash):
+    def __init__(self, path, meta, original, mode, deadline, bundle_hash, reconciliation=None):
         if mode not in ('mixed', 'hf'):
             raise ValueError('Unknown recovery mode')
         if path.exists():
             raise RuntimeError('Recovery register exists; no automatic restart or reassignment')
-        old = json.loads((original / 'register.json').read_text())
+        old = reconciled_register(original / 'register.json', reconciliation)
         if old['jobs'][FIRST]['state'] != 'failed' or old['jobs'][IMPORTED]['state'] != 'complete':
             raise ValueError('Original attempts have not reached the authorized recovery boundary')
         if any(row['state'] == 'running' for row in old['jobs'].values()):
@@ -73,6 +74,7 @@ class RecoveryRegistry(Registry):
         self.data = dict(started_at=utc(), phase='initial', mode=mode, jobs=jobs,
             deadline=datetime.fromtimestamp(deadline, timezone.utc).isoformat(),
             input_bundle_sha256=bundle_hash, original_register_sha256=sha(original / 'register.json'),
+            verification_reconciliation_sha256=old.get('verification_reconciliation_sha256'),
             automatic_retries=False, authorized_replacement=FIRST,
             orchestration_sha256=sha(Path(__file__)))
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -126,8 +128,21 @@ class RecoveryRegistry(Registry):
 
     def finish(self, job, owner, folder):
         with self.lock:
-            super().finish(job, owner, folder)
-            self.data['jobs'][job]['archive_verified_at'] = utc()
+            row = self.data['jobs'][job]
+            if row['owner'] == owner and row['state'] in ('complete', 'failed'):
+                if sha(folder / 'manifest.json') != row['manifest_sha256']:
+                    raise ValueError('Changed completed result')
+                return
+            self.owner(job, owner)
+            fit = verify_result(folder, self.meta)
+            if fit['owner'] != owner or fit['bundle_sha256'] != self.data['input_bundle_sha256']:
+                raise ValueError('Fit owner or bundle mismatch')
+            row.update(state=fit['state'], ended_at=utc(), elapsed_seconds=fit['elapsed_seconds'],
+                       manifest_sha256=sha(folder / 'manifest.json'), archive_verified_at=utc())
+            initial = [self.data['jobs'][j]['state'] for j in (FIRST, IMPORTED)]
+            if self.data['phase'] == 'initial' and all(s in ('complete', 'failed') for s in initial):
+                self.data['phase'] = 'released' if all(s == 'complete' for s in initial) else 'blocked'
+                self.data['initial_timings'] = {j: self.data['jobs'][j]['elapsed_seconds'] for j in (FIRST, IMPORTED)}
             self.save()
 
 
@@ -325,9 +340,9 @@ def cloud_worker(url, secret_file, bundle_hash, work):
             return
 
 
-def serve(inputs, outputs, original, secrets_file, mode, deadline, port):
+def serve(inputs, outputs, original, secrets_file, mode, deadline, port, reconciliation=None):
     meta = check_bundle(inputs)
-    reg = RecoveryRegistry(outputs / 'register.json', meta, original, mode, deadline, sha(inputs / 'bundle.json'))
+    reg = RecoveryRegistry(outputs / 'register.json', meta, original, mode, deadline, sha(inputs / 'bundle.json'), reconciliation)
     tokens = json.loads(secrets_file.read_text()) if mode == 'mixed' else {}
     if mode == 'mixed' and (set(tokens) != {'claude-1'} or len(tokens['claude-1']) < 40):
         raise ValueError('Expected one restricted Claude capability')
@@ -387,6 +402,7 @@ def main():
     item.add_argument('--mode', choices=['mixed', 'hf'], required=True)
     item.add_argument('--deadline', type=float, required=True)
     item.add_argument('--port', type=int, default=8000)
+    item.add_argument('--reconciliation', type=Path)
     item = sub.add_parser('cloud')
     item.add_argument('--url', required=True)
     item.add_argument('--secret-file', type=Path, required=True)
@@ -394,7 +410,7 @@ def main():
     item.add_argument('--work', type=Path, required=True)
     args = parser.parse_args()
     if args.command == 'serve':
-        serve(args.inputs, args.outputs, args.original, args.secrets_file, args.mode, args.deadline, args.port)
+        serve(args.inputs, args.outputs, args.original, args.secrets_file, args.mode, args.deadline, args.port, args.reconciliation)
     else:
         cloud_worker(args.url, args.secret_file, args.bundle_hash, args.work)
 
