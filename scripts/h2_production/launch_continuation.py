@@ -67,10 +67,19 @@ def main():
     lifecycle = json.loads((ROOT/'results/h2-recovery-20261016/lifecycle.json').read_text())
     validate_lifecycle(lifecycle, 'mixed')
     providers = []
+    old = json.loads((ROOT/'logs/h2-recovery-20261016-hf-launch.json').read_text())
     for job in PAST_JOBS:
         value = json.loads(cli('jobs', 'inspect', job, '--format', 'json'))
-        providers.append(value[0] if isinstance(value, list) else value)
-    old = json.loads((ROOT/'logs/h2-recovery-20261016-hf-launch.json').read_text())
+        provider = value[0] if isinstance(value, list) else value
+        if not provider.get('durations'):
+            if job == PAST_JOBS[0]:
+                seconds = old['original_billable_hours_upper_bound']*3600
+                basis = 'Previously recorded original-host upper bound, rounded upward again'
+            else:
+                seconds = now-datetime.fromisoformat(provider['created_at']).timestamp()
+                basis = 'Creation through current independently observed terminal status; upper bound'
+            provider['durations'] = dict(total_secs=seconds, basis=basis)
+        providers.append(provider)
     costs, timeout, deadline = budget(providers, account['available_hf_usd'], now,
                                     datetime.fromisoformat(old['process_deadline']).timestamp())
     proof = ROOT/'results/h2-recovery-20261016/uwa-summary-reconciliation.json'
