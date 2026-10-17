@@ -143,6 +143,14 @@ class RecoveryRegistry(Registry):
             if self.data['phase'] == 'initial' and all(s in ('complete', 'failed') for s in initial):
                 self.data['phase'] = 'released' if all(s == 'complete' for s in initial) else 'blocked'
                 self.data['initial_timings'] = {j: self.data['jobs'][j]['elapsed_seconds'] for j in (FIRST, IMPORTED)}
+            elif fit['state'] == 'failed':
+                self.data['phase'] = 'blocked'
+            self.save()
+
+    def failed_before_receipt(self, job, owner, error):
+        with self.lock:
+            super().failed_before_receipt(job, owner, error)
+            self.data['phase'] = 'blocked'
             self.save()
 
 
@@ -343,6 +351,11 @@ def cloud_worker(url, secret_file, bundle_hash, work):
 def serve(inputs, outputs, original, secrets_file, mode, deadline, port, reconciliation=None):
     meta = check_bundle(inputs)
     reg = RecoveryRegistry(outputs / 'register.json', meta, original, mode, deadline, sha(inputs / 'bundle.json'), reconciliation)
+    serve_registry(reg, inputs, outputs, secrets_file, mode, deadline, port)
+
+
+def serve_registry(reg, inputs, outputs, secrets_file, mode, deadline, port):
+    """Run an already verified registry; stop assigning after an execution failure."""
     tokens = json.loads(secrets_file.read_text()) if mode == 'mixed' else {}
     if mode == 'mixed' and (set(tokens) != {'claude-1'} or len(tokens['claude-1']) < 40):
         raise ValueError('Expected one restricted Claude capability')
@@ -369,6 +382,10 @@ def serve(inputs, outputs, original, secrets_file, mode, deadline, port, reconci
                                 orchestration_sha256=sha(Path(__file__)))
                 dump(outputs / 'server.json', snapshot)
                 print(json.dumps(snapshot), flush=True)
+                if not counts['running'] and counts['unassigned'] and not any(w.is_alive() for w in workers):
+                    reg.data['phase'] = 'blocked'
+                    reg.data['stop_reason'] = 'No active fits and both HF worker loops exited'
+                    reg.save()
                 if not counts['running'] and (not counts['unassigned'] or reg.data['phase'] == 'blocked'):
                     break
             if time.time() >= deadline:

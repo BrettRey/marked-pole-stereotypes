@@ -294,9 +294,12 @@ def main():
     args=parser.parse_args()
     if args.recovery_config:
         config=json.loads(args.recovery_config.read_text())
-        BASE=ROOT/'private/h2-recovery-20261016'
-        PUBLIC=ROOT/'results/h2-recovery-20261016'
-        BUCKET='hf://buckets/BrettRey/marked-pole-d1c-compute/h2-recovery-20261016/outputs'
+        batch=config.get('batch_id','h2-recovery-20261016')
+        if batch not in ('h2-recovery-20261016','h2-continuation-20261017'):
+            raise ValueError('Unknown H2 collection namespace')
+        BASE=ROOT/'private'/batch
+        PUBLIC=ROOT/'results'/batch
+        BUCKET='hf://buckets/BrettRey/marked-pole-d1c-compute/'+batch+'/outputs'
         PROVIDER_JOB=config['job_id']
         if not (BASE/'inputs/bundle.json').exists():
             raise ValueError('Recovery collector requires the original verified input bundle')

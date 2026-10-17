@@ -5,10 +5,25 @@ import unittest
 from pathlib import Path
 import numpy as np
 from common import dump, sha
-from verify_archive import posterior_header, reconciled_register, VERIFIER_ERROR
+from verify_archive import posterior_header, reconciled_register, verify_summary_receipt, VERIFIER_ERROR
 
 
 class ArchiveTests(unittest.TestCase):
+    def test_dataset_specific_summary_budget(self):
+        sources = {'worker': 'fixture-source-hash'}
+        for dataset, conditional in [('uwa', 0), ('nicolas', 200)]:
+            receipt = dict(contrast_draws=4000, joint_replications=200,
+                           conditional_replications=conditional, source_hashes=sources)
+            verify_summary_receipt(receipt, dataset, sources)
+            for field, bad in [('contrast_draws', 3999), ('joint_replications', 199),
+                               ('conditional_replications', 200 if conditional == 0 else 0),
+                               ('source_hashes', {'worker': 'changed'})]:
+                with self.subTest(dataset=dataset, field=field):
+                    with self.assertRaises(ValueError):
+                        verify_summary_receipt(dict(receipt, **{field: bad}), dataset, sources)
+        with self.assertRaises(ValueError):
+            verify_summary_receipt(receipt, 'unknown', sources)
+
     def test_public_header_readers(self):
         for writer in (np.lib.format.write_array_header_1_0, np.lib.format.write_array_header_2_0):
             stream = io.BytesIO()

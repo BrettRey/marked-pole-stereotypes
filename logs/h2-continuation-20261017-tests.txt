@@ -1,0 +1,36 @@
+test_equal_weights_and_variance_decomposition (test_collect.MixtureTests.test_equal_weights_and_variance_decomposition) ... ok
+test_no_missing_component_or_nonfinite_renormalization (test_collect.MixtureTests.test_no_missing_component_or_nonfinite_renormalization) ... ok
+test_predictive_observed_values_remain_component_matched (test_collect.MixtureTests.test_predictive_observed_values_remain_component_matched) ... ok
+test_ratio_reference_is_one (test_collect.MixtureTests.test_ratio_reference_is_one) ... ok
+test_both_prior_hosts_count_and_credit_limits_deadline (test_continuation.ContinuationBudgetTests.test_both_prior_hosts_count_and_credit_limits_deadline) ... ok
+test_post_release_failure_stops_new_claims (test_continuation.ContinuationFailureTests.test_post_release_failure_stops_new_claims) ... ok
+test_abrupt_child_termination_preserved (test_recovery.RecoveryTests.test_abrupt_child_termination_preserved) ... ok
+test_budget_excludes_overlap_and_additional_credit (test_recovery.RecoveryTests.test_budget_excludes_overlap_and_additional_credit) ... ok
+test_budget_termination_and_transport_failure_capture (test_recovery.RecoveryTests.test_budget_termination_and_transport_failure_capture) ... ok
+test_collection_restart_uses_verified_bytes (test_recovery.RecoveryTests.test_collection_restart_uses_verified_bytes) ... ok
+test_heartbeat_endpoint_authentication_and_owner (test_recovery.RecoveryTests.test_heartbeat_endpoint_authentication_and_owner) ... ok
+test_hf_fallback_and_failed_replacement_does_not_release (test_recovery.RecoveryTests.test_hf_fallback_and_failed_replacement_does_not_release) ... ok
+test_import_attempt_history_and_unique_replacement (test_recovery.RecoveryTests.test_import_attempt_history_and_unique_replacement) ... ok
+test_launch_requires_actual_probe_completion (test_recovery.RecoveryTests.test_launch_requires_actual_probe_completion) ... ok
+test_process_success_and_duplicate_launch (test_recovery.RecoveryTests.test_process_success_and_duplicate_launch) ... ok
+test_stale_process_evidence_never_reassigns (test_recovery.RecoveryTests.test_stale_process_evidence_never_reassigns) ... ok
+test_successful_gate_releases_exactly_remaining_jobs (test_recovery.RecoveryTests.test_successful_gate_releases_exactly_remaining_jobs) ... ok
+test_atomic_claims (test_remote_batch.BatchTests.test_atomic_claims) ... ok
+test_failure_retained_and_initial_blocks (test_remote_batch.BatchTests.test_failure_retained_and_initial_blocks) ... ok
+test_http_auth_paths_ownership_and_checksum (test_remote_batch.BatchTests.test_http_auth_paths_ownership_and_checksum) ... /opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/tempfile.py:484: ResourceWarning: Implicitly cleaning up <HTTPError 400: 'Bad Request'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+/opt/homebrew/Cellar/python@3.14/3.14.8/Frameworks/Python.framework/Versions/3.14/lib/python3.14/tempfile.py:484: ResourceWarning: Implicitly cleaning up <HTTPError 403: 'Forbidden'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+ok
+test_initial_assignments_and_no_reclaim (test_remote_batch.BatchTests.test_initial_assignments_and_no_reclaim) ... ok
+test_integrity_and_manifest_paths (test_remote_batch.BatchTests.test_integrity_and_manifest_paths) ... ok
+test_unique_jobs_seeds (test_remote_batch.BatchTests.test_unique_jobs_seeds) ... ok
+test_dataset_specific_summary_budget (test_verify_archive.ArchiveTests.test_dataset_specific_summary_budget) ... ok
+test_invalid_header_rejected (test_verify_archive.ArchiveTests.test_invalid_header_rejected) ... ok
+test_public_header_readers (test_verify_archive.ArchiveTests.test_public_header_readers) ... ok
+test_reconciliation_preserves_original_and_rejects_changed_evidence (test_verify_archive.ArchiveTests.test_reconciliation_preserves_original_and_rejects_changed_evidence) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 1.232s
+
+OK

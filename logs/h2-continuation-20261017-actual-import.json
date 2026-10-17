@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-17T21:20:51.060697+00:00",
+  "state": "passed",
+  "real_saved_archives_imported": 5,
+  "unstarted_jobs": 59,
+  "unique_test_claims": [
+    "nicolas-s0-c2",
+    "uwa-s0-c3",
+    "nicolas-s0-c3"
+  ],
+  "duplicate_claim_rejected": true,
+  "invalid_proof_rejected": true,
+  "post_release_failure_blocks_new_claims": true,
+  "original_manifest_hashes_unchanged": true,
+  "models_fitted": 0,
+  "proof_sha256": "1a31b9db76c37321f01eb47a7b86995eb2441d933775aef9bdeae3c1dd6698fe"
+}

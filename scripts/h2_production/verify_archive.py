@@ -45,6 +45,17 @@ def posterior_header(stream):
     return shape, fortran, dtype
 
 
+def verify_summary_receipt(receipt, dataset, source_hashes):
+    """Conditional-history predictions apply only to the Nicolas repeat task."""
+    if dataset not in ('uwa', 'nicolas'):
+        raise ValueError('Unknown summary dataset')
+    conditional = 200 if dataset == 'nicolas' else 0
+    if (receipt['contrast_draws'] != 4000 or receipt['joint_replications'] != 200
+            or receipt['conditional_replications'] != conditional
+            or receipt['source_hashes'] != source_hashes):
+        raise ValueError('Wrong summary budget/source')
+
+
 def verify_result(folder, meta):
     manifest = json.loads((folder / 'manifest.json').read_text())
     job_info(manifest['job'])
@@ -65,10 +76,7 @@ def verify_result(folder, meta):
         if ALLOWED - {'progress.json'} - set(manifest['files']):
             raise ValueError('Missing completed output')
         receipt = json.loads((folder / 'summary-receipt.json').read_text())
-        if (receipt['contrast_draws'] != 4000 or receipt['joint_replications'] != 200
-                or receipt['conditional_replications'] != 200
-                or receipt['source_hashes'] != meta['source_hashes']):
-            raise ValueError('Wrong summary budget/source')
+        verify_summary_receipt(receipt, fit['job']['dataset'], meta['source_hashes'])
         with np.load(folder / 'contrast-draws.npz', allow_pickle=False) as draws:
             for key in ('mean_log_ratio', 'probability_ratio', 'probability_difference_per_1000'):
                 if draws[key].shape != (4, 1000) or not np.isfinite(draws[key]).all():
